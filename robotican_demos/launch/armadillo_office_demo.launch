@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-	<arg name="rviz_display" default="$(find robotican_demos)/config/amcl.rviz" />
-	<node name="rviz_node" pkg="rviz" type="rviz" args="-d $(arg rviz_display)"/>
+	 <arg name="rviz_display" default="$(find robotican_demos)/config/amcl.rviz" />
+  <node name="rviz_node" pkg="rviz" type="rviz" args="-d $(arg rviz_display)"/> 
     
     <include file="$(find robotican_armadillo)/launch/armadillo.launch">
      <arg name="gazebo" value="true"/>
@@ -16,6 +16,7 @@
      <arg name="move_base" value="true"/> 
      <arg name="moveit" value="true"/>
 	 <arg name="kinect2" value="true"/> 
+	 
     </include>
     
     <!--<node name="pick_node" pkg="robotican_demos" type="demo_pick_node" output="screen"/> -->
