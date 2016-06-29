@@ -27,8 +27,8 @@ TrajectoryPlannerROS:
 
   # Forward Simulation Parameters
   sim_time: 2.0
-  sim_granularity: 0.02
-  angular_sim_granularity: 0.02
+  sim_granularity: 1.5
+  angular_sim_granularity: 1.5
   vx_samples: 6
   vtheta_samples: 20
   controller_frequency: 20.0
@@ -66,10 +66,13 @@ DWAPlannerROS:
   min_trans_vel: 0.05
   max_rot_vel: 0.3
   min_rot_vel: 0.18
+  
+  sim_time: 1.7
+  #~ sim_granularity: 1.7
 
   # Goal Tolerance Parameters
-  yaw_goal_tolerance: 0.08 
-  xy_goal_tolerance: 0.08
+  yaw_goal_tolerance: 0.02 
+  xy_goal_tolerance: 0.05
   latch_xy_goal_tolerance: false
 
   # Trajectory Scoring Parameters
