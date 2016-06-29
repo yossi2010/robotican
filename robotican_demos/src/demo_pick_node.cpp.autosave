@@ -261,6 +261,8 @@ void button_go_cb(std_msgs::Empty) {
         if (base_cmd(move_to_table())) {
             ROS_INFO("Reached table, asking for coke...");
 
+            ros::param::set("/move_base/TrajectoryPlannerROS/max_vel_x", 0.1);
+            
             char sys_cmd[]="espeak -s 150 -v en-uk 'May I have a coke please?'";
               FILE *process=popen(sys_cmd,"r");
               pclose(process);

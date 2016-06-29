@@ -2901,7 +2901,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='coke_can_slim'>
+     <!-- <model name='coke_can_slim'>
         <pose>-10.7227 7.21101 0.735 2.2e-05 8e-06 -0.47587</pose>
         <link name='link'>
           <pose>-10.7227 7.21101 0.735 2.2e-05 8e-06 -0.47587</pose>
@@ -2909,7 +2909,7 @@
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
-      </model>
+      </model> -->
       <model name='dining_chair_0'>
         <pose>-8.42873 8 0 0 -0 0</pose>
         <link name='link'>
@@ -3500,7 +3500,7 @@
       </link>
       <static>0</static>
     </model>
-    <model name='coke_can_slim'>
+  <!--  <model name='coke_can_slim'>
       <static>0</static>
       <link name='link'>
         <inertial>
@@ -3556,6 +3556,6 @@
         <gravity>1</gravity>
       </link>
       <pose>-10 7 0 0 -0 0</pose>
-    </model>
+    </model>-->
   </world>
 </sdf>

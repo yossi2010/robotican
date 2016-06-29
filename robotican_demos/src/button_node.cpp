@@ -64,7 +64,7 @@ nodeHandle.getParam("sys_cmd", sys_cmd);
 
             tf::Vector3 mf=transform.getOrigin();
             double dist=mf.distance(goal);
-            if (dist<1.0) ROS_INFO("dist: %f",dist);
+           // if (dist<1.0) ROS_INFO("dist: %f",dist);
 
             if ((dist <= goal_tol)&&(!inPose)) {
                     inPose = true;
