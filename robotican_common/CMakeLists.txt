@@ -9,7 +9,12 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   geometry_msgs
-  message_generation
+image_transport
+  cv_bridge
+   pcl_conversions
+     pcl_ros
+  tf
+
 )
 
 ## System dependencies are found with CMake's conventions
@@ -53,11 +58,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate services in the 'srv' folder
- add_service_files(
-   FILES
-   searchForColor.srv
+ #add_service_files(
+ #  FILES
+  # searchForColor.srv
 #   Service2.srv
- )
+ #)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -67,11 +72,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs
-   geometry_msgs
- )
+ #generate_messages(
+ #  DEPENDENCIES
+#   std_msgs
+ #  geometry_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -105,7 +110,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES robotican_common
-  CATKIN_DEPENDS roscpp std_msgs sensor_msgs geometry_msgs message_generation
+  CATKIN_DEPENDS roscpp std_msgs sensor_msgs geometry_msgs #message_generation
 #  DEPENDS system_lib
 )
 
@@ -132,6 +137,9 @@ include_directories(
 
 ## Declare a C++ executable
  add_executable(joy_teleop_node src/joy_teleop_node.cpp)
+
+ add_executable(find_objects_node src/find_objects.cpp)
+ target_link_libraries(find_objects_node ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

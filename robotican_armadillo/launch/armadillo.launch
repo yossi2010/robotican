@@ -22,7 +22,12 @@
   <arg name="R" default="0.0" />
   <arg name="P" default="0.0" />
   <arg name="Y" default="0.0" />
-  
+     <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/> 
+    
   <arg name="controllers" default='true'/>
   <arg name="moveit" default='false'/>
   <arg name="use_depth" default='false'/>
@@ -68,11 +73,7 @@
 	   f200:=$(arg f200)
 	   " /> 
 	  
-    <arg name="paused" default="false"/>
-    <arg name="use_sim_time" default="true"/>
-    <arg name="gui" default="true"/>
-    <arg name="headless" default="false"/>
-    <arg name="debug" default="false"/>
+
     
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
      <arg name="world_name" value="$(arg world_name)"/>

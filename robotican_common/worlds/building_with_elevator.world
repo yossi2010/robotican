@@ -977,318 +977,6 @@
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
-    <model name='reviews_table'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='colision1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://reviews_table/meshes/reviews_table.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://reviews_table/meshes/reviews_table.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/WoodFloor</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>2 -1 0 0 -0 0</pose>
-    </model>
-    <model name='tv'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='colision1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://tv/meshes/tv.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://tv/meshes/tv.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Black</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>3 -0.517172 0 0 -0 0</pose>
-    </model>
-    <model name='cocacola'>
-      <static>0</static>
-      <link name='link'>
-        <inertial>
-          <mass>0.25</mass>
-          <inertia>
-            <ixx>0</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0</iyy>
-            <iyz>0</iyz>
-            <izz>0</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-          <pose>0 0 0.075 -3.14159 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.04</radius>
-              <length>0.15</length>
-            </cylinder>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <pose>0 0 0.075 -3.14159 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.04</radius>
-              <length>0.15</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://cocacola/material/scripts</uri>
-              <uri>model://cocacola/material/textures</uri>
-              <name>Custom/cocacola</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>3 -1 0 0 -0 0</pose>
-    </model>
-    <model name='citizen_extras_female_02'>
-      <link name='link'>
-        <inertial>
-          <mass>20</mass>
-          <inertia>
-            <ixx>0</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0</iyy>
-            <iyz>0</iyz>
-            <izz>0</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://citizen_extras_female_02/meshes/mesh.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://citizen_extras_female_02/meshes/mesh.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-1 0 0 0 -0 0</pose>
-      <static>0</static>
-    </model>
-    <model name='citizen_extras_male_03'>
-      <link name='link'>
-        <inertial>
-          <mass>20</mass>
-          <inertia>
-            <ixx>0</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0</iyy>
-            <iyz>0</iyz>
-            <izz>0</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://citizen_extras_male_03/meshes/mesh.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://citizen_extras_male_03/meshes/mesh.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-2 0 0 0 -0 0</pose>
-      <static>0</static>
-    </model>
-    <model name='cocacola_0'>
-      <static>0</static>
-      <link name='link'>
-        <inertial>
-          <mass>0.25</mass>
-          <inertia>
-            <ixx>0</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0</iyy>
-            <iyz>0</iyz>
-            <izz>0</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-          <pose>0 0 0.075 -3.14159 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.04</radius>
-              <length>0.15</length>
-            </cylinder>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <pose>0 0 0.075 -3.14159 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.04</radius>
-              <length>0.15</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://cocacola/material/scripts</uri>
-              <uri>model://cocacola/material/textures</uri>
-              <name>Custom/cocacola</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>1 -1 0 0 -0 0</pose>
-    </model>
     <model name='reviews_table_0'>
       <static>1</static>
       <link name='link'>
@@ -1382,53 +1070,6 @@
         <gravity>1</gravity>
       </link>
       <pose>-2 -2.43567 0 0 -0 0</pose>
-    </model>
-    <model name='closet'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='colision1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://closet/meshes/closet.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://closet/meshes/closet.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/WoodFloor</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-1 -4 0 0 -0 0</pose>
     </model>
     <model name='closet_0'>
       <static>1</static>
@@ -1619,115 +1260,6 @@
         <gravity>1</gravity>
       </link>
       <pose>-6 -2 0 0 -0 0</pose>
-    </model>
-    <model name='cocacola_1'>
-      <static>0</static>
-      <link name='link'>
-        <inertial>
-          <mass>0.25</mass>
-          <inertia>
-            <ixx>0</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0</iyy>
-            <iyz>0</iyz>
-            <izz>0</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-          <pose>0 0 0.075 -3.14159 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.04</radius>
-              <length>0.15</length>
-            </cylinder>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <pose>0 0 0.075 -3.14159 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.04</radius>
-              <length>0.15</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://cocacola/material/scripts</uri>
-              <uri>model://cocacola/material/textures</uri>
-              <name>Custom/cocacola</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-9 -3 0 0 -0 0</pose>
-    </model>
-    <model name='citizen_extras_female_03'>
-      <link name='link'>
-        <inertial>
-          <mass>20</mass>
-          <inertia>
-            <ixx>0</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0</iyy>
-            <iyz>0</iyz>
-            <izz>0</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://citizen_extras_female_03/meshes/mesh.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://citizen_extras_female_03/meshes/mesh.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-3.57611 0 0 0 -0 0</pose>
-      <static>0</static>
     </model>
     <model name='floor_lamp'>
       <static>1</static>
@@ -2245,147 +1777,6 @@
       </link>
       <pose>-8 8.5652 0 0 -0 0</pose>
     </model>
-    <model name='dining_chair_0'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='colision1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://dining_chair/meshes/dining_chair.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://dining_chair/meshes/dining_chair.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Wood</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-8.42873 8 0 0 -0 0</pose>
-    </model>
-    <model name='dining_chair_1'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='colision1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://dining_chair/meshes/dining_chair.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://dining_chair/meshes/dining_chair.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Wood</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-8 8 0 0 -0 0</pose>
-    </model>
-    <model name='dining_chair_2'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='colision1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://dining_chair/meshes/dining_chair.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://dining_chair/meshes/dining_chair.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Wood</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-7.47776 8.55477 0 0 -0 0</pose>
-    </model>
     <model name='sideboard_0'>
       <static>1</static>
       <link name='link'>
@@ -2480,172 +1871,10 @@
       </link>
       <pose>-2.41301 7 0 0 -0 0</pose>
     </model>
-    <model name='floor_lamp_0'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='colision1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://floor_lamp/meshes/floor_lamp.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://floor_lamp/meshes/floor_lamp.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-6 9 0 0 -0 0</pose>
-    </model>
-    <model name='sideboard_1'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='colision1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://sideboard/meshes/sideboard.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://sideboard/meshes/sideboard.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/FlatBlack</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-5 9 0 0 -0 0</pose>
-    </model>
-    <model name='cocacola_3'>
-      <static>0</static>
-      <link name='link'>
-        <inertial>
-          <mass>0.25</mass>
-          <inertia>
-            <ixx>0</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0</iyy>
-            <iyz>0</iyz>
-            <izz>0</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-          <pose>0 0 0.075 -3.14159 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.04</radius>
-              <length>0.15</length>
-            </cylinder>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <pose>0 0 0.075 -3.14159 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.04</radius>
-              <length>0.15</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://cocacola/material/scripts</uri>
-              <uri>model://cocacola/material/textures</uri>
-              <name>Custom/cocacola</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-4.52272 9 0 0 -0 0</pose>
-    </model>
     <state world_name='default'>
-      <sim_time>158 276000000</sim_time>
-      <real_time>154 938887260</real_time>
-      <wall_time>1467102826 782226622</wall_time>
-      <model name='arm_chair'>
-        <pose>-1 8.58646 0 0 -0 0</pose>
-        <link name='link'>
-          <pose>-1 8.58646 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
+      <sim_time>322 612000000</sim_time>
+      <real_time>32 34226056</real_time>
+      <wall_time>1467235745 353342491</wall_time>
       <model name='bench_0'>
         <pose>-10 0 0 0 -0 0</pose>
         <link name='link'>
@@ -2784,55 +2013,19 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='citizen_extras_female_02'>
-        <pose>-1.28791 -1.3e-05 0.000422 0.001634 -0.025156 0.655672</pose>
-        <link name='link'>
-          <pose>-1.28791 -1.3e-05 0.000422 0.001634 -0.025156 0.655672</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='citizen_extras_female_02_0'>
-        <pose>-12 7.99998 0.000421 0.001586 -0.025121 1.08401</pose>
+        <pose>-12 7.99998 0.000425 0.001596 -0.025044 1.084</pose>
         <link name='link'>
-          <pose>-12 7.99998 0.000421 0.001586 -0.025121 1.08401</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='citizen_extras_female_03'>
-        <pose>-3.57615 3.6e-05 -0.003501 0.011351 0.012684 4.7e-05</pose>
-        <link name='link'>
-          <pose>-3.57615 3.6e-05 -0.003501 0.011351 0.012684 4.7e-05</pose>
+          <pose>-12 7.99998 0.000425 0.001596 -0.025044 1.084</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='citizen_extras_female_03_0'>
-        <pose>-12 6.99996 -0.003503 0.011361 0.012656 1.52632</pose>
+        <pose>-12 6.99996 -0.003501 0.011384 0.012594 1.52632</pose>
         <link name='link'>
-          <pose>-12 6.99996 -0.003503 0.011361 0.012656 1.52632</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='citizen_extras_male_03'>
-        <pose>-1.99988 -7e-05 0.010905 0.012545 0.002328 0.569443</pose>
-        <link name='link'>
-          <pose>-1.99988 -7e-05 0.010905 0.012545 0.002328 0.569443</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='closet'>
-        <pose>-1 -4 0 0 -0 0</pose>
-        <link name='link'>
-          <pose>-1 -4 0 0 -0 0</pose>
+          <pose>-12 6.99996 -0.003501 0.011384 0.012594 1.52632</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -2865,82 +2058,10 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='cocacola'>
-        <pose>2.68091 -0.744272 0.300008 0.0001 -0.000176 2e-05</pose>
-        <link name='link'>
-          <pose>2.68091 -0.744272 0.300008 0.0001 -0.000176 2e-05</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='cocacola_0'>
-        <pose>1 -0.177691 0.299999 1.1e-05 -0.000228 1e-06</pose>
-        <link name='link'>
-          <pose>1 -0.177691 0.299999 1.1e-05 -0.000228 1e-06</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='cocacola_1'>
-        <pose>-9.25325 -3 0.660004 0.00011 -4.7e-05 -3e-06</pose>
-        <link name='link'>
-          <pose>-9.25325 -3 0.660004 0.00011 -4.7e-05 -3e-06</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='cocacola_3'>
-        <pose>-4.52272 9.0837 0.610008 4.5e-05 -0.000192 3e-06</pose>
-        <link name='link'>
-          <pose>-4.52272 9.0837 0.610008 4.5e-05 -0.000192 3e-06</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-     <!-- <model name='coke_can_slim'>
-        <pose>-10.7227 7.21101 0.735 2.2e-05 8e-06 -0.47587</pose>
-        <link name='link'>
-          <pose>-10.7227 7.21101 0.735 2.2e-05 8e-06 -0.47587</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model> -->
-      <model name='dining_chair_0'>
-        <pose>-8.42873 8 0 0 -0 0</pose>
-        <link name='link'>
-          <pose>-8.42873 8 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='dining_chair_1'>
-        <pose>-8 8 0 0 -0 0</pose>
-        <link name='link'>
-          <pose>-8 8 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='dining_chair_2'>
-        <pose>-7.33512 8.55574 0 0 -0 1.57761</pose>
-        <link name='link'>
-          <pose>-7.33512 8.55574 0 0 -0 1.57761</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='first_2015_trash_can'>
-        <pose>4.78048 -3.11615 -4e-06 5e-06 1.7e-05 0.029554</pose>
+        <pose>4.78139 -3.11963 -2e-06 0 8e-06 0.042241</pose>
         <link name='link'>
-          <pose>4.78048 -3.11615 -4e-06 5e-06 1.7e-05 0.029554</pose>
+          <pose>4.78139 -3.11963 -2e-06 0 8e-06 0.042241</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -2950,15 +2071,6 @@
         <pose>-7.13047 0 0 0 0 -1.51918</pose>
         <link name='link'>
           <pose>-7.13047 0 0 0 0 -1.51918</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='floor_lamp_0'>
-        <pose>-6 9 0 0 -0 0</pose>
-        <link name='link'>
-          <pose>-6 9 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -2991,15 +2103,6 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='reviews_table'>
-        <pose>2.17062 -1 0 0 -0 0</pose>
-        <link name='link'>
-          <pose>2.17062 -1 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='reviews_table_0'>
         <pose>1.74358 -0.310471 0 0 -0 1.6307</pose>
         <link name='link'>
@@ -3027,15 +2130,6 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='sideboard_1'>
-        <pose>-5 9 0 0 -0 0</pose>
-        <link name='link'>
-          <pose>-5 9 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='table_1m'>
         <pose>-8 8.5652 0 0 -0 0</pose>
         <link name='link'>
@@ -3045,37 +2139,19 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='table_1m_0'>
-        <pose>-2 8 0 0 -0 0</pose>
-        <link name='link'>
-          <pose>-2 8 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='tv'>
-        <pose>2.49685 -0.550908 0.303399 0 -0 1.47933</pose>
-        <link name='link'>
-          <pose>2.49685 -0.550908 0.303399 0 -0 1.47933</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='unit_box_2'>
-        <pose>-8.76269 5.37704 1.17569 0.011002 -3e-06 5e-06</pose>
+        <pose>-8.7627 5.37861 1.17569 0.011323 -1.6e-05 4e-06</pose>
         <link name='link'>
-          <pose>-8.76269 5.37704 1.17569 0.011002 -3e-06 5e-06</pose>
+          <pose>-8.7627 5.37861 1.17569 0.011323 -1.6e-05 4e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_cylinder_1'>
-        <pose>-10.0597 4.10819 1.0 1.57076 -0.005314 1.57842</pose>
+        <pose>-10.0597 4.10819 1 1.57076 -0.005314 1.57842</pose>
         <link name='link'>
-          <pose>-10.0597 4.10819 1.0 1.57076 -0.005314 1.57842</pose>
+          <pose>-10.0597 4.10819 1 1.57076 -0.005314 1.57842</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -3111,7 +2187,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>0.743851 -10.4669 21.7962 1.00527e-16 0.985795 1.9927</pose>
+        <pose>-2.00858 -7.14247 18.5201 0 1.0858 1.7007</pose>
         <view_controller>orbit</view_controller>
       </camera>
     </gui>
@@ -3161,234 +2237,6 @@
         <gravity>1</gravity>
       </link>
       <pose>-2 9 0 0 -0 0</pose>
-    </model>
-    <model name='table_1m_0'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='surface'>
-          <pose>0 0 1.01 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>1 1.01 0.03</size>
-            </box>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual1'>
-          <pose>0 0 1.01 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>1 1.01 0.03</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Wood</name>
-            </script>
-          </material>
-        </visual>
-        <collision name='front_left_leg'>
-          <pose>0.48 0.38 0.5005 0 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.02</radius>
-              <length>1.01</length>
-            </cylinder>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='front_left_leg'>
-          <pose>0.48 0.38 0.5005 0 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.02</radius>
-              <length>1.01</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
-            </script>
-          </material>
-        </visual>
-        <collision name='front_right_leg'>
-          <pose>0.48 -0.38 0.5005 0 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.02</radius>
-              <length>1.01</length>
-            </cylinder>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='front_right_leg'>
-          <pose>0.48 -0.38 0.5005 0 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.02</radius>
-              <length>1.01</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
-            </script>
-          </material>
-        </visual>
-        <collision name='back_right_leg'>
-          <pose>-0.48 -0.38 0.5005 0 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.02</radius>
-              <length>1.01</length>
-            </cylinder>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='back_right_leg'>
-          <pose>-0.48 -0.38 0.5005 0 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.02</radius>
-              <length>1.01</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
-            </script>
-          </material>
-        </visual>
-        <collision name='back_left_leg'>
-          <pose>-0.48 0.38 0.5005 0 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.02</radius>
-              <length>1.01</length>
-            </cylinder>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='back_left_leg'>
-          <pose>-0.48 0.38 0.5005 0 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.02</radius>
-              <length>1.01</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-2 8 0 0 -0 0</pose>
-    </model>
-    <model name='arm_chair'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='colision1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://arm_chair/meshes/arm_chair.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual1'>
-          <pose>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://arm_chair/meshes/arm_chair.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/PaintedWall</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-1 8.58646 0 0 -0 0</pose>
     </model>
     <model name='unit_box_2'>
       <pose>-8.62478 5.39951 1.175 0 -0 0</pose>
@@ -3445,7 +2293,7 @@
       <static>0</static>
     </model>
     <model name='unit_cylinder_1'>
-      <pose>-10.0597 4.10819 1.0 1.57076 -0.005314 1.57842</pose>
+      <pose>-10.0597 4.10819 1 1.57076 -0.005314 1.57842</pose>
       <link name='link'>
         <inertial>
           <mass>1</mass>
@@ -3500,62 +2348,5 @@
       </link>
       <static>0</static>
     </model>
-  <!--  <model name='coke_can_slim'>
-      <static>0</static>
-      <link name='link'>
-        <inertial>
-          <mass>0.25</mass>
-          <inertia>
-            <ixx>7.1507e-05</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>7.1507e-05</iyy>
-            <iyz>0</iyz>
-            <izz>1.4412e-05</izz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <cylinder>
-              <radius>0.029</radius>
-              <length>0.15</length>
-            </cylinder>
-          </geometry>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <cylinder>
-              <radius>0.029</radius>
-              <length>0.15</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://coke_can_slim/material/scripts</uri>
-              <uri>model://coke_can_slim/material/textures</uri>
-              <name>Custom/coke_can_slim</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>-10 7 0 0 -0 0</pose>
-    </model>-->
   </world>
 </sdf>

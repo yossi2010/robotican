@@ -141,7 +141,7 @@ target_link_libraries(simple_moveit_full_api ${catkin_LIBRARIES})
 target_link_libraries(pan_tilt_api ${catkin_LIBRARIES})
 target_link_libraries(button_node ${catkin_LIBRARIES})
 target_link_libraries(demo_pick_node ${catkin_LIBRARIES})
-add_dependencies( demo_pick_node robotican_common_generate_messages_cpp )
+#add_dependencies( demo_pick_node robotican_common_generate_messages_cpp )
 ## Declare a C++ library
 # add_library(robotican_demos
 #   src/${PROJECT_NAME}/robotican_demos.cpp

@@ -1,4 +1,0 @@
-string color
----
-geometry_msgs/PoseStamped pose
-bool valid
