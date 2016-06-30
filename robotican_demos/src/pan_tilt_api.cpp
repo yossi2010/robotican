@@ -13,8 +13,8 @@ int main(int argc, char **argv) {
     ros::Publisher pan_tilt_pub = nodeHandle.advertise<std_msgs::Float64MultiArray>("pan_tilt_controller/command", 10);
 
     std_msgs::Float64MultiArray multiArray;
-    multiArray.data.push_back(0.0); // pan
-    multiArray.data.push_back(0.0); // tilt
+    multiArray.data.push_back(0.2); // pan
+    multiArray.data.push_back(0.3); // tilt (positive is down)
 
     while(ros::ok()) {
         pan_tilt_pub.publish(multiArray);

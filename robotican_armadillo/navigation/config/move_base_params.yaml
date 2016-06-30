@@ -71,7 +71,7 @@ DWAPlannerROS:
   #~ sim_granularity: 1.7
 
   # Goal Tolerance Parameters
-  yaw_goal_tolerance: 0.02 
+  yaw_goal_tolerance: 0.1 
   xy_goal_tolerance: 0.05
   latch_xy_goal_tolerance: false
 
