@@ -13,7 +13,7 @@
 	       <arg name="rqt" value="true"/> 
     </include>
     
-    <!-- <node name="find_object_node" pkg="robotican_common" type="find_objects_node" output="screen"/> -->
+    <node name="find_object_node" pkg="robotican_common" type="find_objects_node" output="screen"/> 
   
     
     
