@@ -8,6 +8,10 @@
   <arg name="urf" default='false'/>
   <arg name="imu" default='false'/>
   <arg name="kinect2" default='false'/>
+  <arg name="kinect2_hz" default="10.0"/>
+  <arg name="kinect2_hd" default="false"/>
+  <arg name="kinect2_qhd" default="true"/>
+  <arg name="kinect2_sd" default="false"/>
   <arg name="f200" default='false'/>
   <arg name="joystick" default='false'/>
   <arg name="joystick_dev" default='/dev/input/js0'/>
@@ -70,6 +74,10 @@
 	   imu:=$(arg imu)
 	   gps:=$(arg gps)
 	   kinect2:=$(arg kinect2)
+	   kinect2_hz:=$(arg kinect2_hz)
+	   kinect2_hd:=$(arg kinect2_hd)
+	   kinect2_qhd:=$(arg kinect2_qhd)
+	   kinect2_sd:=$(arg kinect2_sd)
 	   f200:=$(arg f200)
 	   " /> 
 	  
