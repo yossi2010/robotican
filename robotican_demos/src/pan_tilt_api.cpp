@@ -24,7 +24,6 @@ int main(int argc, char **argv) {
         loopRate.sleep();
     }
 
-
     return 0;
 
 
