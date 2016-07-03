@@ -48,6 +48,7 @@ int inv_H=1;
 
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
+
     int image_w=0,image_h=0;
   //  std::cout << input->width <<"   "<< input->height  <<std::endl;
 if (input->width==960*540) {
@@ -70,10 +71,8 @@ else {
     pcl::fromROSMsg (*input, cloud);
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudp (new pcl::PointCloud<pcl::PointXYZRGBA> (cloud));
 
-    Mat result;
 
-    result = Mat(image_h, image_w, CV_8UC3);
-
+    Mat result = Mat(image_h, image_w, CV_8UC3);
     if (!cloudp->empty()) {
         for (int h=0; h<image_h; h++) {
             for (int w=0; w<image_w; w++) {
