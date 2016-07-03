@@ -16,14 +16,15 @@
 using namespace cv;
 
 bool debug_vision=true;
-void imageCb(const sensor_msgs::ImageConstPtr& msg);
+
 bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud,Point3d *obj);
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input);
 
 tf::StampedTransform obj_transform;
+double object_extra_depth=0;
+std::string object_frame;
+std::string depth_topic;
 
-
-int image_w=0,image_h=0;
 
 bool have_object=false;
 ros::Publisher object_pub;
@@ -32,51 +33,46 @@ image_transport::Publisher result_image_pub;
 image_transport::Publisher object_image_pub;
 image_transport::Publisher bw_image_pub;
 
-image_transport::Subscriber image_sub;
-;
+
 //red
 int minH=3,maxH=160;
 int minS=70,maxS=255;
 int minV=70,maxV=255;
 
-int minA=1000,maxA=50000;
+int minA=200,maxA=50000;
 int gaussian_ksize=0;
 int gaussian_sigma=0;
 int morph_size=0;
 int inv_H=1;
 
-void imageCb(const sensor_msgs::ImageConstPtr& msg)
-{
-    cv_bridge::CvImagePtr cv_ptr;
-    try
-    {
-        cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
-    }
-    catch (cv_bridge::Exception& e)
-    {
-        ROS_ERROR("cv_bridge exception: %s", e.what());
-        return;
-    }
-
-    Mat bgr=cv_ptr->image;
-
-    if (image_w==0) image_w=bgr.cols;
-    if (image_h==0) image_h=bgr.rows;
-
-}
 
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
-    if ((image_w==0)||(image_h==0)) return;
 
+    int image_w=0,image_h=0;
+  //  std::cout << input->width <<"   "<< input->height  <<std::endl;
+if (input->width==960*540) {
+    image_w=960;
+    image_h=540;
+}
+else if (input->width==1920*1080) {
+    image_w=1920;
+    image_h=1080;
+}
+else if (input->width==512*424) {
+    image_w=512;
+    image_h=424;
+}
+else {
+    ROS_ERROR("Unknown image resolutuin");
+    return;
+}
     pcl::PointCloud<pcl::PointXYZRGBA> cloud;
     pcl::fromROSMsg (*input, cloud);
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudp (new pcl::PointCloud<pcl::PointXYZRGBA> (cloud));
 
-    Mat result;
 
-    result = Mat(image_h, image_w, CV_8UC3);
-
+    Mat result = Mat(image_h, image_w, CV_8UC3);
     if (!cloudp->empty()) {
         for (int h=0; h<image_h; h++) {
             for (int w=0; w<image_w; w++) {
@@ -112,13 +108,11 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
     if (have_object) {
 
-        // obj_tf_ok=have_object;
-
-        obj_transform.setOrigin( tf::Vector3(obj.z,-obj.x,-obj.y) );
+        obj_transform.setOrigin( tf::Vector3(obj.x,obj.y,obj.z+object_extra_depth) );
         obj_transform.stamp_=ros::Time::now();
 
         geometry_msgs::PoseStamped target_pose2;
-        target_pose2.header.frame_id="kinect2_depth_frame";
+        target_pose2.header.frame_id=input->header.frame_id;
         target_pose2.header.stamp=ros::Time::now();
         target_pose2.pose.position.x =obj_transform.getOrigin().x();
         target_pose2.pose.position.y = obj_transform.getOrigin().y();
@@ -141,19 +135,19 @@ bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudp,Point
     cvtColor(input,hsv,CV_BGR2HSV);
 
 
-     if (inv_H) {
-    Mat lower_hue_range;
-    Mat upper_hue_range;
-    inRange(hsv, cv::Scalar(0, minS, minV), cv::Scalar(minH, maxS, maxV), lower_hue_range);
-    inRange(hsv, cv::Scalar(maxH, minS, minV), cv::Scalar(179, maxS, maxV), upper_hue_range);
-    // Combine the above two images
+    if (inv_H) {
+        Mat lower_hue_range;
+        Mat upper_hue_range;
+        inRange(hsv, cv::Scalar(0, minS, minV), cv::Scalar(minH, maxS, maxV), lower_hue_range);
+        inRange(hsv, cv::Scalar(maxH, minS, minV), cv::Scalar(179, maxS, maxV), upper_hue_range);
+        // Combine the above two images
 
-    addWeighted(lower_hue_range, 1.0, upper_hue_range, 1.0, 0.0, mask);
-}
-     else{
-    //if not red use:
-    inRange(hsv,Scalar(minH,minS,minV),Scalar(maxH,maxS,maxV),mask);
-}
+        addWeighted(lower_hue_range, 1.0, upper_hue_range, 1.0, 0.0, mask);
+    }
+    else{
+        //if not red use:
+        inRange(hsv,Scalar(minH,minS,minV),Scalar(maxH,maxS,maxV),mask);
+    }
     hsv.copyTo(filtered,mask);
     cvtColor(filtered,filtered,CV_HSV2BGR);
 
@@ -232,22 +226,23 @@ void on_trackbar( int, void* ){}
 int main(int argc, char **argv) {
 
     ros::init(argc, argv, "find_objects_node");
-    // ros::AsyncSpinner spinner(2);
-    // spinner.start();
-    ros::NodeHandle n;
+    ros::NodeHandle n("~");
     ROS_INFO("Hello");
-    // n.getParam("distance_from_object", distance_from_object);
+
+
+    n.param<std::string>("object_frame", object_frame, "object_frame");
+    n.param<double>("object_extra_depth", object_extra_depth, 0.03);
+    n.param<std::string>("depth_topic", depth_topic, "/kinect2/qhd/points");
 
     image_transport::ImageTransport it_(n);
 
-    image_sub = it_.subscribe("kinect2/hd/image_color", 1,imageCb);
-    result_image_pub = it_.advertise("find_objects/result", 1);
-    object_image_pub = it_.advertise("find_objects/hsv_filterd", 1);
-    bw_image_pub = it_.advertise("find_objects/bw", 1);
+    result_image_pub = it_.advertise("result", 1);
+    object_image_pub = it_.advertise("hsv_filterd", 1);
+    bw_image_pub = it_.advertise("bw", 1);
 
-    ros::Subscriber pcl_sub = n.subscribe("kinect2/hd/points", 1, cloud_cb);
+    ros::Subscriber pcl_sub = n.subscribe(depth_topic, 1, cloud_cb);
 
-     object_pub=n.advertise<geometry_msgs::PoseStamped>("object", 2, true);
+    object_pub=n.advertise<geometry_msgs::PoseStamped>("object", 2, true);
 
     if (debug_vision) {
         namedWindow("Trackbars",CV_WINDOW_AUTOSIZE);              // trackbars window
@@ -273,14 +268,13 @@ int main(int argc, char **argv) {
     tf::Quaternion q;
     q.setRPY(0, 0, 0);
     obj_transform.setRotation(q);
-    obj_transform.frame_id_="kinect2_depth_frame";
-    obj_transform.child_frame_id_="object";
+    obj_transform.frame_id_="kinect2_depth_optical_frame";
+    obj_transform.child_frame_id_=object_frame;
 
     while (ros::ok())
     {
 
         if (have_object) {
-            obj_transform.stamp_=ros::Time::now();
             br.sendTransform(obj_transform);
         }
 

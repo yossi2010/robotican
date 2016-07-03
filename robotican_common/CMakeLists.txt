@@ -137,18 +137,21 @@ include_directories(
 
 ## Declare a C++ executable
  add_executable(joy_teleop_node src/joy_teleop_node.cpp)
+ target_link_libraries(joy_teleop_node ${catkin_LIBRARIES})
 
  add_executable(find_objects_node src/find_objects.cpp)
  target_link_libraries(find_objects_node ${catkin_LIBRARIES})
+
+
+ add_executable(pan_tilt_object_tracking_node src/pan_tilt_object_tracking.cpp)
+ target_link_libraries(pan_tilt_object_tracking_node ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(robotican_common_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
- target_link_libraries(joy_teleop_node
-   ${catkin_LIBRARIES}
- )
+
 
 #############
 ## Install ##
