@@ -30,6 +30,13 @@
     <param name="~sys_cmd" value="rosservice call gazebo/delete_model '{model_name: unit_box_2}'"/>
   </node>
   
+    <node name="find_object_node" pkg="robotican_common" type="find_objects_node" output="screen">
+    <param name="~object_extra_depth" value="0.03"/>
+    <param name="~object_frame" value="object_frame"/>
+    <param name="~depth_topic" value="/kinect2/qhd/points"/>
+  </node>
+  
+  
   <node pkg="tf" type="static_transform_publisher" name="left_finger_tip_broadcaster" args="0.0 0.0168 0.093 0 0 0 left_finger_link left_finger_tip 50" />
   
   <node name="object_view" pkg="rqt_image_view" type="rqt_image_view" >

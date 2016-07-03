@@ -5,8 +5,8 @@
 #include <cmath>
 #include <ros/ros.h>
 #include <tf/transform_listener.h>
-#include <gazebo_msgs/DeleteModel.h>
-#include <tf/transform_broadcaster.h>
+//#include <gazebo_msgs/DeleteModel.h>
+//#include <tf/transform_broadcaster.h>
 #include <visualization_msgs/Marker.h>
 
 int main(int argc, char **argv) {
