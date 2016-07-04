@@ -23,7 +23,7 @@ mobile_base_controller:
   enable_odom_tf: true
 
   # Base frame_id
-  base_frame_id: base_link
+  base_frame_id: base_footprint
 
   # Velocity and acceleration limits
   # Whenever a min_* is unspecified, default to -max_*
@@ -47,9 +47,9 @@ robot_state_controller:
     type: joint_state_controller/JointStateController
     publish_rate: 50  
 
-elevator_controller:
+torso_controller:
   type: position_controllers/JointPositionController
-  joint: base_elevator_joint
+  joint: torso_joint
   
   
 torso_trajectory_controller:

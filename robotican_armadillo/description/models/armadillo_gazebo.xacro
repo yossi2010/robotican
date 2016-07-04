@@ -125,14 +125,14 @@
   <!-- kinect 2 -->
   
   <xacro:if value="$(arg kinect2)">
-  
-     <xacro:property name="kinect2_hz" value="$(arg kinect2_hz)"/>
+    
+    <xacro:property name="kinect2_hz" value="$(arg kinect2_hz)"/>
     <xacro:property name="kinect2_hd" value="$(arg kinect2_hd)"/>
-     <xacro:property name="kinect2_qhd" value="$(arg kinect2_qhd)"/>
-      <xacro:property name="kinect2_sd" value="$(arg kinect2_sd)"/>
-        -->     
-	  <xacro:include filename="$(find robotican_common)/gazebo/kinect2.xacro" /> 
-
+    <xacro:property name="kinect2_qhd" value="$(arg kinect2_qhd)"/>
+    <xacro:property name="kinect2_sd" value="$(arg kinect2_sd)"/>
+    -->     
+    <xacro:include filename="$(find robotican_common)/gazebo/kinect2.xacro" /> 
+    
   </xacro:if>
   
   
@@ -630,15 +630,16 @@
     <minDepth>0.001</minDepth>
     <maxVel>1.0</maxVel>
   </gazebo>
-  
+  <!-- 
   <gazebo reference="base_link">
-    <mu1>1.0</mu1>
-    <mu2>1.0</mu2>
-    <kp>1000000.0</kp> 
-    <kd>100.0</kd>
-    <minDepth>0.001</minDepth>
-    <maxVel>1.0</maxVel>
+  <mu1>1.0</mu1>
+  <mu2>1.0</mu2>
+  <kp>1000000.0</kp> 
+  <kd>100.0</kd>
+  <minDepth>0.000</minDepth>
+  <maxVel>1.0</maxVel>
   </gazebo>
+  -->
   
   <gazebo reference="base_link">
     <material>Gazebo/Grey</material>
@@ -659,8 +660,49 @@
     <material>Gazebo/Black</material>
   </gazebo>
   <gazebo reference="f200_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="front_cam_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="rear_cam_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  
+  <gazebo reference="arm_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="base_arm_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="rotation1_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+    <gazebo reference="rotation2_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="shoulder1_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="shoulder2_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="shoulder3_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="wrist_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="left_finger_link">
     <material>Gazebo/Grey</material>
   </gazebo>
+  <gazebo reference="base_arm_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  
+  
+  
+  
   
 </robot>
 

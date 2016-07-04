@@ -50,7 +50,7 @@ ros::Publisher goal_pub;
 ros::Publisher pan_tilt_pub;
 
 double base_distance_from_object=0.55;
-double wrist_distance_from_object=0.05;
+double wrist_distance_from_object=0.06;
 geometry_msgs::PoseStamped moveit_goal;
 
 
@@ -325,7 +325,7 @@ int main(int argc, char **argv) {
 tf::TransformBroadcaster br;
     ROS_INFO("Hello");
   n.param<double>("base_distance_from_object", base_distance_from_object, 0.55);
-   n.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.05);
+   n.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.06);
     n.param<std::string>("object_frame", object_frame, "object_frame");
     n.param<std::string>("depth_camera_frame", depth_camera_frame, "kinect2_depth_optical_frame");
 

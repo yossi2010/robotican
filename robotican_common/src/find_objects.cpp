@@ -37,7 +37,7 @@ image_transport::Publisher bw_image_pub;
 //red
 int minH=3,maxH=160;
 int minS=70,maxS=255;
-int minV=70,maxV=255;
+int minV=10,maxV=255;
 
 int minA=200,maxA=50000;
 int gaussian_ksize=0;
