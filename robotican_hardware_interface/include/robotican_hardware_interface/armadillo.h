@@ -23,25 +23,21 @@ namespace robotican_hardware {
     private:
         bool _first;
         dynamixel_pro_controller::DynamixelProController _dynamixelProController;
-        std::pair<std::string, JointInfo_t> _elevatorInfo;
         std::pair<std::string, JointInfo_t> _panInfo;
         std::pair<std::string, JointInfo_t> _tiltInfo;
         std::pair<std::string, JointInfo_t> _leftFingerInfo;
         std::pair<std::string, JointInfo_t> _rightFingerInfo;
 
-        ros::Publisher _elevetorCmd;
         ros::Publisher _panCmd;
         ros::Publisher _tiltCmd;
         ros::Publisher _leftFingerCmd;
         ros::Publisher _rightFingerCmd;
 
-        ros::Subscriber _elevetorState;
         ros::Subscriber _panState;
         ros::Subscriber _tiltState;
         ros::Subscriber _leftFingerState;
         ros::Subscriber _rightFingerState;
 
-        void elevatorCallback(const std_msgs::Float32::ConstPtr &msg);
         void panCallback(const std_msgs::Float32::ConstPtr &msg);
         void tiltCallback(const std_msgs::Float32::ConstPtr &msg);
         void leftFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg);

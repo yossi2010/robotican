@@ -59,14 +59,14 @@ right_motor_controller:
   type: velocity_controllers/JointVelocityController
   joint: right_wheel_joint
   
-elevator_trajectory_controller:
+torso_trajectory_controller:
   type: position_controllers/JointTrajectoryController
   joints:
-     - base_elevator_joint
+     - torso_joint
   constraints:
       goal_time: 4.0
       stopped_velocity_tolerance: 0.05
-      base_elevator_joint: {trajectory: 0.1, goal: 0.1}
+      torso_joint: {trajectory: 0.1, goal: 0.1}
   stop_trajectory_duration: 5.0
   state_publish_rate:  50
   action_monitor_rate: 50

@@ -8,9 +8,9 @@ increament_tilt: 0.1
 zero_button: 3
 joy_deadman_button: 7
 
-elevator_increment: 0.1
-elevator_up_button: 4
-elevator_down_button: 0 
+torso_increment: 0.1
+torso_up_button: 4
+torso_down_button: 0 
 
 drive_joy_teleop_linear_axis: 3
 drive_joy_teleop_angular_axis: 2

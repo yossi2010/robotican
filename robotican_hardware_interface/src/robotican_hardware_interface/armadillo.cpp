@@ -59,9 +59,7 @@ namespace robotican_hardware {
 
     }
 
-    void ArmadilloRobot::elevatorCallback(const std_msgs::Float32::ConstPtr &msg) {
-        _elevatorInfo.second.position = msg->data;
-    }
+
 
     void ArmadilloRobot::panCallback(const std_msgs::Float32::ConstPtr &msg) {
         _panInfo.second.position = msg->data;
