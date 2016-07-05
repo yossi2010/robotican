@@ -146,6 +146,7 @@ target_link_libraries(find_objects_node ${catkin_LIBRARIES})
 add_executable(reach_event src/reach_event_node.cpp)
 target_link_libraries(reach_event ${catkin_LIBRARIES})
 
+set(_output_cpp ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_INCLUDE_DESTINATION}/${_cfgonly}Config.h)
 
 add_executable(pan_tilt_object_tracking_node src/pan_tilt_object_tracking.cpp)
 target_link_libraries(pan_tilt_object_tracking_node ${catkin_LIBRARIES})
