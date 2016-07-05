@@ -137,7 +137,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME} robotican_hardware_interface_sim
   CATKIN_DEPENDS cmake_modules realtime_tools control_msgs roscpp controller_manager pluginlib transmission_interface urdf dynamic_reconfigure
-  DEPENDS gazebo system_lib gazebo_ros_control serial dynamixel_motor message_runtime
+  DEPENDS gazebo system_lib gazebo_ros_control serial dynamixel_motor message_runtime dynamic_reconfigure
 )
 
 
