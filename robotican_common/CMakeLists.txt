@@ -140,6 +140,7 @@ add_executable(joy_teleop_node src/joy_teleop_node.cpp)
 target_link_libraries(joy_teleop_node ${catkin_LIBRARIES})
 add_executable(find_objects_node src/find_objects.cpp)
 add_dependencies(find_objects_node ${PROJECT_NAME}_gencfg)
+add_dependencies(find_objects_node ${PROJECT_NAME}_gencpp)
 target_link_libraries(find_objects_node ${catkin_LIBRARIES})
 
 add_executable(reach_event src/reach_event_node.cpp)
