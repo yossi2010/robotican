@@ -21,7 +21,7 @@
   
    <node name="pick_node" pkg="robotican_demos" type="demo_pick_node" output="screen"/> 
   
-  <node name="button_node" pkg="robotican_demos" type="button_node" output="screen">
+  <node name="button_reach_event" pkg="robotican_common" type="reach_event" output="screen">
     <param name="~moving_frame" value="left_finger_tip"/>
     <param name="~goal_x" value="-10.05"/>
     <param name="~goal_y" value="4.108188"/>

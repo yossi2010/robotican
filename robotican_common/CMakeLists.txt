@@ -142,6 +142,9 @@ include_directories(
  add_executable(find_objects_node src/find_objects.cpp)
  target_link_libraries(find_objects_node ${catkin_LIBRARIES})
 
+ add_executable(reach_event src/reach_event_node.cpp)
+ target_link_libraries(reach_event ${catkin_LIBRARIES})
+
 
  add_executable(pan_tilt_object_tracking_node src/pan_tilt_object_tracking.cpp)
  target_link_libraries(pan_tilt_object_tracking_node ${catkin_LIBRARIES})
