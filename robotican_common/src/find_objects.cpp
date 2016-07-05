@@ -11,62 +11,65 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
+#include <robotican_common/FindObjectDynParamConfig.h>
+#include <dynamic_reconfigure/server.h>
 
 
 using namespace cv;
 
-bool debug_vision=true;
+bool debug_vision=false;
 
 bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud,Point3d *obj);
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input);
+void dynamicParamCallback(robotican_common::FindObjectDynParamConfig &config, uint32_t level);
 
 tf::StampedTransform obj_transform;
 double object_extra_depth=0;
 std::string object_frame;
+
+
 std::string depth_topic;
-
-
 bool have_object=false;
-ros::Publisher object_pub;
 
+ros::Publisher object_pub;
 image_transport::Publisher result_image_pub;
 image_transport::Publisher object_image_pub;
+
+
 image_transport::Publisher bw_image_pub;
-
-
 //red
 int minH=3,maxH=160;
 int minS=70,maxS=255;
-int minV=10,maxV=255;
 
+int minV=10,maxV=255;
 int minA=200,maxA=50000;
 int gaussian_ksize=0;
 int gaussian_sigma=0;
 int morph_size=0;
-int inv_H=1;
 
+int inv_H=1;
 
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
 
     int image_w=0,image_h=0;
-  //  std::cout << input->width <<"   "<< input->height  <<std::endl;
-if (input->width==960*540) {
-    image_w=960;
-    image_h=540;
-}
-else if (input->width==1920*1080) {
-    image_w=1920;
-    image_h=1080;
-}
-else if (input->width==512*424) {
-    image_w=512;
-    image_h=424;
-}
-else {
-    ROS_ERROR("Unknown image resolutuin");
-    return;
-}
+    //  std::cout << input->width <<"   "<< input->height  <<std::endl;
+    if (input->width==960*540) {
+        image_w=960;
+        image_h=540;
+    }
+    else if (input->width==1920*1080) {
+        image_w=1920;
+        image_h=1080;
+    }
+    else if (input->width==512*424) {
+        image_w=512;
+        image_h=424;
+    }
+    else {
+        ROS_ERROR("Unknown image resolutuin");
+        return;
+    }
     pcl::PointCloud<pcl::PointXYZRGBA> cloud;
     pcl::fromROSMsg (*input, cloud);
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudp (new pcl::PointCloud<pcl::PointXYZRGBA> (cloud));
@@ -218,6 +221,28 @@ bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudp,Point
     return ok;
 }
 
+void dynamicParamCallback(robotican_common::FindObjectDynParamConfig &config, uint32_t level) {
+    minH = config.H_min;
+    maxH = config.H_max;
+
+    minS = config.S_min;
+    maxS = config.S_max;
+
+    minV = config.V_min;
+    maxV = config.V_max;
+
+    minA = config.A_min;
+    maxA = config.A_max;
+
+    gaussian_ksize = config.gaussian_ksize;
+    gaussian_sigma = config.gaussian_sigma;
+
+    morph_size = config.morph_size;
+
+    inv_H = config.invert_Hue;
+}
+
+
 void on_trackbar( int, void* ){}
 
 
@@ -233,6 +258,12 @@ int main(int argc, char **argv) {
     n.param<std::string>("object_frame", object_frame, "object_frame");
     n.param<double>("object_extra_depth", object_extra_depth, 0.03);
     n.param<std::string>("depth_topic", depth_topic, "/kinect2/qhd/points");
+
+    dynamic_reconfigure::Server<robotican_common::FindObjectDynParamConfig> dynamicServer;
+    dynamic_reconfigure::Server<robotican_common::FindObjectDynParamConfig>::CallbackType callbackFunction;
+
+    callbackFunction = boost::bind(&dynamicParamCallback, _1, _2);
+    dynamicServer.setCallback(callbackFunction);
 
     image_transport::ImageTransport it_(n);
 

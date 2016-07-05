@@ -5,17 +5,17 @@ project(robotican_common)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  std_msgs
-  sensor_msgs
-  geometry_msgs
-image_transport
-  cv_bridge
-   pcl_conversions
-     pcl_ros
-  tf
-
-)
+        roscpp
+        std_msgs
+        sensor_msgs
+        geometry_msgs
+        image_transport
+        cv_bridge
+        pcl_conversions
+        pcl_ros
+        tf
+        dynamic_reconfigure
+        )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -58,11 +58,11 @@ image_transport
 # )
 
 ## Generate services in the 'srv' folder
- #add_service_files(
- #  FILES
-  # searchForColor.srv
+#add_service_files(
+#  FILES
+# searchForColor.srv
 #   Service2.srv
- #)
+#)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -72,10 +72,10 @@ image_transport
 # )
 
 ## Generate added messages and services with any dependencies listed here
- #generate_messages(
- #  DEPENDENCIES
+#generate_messages(
+#  DEPENDENCIES
 #   std_msgs
- #  geometry_msgs
+#  geometry_msgs
 # )
 
 ################################################
@@ -93,10 +93,10 @@ image_transport
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
+ generate_dynamic_reconfigure_options(
+   cfg/dyn_find_obj_parm.cfg
 #   cfg/DynReconf2.cfg
-# )
+ )
 
 ###################################
 ## catkin specific configuration ##
@@ -108,10 +108,10 @@ image_transport
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES robotican_common
-  CATKIN_DEPENDS roscpp std_msgs sensor_msgs geometry_msgs #message_generation
-#  DEPENDS system_lib
+        #  INCLUDE_DIRS include
+        #  LIBRARIES robotican_common
+        CATKIN_DEPENDS roscpp std_msgs sensor_msgs geometry_msgs dynamic_reconfigure#message_generation
+        #  DEPENDS system_lib
 )
 
 ###########
@@ -122,7 +122,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
-  ${catkin_INCLUDE_DIRS}
+        ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -136,18 +136,18 @@ include_directories(
 # add_dependencies(robotican_common ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
- add_executable(joy_teleop_node src/joy_teleop_node.cpp)
- target_link_libraries(joy_teleop_node ${catkin_LIBRARIES})
+add_executable(joy_teleop_node src/joy_teleop_node.cpp)
+target_link_libraries(joy_teleop_node ${catkin_LIBRARIES})
+add_executable(find_objects_node src/find_objects.cpp)
+#add_dependencies(find_objects_node ${PROJECT_NAME}_gencfg)
+target_link_libraries(find_objects_node ${catkin_LIBRARIES})
 
- add_executable(find_objects_node src/find_objects.cpp)
- target_link_libraries(find_objects_node ${catkin_LIBRARIES})
-
- add_executable(reach_event src/reach_event_node.cpp)
- target_link_libraries(reach_event ${catkin_LIBRARIES})
+add_executable(reach_event src/reach_event_node.cpp)
+target_link_libraries(reach_event ${catkin_LIBRARIES})
 
 
- add_executable(pan_tilt_object_tracking_node src/pan_tilt_object_tracking.cpp)
- target_link_libraries(pan_tilt_object_tracking_node ${catkin_LIBRARIES})
+add_executable(pan_tilt_object_tracking_node src/pan_tilt_object_tracking.cpp)
+target_link_libraries(pan_tilt_object_tracking_node ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

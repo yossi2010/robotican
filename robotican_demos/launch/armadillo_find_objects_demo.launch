@@ -17,6 +17,7 @@
     <param name="~object_extra_depth" value="0.03"/>
     <param name="~object_frame" value="object_frame"/>
     <param name="~depth_topic" value="/kinect2/qhd/points"/>
+    <rosparam file="$(find robotican_demos)/config/red_object.yaml" command="load"/>
   </node>
   
   
