@@ -15,50 +15,9 @@
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="
       robot_state_controller
       mobile_base_controller
-      pan_tilt_controllera
-	  " />
-	<launch>
-	<rosparam file="$(find robotican_hardware_interface)/config/ric_board_example.yaml" command="load"/>
-	<node name="robotican_hardware_interface" pkg="robotican_hardware_interface" type="robotican_hardware_interface_node" respawn="true" output="screen" respawn_delay="5">
-	</node>
-	
-	<rosparam file="$(find robotican_hardware_interface)/config/controllers.yaml" command="load"/>
-    
-<!--
-    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="
-      robot_state_controller
-      left_motor_controller
-      right_motor_controller
-	  " />
--->
-    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="
-      robot_state_controller
-      mobile_base_controller
-      pan_tilt_controllera
+      pan_tilt_controller
 	  " />
 	
-<!--
-	<include file="$(find robotican_hardware_interface)/launch/usb_cam.launch">
-		<arg name="input_dev" value="/dev/video1" />
-		<arg name="camera_frame_id" value="rear_cam_link" />
-		<arg name="pixel_format" value="yuyv" /> 
-		<arg name="image_width" value="640" />
-		<arg name="image_height" value="480" />
-		<arg name="node_name" value="rear_cam" />
-	</include>
-	
-	<include file="$(find robotican_hardware_interface)/launch/usb_cam.launch">
-		<arg name="input_dev" value="/dev/video0" />
-		<arg name="camera_frame_id" value="front_cam_link" />
-		<arg name="pixel_format" value="yuyv" /> 
-		<arg name="image_width" value="640" />
-		<arg name="image_height" value="480" />
-		<arg name="node_name" value="front_cam" />
-	</include>
--->
-	
-</launch>
-
 <!--
 	<include file="$(find robotican_hardware_interface)/launch/usb_cam.launch">
 		<arg name="input_dev" value="/dev/video1" />
