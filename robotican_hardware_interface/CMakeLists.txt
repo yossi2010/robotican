@@ -119,9 +119,9 @@ generate_messages(
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
  generate_dynamic_reconfigure_options(
-         cfg/dyn_params.cfg #MOTOR
-         cfg/dyn_params_servo.cfg
-         cfg/dyn_param_potentiometer.cfg
+         cfg/RiCBoard.cfg #MOTOR
+         cfg/RiCBoardServo.cfg
+         cfg/RiCBoardPotentiometer.cfg
  )
 
 ###################################
