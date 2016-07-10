@@ -27,7 +27,7 @@
 #include <robotican_hardware_interface/RiCBoardManager.h>
 #include <robotican_hardware_interface/RiCBoardConfig.h>
 #include <robotican_hardware_interface/RiCBoardServoConfig.h>
-#include <robotican_hardware_interface/RiCBoardPotentiometerConfig.h>
+
 
 
 #define MAX_BUFF_SIZE 255
@@ -37,26 +37,6 @@
 namespace robotican_hardware {
     class CloseLoopMotor;
     class CloseLoopMotorWithPotentiometer;
-
-    class CloseMotorParamHandler {
-    private:
-        ros::NodeHandle _nodeHandle;
-        std::map<std::string, CloseLoopMotor *> _motors;
-        dynamic_reconfigure::Server <robotican_hardware_interface::RiCBoardConfig> _server;
-        dynamic_reconfigure::Server<robotican_hardware_interface::RiCBoardConfig>::CallbackType _callbackType;
-
-        void dynamicCallback(robotican_hardware_interface::RiCBoardConfig &config, uint32_t level);
-
-        CloseLoopMotor *checkIfJointValid(std::string jointName);
-
-    public:
-        CloseMotorParamHandler();
-
-        void add(std::string jointName, CloseLoopMotor *closeLoopMotor);
-
-        void remove(std::string jointName);
-
-    };
 
     class ServoParamHandler {
     private:
@@ -78,32 +58,12 @@ namespace robotican_hardware {
 
     };
 
-    class MotorWithPotentiometerParamHandler {
-    private:
-        ros::NodeHandle _nodeHandle;
-        std::map<std::string, CloseLoopMotorWithPotentiometer*> _motors;
-        dynamic_reconfigure::Server <robotican_hardware_interface::RiCBoardPotentiometerConfig> _server;
-        dynamic_reconfigure::Server<robotican_hardware_interface::RiCBoardPotentiometerConfig>::CallbackType _callbackType;
 
-        void dynamicCallback(robotican_hardware_interface::RiCBoardPotentiometerConfig &config, uint32_t level);
-
-        CloseLoopMotorWithPotentiometer* checkIfJointValid(std::string jointName);
-
-    public:
-        MotorWithPotentiometerParamHandler();
-
-        void add(std::string jointName, CloseLoopMotorWithPotentiometer* motor);
-
-        void remove(std::string jointName);
-
-
-    };
 
     class RiCBoardManager {
     private:
-        CloseMotorParamHandler _closeMotorParamHandler;
         ServoParamHandler _servoParamHandler;
-        MotorWithPotentiometerParamHandler _potentiometerParamHandler;
+
         byte _rcvBuff[MAX_BUFF_SIZE];
         TransportLayer _transportLayer;
         ConnectEnum::ConnectEnum  _connectState;

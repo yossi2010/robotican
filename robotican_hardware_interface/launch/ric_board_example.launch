@@ -19,6 +19,7 @@
       pan_tilt_controller
 	  " />
 	
+<!--
 	<include file="$(find robotican_hardware_interface)/launch/usb_cam.launch">
 		<arg name="input_dev" value="/dev/video1" />
 		<arg name="camera_frame_id" value="rear_cam_link" />
@@ -72,4 +73,5 @@
 		  <arg name="use_nodelet"       value="true"/>
 	</include>
 	
+-->
 </launch>

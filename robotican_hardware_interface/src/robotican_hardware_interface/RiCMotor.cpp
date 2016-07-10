@@ -26,7 +26,7 @@ namespace robotican_hardware {
 
 
     CloseLoopMotor::CloseLoopMotor(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin, byte eSwitchType,
-                                       CloseMotorType::CloseMotorType motorType, CloseMotorMode::CloseMotorMode mode)
+                                   CloseMotorType::CloseMotorType motorType, CloseMotorMode::CloseMotorMode mode)
             : RiCMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType) {
         _motorType = motorType;
         _mode = mode;
@@ -92,7 +92,7 @@ namespace robotican_hardware {
     }
 
     OpenLoopMotor::OpenLoopMotor(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin,
-                                     byte eSwitchType, float maxSpeed) : RiCMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType) {
+                                 byte eSwitchType, float maxSpeed) : RiCMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType) {
 
         _maxSpeed = maxSpeed;
     }
@@ -136,17 +136,32 @@ namespace robotican_hardware {
         return &_jointInfo;
     }
 
-    CloseLoopMotorWithEncoder::CloseLoopMotorWithEncoder(byte id, TransportLayer *transportLayer, byte motorAddress,
-                                                             byte eSwitchPin, byte eSwitchType,
-                                                             CloseMotorType::CloseMotorType motoryType,
-                                                             CloseMotorMode::CloseMotorMode mode,
-                                                             CloseMotorWithEncoderParam param)
-            : CloseLoopMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType, motoryType, mode) {
+    CloseLoopMotorWithEncoder::CloseLoopMotorWithEncoder(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin,
+                                                         byte eSwitchType, CloseMotorType::CloseMotorType motoryType,
+                                                         CloseMotorMode::CloseMotorMode mode, CloseMotorWithEncoderParam param,
+                                                         std::string jointName)
+            : CloseLoopMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType, motoryType, mode),
+              _mutex() ,_nodeHandle((std::string("~/") + jointName)), _server(_mutex , _nodeHandle) {
+        _callbackType = boost::bind(&CloseLoopMotorWithEncoder::dynamicCallback, this, _1, _2);
+
+        _server.setCallback(_callbackType);
+
+        robotican_hardware_interface::RiCBoardConfig config;
+        config.motor_lpf_hz = param.LPFHz;
+        config.motor_lpf_alpha = param.LPFAlpha;
+        config.motor_pid_hz = param.PIDHz;
+        config.motor_kp = param.KP;
+        config.motor_ki = param.KI;
+        config.motor_kd = param.KD;
+
+        _server.updateConfig(config);
+
         _params = param;
         _isSetParam = false;
 
 
     }
+
 
     void CloseLoopMotorWithEncoder::buildDevice() {
         BuildMotorCloseLoopWithEncoder buildMotorCloseLoop;
@@ -216,6 +231,10 @@ namespace robotican_hardware {
         }
     }
 
+    void CloseLoopMotorWithEncoder::dynamicCallback(robotican_hardware_interface::RiCBoardConfig &config, uint32_t level) {
+        setParams((uint16_t) config.motor_lpf_hz, (uint16_t) config.motor_pid_hz, (float) config.motor_lpf_alpha,
+                  (float) config.motor_kp, (float) config.motor_ki, (float) config.motor_kd);
+    }
 
     void CloseLoopMotorWithPotentiometer::setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,
                                                     float KD) {
@@ -255,10 +274,31 @@ namespace robotican_hardware {
 
     }
 
-    CloseLoopMotorWithPotentiometer::CloseLoopMotorWithPotentiometer(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin,
-                                                                         byte eSwitchType, CloseMotorType::CloseMotorType motorType,
-                                                                         CloseMotorMode::CloseMotorMode mode, CloseMotorWithPotentiometerParam motorParam)
-            : CloseLoopMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType, motorType, mode) {
+    CloseLoopMotorWithPotentiometer::CloseLoopMotorWithPotentiometer(byte id, TransportLayer *transportLayer,
+                                                                         byte motorAddress, byte eSwitchPin,
+                                                                         byte eSwitchType,
+                                                                         CloseMotorType::CloseMotorType motorType,
+                                                                         CloseMotorMode::CloseMotorMode mode,
+                                                                         CloseMotorWithPotentiometerParam motorParam,
+                                                                         std::string jointName)
+            : CloseLoopMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType, motorType, mode)
+            , _mutex() ,_nodeHandle((std::string("~/") + jointName)), _server(_mutex , _nodeHandle) {
+        _callbackType = boost::bind(&CloseLoopMotorWithPotentiometer::dynamicCallback, this, _1, _2);
+
+        _server.setCallback(_callbackType);
+        robotican_hardware_interface::RiCBoardPotentiometerConfig config;
+        config.motor_lpf_hz = motorParam.LPFHz;
+        config.motor_pid_hz = motorParam.PIDHz;
+        config.motor_lpf_alpha = motorParam.LPFAlpha;
+        config.motor_kp = motorParam.KP;
+        config.motor_ki = motorParam.KI;
+        config.motor_kd = motorParam.KD;
+        config.motor_a = motorParam.a;
+        config.motor_b = motorParam.b;
+
+        _server.updateConfig(config);
+
+
         _param = motorParam;
         _isParamChange = false;
     }
@@ -275,6 +315,12 @@ namespace robotican_hardware {
         _param.b = b;
         _isParamChange = true;
 
+    }
+
+    void CloseLoopMotorWithPotentiometer::dynamicCallback(robotican_hardware_interface::RiCBoardPotentiometerConfig &config, uint32_t level) {
+        setParams((uint16_t) config.motor_lpf_hz, (uint16_t) config.motor_pid_hz, (float) config.motor_lpf_alpha,
+                  (float) config.motor_kp, (float) config.motor_ki,
+                  (float) config.motor_kd, (float) config.motor_a, (float) config.motor_b);
     }
 
 
@@ -304,4 +350,7 @@ namespace robotican_hardware {
         }
 
     }
+
+
+
 }

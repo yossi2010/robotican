@@ -103,29 +103,29 @@ motor1_mode: 0
 #~ motor2_joint: 'right_wheel_joint'
 #~ motor2_mode: 0
 
-#~ position_motor_size: 1
- #~ 
-#~ positionMotor0_motor_type: 1
-#~ positionMotor0_a: -0.00064725
-#~ positionMotor0_b: 0.4071197411
-#~ positionMotor0_lpf_hz: 63
-#~ positionMotor0_pid_hz: 1000
-#~ positionMotor0_ppr: 2503
-#~ positionMotor0_timeout: 0
-#~ positionMotor0_motor_direction: -1
-#~ positionMotor0_encoder_direction: 1
-#~ positionMotor0_lpf_alpha: 0.21
-#~ positionMotor0_kp: 6000.0
-#~ positionMotor0_ki: 150.0
-#~ positionMotor0_kd: 0.0
-#~ positionMotor0_max_speed: 16.0
-#~ positionMotor0_limit: 0.3
-#~ positionMotor0_motor_address: 20
-#~ positionMotor0_motor_emergency_pin: 11
-#~ positionMotor0_motor_emergency_pin_type: 0
-#~ positionMotor0_joint: 'torso_joint'
-#~ positionMotor0_mode: 1
-#~ positionMotor0_read_pin: 21
+position_motor_size: 1
+ 
+positionMotor0_motor_type: 1
+positionMotor0_a: -0.00064725
+positionMotor0_b: 0.4071197411
+positionMotor0_lpf_hz: 63
+positionMotor0_pid_hz: 1000
+positionMotor0_ppr: 2503
+positionMotor0_timeout: 0
+positionMotor0_motor_direction: -1
+positionMotor0_encoder_direction: 1
+positionMotor0_lpf_alpha: 0.21
+positionMotor0_kp: 6000.0
+positionMotor0_ki: 150.0
+positionMotor0_kd: 0.0
+positionMotor0_max_speed: 16.0
+positionMotor0_limit: 0.3
+positionMotor0_motor_address: 20
+positionMotor0_motor_emergency_pin: 12
+positionMotor0_motor_emergency_pin_type: 1
+positionMotor0_joint: 'torso_joint'
+positionMotor0_mode: 1
+positionMotor0_read_pin: 21
 
 servo_size: 2
 

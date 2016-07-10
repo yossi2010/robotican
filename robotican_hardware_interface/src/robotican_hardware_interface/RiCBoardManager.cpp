@@ -451,12 +451,11 @@ namespace robotican_hardware {
                             motorParams.b =  b;
                             motorParams.pin =  readPin;
 
-                            CloseLoopMotorWithPotentiometer *closeLoopMotor = new CloseLoopMotorWithPotentiometer(_idGen++, &_transportLayer,
-                                                                                           (byte) motorAddress,
-                                                                                           eSwitchPin, eSwitchType,
-                                                                                           CloseMotorType::CloseLoopWithPotentiometer,
-                                                                                           (CloseMotorMode::CloseMotorMode) motorMode,
-                                                                                           motorParams);
+                            CloseLoopMotorWithPotentiometer *closeLoopMotor = new CloseLoopMotorWithPotentiometer(
+                                    _idGen++, &_transportLayer, (byte) motorAddress, eSwitchPin, eSwitchType,
+                                    CloseMotorType::CloseLoopWithPotentiometer,
+                                    (CloseMotorMode::CloseMotorMode) motorMode,
+                                    motorParams, positionMotorJointName);
                             JointInfo_t *jointInfo = closeLoopMotor->getJointInfo();
 
                             hardware_interface::JointStateHandle jointStateHandle(positionMotorJointName,
@@ -472,7 +471,7 @@ namespace robotican_hardware {
 
 
                             _devices.push_back(closeLoopMotor);
-                            _potentiometerParamHandler.add(positionMotorJointName, closeLoopMotor);
+                            //_potentiometerParamHandler.add(positionMotorJointName, closeLoopMotor);
                             closeLoopMotor->buildDevice();
 
                         }
@@ -538,7 +537,7 @@ namespace robotican_hardware {
                                                                                            eSwitchPin, eSwitchType,
                                                                                            CloseMotorType::CloseLoopWithEncoder,
                                                                                            (CloseMotorMode::CloseMotorMode) motorMode,
-                                                                                           motorParams);
+                                                                                           motorParams, jointName);
                             JointInfo_t *jointInfo = closeLoopMotor->getJointInfo();
 
                             hardware_interface::JointStateHandle jointStateHandle(jointName,
@@ -553,7 +552,7 @@ namespace robotican_hardware {
                             jointVelocityInterface->registerHandle(JointHandle);
 
                             _devices.push_back(closeLoopMotor);
-                            _closeMotorParamHandler.add(jointName, closeLoopMotor);
+                            //_closeMotorParamHandler.add(jointName, closeLoopMotor);
                             closeLoopMotor->buildDevice();
 
                     }
@@ -606,74 +605,6 @@ namespace robotican_hardware {
     }
 
 
-
-    void CloseMotorParamHandler::dynamicCallback(robotican_hardware_interface::RiCBoardConfig &config, uint32_t level) {
-        if (!_motors.empty()) {
-            CloseLoopMotor *closeLoopMotor = checkIfJointValid(config.motor_joint_name);
-            if (closeLoopMotor != NULL) {
-                closeLoopMotor->setParams((uint16_t) config.motor_lpf_hz, (uint16_t) config.motor_pid_hz,
-                                          (float) config.motor_lpf_alpha, (float) config.motor_kp,
-                                          (float) config.motor_ki, (float) config.motor_kd);
-
-            }
-            else {
-                char buff[128] = {'\0'};
-                sprintf(buff, "joint name: %s not in the list", config.motor_joint_name.c_str());
-                ros_utils::rosError(buff);
-                return;
-            }
-
-        }
-    }
-
-    CloseMotorParamHandler::CloseMotorParamHandler() : _nodeHandle("~/Motors"), _server(_nodeHandle){
-        _callbackType = boost::bind(&CloseMotorParamHandler::dynamicCallback, this, _1, _2);
-        _server.setCallback(_callbackType);
-
-    }
-
-    void CloseMotorParamHandler::add(std::string jointName, CloseLoopMotor *closeLoopMotor) {
-        if (!_motors.empty()) {
-            if (checkIfJointValid(jointName) == NULL) {
-                _motors.insert(std::pair<std::string, CloseLoopMotor *>(jointName, closeLoopMotor));
-            }
-            else {
-                char buff[128] = {'\0'};
-                sprintf(buff, "joint name: %s already in the list", jointName.c_str());
-                ros_utils::rosError(buff);
-                return;
-            }
-        }
-        else {
-            _motors.insert(std::pair<std::string, CloseLoopMotor *>(jointName, closeLoopMotor));
-        }
-    }
-
-
-    void CloseMotorParamHandler::remove(std::string jointName) {
-        if (!_motors.empty()) {
-            if (checkIfJointValid(jointName) != NULL) {
-                _motors.erase(jointName);
-            }
-            else {
-                char buff[128] = {'\0'};
-                sprintf(buff, "joint name: %s not in the list", jointName.c_str());
-                ros_utils::rosError(buff);
-                return;
-            }
-        }
-        else {
-            ros_utils::rosError("List is empty");
-        }
-
-    }
-
-    CloseLoopMotor *CloseMotorParamHandler::checkIfJointValid(std::string jointName) {
-        for (std::map<std::string, CloseLoopMotor *>::iterator motor = _motors.begin(); motor != _motors.end(); ++motor)
-            if (motor->first == jointName) return motor->second;
-
-        return NULL;
-    }
 
     ServoParamHandler::ServoParamHandler() : _nodeHandle("~/Servos") , _server(_nodeHandle){
         _callbackType = boost::bind(&ServoParamHandler::dynamicCallback, this, _1, _2);
@@ -740,74 +671,7 @@ namespace robotican_hardware {
 
     }
 
-    MotorWithPotentiometerParamHandler::MotorWithPotentiometerParamHandler() : _nodeHandle("~/Position_motors") , _server(_nodeHandle) {
-        _callbackType = boost::bind(&MotorWithPotentiometerParamHandler::dynamicCallback, this, _1, _2);
-        _server.setCallback(_callbackType);
-    }
 
-    CloseLoopMotorWithPotentiometer *MotorWithPotentiometerParamHandler::checkIfJointValid(std::string jointName) {
-        for (std::map<std::string, CloseLoopMotorWithPotentiometer* >::iterator motor = _motors.begin(); motor != _motors.end(); ++motor)
-            if (motor->first == jointName) return motor->second;
-
-        return NULL;
-    }
-
-    void MotorWithPotentiometerParamHandler::dynamicCallback(robotican_hardware_interface::RiCBoardPotentiometerConfig &config,
-                                                             uint32_t level) {
-        if(!_motors.empty()) {
-            CloseLoopMotorWithPotentiometer *motor = checkIfJointValid(config.motor_joint_name);
-            if(motor != NULL) {
-                motor->setParams((uint16_t) config.motor_lpf_hz, (uint16_t) config.motor_pid_hz,
-                                 (float) config.motor_lpf_alpha, (float) config.motor_kp,
-                                 (float) config.motor_ki, (float) config.motor_kd,
-                                 (float)config.motor_a, (float)config.motor_b);
-            }
-            else {
-                char buff[128] = {'\0'};
-                sprintf(buff, "the joint %s is not on the list", config.motor_joint_name.c_str());
-                ros_utils::rosError(buff);
-            }
-        }
-        else {
-            ros_utils::rosError("position motor list is empty");
-        }
-
-    }
-
-    void MotorWithPotentiometerParamHandler::add(std::string jointName, CloseLoopMotorWithPotentiometer *motor) {
-        if (!_motors.empty()) {
-            if (checkIfJointValid(jointName) == NULL) {
-                _motors.insert(std::pair<std::string, CloseLoopMotorWithPotentiometer* >(jointName, motor));
-            }
-            else {
-                char buff[128] = {'\0'};
-                sprintf(buff, "joint name: %s already in the list", jointName.c_str());
-                ros_utils::rosError(buff);
-                return;
-            }
-        }
-        else {
-            _motors.insert(std::pair<std::string, CloseLoopMotorWithPotentiometer* >(jointName, motor));
-        }
-    }
-
-    void MotorWithPotentiometerParamHandler::remove(std::string jointName) {
-        if (!_motors.empty()) {
-            if (checkIfJointValid(jointName) != NULL) {
-                _motors.erase(jointName);
-            }
-            else {
-                char buff[128] = {'\0'};
-                sprintf(buff, "joint name: %s not in the list", jointName.c_str());
-                ros_utils::rosError(buff);
-                return;
-            }
-        }
-        else {
-            ros_utils::rosError("List is empty");
-        }
-
-    }
 }
 
 

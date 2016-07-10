@@ -6,9 +6,12 @@
 #define ROBOTICAN_HARDWARE_INTERFACE_MOTOR_H
 
 
+#include <dynamic_reconfigure/server.h>
 #include <robotican_hardware_interface/Device.h>
 #include <robotican_hardware_interface/ros_utils.h>
 #include <robotican_hardware_interface/RiCBoardManager.h>
+#include <robotican_hardware_interface/RiCBoardConfig.h>
+#include <robotican_hardware_interface/RiCBoardPotentiometerConfig.h>
 
 #define MOTOR_EPSILON 0.001
 
@@ -114,17 +117,22 @@ namespace robotican_hardware {
     class CloseLoopMotorWithEncoder : public CloseLoopMotor {
     private:
         CloseMotorWithEncoderParam _params;
+        ros::NodeHandle _nodeHandle;
+        boost::recursive_mutex _mutex;
         bool _isSetParam;
+        //Dynamic param setting
+        dynamic_reconfigure::Server <robotican_hardware_interface::RiCBoardConfig> _server;
+        dynamic_reconfigure::Server<robotican_hardware_interface::RiCBoardConfig>::CallbackType _callbackType;
+        void dynamicCallback(robotican_hardware_interface::RiCBoardConfig &config, uint32_t level);
         virtual void setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,float KD);
+
     public:
-        CloseLoopMotorWithEncoder(byte id, TransportLayer *transportLayer, byte motorAddress,
-                                          byte eSwitchPin, byte eSwitchType,
-                                          CloseMotorType::CloseMotorType motoryType,
-                                          CloseMotorMode::CloseMotorMode mode,
-                                          CloseMotorWithEncoderParam param);
+        CloseLoopMotorWithEncoder(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin,
+                                          byte eSwitchType, CloseMotorType::CloseMotorType motoryType,
+                                          CloseMotorMode::CloseMotorMode mode, CloseMotorWithEncoderParam param,
+                                          std::string jointName);
         virtual void buildDevice();
         virtual void write();
-
 
     };
 
@@ -132,10 +140,21 @@ namespace robotican_hardware {
     private:
         bool _isParamChange;
         CloseMotorWithPotentiometerParam _param;
+        ros::NodeHandle _nodeHandle;
+        boost::recursive_mutex _mutex;
+        //Dynamic param setting
+        dynamic_reconfigure::Server <robotican_hardware_interface::RiCBoardPotentiometerConfig> _server;
+        dynamic_reconfigure::Server<robotican_hardware_interface::RiCBoardPotentiometerConfig>::CallbackType _callbackType;
+        void dynamicCallback(robotican_hardware_interface::RiCBoardPotentiometerConfig &config, uint32_t level);
+
     public:
-        CloseLoopMotorWithPotentiometer(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin,
-                                                byte eSwitchType, CloseMotorType::CloseMotorType motorType,
-                                                CloseMotorMode::CloseMotorMode mode, CloseMotorWithPotentiometerParam motorParam);
+        CloseLoopMotorWithPotentiometer(byte id, TransportLayer *transportLayer,
+                                                byte motorAddress, byte eSwitchPin,
+                                                byte eSwitchType,
+                                                CloseMotorType::CloseMotorType motorType,
+                                                CloseMotorMode::CloseMotorMode mode,
+                                                CloseMotorWithPotentiometerParam motorParam,
+                                                std::string jointName);
 
         virtual void setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI, float KD);
 
