@@ -6,18 +6,18 @@
 	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
 	<rosparam file="$(find robotican_hardware_interface)/config/controllers.yaml" command="load"/>
     
-<!--
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="
       robot_state_controller
       left_motor_controller
       right_motor_controller
 	  " />
--->
+<!--
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="
       robot_state_controller
       mobile_base_controller
       pan_tilt_controller
 	  " />
+-->
 	
 <!--
 	<include file="$(find robotican_hardware_interface)/launch/usb_cam.launch">

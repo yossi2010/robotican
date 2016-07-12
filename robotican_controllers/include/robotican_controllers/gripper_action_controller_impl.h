@@ -68,7 +68,7 @@ namespace gripper_action_controller
     inline void GripperActionControllerTwo<HardwareInterface>::
     starting(const ros::Time& time)
     {
-        command_struct_rt_.position_ = pos2Gap(leftjoint_.getPosition());
+        command_struct_rt_.position_ = pos2Gap(rightjoint_.getPosition());
         command_struct_rt_.max_effort_ = default_max_effort_;
         command_.initRT(command_struct_rt_);
 
@@ -187,7 +187,7 @@ namespace gripper_action_controller
         right_hw_iface_adapter_.init(rightjoint_, controller_nh_);
 
         // Command - non RT version
-        command_struct_.position_ = pos2Gap(0.0);
+        command_struct_.position_ = pos2Gap(rightjoint_.getPosition());
         command_struct_.max_effort_ = default_max_effort_;
 
         // Result
@@ -201,6 +201,7 @@ namespace gripper_action_controller
                                               boost::bind(&GripperActionControllerTwo::goalCB, this, _1),
                                               boost::bind(&GripperActionControllerTwo::cancelCB, this, _1),
                                               false));
+
         action_server_->start();
         return true;
     }
@@ -296,7 +297,7 @@ namespace gripper_action_controller
     void GripperActionControllerTwo<HardwareInterface>::
     setHoldPosition(const ros::Time& time)
     {
-        command_struct_.position_ = gap2Pos(leftjoint_.getPosition());
+        command_struct_.position_ = gap2Pos(rightjoint_.getPosition());
         command_struct_.max_effort_ = default_max_effort_;
         command_.writeFromNonRT(command_struct_);
     }

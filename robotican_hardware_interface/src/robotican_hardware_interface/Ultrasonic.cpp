@@ -21,11 +21,11 @@ void robotican_hardware::Ultrasonic::update(const DeviceMessage *deviceMessage) 
         range.header.stamp = ros::Time::now();
 
         range.max_range = MAX_RANGE_URF_HRLV_MaxSonar;
-        range.min_range = MIN_RANGE_URF_HRLV_MaxSonar;
+        range.min_range = 0.20;
         range.field_of_view = FIELD_OF_VIEW_URF_HRLV_MaxSonar;
 
         range.radiation_type = sensor_msgs::Range::ULTRASOUND;
-        range.range = (float) (currentRead * URF_HRLV_MaxSonar_an2m);
+        range.range = (float) (currentRead * (127.0 / 9920.0));
         _ultrasonicRead.publish(range);
     }
 

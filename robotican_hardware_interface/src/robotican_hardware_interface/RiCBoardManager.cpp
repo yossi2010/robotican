@@ -471,7 +471,7 @@ namespace robotican_hardware {
 
 
                             _devices.push_back(closeLoopMotor);
-                            //_potentiometerParamHandler.add(positionMotorJointName, closeLoopMotor);
+                            // _potentiometerParamHandler.add(positionMotorJointName, closeLoopMotor);
                             closeLoopMotor->buildDevice();
 
                         }
