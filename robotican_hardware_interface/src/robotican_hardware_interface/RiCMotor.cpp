@@ -301,6 +301,7 @@ namespace robotican_hardware {
 
         _param = motorParam;
         _isParamChange = false;
+        _firstTime = true;
     }
 
     void CloseLoopMotorWithPotentiometer::setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,
@@ -325,7 +326,9 @@ namespace robotican_hardware {
 
 
     void CloseLoopMotorWithPotentiometer::write() {
-        CloseLoopMotor::write();
+        if(!_firstTime) {
+            CloseLoopMotor::write();
+        }
         if(_isParamChange) {
             _isParamChange = false;
             SetCloseMotorWithPotentiometer setCloseMotorWithPotentiometer;
@@ -352,5 +355,11 @@ namespace robotican_hardware {
     }
 
 
-
+    void CloseLoopMotorWithPotentiometer::update(const DeviceMessage *deviceMessage) {
+        CloseLoopMotor::update(deviceMessage);
+        if(_firstTime) {
+            _jointInfo.cmd = _jointInfo.position;
+            _firstTime = false;
+        }
+    }
 }

@@ -90,7 +90,6 @@ namespace robotican_hardware {
 
     class CloseLoopMotor : public RiCMotor {
     private:
-        JointInfo_t _jointInfo;
         float _lastCmd;
         CloseMotorType::CloseMotorType _motorType;
         CloseMotorMode::CloseMotorMode _mode;
@@ -98,7 +97,6 @@ namespace robotican_hardware {
     public:
         CloseLoopMotor(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin, byte eSwitchType,
                                CloseMotorType::CloseMotorType motorType, CloseMotorMode::CloseMotorMode mode);
-
         JointInfo_t* getJointInfo();
 
         virtual void update(const DeviceMessage *deviceMessage);
@@ -108,7 +106,9 @@ namespace robotican_hardware {
         virtual void setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,float KD)=0;
 
         virtual void buildDevice() = 0;
+
     protected:
+        JointInfo_t _jointInfo;
         CloseMotorType::CloseMotorType getCloseMotorType();
         CloseMotorMode::CloseMotorMode getMode();
 
@@ -141,6 +141,7 @@ namespace robotican_hardware {
         bool _isParamChange;
         CloseMotorWithPotentiometerParam _param;
         ros::NodeHandle _nodeHandle;
+        bool _firstTime;
         boost::recursive_mutex _mutex;
         //Dynamic param setting
         dynamic_reconfigure::Server <robotican_hardware_interface::RiCBoardPotentiometerConfig> _server;
@@ -161,6 +162,8 @@ namespace robotican_hardware {
         virtual void setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI, float KD, float a, float b);
 
         virtual void buildDevice();
+
+        virtual void update(const DeviceMessage *deviceMessage);
 
         virtual void write();
     };
