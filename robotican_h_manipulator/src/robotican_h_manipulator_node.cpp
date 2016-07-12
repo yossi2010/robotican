@@ -110,14 +110,15 @@ public:
 
     void write() {
         _controller.write();
-
         std_msgs::Float64 leftMsg, rightMsg;
 
-        leftMsg.data = _leftFingerInfo.second.cmd_pos;
-        rightMsg.data = _rightFingerInfo.second.cmd_pos;
+        if(_first) {
+            leftMsg.data = _leftFingerInfo.second.cmd_pos;
+            rightMsg.data = _rightFingerInfo.second.cmd_pos;
 
-        _leftFingerCmd.publish(leftMsg);
-        _rightFingerCmd.publish(rightMsg);
+            _leftFingerCmd.publish(leftMsg);
+            _rightFingerCmd.publish(rightMsg);
+        }
 
     }
 };

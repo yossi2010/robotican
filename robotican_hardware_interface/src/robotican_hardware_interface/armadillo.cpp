@@ -101,12 +101,13 @@ namespace robotican_hardware {
         RobotBase::write();
         _dynamixelProController.write();
         std_msgs::Float64 leftMsg, rightMsg;
+        if(!_first) {
+            leftMsg.data = _leftFingerInfo.second.cmd;
+            rightMsg.data = _rightFingerInfo.second.cmd;
 
-        leftMsg.data = _leftFingerInfo.second.cmd;
-        rightMsg.data = _rightFingerInfo.second.cmd;
-
-        _leftFingerCmd.publish(leftMsg);
-        _rightFingerCmd.publish(rightMsg);
+            _leftFingerCmd.publish(leftMsg);
+            _rightFingerCmd.publish(rightMsg);
+        }
 
     }
 
