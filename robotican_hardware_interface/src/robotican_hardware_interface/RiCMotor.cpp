@@ -3,6 +3,8 @@
 //
 
 #include <robotican_hardware_interface/RiCMotor.h>
+#include <robotican_hardware_interface/RiCBoardPotentiometerConfig.h>
+
 namespace robotican_hardware {
 
     void RiCMotor::deviceAck(const DeviceAck *ack) {
@@ -295,6 +297,7 @@ namespace robotican_hardware {
         config.motor_kd = motorParam.KD;
         config.motor_a = motorParam.a;
         config.motor_b = motorParam.b;
+        config.motor_tolerance = motorParam.tolerance;
 
         _server.updateConfig(config);
 
@@ -305,7 +308,7 @@ namespace robotican_hardware {
     }
 
     void CloseLoopMotorWithPotentiometer::setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,
-                                                    float KD, float a, float b) {
+                                                        float KD, float a, float b, float tolerance) {
         _param.LPFHz = lpfHz;
         _param.PIDHz = pidHz;
         _param.LPFAlpha = lpfAlpha;
@@ -314,14 +317,15 @@ namespace robotican_hardware {
         _param.KD = KD;
         _param.a = a;
         _param.b = b;
+        _param.tolerance = tolerance;
         _isParamChange = true;
 
     }
 
     void CloseLoopMotorWithPotentiometer::dynamicCallback(robotican_hardware_interface::RiCBoardPotentiometerConfig &config, uint32_t level) {
         setParams((uint16_t) config.motor_lpf_hz, (uint16_t) config.motor_pid_hz, (float) config.motor_lpf_alpha,
-                  (float) config.motor_kp, (float) config.motor_ki,
-                  (float) config.motor_kd, (float) config.motor_a, (float) config.motor_b);
+                  (float) config.motor_kp, (float) config.motor_ki, (float) config.motor_kd, (float) config.motor_a,
+                  (float) config.motor_b, config.motor_tolerance);
     }
 
 
@@ -344,6 +348,7 @@ namespace robotican_hardware {
             setCloseMotorWithPotentiometer.KD = _param.KD;
             setCloseMotorWithPotentiometer.a = _param.a;
             setCloseMotorWithPotentiometer.b = _param.b;
+            setCloseMotorWithPotentiometer.tolerance = _param.tolerance;
 
             uint8_t *rawData = (uint8_t*)&setCloseMotorWithPotentiometer;
 

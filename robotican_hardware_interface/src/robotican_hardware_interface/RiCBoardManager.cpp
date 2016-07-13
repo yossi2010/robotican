@@ -409,7 +409,7 @@ namespace robotican_hardware {
             std::string motorIdentifier = "positionMotor" + boost::lexical_cast<std::string>(i), positionMotorJointName = "";
             int readPin,  LPFHz, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
             , eSwitchPin, eSwitchType, motorType, motorMode;
-            float LPFAlpha, KP, KI, KD, maxSpeed, limit, a, b;
+            float LPFAlpha, KP, KI, KD, maxSpeed, limit, a, b, tolerance;
             if(_nodeHandle.getParam(motorIdentifier + "_motor_type", motorType)) {
                 switch ((CloseMotorType::CloseMotorType) motorType) {
                     case CloseMotorType::CloseLoopWithEncoder:break;
@@ -435,7 +435,8 @@ namespace robotican_hardware {
                             && _nodeHandle.getParam(motorIdentifier + "_motor_emergency_pin_type", eSwitchType)
                             && _nodeHandle.getParam(motorIdentifier + "_joint", positionMotorJointName)
                             && _nodeHandle.getParam(motorIdentifier + "_mode", motorMode)
-                            && _nodeHandle.getParam(motorIdentifier + "_read_pin", readPin)) {
+                            && _nodeHandle.getParam(motorIdentifier + "_read_pin", readPin)
+                            && _nodeHandle.getParam(motorIdentifier + "_tolerance", tolerance)) {
                             CloseMotorWithPotentiometerParam motorParams;
                             motorParams.LPFHz = (uint16_t) LPFHz;
                             motorParams.PIDHz = (uint16_t) PIDHz;
@@ -452,6 +453,7 @@ namespace robotican_hardware {
                             motorParams.a = a;
                             motorParams.b =  b;
                             motorParams.pin =  readPin;
+                            motorParams.tolerance = tolerance;
 
                             CloseLoopMotorWithPotentiometer *closeLoopMotor = new CloseLoopMotorWithPotentiometer(
                                     _idGen++, &_transportLayer, (byte) motorAddress, eSwitchPin, eSwitchType,

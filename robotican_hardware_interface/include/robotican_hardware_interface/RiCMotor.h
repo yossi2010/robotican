@@ -86,6 +86,7 @@ namespace robotican_hardware {
         byte pin;
         float a;
         float b;
+        float tolerance;
     };
 
     class CloseLoopMotor : public RiCMotor {
@@ -159,7 +160,8 @@ namespace robotican_hardware {
 
         virtual void setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI, float KD);
 
-        virtual void setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI, float KD, float a, float b);
+        virtual void setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,
+                                       float KD, float a, float b, float tolerance);
 
         virtual void buildDevice();
 

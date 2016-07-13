@@ -321,6 +321,7 @@ struct BuildCloseLoopWithPotentiometer : BuildMotorCloseLoop {
     byte pin;
     float a;
     float b;
+    float tolerance;
 }__attribute__((__packed__));
 
 struct BuildMotorOpenLoop : BuildDevice {
@@ -474,6 +475,7 @@ struct SetCloseMotorWithPotentiometer : DeviceMessage {
     float KD;
     float a;
     float b;
+    float tolerance;
 
 }__attribute__((__packed__));
 
