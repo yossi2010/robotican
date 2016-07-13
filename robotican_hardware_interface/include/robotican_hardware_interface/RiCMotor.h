@@ -75,6 +75,8 @@ namespace robotican_hardware {
         float KD;
         float maxSpeed;
         float limit;
+        float stopLimitMax;
+        float stopLimitMin;
     };
 
     struct  CloseMotorWithEncoderParam : CloseMotorParams {

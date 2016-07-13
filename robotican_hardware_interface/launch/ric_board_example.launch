@@ -18,6 +18,7 @@
       robot_state_controller
       mobile_base_controller
       pan_tilt_controller
+      torso_position_controller
 	  " />
 	
 <!--

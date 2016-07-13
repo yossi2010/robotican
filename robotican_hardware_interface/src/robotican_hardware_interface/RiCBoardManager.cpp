@@ -409,7 +409,7 @@ namespace robotican_hardware {
             std::string motorIdentifier = "positionMotor" + boost::lexical_cast<std::string>(i), positionMotorJointName = "";
             int readPin,  LPFHz, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
             , eSwitchPin, eSwitchType, motorType, motorMode;
-            float LPFAlpha, KP, KI, KD, maxSpeed, limit, a, b, tolerance;
+            float LPFAlpha, KP, KI, KD, maxSpeed, limit, a, b, tolerance, stopLimitMax, stopLimitMin;
             if(_nodeHandle.getParam(motorIdentifier + "_motor_type", motorType)) {
                 switch ((CloseMotorType::CloseMotorType) motorType) {
                     case CloseMotorType::CloseLoopWithEncoder:break;
@@ -430,6 +430,8 @@ namespace robotican_hardware {
                             && _nodeHandle.getParam(motorIdentifier + "_kd", KD)
                             && _nodeHandle.getParam(motorIdentifier + "_max_speed", maxSpeed)
                             && _nodeHandle.getParam(motorIdentifier + "_limit", limit)
+                            && _nodeHandle.getParam(motorIdentifier + "_stop_limit_max", stopLimitMax)
+                            && _nodeHandle.getParam(motorIdentifier + "_stop_limit_min", stopLimitMin)
                             && _nodeHandle.getParam(motorIdentifier + "_motor_address", motorAddress)
                             && _nodeHandle.getParam(motorIdentifier + "_motor_emergency_pin", eSwitchPin)
                             && _nodeHandle.getParam(motorIdentifier + "_motor_emergency_pin_type", eSwitchType)
@@ -450,6 +452,8 @@ namespace robotican_hardware {
                             motorParams.KD = KD;
                             motorParams.maxSpeed = maxSpeed;
                             motorParams.limit = limit;
+                            motorParams.stopLimitMax = stopLimitMax;
+                            motorParams.stopLimitMin = stopLimitMin;
                             motorParams.a = a;
                             motorParams.b =  b;
                             motorParams.pin =  readPin;
@@ -497,7 +501,7 @@ namespace robotican_hardware {
 
             int encoderPinA, encoderPinB, LPFHz, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
                 , eSwitchPin, eSwitchType, motorType, motorMode;
-            float LPFAlpha, KP, KI, KD, maxSpeed, limit;
+            float LPFAlpha, KP, KI, KD, maxSpeed, limit, stopLimitMax, stopLimitMin;
             if(_nodeHandle.getParam(closeMotorIdentifier + "_motor_type", motorType)) {
                 switch ((CloseMotorType::CloseMotorType) motorType) {
                     case CloseMotorType::CloseLoopWithEncoder:
@@ -515,6 +519,8 @@ namespace robotican_hardware {
                             && _nodeHandle.getParam(closeMotorIdentifier + "_kd", KD)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_max_speed", maxSpeed)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_limit", limit)
+                            && _nodeHandle.getParam(closeMotorIdentifier + "_stop_limit_max", stopLimitMax)
+                            && _nodeHandle.getParam(closeMotorIdentifier + "_stop_limit_min", stopLimitMin)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_motor_address", motorAddress)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_motor_emergency_pin", eSwitchPin)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_motor_emergency_pin_type", eSwitchType)
@@ -533,6 +539,8 @@ namespace robotican_hardware {
                             motorParams.KD = KD;
                             motorParams.maxSpeed = maxSpeed;
                             motorParams.limit = limit;
+                            motorParams.stopLimitMax = stopLimitMax;
+                            motorParams.stopLimitMin = stopLimitMin;
                             motorParams.encoderPinA = (byte) encoderPinA;
                             motorParams.encoderPinB = (byte) encoderPinB;
 

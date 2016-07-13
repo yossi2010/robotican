@@ -37,6 +37,8 @@ motor0_ki: 80.0
 motor0_kd: 0.0
 motor0_max_speed: 16.0
 motor0_limit: 0.2
+motor0_stop_limit_max: 7.5
+motor0_stop_limit_min: -7.5
 motor0_motor_address: 0
 motor0_motor_emergency_pin: 12
 motor0_motor_emergency_pin_type: 1
@@ -62,6 +64,8 @@ motor1_ki: 80.0
 motor1_kd: 0.0
 motor1_max_speed: 16.0
 motor1_limit: 0.2
+motor1_stop_limit_max: 7.5
+motor1_stop_limit_min: -7.5
 motor1_motor_address: 1
 motor1_motor_emergency_pin: 12
 motor1_motor_emergency_pin_type: 1
@@ -92,7 +96,9 @@ positionMotor0_motor_emergency_pin_type: 1
 positionMotor0_joint: 'torso_joint'
 positionMotor0_mode: 1
 positionMotor0_read_pin: 21
-positionMotor0_tolerance: 0.2
+positionMotor0_tolerance: 0.015
+positionMotor0_stop_limit_max: 0.37
+positionMotor0_stop_limit_min: 0.015
 
 servo_size: 2
 

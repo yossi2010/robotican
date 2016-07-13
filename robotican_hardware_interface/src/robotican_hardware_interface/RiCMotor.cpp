@@ -181,6 +181,8 @@ namespace robotican_hardware {
         buildMotorCloseLoop.timeout = _params.timeout;
         buildMotorCloseLoop.motorDirection = _params.motorDirection;
         buildMotorCloseLoop.encoderDirection = _params.encoderDirection;
+        buildMotorCloseLoop.stopLimitMax = _params.stopLimitMax;
+        buildMotorCloseLoop.stopLimitMin = _params.stopLimitMin;
 
         buildMotorCloseLoop.LPFAlpha = _params.LPFAlpha;
         buildMotorCloseLoop.KP = _params.KP;
@@ -269,6 +271,9 @@ namespace robotican_hardware {
         buildCloseLoopWithPotentiometer.a = _param.a;
         buildCloseLoopWithPotentiometer.b = _param.b;
         buildCloseLoopWithPotentiometer.pin = _param.pin;
+        buildCloseLoopWithPotentiometer.tolerance = _param.tolerance;
+        buildCloseLoopWithPotentiometer.stopLimitMax = _param.stopLimitMax;
+        buildCloseLoopWithPotentiometer.stopLimitMin = _param.stopLimitMin;
 
         uint8_t* rawData = (uint8_t*)&buildCloseLoopWithPotentiometer;
         buildCloseLoopWithPotentiometer.checkSum = _transportLayer->calcChecksum(rawData, buildCloseLoopWithPotentiometer.length);
