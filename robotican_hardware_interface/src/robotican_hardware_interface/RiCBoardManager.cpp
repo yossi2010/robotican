@@ -264,9 +264,11 @@ namespace robotican_hardware {
             int baudrate;
             std::string frameId, topicName;
 
+
             if(_nodeHandle.getParam("gps_baudrate", baudrate)
                && _nodeHandle.getParam("gps_topic_name", topicName)
                && _nodeHandle.getParam("gps_frame_id", frameId)) {
+                ROS_INFO("[%s]: trying to build gps", ros::this_node::getName().c_str());
                 Device *gps = new Gps(_idGen++, &_transportLayer, (uint16_t) baudrate, topicName, frameId);
                 _devices.push_back(gps);
                 gps->buildDevice();

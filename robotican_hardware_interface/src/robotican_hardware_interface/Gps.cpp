@@ -34,17 +34,15 @@ namespace robotican_hardware {
     }
 
     void Gps::buildDevice() {
-        if(isReady()) {
-            BuildGps buildGps;
-            buildGps.length = sizeof(buildGps);
-            buildGps.checkSum = 0;
-            buildGps.id = getId();
-            buildGps.baudrate = _baudrate;
+        BuildGps buildGps;
+        buildGps.length = sizeof(buildGps);
+        buildGps.checkSum = 0;
+        buildGps.id = getId();
+        buildGps.baudrate = _baudrate;
 
-            uint8_t *rawData = (uint8_t *) &buildGps;
-            buildGps.checkSum = _transportLayer->calcChecksum(rawData, buildGps.length);
-            _transportLayer->write(rawData, buildGps.length);
-        }
+        uint8_t *rawData = (uint8_t *) &buildGps;
+        buildGps.checkSum = _transportLayer->calcChecksum(rawData, buildGps.length);
+        _transportLayer->write(rawData, buildGps.length);
     }
 
     void Gps::deviceAck(const DeviceAck *ack) {
