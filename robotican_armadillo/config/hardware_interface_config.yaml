@@ -9,6 +9,7 @@ right_finger_topic_sub: 'right_finger_controller/state'
 right_finger_joint: 'right_finger_joint'
 
 
+
 # RiCBoard                                
 #~ battery_pin: 17
 #~ battery_voltage_divider_ratio: 6.0
@@ -28,20 +29,6 @@ ultrasonic1_topic_name: 'urf/right'
 ultrasonic2_pin: 16
 ultrasonic2_frame_id: 'rear_urf_link'
 ultrasonic2_topic_name: 'urf/rear'
-#~ 
-#~ 
-#~ switch_size: 2
-#~ 
-#~ switch0_topic_name: 'test_first'
-#~ switch0_pin: 11
-#~ 
-#~ switch1_topic_name: 'test_second'
-#~ switch1_pin: 12
-#~ 
-#~ imu_fusion_hz: 50
-#~ imu_enable_gyro: true
-#~ imu_enable_fuse_compass: true
-#~ imu_frame_id: 'base_link'
 
 
 close_motor_size: 2
@@ -91,33 +78,13 @@ motor1_motor_emergency_pin: 12
 motor1_motor_emergency_pin_type: 1
 motor1_joint: 'right_wheel_joint'
 motor1_mode: 0
-#~ 
-#~ motor2_motor_type: 0
-#~ 
-#~ motor2_lpf_hz: 63
-#~ motor2_lpf_alpha: 0.21
-#~ 
-#~ motor2_pid_hz: 1000
-#~ motor2_ppr: 2503
-#~ motor2_timeout: 0
-#~ motor2_motor_direction: -1
-#~ 
-#~ motor2_kp: 2.0
-#~ motor2_ki: 12.0
-#~ motor2_kd: 0.0
-#~ motor2_max_speed: 16.0
-#~ motor2_limit: 1.0
-#~ motor2_motor_address: 10
-#~ motor2_motor_emergency_pin: 11
-#~ motor2_motor_emergency_pin_type: 0
-#~ motor2_joint: 'right_wheel_joint'
-#~ motor2_mode: 0
+
 
 position_motor_size: 1
  
 positionMotor0_motor_type: 1
-positionMotor0_a: -0.00064725
-positionMotor0_b: 0.4071197411
+positionMotor0_a: 0.00064833
+positionMotor0_b: -0.018153241
 positionMotor0_lpf_hz: 63
 positionMotor0_pid_hz: 1000
 positionMotor0_ppr: 2503
@@ -136,10 +103,11 @@ positionMotor0_motor_emergency_pin_type: 1
 positionMotor0_joint: 'torso_joint'
 positionMotor0_mode: 1
 positionMotor0_read_pin: 21
+positionMotor0_tolerance: 0.2
 
 servo_size: 2
 
-servo0_pin: 4
+servo0_pin: 3
 servo0_a: -301.5567343
 servo0_b: 1450.0
 servo0_max: 1.57
@@ -147,7 +115,7 @@ servo0_min: -1.57
 servo0_init_pos: 0
 servo0_joint_name: 'head_tilt_joint'
 
-servo1_pin: 3
+servo1_pin: 4
 servo1_a: -318.4713376
 servo1_b: 1500
 servo1_max: 1.57
@@ -155,11 +123,13 @@ servo1_min: -1.57
 servo1_init_pos: 0
 servo1_joint_name: 'head_pan_joint'
 
-#gps_baudrate: 9600
-#gps_topic_name: 'gps'
-#gps_frame_id: 'base_link'
+gps_baudrate: 9600
+gps_topic_name: 'gps'
+gps_frame_id: 'base_link'
 
 #RiCBoard
+
+
 
 
 left_finger_controller:
