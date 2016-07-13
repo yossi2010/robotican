@@ -30,17 +30,17 @@ mobile_base_controller:
   linear:
     x:
       has_velocity_limits    : true
-      max_velocity           : 2.0  # m/s
-      min_velocity           : -2.0 # m/s
+      max_velocity           : 0.8  # m/s
+      min_velocity           : -0.8 # m/s
       has_acceleration_limits: true
-      max_acceleration       : 1.0  # m/s^2
-      min_acceleration       : -1.0 # m/s^2
+      max_acceleration       : 0.1  # m/s^2
+      min_acceleration       : -0.1 # m/s^2
   angular:
     z:
       has_velocity_limits    : true
       max_velocity           : 3.0  # rad/s
       has_acceleration_limits: true
-      max_acceleration       : 1.5  # rad/s^2
+      max_acceleration       : 0.1  # rad/s^2
       
 
 robot_state_controller:

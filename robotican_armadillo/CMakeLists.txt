@@ -5,11 +5,17 @@ project(robotican_armadillo)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  robotican_hardware_interface
   roscpp
   rospy
   std_msgs
   actionlib
   control_msgs
+  dynamixel_msgs
+  control_toolbox
+  hardware_interface
+  controller_manager
+  serial
 )
 
 ## System dependencies are found with CMake's conventions
@@ -104,7 +110,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES robotican_armadillo
-  CATKIN_DEPENDS roscpp rospy std_msgs actionlib control_msgs
+  CATKIN_DEPENDS roscpp rospy std_msgs actionlib control_msgs dynamixel_msgs control_toolbox hardware_interface controller_manager serial robotican_hardware_interface
 #  DEPENDS system_lib
 )
 
@@ -132,6 +138,8 @@ include_directories(
 ## Declare a C++ executable
 add_executable(pan_tilt_joy_node src/pan_tilt_joy_node.cpp)
 add_executable(joy_increment_node src/joy_increment_node.cpp)
+add_executable(armadillo_only_arm_node src/robotican_h_manipulator_node.cpp)
+
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -142,6 +150,9 @@ add_executable(joy_increment_node src/joy_increment_node.cpp)
    ${catkin_LIBRARIES}
  )
  target_link_libraries(joy_increment_node
+   ${catkin_LIBRARIES}
+ )
+ target_link_libraries(armadillo_only_arm_node
    ${catkin_LIBRARIES}
  )
 

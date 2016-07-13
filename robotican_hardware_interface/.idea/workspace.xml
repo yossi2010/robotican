@@ -5,50 +5,47 @@
       <config projectName="robotican_hardware_interface" targetName="control_msgs_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="tf_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="control_toolbox_generate_messages_cpp" />
-      <config projectName="robotican_hardware_interface" targetName="_robotican_hardware_interface_generate_messages_check_deps_ChainEnable" />
-      <config projectName="robotican_hardware_interface" targetName="dynamic_reconfigure_generate_messages_py" />
+      <config projectName="robotican_hardware_interface" targetName="control_toolbox_generate_messages_py" />
+      <config projectName="robotican_hardware_interface" targetName="sensor_msgs_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="_robotican_hardware_interface_generate_messages_check_deps_setImuClib" />
       <config projectName="robotican_hardware_interface" targetName="rosgraph_msgs_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="gazebo_msgs_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="dynamixel_pro_controller_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="actionlib_generate_messages_cpp" />
-      <config projectName="robotican_hardware_interface" targetName="roscpp_generate_messages_cpp" />
+      <config projectName="robotican_hardware_interface" targetName="run_tests" />
       <config projectName="robotican_hardware_interface" targetName="tf2_msgs_generate_messages_lisp" />
-      <config projectName="robotican_hardware_interface" targetName="controller_manager" />
       <config projectName="robotican_hardware_interface" targetName="sensor_msgs_generate_messages_lisp" />
       <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface" />
       <config projectName="robotican_hardware_interface" targetName="_robotican_hardware_interface_generate_messages_check_deps_JointLimits" />
       <config projectName="robotican_hardware_interface" targetName="trajectory_msgs_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="control_msgs_generate_messages_py" />
-      <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_generate_messages_lisp" />
+      <config projectName="robotican_hardware_interface" targetName="dynamic_reconfigure_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_genlisp" />
       <config projectName="robotican_hardware_interface" targetName="dynamixel_pro_controller_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="geometry_msgs_generate_messages_lisp" />
       <config projectName="robotican_hardware_interface" targetName="_robotican_hardware_interface_generate_messages_check_deps_imuClib" />
       <config projectName="robotican_hardware_interface" targetName="tf_generate_messages_lisp" />
-      <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_gencpp" />
+      <config projectName="robotican_hardware_interface" targetName="roscpp_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="dynamic_reconfigure_gencfg" />
       <config projectName="robotican_hardware_interface" targetName="_robotican_hardware_interface_generate_messages_check_deps_ChainLimits" />
       <config projectName="robotican_hardware_interface" targetName="actionlib_msgs_generate_messages_lisp" />
-      <config projectName="robotican_hardware_interface" targetName="gazebo_msgs_generate_messages_lisp" />
+      <config projectName="robotican_hardware_interface" targetName="controller_manager" />
       <config projectName="robotican_hardware_interface" targetName="std_srvs_generate_messages_lisp" />
       <config projectName="robotican_hardware_interface" targetName="roscpp_generate_messages_lisp" />
       <config projectName="robotican_hardware_interface" targetName="tf2_msgs_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="rosgraph_msgs_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="control_toolbox_generate_messages_lisp" />
       <config projectName="robotican_hardware_interface" targetName="clean_test_results_robotican_hardware_interface" />
-      <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_genpy" />
-      <config projectName="robotican_hardware_interface" targetName="run_tests" />
-      <config projectName="robotican_hardware_interface" targetName="std_msgs_generate_messages_py" />
+      <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="control_toolbox_gencfg" />
       <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_generate_messages" />
       <config projectName="robotican_hardware_interface" targetName="geometry_msgs_generate_messages_cpp" />
-      <config projectName="robotican_hardware_interface" targetName="sensor_msgs_generate_messages_py" />
+      <config projectName="robotican_hardware_interface" targetName="std_msgs_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="std_msgs_generate_messages_cpp" />
-      <config projectName="robotican_hardware_interface" targetName="tf_generate_messages_cpp" />
-      <config projectName="robotican_hardware_interface" targetName="control_toolbox_generate_messages_py" />
+      <config projectName="robotican_hardware_interface" targetName="_robotican_hardware_interface_generate_messages_check_deps_ChainEnable" />
       <config projectName="robotican_hardware_interface" targetName="control_msgs_generate_messages_lisp" />
-      <config projectName="robotican_hardware_interface" targetName="controller_manager_msgs_generate_messages_lisp" />
+      <config projectName="robotican_hardware_interface" targetName="dynamic_reconfigure_generate_messages_lisp" />
+      <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_genpy" />
       <config projectName="robotican_hardware_interface" targetName="actionlib_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="std_srvs_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="rosgraph_msgs_generate_messages_lisp" />
@@ -57,31 +54,34 @@
       <config projectName="robotican_hardware_interface" targetName="clean_test_results" />
       <config projectName="robotican_hardware_interface" targetName="gtest" />
       <config projectName="robotican_hardware_interface" targetName="tests" />
+      <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_node" />
       <config projectName="robotican_hardware_interface" targetName="actionlib_generate_messages_lisp" />
       <config projectName="robotican_hardware_interface" targetName="trajectory_msgs_generate_messages_lisp" />
-      <config projectName="robotican_hardware_interface" targetName="dynamic_reconfigure_generate_messages_lisp" />
+      <config projectName="robotican_hardware_interface" targetName="actionlib_msgs_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="geometry_msgs_generate_messages_py" />
+      <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_gencpp" />
       <config projectName="robotican_hardware_interface" targetName="controller_manager_msgs_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="doxygen" />
       <config projectName="robotican_hardware_interface" targetName="std_srvs_generate_messages_cpp" />
-      <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_gencfg" />
+      <config projectName="robotican_hardware_interface" targetName="gazebo_ros_gencfg" />
       <config projectName="robotican_hardware_interface" targetName="roscpp_generate_messages_py" />
-      <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_node" />
+      <config projectName="robotican_hardware_interface" targetName="gazebo_msgs_generate_messages_lisp" />
       <config projectName="robotican_hardware_interface" targetName="sensor_msgs_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="std_msgs_generate_messages_lisp" />
       <config projectName="robotican_hardware_interface" targetName="controller_manager_msgs_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="dynamixel_pro_controller_generate_messages_lisp" />
       <config projectName="robotican_hardware_interface" targetName="download_extra_data" />
-      <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_generate_messages_py" />
+      <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_gencfg" />
+      <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_generate_messages_lisp" />
       <config projectName="robotican_hardware_interface" targetName="actionlib_msgs_generate_messages_py" />
-      <config projectName="robotican_hardware_interface" targetName="gazebo_ros_gencfg" />
+      <config projectName="robotican_hardware_interface" targetName="tf_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="_robotican_hardware_interface_generate_messages_check_deps_JointEnable" />
       <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_sim" />
       <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="gazebo_msgs_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="tf2_msgs_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="dynamic_reconfigure_generate_messages_cpp" />
-      <config projectName="robotican_hardware_interface" targetName="actionlib_msgs_generate_messages_cpp" />
+      <config projectName="robotican_hardware_interface" targetName="controller_manager_msgs_generate_messages_lisp" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="false" GENERATION_PASS_SYSTEM_ENVIRONMENT="true">
@@ -91,12 +91,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5090c7e5-85e2-48e5-b18b-c7d9a39d63ef" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/config/armadillo_with_arm.srdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/config/controllers.yaml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/config/depth_sensor.yaml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/config/fake_controllers.yaml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/config/joint_limits.yaml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/config/kinematics.yaml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/config/ompl_planning.yaml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/armadillo_with_arm_moveit_controller_manager.launch.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/armadillo_with_arm_moveit_sensor_manager.launch.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/default_warehouse_db.launch" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/demo.launch" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/fake_moveit_controller_manager.launch.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/joystick_control.launch" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/move_group.launch" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/moveit.rviz" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/moveit_rviz.launch" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/ompl_planning_pipeline.launch.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/planning_context.launch" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/planning_pipeline.launch.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/run_benchmark_ompl.launch" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/sensor_manager.launch.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/setup_assistant.launch" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/trajectory_execution.launch.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/warehouse.launch" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/moveit/launch/warehouse_settings.launch.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_armadillo/CMakeLists.txt" afterPath="$PROJECT_DIR$/../robotican_armadillo/CMakeLists.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_armadillo/package.xml" afterPath="$PROJECT_DIR$/../robotican_armadillo/package.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_demos/launch/armadillo_moveit.launch" afterPath="$PROJECT_DIR$/../robotican_demos/launch/armadillo_moveit.launch" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CMakeLists.txt" afterPath="$PROJECT_DIR$/CMakeLists.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/ric_board_example.yaml" afterPath="$PROJECT_DIR$/config/ric_board_example.yaml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/launch/ric_board_example.launch" afterPath="$PROJECT_DIR$/launch/ric_board_example.launch" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/robotican_hardware_interface/Gps.cpp" afterPath="$PROJECT_DIR$/src/robotican_hardware_interface/Gps.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp" afterPath="$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp" />
     </list>
     <ignored path="robotican_hardware_interface.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -117,10 +142,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.32965517">
               <caret line="215" column="0" selection-start-line="215" selection-start-column="0" selection-end-line="215" selection-end-column="0" />
               <folding />
             </state>
@@ -137,12 +162,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Gps.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Gps.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/Gps.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.37931034">
-              <caret line="27" column="30" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
-              <folding />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+              <folding>
+                <element signature="e#119#375#0" expanded="false" />
+                <element signature="e#381#1153#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -219,13 +247,13 @@
         <option value="$PROJECT_DIR$/cfg/RiCBoard.cfg" />
         <option value="$PROJECT_DIR$/include/robotican_hardware_interface/RiCBoardManager.h" />
         <option value="$PROJECT_DIR$/cfg/RiCBoardPotentiometer.cfg" />
-        <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/src/robotican_hardware_interface/Ultrasonic.cpp" />
         <option value="$PROJECT_DIR$/include/robotican_hardware_interface/RiCMotor.h" />
         <option value="$PROJECT_DIR$/src/robotican_hardware_interface/RiCMotor.cpp" />
         <option value="$PROJECT_DIR$/src/robotican_hardware_interface/armadillo.cpp" />
         <option value="$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp" />
         <option value="$PROJECT_DIR$/src/robotican_hardware_interface/Gps.cpp" />
+        <option value="$PROJECT_DIR$/CMakeLists.txt" />
       </list>
     </option>
   </component>
@@ -857,7 +885,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1431" y="24" width="1855" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20251092" sideWeight="0.4946401" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295099" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -912,7 +940,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="120" />
+      <option name="time" value="121" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1245,18 +1273,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="215" column="0" selection-start-line="215" selection-start-column="0" selection-end-line="215" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/robotican_hardware_interface/Device.h">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/Gps.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding>
+            <element signature="e#119#375#0" expanded="false" />
+            <element signature="e#381#1153#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="273" column="27" selection-start-line="273" selection-start-column="27" selection-end-line="273" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -1269,18 +1308,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp">
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="273" column="27" selection-start-line="273" selection-start-column="27" selection-end-line="273" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/Gps.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37931034">
-          <caret line="27" column="30" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.32965517">
+          <caret line="215" column="0" selection-start-line="215" selection-start-column="0" selection-end-line="215" selection-end-column="0" />
           <folding />
         </state>
       </provider>
