@@ -182,7 +182,7 @@
                 namespace: dxl_manager
                 serial_ports:
                  gripper_port:
-                  port_name: "/dev/ttyS1"
+                  port_name: "/dev/ttyUSB0"
                   baud_rate: 57142
                   min_motor_id: 1
                   max_motor_id: 2
@@ -245,7 +245,7 @@
     </group>
 	
 	<group if="$(arg moveit)">
-		<include file="$(find robotican_armadillo)/moveit/launch/move_group.launch" >
+		<include file="$(find armadillo_arm)/launch/move_group.launch" >
 			<arg name="moveit_depth" value="$(arg use_depth)"/>
 		</include>
 	</group>
