@@ -24,7 +24,7 @@ namespace robotican_hardware {
                 !_nodeHandle.getParam("right_finger_joint", rightFingerJointName)) {                        /* parameters that must be instalize for the robot to work*/
             ros::shutdown();
         }
-        _first = true;
+        _first[0]=_first[1] = false;
         _leftFingerCmd = _nodeHandle.advertise<std_msgs::Float64>(leftFingerPubTopic, 10);
         _rightFingerCmd = _nodeHandle.advertise<std_msgs::Float64>(rightFingerPubTopic, 10);
 
@@ -70,15 +70,28 @@ namespace robotican_hardware {
     }
 
     void ArmadilloRobot::leftFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg) {
+
         _leftFingerInfo.second.position = msg->current_pos;
         _leftFingerInfo.second.velocity = msg->velocity;
         _leftFingerInfo.second.effort = msg->load;
+if (!_first[0]) {
+
+ _leftFingerInfo.second.cmd = _leftFingerInfo.second.position;
+_first[0]=true;
+}
+
     }
 
     void ArmadilloRobot::rightFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg) {
         _rightFingerInfo.second.position = msg->current_pos;
         _rightFingerInfo.second.velocity = msg->velocity;
         _rightFingerInfo.second.effort = msg->load;
+if (!_first[1]) {
+
+ _rightFingerInfo.second.cmd = _rightFingerInfo.second.position;
+_first[1]=true;
+}
+
     }
 
     void ArmadilloRobot::registerInterfaces() {
@@ -90,18 +103,13 @@ namespace robotican_hardware {
     void ArmadilloRobot::read() {
         RobotBase::read();
         _dynamixelProController.read();
-        if(_first) {
-            _first = false;
-            _leftFingerInfo.second.cmd = _leftFingerInfo.second.position;
-            _rightFingerInfo.second.cmd = _rightFingerInfo.second.position;
-        }
     }
 
     void ArmadilloRobot::write() {
         RobotBase::write();
         _dynamixelProController.write();
         std_msgs::Float64 leftMsg, rightMsg;
-        if(!_first) {
+        if (_first[0] && _first[1]) { 
             leftMsg.data = _leftFingerInfo.second.cmd;
             rightMsg.data = _rightFingerInfo.second.cmd;
 

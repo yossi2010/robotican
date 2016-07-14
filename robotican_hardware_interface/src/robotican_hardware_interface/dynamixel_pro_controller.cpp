@@ -482,12 +482,17 @@ void DynamixelProController::read() {
                 //msg.velocity.push_back(rad_vel);
             }
         }
+        else {
+	  ROS_WARN("getPosition FAILED");
+	  return;
+	}
     }
     _first=true;
     //jointStatePublisher.publish(msg);
 }
 
 void DynamixelProController::write() {
+  if (!_first) return;
     sensor_msgs::JointState msg;
     for(std::map<std::string, JointInfo_t>::iterator it = _jointsInfo.begin(); it != _jointsInfo.end(); ++it) {
         msg.name.push_back(it->first);

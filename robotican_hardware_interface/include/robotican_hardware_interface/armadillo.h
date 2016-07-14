@@ -21,7 +21,7 @@ namespace robotican_hardware {
         hardware_interface::PosVelJointInterface _posVelJointInterface;
 
     private:
-        bool _first;
+        bool _first[2];
         dynamixel_pro_controller::DynamixelProController _dynamixelProController;
         std::pair<std::string, JointInfo_t> _panInfo;
         std::pair<std::string, JointInfo_t> _tiltInfo;

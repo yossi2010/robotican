@@ -61,9 +61,9 @@ namespace robotican_hardware {
                 point.checkSum = _transportLayer->calcChecksum(rawData, point.length);
                 _transportLayer->write(rawData, point.length);
                 _lastCmd = (float) _jointInfo.cmd;
-//            char buff[128] = {'\0'};
-//            sprintf(buff, "point: %f", _jointInfo.cmd);
-//            ros_utils::rosInfo(buff);
+            char buff[128] = {'\0'};
+            sprintf(buff, "position cmd:: %f", _jointInfo.cmd);
+            ros_utils::rosInfo(buff);
             }
         }
     }
