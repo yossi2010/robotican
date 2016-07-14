@@ -103,7 +103,7 @@
     <group unless="$(arg gazebo)">
 		<group if="$(arg front_camera)">
 			<include file="$(find robotican_hardware_interface)/launch/usb_cam.launch">
-				<arg name="input_dev" value="/dev/video0" />
+				<arg name="input_dev" value="/dev/video3" />
 				<arg name="camera_frame_id" value="front_cam_link" />
 				<arg name="pixel_format" value="yuyv" /> <!-- mjpeg, yuyv, uyvy  -->
 				<arg name="image_width" value="640" />
@@ -113,7 +113,7 @@
 		</group>
 		<group if="$(arg rear_camera)">
 			<include file="$(find robotican_hardware_interface)/launch/usb_cam.launch">
-				<arg name="input_dev" value="/dev/video1" />
+				<arg name="input_dev" value="/dev/video2" />
 				<arg name="camera_frame_id" value="rear_cam_link" />
 				<arg name="pixel_format" value="yuyv" /> <!-- mjpeg, yuyv, uyvy  -->
 				<arg name="image_width" value="640" />
@@ -174,10 +174,9 @@
 		</group>
 
 		<param name="robot_description" command="$(find xacro)/xacro.py '$(find robotican_armadillo)/description/models/armadillo.xacro'" />
-		
-		<rosparam file="$(find robotican_armadillo)/config/hardware_interface_config.yaml" command="load"/>
-		
-		<node name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen">          
+			
+
+<node name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen">          
 		  <rosparam>
                 namespace: dxl_manager
                 serial_ports:
@@ -196,6 +195,11 @@
 		left_finger_controller
 		right_finger_controller"
 				output="screen"/>
+
+
+		<rosparam file="$(find robotican_armadillo)/config/hardware_interface_config.yaml" command="load"/>
+		
+	
 				
 		<node name="robotican_hardware_interface" pkg="robotican_hardware_interface" type="robotican_hardware_interface_node" respawn="false" output="screen" >
 		
@@ -214,11 +218,11 @@
 		<include file="$(find robotican_common)/launch/robot_localization.launch"/>
 		<param name="/mobile_base_controller/enable_odom_tf" value="false" />
 	</group>
-    
+
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="	  
       robot_state_controller
 	  mobile_base_controller
-	  torso_trajectory_controller
+	  torso_controller
 	  pan_tilt_controller
 	  arm_trajectory_controller
 	  gripper_controller
