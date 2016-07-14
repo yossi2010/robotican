@@ -21,7 +21,7 @@
 		<child link="torso_link" />
 		<axis xyz="0 0 1" />
 		<dynamics damping="1000.0" friction="100000.0"/>
-		<limit effort="1.765196" velocity="0.1" lower="0.0125" upper="0.4" />
+		<limit effort="1.765196" velocity="0.1" lower="0.0125" upper="0.35" />
 	</joint>
 	
 	<joint name="base_arm_joint" type="fixed">
