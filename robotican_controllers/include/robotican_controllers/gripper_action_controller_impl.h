@@ -215,7 +215,7 @@ namespace gripper_action_controller
         double current_position = pos2Gap(rightjoint_.getPosition());
         double current_velocity =  current_position - _lastPosition / period.toSec();
         double current_effort = leftjoint_.getEffort() + rightjoint_.getEffort();
-
+//ROS_INFO("current_position: %f     rightjoint: %f",current_position,rightjoint_.getPosition());
         double error_position = command_struct_rt_.position_ - current_position;
         double error_velocity = - current_velocity;
         _lastPosition = current_position;

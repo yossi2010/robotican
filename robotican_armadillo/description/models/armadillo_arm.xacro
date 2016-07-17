@@ -443,9 +443,10 @@
       xyz="1 0 0" />
     <limit
       effort="3.1"
-      lower="-0.4"
-      upper="1.0"
+      lower="-1.57"
+      upper="1.57"
       velocity="7.016223585" />
+      <dynamics friction ="1000" damping="100"/>
   </joint>
   <link
     name="right_finger_link">
@@ -501,9 +502,10 @@
       xyz="1 0 0" />
     <limit
       effort="3.1"
-      lower="-1.0"
-      upper="0.4"
+      lower="-1.57"
+      upper="1.57"
       velocity="7.016223585" />
+      <dynamics friction ="1000" damping="100"/>
   </joint>
   <link
     name="f200_link">

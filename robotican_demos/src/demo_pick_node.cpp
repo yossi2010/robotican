@@ -39,8 +39,7 @@ tf::StampedTransform base_obj_transform;
  std::string object_frame,depth_camera_frame;
 
 bool have_goal=false;
-//bool obj_tf_ok=false;
-int image_w=0,image_h=0;
+
 bool moving=false;
 
 

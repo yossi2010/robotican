@@ -19,7 +19,7 @@
     
   </include>
   
-   <node name="pick_node" pkg="robotican_demos" type="demo_pick_node" output="screen"/> 
+   <node name="pick_node" pkg="robotican_demos" type="demo_pick_node" output="screen" required="true"/> 
   
   <node name="button_reach_event" pkg="robotican_common" type="reach_event" output="screen">
     <param name="~moving_frame" value="left_finger_tip"/>

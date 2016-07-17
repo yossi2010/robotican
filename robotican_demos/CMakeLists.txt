@@ -133,11 +133,16 @@ add_executable(simple_navigation_goals src/simple_navigation_goals.cpp)
 add_executable(simple_move_group_goals src/simple_move_group_goal.cpp)
 add_executable(pan_tilt_api src/pan_tilt_api.cpp)
 add_executable(simple_moveit_full_api src/simple_moveit_full_api.cpp)
+add_executable(pick_and_place src/pick_and_place.cpp)
+add_executable(demo_pick_node src/demo_pick_node.cpp)
+
 
 target_link_libraries(simple_navigation_goals ${catkin_LIBRARIES})
 target_link_libraries(simple_move_group_goals ${catkin_LIBRARIES})
 target_link_libraries(simple_moveit_full_api ${catkin_LIBRARIES})
 target_link_libraries(pan_tilt_api ${catkin_LIBRARIES})
+target_link_libraries(pick_and_place ${catkin_LIBRARIES})
+target_link_libraries(demo_pick_node ${catkin_LIBRARIES})
 
 #add_dependencies( demo_pick_node robotican_common_generate_messages_cpp )
 ## Declare a C++ library
