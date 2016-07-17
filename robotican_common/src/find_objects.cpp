@@ -53,8 +53,8 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
 
     int image_w=0,image_h=0;
-    //  std::cout << input->width <<"   "<< input->height  <<std::endl;
-    if (input->width==960*540) {
+   //   std::cout << input->width <<"   "<< input->height  <<std::endl;
+    if ((input->width==960*540)||((input->width==960)&&(input->height==540))) {
         image_w=960;
         image_h=540;
     }
