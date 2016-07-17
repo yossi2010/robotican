@@ -38,7 +38,7 @@ tf::StampedTransform base_obj_transform;
 std::string object_frame;
 
 geometry_msgs::PoseStamped pick_pose;
-
+double pick_yaw=0;
 bool have_goal=false;
 bool moving=false;
 
@@ -81,7 +81,7 @@ geometry_msgs::PoseStamped move_to_object(){
 
     tf::Vector3 v= transform_base_obj.getOrigin();
 
-    double 	yaw=atan2(v.y(),v.x());
+    pick_yaw=atan2(v.y(),v.x());
 
     target_pose1.header.frame_id="base_link";
     target_pose1.header.stamp=ros::Time::now();
@@ -92,7 +92,7 @@ geometry_msgs::PoseStamped move_to_object(){
     target_pose1.pose.position.x = dest.x();
     target_pose1.pose.position.y =  dest.y();
     target_pose1.pose.position.z =  v.z();
-    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(-yaw,M_PI/2.0,0 );
+    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(-pick_yaw,M_PI/2.0,0 );
 
     return target_pose1;
 
@@ -121,7 +121,7 @@ void pick_go_cb(std_msgs::Empty) {
                         if (moveit_ptr->move()) {
                             ROS_INFO("Arm is up, placing on table...");
                             pick_pose.pose.position.z=pick_pose.pose.position.z+0.01;
-                             pick_pose.pose.position.y=pick_pose.pose.position.y+0.1;
+                            pick_pose.pose.position.y=pick_pose.pose.position.y+0.1;
                             if (arm_cmd(pick_pose)) {
                                 ROS_INFO("Arm planning is done, moving arm..");
                                 if(moveit_ptr->move()) {
@@ -148,17 +148,19 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
 
     moveit::planning_interface::MoveGroup::Plan my_plan;
     double dz[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-double dY[]={0, 0.04, -0.04 ,0.08, -0.08};
-
+    double dY[]={0, 0.04, -0.04 ,0.08, -0.08};
     double z=target_pose1.pose.position.z;
     for (int i=0;i<sizeof(d)/sizeof(double);i++) {
-        target_pose1.pose.position.z=z+dz[i];
-        goal_pub.publish(target_pose1);
-        moveit_goal=target_pose1;
-        moveit_ptr->setPoseTarget(target_pose1);
-        bool success = moveit_ptr->plan(my_plan);
-        ROS_INFO("Moveit plan %s",success?"SUCCESS":"FAILED");
-        if (success) return true;
+        for (int j=0;j<sizeof(dY)/sizeof(double);i++) {
+            target_pose1.pose.position.z=z+dz[i];
+            target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(-pick_yaw+dY[i],M_PI/2.0,0 );
+            goal_pub.publish(target_pose1);
+            moveit_goal=target_pose1;
+            moveit_ptr->setPoseTarget(target_pose1);
+            bool success = moveit_ptr->plan(my_plan);
+            ROS_INFO("Moveit plan %s",success?"SUCCESS":"FAILED");
+            if (success) return true;
+        }
     }
     return false;
 }
@@ -241,12 +243,12 @@ int main(int argc, char **argv) {
     ros::Duration(3.0).sleep();
     ROS_INFO("Looking down...");
     look_down();
- if (arm_cmd(lift_arm())) {
-                        ROS_INFO("Arm planning is done, moving arm up..");
-                        if (moveit_ptr->move()) {
-                            ROS_INFO("Arm is up");
-}
-}
+    if (arm_cmd(lift_arm())) {
+        ROS_INFO("Arm planning is done, moving arm up..");
+        if (moveit_ptr->move()) {
+            ROS_INFO("Arm is up");
+        }
+    }
     ROS_INFO("Ready!");
 
     while (ros::ok())
