@@ -2,49 +2,49 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" assignedExecutableTargets="true" buildAllGenerated="true">
     <generated>
-      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="actionlib_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="robotican_controllers_node" />
-      <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="dynamic_reconfigure_gencfg" />
-      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="robotican_controllers_jta" />
+      <config projectName="robotican_controllers" targetName="robotican_controllers_node" />
+      <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="gtest" />
       <config projectName="robotican_controllers" targetName="dynamic_reconfigure_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="geometry_msgs_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="control_toolbox_gencfg" />
       <config projectName="robotican_controllers" targetName="actionlib_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="tests" />
       <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="dynamic_reconfigure_gencfg" />
       <config projectName="robotican_controllers" targetName="dynamic_reconfigure_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="std_msgs_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="geometry_msgs_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="clean_test_results" />
-      <config projectName="robotican_controllers" targetName="_catkin_empty_exported_target" />
+      <config projectName="robotican_controllers" targetName="actionlib_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_py" />
       <config projectName="robotican_controllers" targetName="robotican_controllers" />
       <config projectName="robotican_controllers" targetName="doxygen" />
-      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_py" />
       <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_py" />
       <config projectName="robotican_controllers" targetName="std_msgs_generate_messages_py" />
       <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="std_msgs_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_py" />
       <config projectName="robotican_controllers" targetName="roscpp_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="dynamic_reconfigure_generate_messages_py" />
       <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="download_extra_data" />
+      <config projectName="robotican_controllers" targetName="_catkin_empty_exported_target" />
+      <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="actionlib_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="clean_test_results_robotican_controllers" />
-      <config projectName="robotican_controllers" targetName="download_extra_data" />
       <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="gtest_main" />
       <config projectName="robotican_controllers" targetName="run_tests" />
@@ -80,8 +80,18 @@
       <file leaf-file-name="gripper_action_controller_impl.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9944321">
-              <caret line="189" column="55" selection-start-line="189" selection-start-column="44" selection-end-line="189" selection-end-column="55" />
+            <state vertical-scroll-proportion="0.7287406">
+              <caret line="238" column="0" selection-start-line="238" selection-start-column="0" selection-end-line="238" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="two_finger_controller.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/include/robotican_controllers/two_finger_controller.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="90" column="37" selection-start-line="90" selection-start-column="37" selection-end-line="90" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -110,8 +120,8 @@
         <option value="$PROJECT_DIR$/include/robotican_controllers/joint_trajectory_controller.h" />
         <option value="$PROJECT_DIR$/include/robotican_controllers/joint_trajectory_controller_impl.h" />
         <option value="$PROJECT_DIR$/src/robotican_controllers/joint_trajectory_controller.cpp" />
-        <option value="$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h" />
         <option value="$PROJECT_DIR$/include/robotican_controllers/two_finger_controller.h" />
+        <option value="$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h" />
       </list>
     </option>
   </component>
@@ -879,7 +889,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0">
           <caret line="0" column="45" selection-start-line="0" selection-start-column="45" selection-end-line="0" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -936,15 +945,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.13240042">
           <caret line="61" column="7" selection-start-line="61" selection-start-column="7" selection-end-line="61" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/two_finger_controller.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30247578">
-          <caret line="126" column="29" selection-start-line="126" selection-start-column="29" selection-end-line="126" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -952,14 +952,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.15823466">
           <caret line="90" column="5" selection-start-line="90" selection-start-column="5" selection-end-line="90" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/two_finger_controller.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="90" column="37" selection-start-line="90" selection-start-column="37" selection-end-line="90" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9944321">
-          <caret line="189" column="55" selection-start-line="189" selection-start-column="44" selection-end-line="189" selection-end-column="55" />
+        <state vertical-scroll-proportion="0.7287406">
+          <caret line="238" column="0" selection-start-line="238" selection-start-column="0" selection-end-line="238" selection-end-column="0" />
           <folding />
         </state>
       </provider>

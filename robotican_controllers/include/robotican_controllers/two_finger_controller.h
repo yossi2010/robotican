@@ -161,7 +161,9 @@ double tip_r=0.09;
 
         // ROS API
         ros::NodeHandle    controller_nh_;
+        ros::Publisher     _gapPub;
         ActionServerPtr    action_server_;
+
 
         ros::Timer         goal_handle_timer_;
 

@@ -132,6 +132,7 @@ namespace gripper_action_controller
         // Controlled joint
         controller_nh_.getParam("leftJoint", leftJoint_name_);
         controller_nh_.getParam("rightJoint", rightJoint_name_);
+        _gapPub = controller_nh_.advertise<control_msgs::GripperCommandResult>("current_gap", 10);
         if (leftJoint_name_.empty() || rightJoint_name_.empty())
         {
             ROS_ERROR_STREAM_NAMED(name_, "Could not find joint name on param server");
@@ -219,6 +220,7 @@ namespace gripper_action_controller
         double error_position = command_struct_rt_.position_ - current_position;
         double error_velocity = - current_velocity;
         _lastPosition = current_position;
+
         checkForSuccess(time, error_position, current_position, current_velocity, current_effort);
 
         // Hardware interface adapter: Generate and send commands
@@ -227,8 +229,14 @@ namespace gripper_action_controller
                                                                  -jointsPos, 0.0,
                                                                  error_position, error_velocity, command_struct_rt_.max_effort_);
         computed_command_ = right_hw_iface_adapter_.updateCommand(time, period,
-                                                                  jointsPos, 0.0,
-                                                                 error_position, error_velocity, command_struct_rt_.max_effort_);
+                                                                  jointsPos, 0.0, error_position, error_velocity, command_struct_rt_.max_effort_);
+
+
+//        control_msgs::GripperCommandResult pubMsg;
+//        pubMsg.position = current_position;
+//        pubMsg.effort = current_effort;
+//        _gapPub.publish(pubMsg);
+
     }
 
     template <class HardwareInterface>

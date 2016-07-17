@@ -22,6 +22,8 @@ namespace robotican_hardware {
     }
 
 
+
+
     void Servo::update(const DeviceMessage *deviceMessage) {
         if(isReady()) {
             ServoFeedback *feedback = (ServoFeedback *) deviceMessage;

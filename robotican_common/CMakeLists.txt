@@ -15,6 +15,9 @@ find_package(catkin REQUIRED COMPONENTS
         pcl_ros
         tf
         dynamic_reconfigure
+        moveit_core
+        moveit_ros_planning
+        moveit_ros_planning_interface
         )
 
 ## System dependencies are found with CMake's conventions
@@ -110,7 +113,11 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
         #  INCLUDE_DIRS include
         #  LIBRARIES robotican_common
-        CATKIN_DEPENDS roscpp std_msgs sensor_msgs geometry_msgs dynamic_reconfigure#message_generation
+        CATKIN_DEPENDS roscpp std_msgs sensor_msgs geometry_msgs dynamic_reconfigure
+        moveit_core
+        moveit_ros_planning
+        moveit_ros_planning_interface
+        #message_generation
         #  DEPENDS system_lib
 )
 
@@ -137,11 +144,13 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(joy_teleop_node src/joy_teleop_node.cpp)
+add_executable(arm_joy_node src/arm_joy_node.cpp)
 target_link_libraries(joy_teleop_node ${catkin_LIBRARIES})
 add_executable(find_objects_node src/find_objects.cpp)
 add_dependencies(find_objects_node ${PROJECT_NAME}_gencfg)
 add_dependencies(find_objects_node ${PROJECT_NAME}_gencpp)
 target_link_libraries(find_objects_node ${catkin_LIBRARIES})
+target_link_libraries(arm_joy_node ${catkin_LIBRARIES})
 
 add_executable(reach_event src/reach_event_node.cpp)
 target_link_libraries(reach_event ${catkin_LIBRARIES})
