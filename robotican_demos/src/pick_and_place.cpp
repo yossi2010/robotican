@@ -59,7 +59,7 @@ geometry_msgs::PoseStamped lift_arm(){
     target_pose1.header.stamp=ros::Time::now();
     target_pose1.pose.position.x = 0.4;
     target_pose1.pose.position.y =  0.0;
-    target_pose1.pose.position.z =  0.845;
+    target_pose1.pose.position.z =  0.85;
     target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,M_PI/2.0,0 );
     return target_pose1;
 }
@@ -147,10 +147,12 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
     if (!have_goal) have_goal=true;
 
     moveit::planning_interface::MoveGroup::Plan my_plan;
-    double d[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+    double dz[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+double dY[]={0, 0.04, -0.04 ,0.08, -0.08};
+
     double z=target_pose1.pose.position.z;
     for (int i=0;i<sizeof(d)/sizeof(double);i++) {
-        target_pose1.pose.position.z=z+d[i];
+        target_pose1.pose.position.z=z+dz[i];
         goal_pub.publish(target_pose1);
         moveit_goal=target_pose1;
         moveit_ptr->setPoseTarget(target_pose1);
@@ -239,7 +241,12 @@ int main(int argc, char **argv) {
     ros::Duration(3.0).sleep();
     ROS_INFO("Looking down...");
     look_down();
-
+ if (arm_cmd(lift_arm())) {
+                        ROS_INFO("Arm planning is done, moving arm up..");
+                        if (moveit_ptr->move()) {
+                            ROS_INFO("Arm is up");
+}
+}
     ROS_INFO("Ready!");
 
     while (ros::ok())
