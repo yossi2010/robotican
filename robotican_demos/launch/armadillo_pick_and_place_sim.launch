@@ -14,7 +14,7 @@
       <arg name="moveit" value="true"/>
   </include>
   
-  <!-- <node name="pick__and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true"/>  -->
+   <node name="pick__and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true"/>  
   
   
     <node name="find_object_node" pkg="robotican_common" type="find_objects_node" output="screen">
