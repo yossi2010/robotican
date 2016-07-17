@@ -150,7 +150,7 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
     double dz[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
     double dY[]={0, 0.04, -0.04 ,0.08, -0.08};
     double z=target_pose1.pose.position.z;
-    for (int i=0;i<sizeof(d)/sizeof(double);i++) {
+    for (int i=0;i<sizeof(dz)/sizeof(double);i++) {
         for (int j=0;j<sizeof(dY)/sizeof(double);i++) {
             target_pose1.pose.position.z=z+dz[i];
             target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(-pick_yaw+dY[i],M_PI/2.0,0 );
