@@ -165,7 +165,7 @@
 	<arg name="cWidth" value="640" />
 	<arg name="dHeight" value="480" />
 	<arg name="dWidth" value="640" />
-	<arg name="pcScale" value="1000" />
+	<arg name="pcScale" value="100" />
 	<arg name="enableDepth" value="1" />
 	<arg name="enableColor" value="1" />
  </include>
