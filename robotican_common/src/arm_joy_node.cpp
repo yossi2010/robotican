@@ -5,14 +5,20 @@
 #include <ros/ros.h>
 #include <sensor_msgs/Joy.h>
 #include <moveit/move_group_interface/move_group.h>
+#include <control_msgs/GripperCommandAction.h>
+#include <actionlib/client/simple_action_client.h>
+#include <control_msgs/GripperCommandAction.h>
 
 #define DEBUG_JOY_ARM
+
+typedef actionlib::SimpleActionClient<control_msgs::GripperCommandAction> GripperClient;
 
 class ArmJoyNode {
 private:
     ros::NodeHandle _nodeHandle;
     ros::AsyncSpinner _spinner;
     moveit::planning_interface::MoveGroup _group;
+    GripperClient _client;
     float _rotation1IncreamentValue;
     float _rotation2IncreamentValue;
     float _shoulder1IncreamentValue;
@@ -26,6 +32,7 @@ private:
     int _shoulder2State;
     int _shoulder3State;
     int _wristState;
+    int _gripperState;
 
     //buttons and axis indexs
     int _deadManIndex;
@@ -81,6 +88,12 @@ private:
                 } else if (msg->axes[_upDownAxis] == -1) {
                     _shoulder3State = 1;
                 }
+
+                if(msg->buttons[_yButtonIndex] == 1) {
+                    _gripperState = 1;
+                } else if(msg->buttons[_yButtonIndex] == -1) {
+                    _gripperState = -1;
+                }
             }
         }
 
@@ -91,10 +104,11 @@ private:
                || _shoulder1State == 1 || _shoulder1State == -1
                || _shoulder2State == 1 || _shoulder2State == -1
                || _shoulder3State == 1 || _shoulder3State == -1
-               || _wristState == 1 || _wristState == -1;
+               || _wristState == 1 || _wristState == -1
+               || _gripperState == 1 || _gripperState == -1;
     }
 public:
-    ArmJoyNode(): _nodeHandle(),  _spinner(2), _group("arm") {
+    ArmJoyNode(): _nodeHandle(),  _spinner(2), _group("arm") , _client("/gripper_controller/gripper_cmd", true) {
         ROS_INFO("[%s]: Arm joy node is active", ros::this_node::getName().c_str());
         _rotation1State = 0;
         _rotation2State = 0;
@@ -102,6 +116,7 @@ public:
         _shoulder2State = 0;
         _shoulder3State = 0;
         _wristState = 0;
+        _gripperState = 0;
         _joySub = _nodeHandle.subscribe<sensor_msgs::Joy>("joy", 10, &ArmJoyNode::joyCallback, this);
         _group.setPlannerId("RRTConnectkConfigDefault");
 
@@ -130,12 +145,12 @@ public:
         ros::param::param<int>("arm_joy_node_up_down_index", _upDownAxis, 7);
         ros::param::param<int>("arm_joy_node_left_right_index", _rightLeftAxis, 6);
 
-        ros::param::param<float>("arm_joy_node_rotation1", _rotation1IncreamentValue, 0.01);
-        ros::param::param<float>("arm_joy_node_left_right_index", _rotation2IncreamentValue, 0.1);
-        ros::param::param<float>("arm_joy_node_left_right_index", _shoulder1IncreamentValue, 0.01);
-        ros::param::param<float>("arm_joy_node_left_right_index", _shoulder2IncreamentValue, 0.05);
-        ros::param::param<float>("arm_joy_node_left_right_index", _shoulder3IncreamentValue, 0.01);
-        ros::param::param<float>("arm_joy_node_left_right_index", _wristIncreamentValue, 0.1);
+        ros::param::param<float>("arm_joy_node_rotation1", _rotation1IncreamentValue, 0.05);
+        ros::param::param<float>("arm_joy_node_rotation2", _rotation2IncreamentValue, 0.1);
+        ros::param::param<float>("arm_joy_node_shoulder1", _shoulder1IncreamentValue, 0.05);
+        ros::param::param<float>("arm_joy_node_shoulder2", _shoulder2IncreamentValue, 0.05);
+        ros::param::param<float>("arm_joy_node_shoulder3", _shoulder3IncreamentValue, 0.05);
+        ros::param::param<float>("arm_joy_node_wrist", _wristIncreamentValue, 0.1);
 
 
 
@@ -198,6 +213,22 @@ public:
                 } else if(_wristState == 1) {
                     _wristState = 0;
                     group_variable_values[5] += _wristIncreamentValue;
+                }
+
+                if(_gripperState == -1) {
+                    _gripperState = 0;
+                    control_msgs::GripperCommandGoal closeGoal;
+                    closeGoal.command.position = 0.0;
+                    closeGoal.command.max_effort = 0.0;
+                    _client.sendGoal(closeGoal);
+
+                } else if(_gripperState == 1) {
+                    _gripperState = 0;
+                    control_msgs::GripperCommandGoal openGoal;
+                    openGoal.command.position = 0.14;
+                    openGoal.command.max_effort = 0.0;
+                    _client.sendGoal(openGoal);
+
                 }
 
 
