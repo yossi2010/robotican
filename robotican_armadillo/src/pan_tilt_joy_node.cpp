@@ -73,12 +73,12 @@ public:
         tiltLim = urdf->getJoint("head_tilt_joint");
         panLim = urdf->getJoint("head_pan_joint");
 
-        if(tiltLim) {
+        if(!tiltLim) {
             ROS_ERROR("[%s]: Could not find head_tilt_joint.", ros::this_node::getName().c_str());
             ros::shutdown();
         }
 
-        if(panLim) {
+        if(!panLim) {
             ROS_ERROR("[%s]: Could not find head_pan_joint.", ros::this_node::getName().c_str());
             ros::shutdown();
         }
