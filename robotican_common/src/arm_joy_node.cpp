@@ -91,7 +91,7 @@ private:
 
                 if(msg->buttons[_yButtonIndex] == 1) {
                     _gripperState = 1;
-                } else if(msg->buttons[_yButtonIndex] == -1) {
+                } else if(msg->buttons[_aButtonIndex] == -1) {
                     _gripperState = -1;
                 }
             }
@@ -161,11 +161,12 @@ public:
     void run() {
         ros::Rate loopRate(50);
         std::vector<double> group_variable_values;
-        while(ros::ok()) {
-            if(haveMoveGoal()) {
-                _group.getCurrentState()->copyJointGroupPositions(
+        _group.getCurrentState()->copyJointGroupPositions(
                         _group.getCurrentState()->getRobotModel()->getJointModelGroup(_group.getName()),
                         group_variable_values);
+        while(ros::ok()) {
+            if(haveMoveGoal()) {
+
 
                 if(_rotation1State == -1) {
                     _rotation1State = 0;
