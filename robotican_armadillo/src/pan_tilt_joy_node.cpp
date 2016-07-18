@@ -5,8 +5,11 @@
 #include <ros/ros.h>
 #include <sensor_msgs/Joy.h>
 #include <std_msgs/Float64MultiArray.h>
+#include <urdf/model.h>
 
 //#define DEBUG_JOY
+
+typedef boost::shared_ptr<const urdf::Joint> UrdfJointConstPtr;
 
 class PanTiltJoy {
 private:
@@ -23,6 +26,9 @@ private:
     bool _deadManButtonActive;      //True if the dead man button is press.
     bool _zeroButtonActive;         //True if the zero button is press.
 
+    UrdfJointConstPtr tiltLim;
+    UrdfJointConstPtr panLim;
+
     ros::NodeHandle _nodeHandle;
     ros::Publisher _panTiltCommand; //This object is for sending command to the pan and tilt.
     ros::Subscriber _joySub;        //Listener to the joystick state.
@@ -35,16 +41,17 @@ private:
         _zeroButtonActive = msg->buttons[_zeroButtonIndex] == 1;
         if(_deadManButtonActive) {
             if(msg->axes[_tiltAxisIndex] > 0) {
-                _tiltPos -= _incTilt;
+                if(tiltLim->limits->lower <= (_tiltPos - _incTilt)) _tiltPos -= _incTilt;
             }
             else if(msg->axes[_tiltAxisIndex] < 0) {
-                _tiltPos += _incTilt;
+                if(tiltLim->limits->upper >= (_tiltPos + _incTilt)) _tiltPos += _incTilt;
             }
             if(msg->axes[_panAxisIndex] > 0) {
-                _panPos += _incPan;
+                if(panLim->limits->upper >= (_panPos + _incPan)) _panPos += _incPan;
+
             }
             else if(msg->axes[_panAxisIndex] < 0) {
-                _panPos -= _incPan;
+                if(panLim->limits->lower <= (_panPos - _incPan)) _panPos -1= _incPan;
             }
             if(_zeroButtonActive) {
                 _panPos = _tiltPos = 0.0;
@@ -58,6 +65,23 @@ public:
         std::string panTiltTopic, joySubTopic;
         _tiltPos = _panPos = 0;
         _deadManButtonActive = _zeroButtonActive = false;
+        boost::shared_ptr<urdf::Model> urdf(new urdf::Model);
+        if(!urdf->initParam("robot_description")) {
+            ROS_ERROR("[%s]: Need to have urdf model.", ros::this_node::getName().c_str());
+            ros::shutdown();
+        }
+        tiltLim = urdf->getJoint("head_tilt_joint");
+        panLim = urdf->getJoint("head_pan_joint");
+
+        if(tiltLim) {
+            ROS_ERROR("[%s]: Could not find head_tilt_joint.", ros::this_node::getName().c_str());
+            ros::shutdown();
+        }
+
+        if(panLim) {
+            ROS_ERROR("[%s]: Could not find head_pan_joint.", ros::this_node::getName().c_str());
+            ros::shutdown();
+        }
 
         // Validation check.
         if(!_nodeHandle.getParam("pan_tilt_topic", panTiltTopic)
