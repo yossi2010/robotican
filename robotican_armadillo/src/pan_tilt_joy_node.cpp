@@ -51,7 +51,7 @@ private:
 
             }
             else if(msg->axes[_panAxisIndex] < 0) {
-                if(panLim->limits->lower <= (_panPos - _incPan)) _panPos -1= _incPan;
+                if(panLim->limits->lower <= (_panPos - _incPan)) _panPos -= _incPan;
             }
             if(_zeroButtonActive) {
                 _panPos = _tiltPos = 0.0;
