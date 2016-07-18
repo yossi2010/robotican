@@ -579,14 +579,26 @@ namespace robotican_hardware {
         int openLoopSize = 0;
         ros::param::param<int>("open_motor_size", openLoopSize, 0);
         for(int i = 0; i < openLoopSize; ++i) {
-            std::string openMotorIdentifier = "motor" + i, jointName;
-            int motorAddress, eSwitchPin, eSwitchType;
+            std::string openMotorIdentifier = "motor" + boost::lexical_cast<std::string>(i), jointName;
+            int motorAddress, eSwitchPin, eSwitchType ,encoderPinA, encoderPinB, LPFHz, PPR, motorDirection, encoderDirection;
+            float LPFAlpha, maxSpeed;
             if(_nodeHandle.getParam(openMotorIdentifier + "_motor_address", motorAddress)
                && _nodeHandle.getParam(openMotorIdentifier + "_motor_emergency_pin", eSwitchPin)
                && _nodeHandle.getParam(openMotorIdentifier + "_motor_emergency_pin_type", eSwitchType)
+               && _nodeHandle.getParam(openMotorIdentifier + "_encoder_pin_a", encoderPinA)
+               && _nodeHandle.getParam(openMotorIdentifier + "_encoder_pin_b", encoderPinB)
+               && _nodeHandle.getParam(openMotorIdentifier + "_lpf_hz", LPFHz)
+               && _nodeHandle.getParam(openMotorIdentifier + "_ppr", PPR)
+               && _nodeHandle.getParam(openMotorIdentifier + "_motor_direction", motorDirection)
+               && _nodeHandle.getParam(openMotorIdentifier + "_encoder_direction", encoderDirection)
+               && _nodeHandle.getParam(openMotorIdentifier + "_lpf_alpha", LPFAlpha)
+               && _nodeHandle.getParam(openMotorIdentifier + "_max_speed", maxSpeed)
                && _nodeHandle.getParam(openMotorIdentifier + "_joint", jointName)) {
+
                 OpenLoopMotor* openLoopMotor = new OpenLoopMotor(_idGen++, &_transportLayer, (byte) motorAddress,
-                                                                 (byte) eSwitchPin, (byte) eSwitchType, 0);
+                                                                 (byte) eSwitchPin, (byte) eSwitchType, maxSpeed,
+                                                                 (byte) encoderPinA, (byte) encoderPinB, motorDirection, encoderDirection,
+                                                                 (uint16_t) LPFHz, (uint16_t) PPR, LPFAlpha);
                 JointInfo_t* jointInfo = openLoopMotor->getJointInfo();
 
                 hardware_interface::JointStateHandle jointStateHandle(jointName,
@@ -601,6 +613,7 @@ namespace robotican_hardware {
                 jointVelocityInterface->registerHandle(JointHandle);
 
                 _devices.push_back(openLoopMotor);
+                openLoopMotor->buildDevice();
 
             }
         }

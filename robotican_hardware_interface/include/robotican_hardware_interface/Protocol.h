@@ -333,7 +333,14 @@ struct BuildMotorOpenLoop : BuildDevice {
     byte motorAddress;
     byte eSwitchPin;
     byte eSwitchType;
+    byte encoderPinA;
+    byte encoderPinB;
+    uint16_t LPFHz;
+    uint16_t PPR;
+    int8_t motorDirection;
+    int8_t encoderDirection;
     float maxSpeed;
+    float LPFAlpha;
 
 }__attribute__((__packed__));
 

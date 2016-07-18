@@ -44,11 +44,19 @@ namespace robotican_hardware {
     class OpenLoopMotor : public RiCMotor {
     private:
         JointInfo_t _jointInfo;
+        byte _encoderPinA;
+        byte _encoderPinB;
+        int8_t _motorDirection;
+        int8_t _encoderDirection;
+        uint16_t _LPFHz;
+        uint16_t _PPR;
         float _maxSpeed;
+        float _LPFAlpha;
     public:
 
-        OpenLoopMotor(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin,
-                              byte eSwitchType, float maxSpeed);
+        OpenLoopMotor(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin, byte eSwitchType,
+                              float maxSpeed, byte encoderA, byte encoderB, int8_t motorDirection, int8_t encoderDirection,
+                              uint16_t LPFHz, uint16_t PPR, float LPFAlpha);
 
         virtual void update(const DeviceMessage *deviceMessage);
 

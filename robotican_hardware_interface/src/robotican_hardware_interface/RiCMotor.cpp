@@ -93,13 +93,25 @@ namespace robotican_hardware {
         return _motorAddress;
     }
 
-    OpenLoopMotor::OpenLoopMotor(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin,
-                                 byte eSwitchType, float maxSpeed) : RiCMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType) {
+    OpenLoopMotor::OpenLoopMotor(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin, byte eSwitchType,
+                                     float maxSpeed, byte encoderA, byte encoderB, int8_t motorDirection, int8_t encoderDirection,
+                                     uint16_t LPFHz, uint16_t PPR, float LPFAlpha) : RiCMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType) {
 
         _maxSpeed = maxSpeed;
+        _encoderPinA = encoderA;
+        _encoderPinB = encoderB;
+        _motorDirection = motorDirection;
+        _encoderDirection = encoderDirection;
+        _LPFHz = LPFHz;
+        _PPR = PPR;
+        _LPFAlpha = LPFAlpha;
     }
 
     void OpenLoopMotor::update(const DeviceMessage *deviceMessage) {
+
+        MotorFeedback *feedback = (MotorFeedback *) deviceMessage;
+        _jointInfo.position = feedback->rad;
+        _jointInfo.velocity = feedback->rad_s;
 
     }
 
@@ -125,9 +137,17 @@ namespace robotican_hardware {
         buildMotorOpenLoop.checkSum = 0;
         buildMotorOpenLoop.id = getId();
         buildMotorOpenLoop.motorAddress = getAddress();
+        buildMotorOpenLoop.motorDirection = _motorDirection;
         buildMotorOpenLoop.eSwitchPin = getESwitchPin();
         buildMotorOpenLoop.eSwitchType = getESwitchType();
         buildMotorOpenLoop.maxSpeed = _maxSpeed;
+        buildMotorOpenLoop.encoderPinA = _encoderPinA;
+        buildMotorOpenLoop.encoderPinB = _encoderPinB;
+        buildMotorOpenLoop.encoderDirection = _encoderDirection;
+        buildMotorOpenLoop.PPR = _PPR;
+        buildMotorOpenLoop.LPFAlpha = _LPFAlpha;
+        buildMotorOpenLoop.LPFHz = _LPFHz;
+
 
         uint8_t* rawData = (uint8_t*) &buildMotorOpenLoop;
         buildMotorOpenLoop.checkSum = _transportLayer->calcChecksum(rawData, buildMotorOpenLoop.length);
