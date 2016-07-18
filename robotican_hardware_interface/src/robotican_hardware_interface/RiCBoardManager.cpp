@@ -500,7 +500,7 @@ namespace robotican_hardware {
             CloseMotorWithEncoderParam motorParams;
 
             int encoderPinA, encoderPinB, LPFHz, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
-                , eSwitchPin, eSwitchType, motorType, motorMode;
+                , eSwitchPin, eSwitchType, motorType, motorMode, baisMin, baisMax;
             float LPFAlpha, KP, KI, KD, maxSpeed, limit, stopLimitMax, stopLimitMin;
             if(_nodeHandle.getParam(closeMotorIdentifier + "_motor_type", motorType)) {
                 switch ((CloseMotorType::CloseMotorType) motorType) {
@@ -525,7 +525,9 @@ namespace robotican_hardware {
                             && _nodeHandle.getParam(closeMotorIdentifier + "_motor_emergency_pin", eSwitchPin)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_motor_emergency_pin_type", eSwitchType)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_joint", jointName)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_mode", motorMode)) {
+                            && _nodeHandle.getParam(closeMotorIdentifier + "_mode", motorMode)
+                            && _nodeHandle.getParam(closeMotorIdentifier + "_bais_min", baisMin)
+                            && _nodeHandle.getParam(closeMotorIdentifier + "_bais_max", baisMax)) {
 
                             motorParams.LPFHz = (uint16_t) LPFHz;
                             motorParams.PIDHz = (uint16_t) PIDHz;
@@ -543,6 +545,8 @@ namespace robotican_hardware {
                             motorParams.stopLimitMin = stopLimitMin;
                             motorParams.encoderPinA = (byte) encoderPinA;
                             motorParams.encoderPinB = (byte) encoderPinB;
+                            motorParams.baisMin = (int16_t) baisMin;
+                            motorParams.baisMax = (int16_t) baisMax;
 
                             CloseLoopMotor *closeLoopMotor = new CloseLoopMotorWithEncoder(_idGen++, &_transportLayer,
                                                                                            (byte) motorAddress,

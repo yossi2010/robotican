@@ -306,6 +306,9 @@ struct BuildMotorCloseLoop : BuildDevice {
     float limit;
     float stopLimitMax;
     float stopLimitMin;
+    int16_t baisMin;
+    int16_t baisMax;
+
 }__attribute__((__packed__));
 
 struct BuildMotorCloseLoopWithEncoder : BuildMotorCloseLoop {

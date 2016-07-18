@@ -90,6 +90,8 @@ namespace robotican_hardware {
     struct  CloseMotorWithEncoderParam : CloseMotorParams {
         byte encoderPinA;
         byte encoderPinB;
+        int16_t baisMin;
+        int16_t baisMax;
     };
 
     struct CloseMotorWithPotentiometerParam : CloseMotorParams {

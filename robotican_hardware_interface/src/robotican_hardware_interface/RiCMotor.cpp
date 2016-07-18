@@ -212,6 +212,8 @@ namespace robotican_hardware {
         buildMotorCloseLoop.limit = _params.limit;
         buildMotorCloseLoop.motorType = getCloseMotorType();
         buildMotorCloseLoop.motorMode = getMode();
+        buildMotorCloseLoop.baisMin = _params.baisMin;
+        buildMotorCloseLoop.baisMax = _params.baisMax;
 
         uint8_t* rawData = (uint8_t*) &buildMotorCloseLoop;
         buildMotorCloseLoop.checkSum = _transportLayer->calcChecksum(rawData, buildMotorCloseLoop.length);
