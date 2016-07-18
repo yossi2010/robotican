@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="joystick_dev" default="/dev/input/js0"/>
-  <arg name="deadband" default="0.1"/>
+  <arg name="deadband" default="0.05"/>
 
 	<node pkg="joy" type="joy_node" name="joy_listener">
 		<param name="dev" value="$(arg joystick_dev)" />
