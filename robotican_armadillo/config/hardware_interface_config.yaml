@@ -43,10 +43,10 @@ motor0_ppr: 1675
 motor0_timeout: 0
 motor0_motor_direction: 1
 motor0_encoder_direction: -1
-motor0_kp: 2.0
-motor0_ki: 80.0
+motor0_kp: 1.3
+motor0_ki: 0.6
 motor0_kd: 0.0
-motor0_max_speed: 16.0
+motor0_max_speed: 8.0
 motor0_limit: 0.2
 motor0_stop_limit_max: 7.5
 motor0_stop_limit_min: -7.5
@@ -55,6 +55,8 @@ motor0_motor_emergency_pin: 12
 motor0_motor_emergency_pin_type: 1
 motor0_joint: 'left_wheel_joint'
 motor0_mode: 0
+motor0_bais_min: -150
+motor0_bais_max: 150
 
 motor1_motor_type: 0
 
@@ -70,10 +72,10 @@ motor1_ppr: 1675
 motor1_timeout: 0
 motor1_motor_direction: -1
 
-motor1_kp: 2.0
-motor1_ki: 80.0
+motor1_kp: 1.3
+motor1_ki: 0.6
 motor1_kd: 0.0
-motor1_max_speed: 16.0
+motor1_max_speed: 8.0
 motor1_limit: 0.2
 motor1_stop_limit_max: 7.5
 motor1_stop_limit_min: -7.5
@@ -82,6 +84,37 @@ motor1_motor_emergency_pin: 12
 motor1_motor_emergency_pin_type: 1
 motor1_joint: 'right_wheel_joint'
 motor1_mode: 0
+motor1_bais_min: -200
+motor1_bais_max: 200
+
+
+#~ open_motor_size: 2
+#~ motor0_motor_address: 0
+#~ motor0_motor_emergency_pin: 12
+#~ motor0_motor_emergency_pin_type: 1
+#~ motor0_encoder_pin_a: 27
+#~ motor0_encoder_pin_b: 28
+#~ motor0_lpf_hz: 80
+#~ motor0_ppr: 1675
+#~ motor0_motor_direction: 1
+#~ motor0_encoder_direction: -1
+#~ motor0_lpf_alpha: 0.27
+#~ motor0_max_speed: 8.0
+#~ motor0_joint: 'left_wheel_joint'
+#~ 
+#~ 
+#~ motor1_encoder_pin_a: 29
+#~ motor1_encoder_pin_b: 30
+#~ motor1_encoder_direction: 1
+#~ motor1_lpf_hz: 80
+#~ motor1_lpf_alpha: 0.27
+#~ motor1_ppr: 1675
+#~ motor1_motor_direction: -1
+#~ motor1_max_speed: 8.0
+#~ motor1_motor_address: 1
+#~ motor1_motor_emergency_pin: 12
+#~ motor1_motor_emergency_pin_type: 1
+#~ motor1_joint: 'right_wheel_joint'
 
 
 position_motor_size: 1
@@ -113,15 +146,15 @@ positionMotor0_stop_limit_min: -0.01
 
 servo_size: 2
 
-servo0_pin: 3
+servo0_pin: 4
 servo0_a: -245.55
-servo0_b: 1520.0
+servo0_b: 1280.0
 servo0_max: 1.57
 servo0_min: -1.57
 servo0_init_pos: 0
 servo0_joint_name: 'head_tilt_joint'
 
-servo1_pin: 4
+servo1_pin: 3
 servo1_a: -305.577
 servo1_b: 1450.0
 servo1_max: 1.57
