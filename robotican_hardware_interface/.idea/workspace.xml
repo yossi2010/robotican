@@ -10,7 +10,6 @@
       <config projectName="robotican_hardware_interface" targetName="dynamic_reconfigure_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="_robotican_hardware_interface_generate_messages_check_deps_setImuClib" />
       <config projectName="robotican_hardware_interface" targetName="rosgraph_msgs_generate_messages_py" />
-      <config projectName="robotican_hardware_interface" targetName="gazebo_msgs_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="dynamixel_pro_controller_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="actionlib_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="roscpp_generate_messages_cpp" />
@@ -44,6 +43,7 @@
       <config projectName="robotican_hardware_interface" targetName="control_toolbox_gencfg" />
       <config projectName="robotican_hardware_interface" targetName="robotican_hardware_interface_generate_messages" />
       <config projectName="robotican_hardware_interface" targetName="geometry_msgs_generate_messages_cpp" />
+      <config projectName="robotican_hardware_interface" targetName="clean_test_results" />
       <config projectName="robotican_hardware_interface" targetName="sensor_msgs_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="std_msgs_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="tf_generate_messages_cpp" />
@@ -55,7 +55,7 @@
       <config projectName="robotican_hardware_interface" targetName="rosgraph_msgs_generate_messages_lisp" />
       <config projectName="robotican_hardware_interface" targetName="tf2_msgs_generate_messages_cpp" />
       <config projectName="robotican_hardware_interface" targetName="gtest_main" />
-      <config projectName="robotican_hardware_interface" targetName="clean_test_results" />
+      <config projectName="robotican_hardware_interface" targetName="gazebo_msgs_generate_messages_py" />
       <config projectName="robotican_hardware_interface" targetName="gtest" />
       <config projectName="robotican_hardware_interface" targetName="tests" />
       <config projectName="robotican_hardware_interface" targetName="actionlib_generate_messages_lisp" />
@@ -123,7 +123,7 @@
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="172" column="21" selection-start-line="172" selection-start-column="21" selection-end-line="172" selection-end-column="21" />
+              <caret line="173" column="21" selection-start-line="173" selection-start-column="21" selection-end-line="173" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -132,8 +132,8 @@
       <file leaf-file-name="RiCBoardManager.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.22727273">
-              <caret line="528" column="85" selection-start-line="528" selection-start-column="76" selection-end-line="528" selection-end-column="85" />
+            <state vertical-scroll-proportion="0.11363637">
+              <caret line="598" column="68" selection-start-line="598" selection-start-column="68" selection-end-line="598" selection-end-column="68" />
               <folding />
             </state>
           </provider>
@@ -143,7 +143,7 @@
         <entry file="file://$PROJECT_DIR$/include/robotican_hardware_interface/Protocol.h">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="309" column="4" selection-start-line="309" selection-start-column="4" selection-end-line="309" selection-end-column="4" />
+              <caret line="349" column="24" selection-start-line="349" selection-start-column="24" selection-end-line="349" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -153,10 +153,9 @@
         <entry file="file://$PROJECT_DIR$/include/robotican_hardware_interface/RiCMotor.h">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="93" column="8" selection-start-line="93" selection-start-column="8" selection-end-line="93" selection-end-column="8" />
+              <caret line="51" column="28" selection-start-line="51" selection-start-column="17" selection-end-line="51" selection-end-column="28" />
               <folding>
                 <element signature="e#130#169#0" expanded="true" />
-                <element signature="e#1908#2278#1" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -166,7 +165,7 @@
         <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCMotor.cpp">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="215" column="49" selection-start-line="215" selection-start-column="49" selection-end-line="215" selection-end-column="49" />
+              <caret line="153" column="58" selection-start-line="153" selection-start-column="58" selection-end-line="153" selection-end-column="58" />
               <folding>
                 <element signature="e#38#88#0" expanded="true" />
               </folding>
@@ -875,7 +874,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13555788" sideWeight="0.4978166" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24290393" sideWeight="0.5053599" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14911366" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14911366" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -919,7 +918,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="123" />
+      <option name="time" value="124" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1250,7 +1249,7 @@
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="172" column="21" selection-start-line="172" selection-start-column="21" selection-end-line="172" selection-end-column="21" />
+          <caret line="173" column="21" selection-start-line="173" selection-start-column="21" selection-end-line="173" selection-end-column="21" />
           <folding />
         </state>
       </provider>
@@ -1258,7 +1257,7 @@
     <entry file="file://$PROJECT_DIR$/include/robotican_hardware_interface/Protocol.h">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="309" column="4" selection-start-line="309" selection-start-column="4" selection-end-line="309" selection-end-column="4" />
+          <caret line="349" column="24" selection-start-line="349" selection-start-column="24" selection-end-line="349" selection-end-column="24" />
           <folding />
         </state>
       </provider>
@@ -1266,10 +1265,9 @@
     <entry file="file://$PROJECT_DIR$/include/robotican_hardware_interface/RiCMotor.h">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="93" column="8" selection-start-line="93" selection-start-column="8" selection-end-line="93" selection-end-column="8" />
+          <caret line="51" column="28" selection-start-line="51" selection-start-column="17" selection-end-line="51" selection-end-column="28" />
           <folding>
             <element signature="e#130#169#0" expanded="true" />
-            <element signature="e#1908#2278#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1277,7 +1275,7 @@
     <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCMotor.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="215" column="49" selection-start-line="215" selection-start-column="49" selection-end-line="215" selection-end-column="49" />
+          <caret line="153" column="58" selection-start-line="153" selection-start-column="58" selection-end-line="153" selection-end-column="58" />
           <folding>
             <element signature="e#38#88#0" expanded="true" />
           </folding>
@@ -1286,8 +1284,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22727273">
-          <caret line="528" column="85" selection-start-line="528" selection-start-column="76" selection-end-line="528" selection-end-column="85" />
+        <state vertical-scroll-proportion="0.11363637">
+          <caret line="598" column="68" selection-start-line="598" selection-start-column="68" selection-end-line="598" selection-end-column="68" />
           <folding />
         </state>
       </provider>

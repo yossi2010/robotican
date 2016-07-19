@@ -20,103 +20,115 @@ ultrasonic2_frame_id: 'rear_urf_link'
 ultrasonic2_topic_name: 'urf/rear'
 
 
-close_motor_size: 2
-
-motor0_motor_type: 0
-motor0_encoder_pin_A: 27
-motor0_encoder_pin_B: 28
-motor0_lpf_hz: 80
-motor0_lpf_alpha: 0.27
-motor0_pid_hz: 1000
-motor0_ppr: 1675
-motor0_timeout: 0
-motor0_motor_direction: 1
-motor0_encoder_direction: -1
-motor0_kp: 2.0
-motor0_ki: 80.0
-motor0_kd: 0.0
-motor0_max_speed: 16.0
-motor0_limit: 0.2
-motor0_stop_limit_max: 7.5
-motor0_stop_limit_min: -7.5
-motor0_motor_address: 0
-motor0_motor_emergency_pin: 12
-motor0_motor_emergency_pin_type: 1
-motor0_joint: 'left_wheel_joint'
-motor0_mode: 0
-motor0_bais_min: -150
-motor0_bais_max: 150
-
-motor1_motor_type: 0
-
-motor1_encoder_pin_A: 29
-motor1_encoder_pin_B: 30
-motor1_encoder_direction: 1
-
-motor1_lpf_hz: 80
-motor1_lpf_alpha: 0.27
-
-motor1_pid_hz: 1000
-motor1_ppr: 1675
-motor1_timeout: 0
-motor1_motor_direction: -1
-
-motor1_kp: 2.0
-motor1_ki: 80.0
-motor1_kd: 0.0
-motor1_max_speed: 16.0
-motor1_limit: 0.2
-motor1_stop_limit_max: 7.5
-motor1_stop_limit_min: -7.5
-motor1_motor_address: 1
-motor1_motor_emergency_pin: 12
-motor1_motor_emergency_pin_type: 1
-motor1_joint: 'right_wheel_joint'
-motor1_mode: 0
-motor1_bais_min: -200
-motor1_bais_max: 200
-
+#~ close_motor_size: 2
 #~ 
-#~ open_motor_size: 2
+#~ motor0_motor_type: 0
+#~ motor0_encoder_pin_A: 27
+#~ motor0_encoder_pin_B: 28
+#~ motor0_lpf_hz_speed: 80
+#~ motor0_lpf_hz_input: 1000
+#~ motor0_lpf_alpha_speed: 0.27
+#~ motor0_lpf_alpha_input: 1.0
+#~ motor0_pid_hz: 1000
+#~ motor0_ppr: 1675
+#~ motor0_timeout: 0
+#~ motor0_motor_direction: 1
+#~ motor0_encoder_direction: -1
+#~ motor0_kp: 2.0
+#~ motor0_ki: 80.0
+#~ motor0_kd: 0.0
+#~ motor0_max_speed: 16.0
+#~ motor0_limit: 0.2
+#~ motor0_stop_limit_max: 7.5
+#~ motor0_stop_limit_min: -7.5
 #~ motor0_motor_address: 0
 #~ motor0_motor_emergency_pin: 12
 #~ motor0_motor_emergency_pin_type: 1
-#~ motor0_encoder_pin_a: 27
-#~ motor0_encoder_pin_b: 28
-#~ motor0_lpf_hz: 80
-#~ motor0_ppr: 1675
-#~ motor0_motor_direction: 1
-#~ motor0_encoder_direction: -1
-#~ motor0_lpf_alpha: 0.27
-#~ motor0_max_speed: 8.0
 #~ motor0_joint: 'left_wheel_joint'
+#~ motor0_mode: 0
+#~ motor0_bais_min: -150
+#~ motor0_bais_max: 150
 #~ 
 #~ 
-#~ motor1_encoder_pin_a: 29
-#~ motor1_encoder_pin_b: 30
+#~ motor1_motor_type: 0
+#~ 
+#~ motor1_encoder_pin_A: 29
+#~ motor1_encoder_pin_B: 30
 #~ motor1_encoder_direction: 1
-#~ motor1_lpf_hz: 80
-#~ motor1_lpf_alpha: 0.27
+#~ 
+#~ motor1_lpf_hz_speed: 80
+#~ motor1_lpf_hz_input: 1000
+#~ motor1_lpf_alpha_speed: 0.27
+#~ motor1_lpf_alpha_input: 1.0
+#~ 
+#~ motor1_pid_hz: 1000
 #~ motor1_ppr: 1675
+#~ motor1_timeout: 0
 #~ motor1_motor_direction: -1
-#~ motor1_max_speed: 8.0
+#~ 
+#~ motor1_kp: 2.0
+#~ motor1_ki: 80.0
+#~ motor1_kd: 0.0
+#~ motor1_max_speed: 16.0
+#~ motor1_limit: 0.2
+#~ motor1_stop_limit_max: 7.5
+#~ motor1_stop_limit_min: -7.5
 #~ motor1_motor_address: 1
 #~ motor1_motor_emergency_pin: 12
 #~ motor1_motor_emergency_pin_type: 1
 #~ motor1_joint: 'right_wheel_joint'
+#~ motor1_mode: 0
+#~ motor1_bais_min: -200
+#~ motor1_bais_max: 200
+
+
+open_motor_size: 2
+
+motor0_motor_address: 0
+motor0_motor_emergency_pin: 12
+motor0_motor_emergency_pin_type: 1
+motor0_encoder_pin_a: 27
+motor0_encoder_pin_b: 28
+motor0_lpf_hz_speed: 80
+motor0_lpf_hz_input: 1000
+motor0_ppr: 1675
+motor0_motor_direction: 1
+motor0_encoder_direction: -1
+motor0_lpf_alpha_speed: 0.27
+motor0_lpf_alpha_input: 1.0
+motor0_max_speed: 8.0
+motor0_joint: 'left_wheel_joint'
+
+
+motor1_encoder_pin_a: 29
+motor1_encoder_pin_b: 30
+motor1_encoder_direction: 1
+motor1_lpf_hz_speed: 80
+motor1_lpf_hz_input: 1000
+motor1_lpf_alpha_speed: 0.27
+motor1_lpf_alpha_input: 1.0
+motor1_ppr: 1675
+motor1_motor_direction: -1
+motor1_max_speed: 8.0
+motor1_motor_address: 1
+motor1_motor_emergency_pin: 12
+motor1_motor_emergency_pin_type: 1
+motor1_joint: 'right_wheel_joint'
 
 position_motor_size: 1
  
 positionMotor0_motor_type: 1
 positionMotor0_a: 0.00064833
 positionMotor0_b: -0.018153241
-positionMotor0_lpf_hz: 63
+positionMotor0_lpf_hz_speed: 63
+positionMotor0_lpf_hz_input: 1000
 positionMotor0_pid_hz: 1000
 positionMotor0_ppr: 2503
 positionMotor0_timeout: 0
 positionMotor0_motor_direction: -1
 positionMotor0_encoder_direction: 1
-positionMotor0_lpf_alpha: 0.21
+positionMotor0_lpf_alpha_speed: 0.21
+positionMotor0_lpf_alpha_input: 1.0
 positionMotor0_kp: 6000.0
 positionMotor0_ki: 150.0
 positionMotor0_kd: 0.0

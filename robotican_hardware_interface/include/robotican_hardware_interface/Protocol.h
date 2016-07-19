@@ -292,13 +292,15 @@ struct BuildMotorCloseLoop : BuildDevice {
     byte eSwitchPin;
     byte eSwitchType;
     byte motorType;
-    uint16_t LPFHz;
+    uint16_t LPFHzSpeed;
+    uint16_t LPFHzInput;
     uint16_t PIDHz;
     uint16_t PPR;
     uint16_t timeout;
     int8_t motorDirection;
     int8_t encoderDirection;
-    float LPFAlpha;
+    float LPFAlphaSpeed;
+    float LPFAlphaInput;
     float KP;
     float KI;
     float KD;
@@ -338,12 +340,14 @@ struct BuildMotorOpenLoop : BuildDevice {
     byte eSwitchType;
     byte encoderPinA;
     byte encoderPinB;
-    uint16_t LPFHz;
+    uint16_t LPFHzSpeed;
+    uint16_t LPFHzInput;
     uint16_t PPR;
     int8_t motorDirection;
     int8_t encoderDirection;
     float maxSpeed;
-    float LPFAlpha;
+    float LPFAlphaSpeed;
+    float LPFAlphaInput;
 
 }__attribute__((__packed__));
 

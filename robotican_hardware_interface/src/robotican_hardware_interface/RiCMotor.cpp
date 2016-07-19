@@ -95,16 +95,19 @@ namespace robotican_hardware {
 
     OpenLoopMotor::OpenLoopMotor(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin, byte eSwitchType,
                                      float maxSpeed, byte encoderA, byte encoderB, int8_t motorDirection, int8_t encoderDirection,
-                                     uint16_t LPFHz, uint16_t PPR, float LPFAlpha) : RiCMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType) {
+                                     uint16_t LPFHzSpeed, uint16_t LPFHzInput, float LPFAlphaInput, float LPFAlphaSpeed, uint16_t PPR)
+            : RiCMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType) {
 
         _maxSpeed = maxSpeed;
         _encoderPinA = encoderA;
         _encoderPinB = encoderB;
         _motorDirection = motorDirection;
         _encoderDirection = encoderDirection;
-        _LPFHz = LPFHz;
+        _LPFHzSpeed = LPFHzSpeed;
+        _LPFHzInput = LPFHzInput;
+        _LPFAlphaInput = LPFAlphaInput;
         _PPR = PPR;
-        _LPFAlpha = LPFAlpha;
+        _LPFAlphaSpeed = LPFAlphaSpeed;
     }
 
     void OpenLoopMotor::update(const DeviceMessage *deviceMessage) {
@@ -145,8 +148,10 @@ namespace robotican_hardware {
         buildMotorOpenLoop.encoderPinB = _encoderPinB;
         buildMotorOpenLoop.encoderDirection = _encoderDirection;
         buildMotorOpenLoop.PPR = _PPR;
-        buildMotorOpenLoop.LPFAlpha = _LPFAlpha;
-        buildMotorOpenLoop.LPFHz = _LPFHz;
+        buildMotorOpenLoop.LPFAlphaSpeed = _LPFAlphaSpeed;
+        buildMotorOpenLoop.LPFHzSpeed = _LPFHzSpeed;
+        buildMotorOpenLoop.LPFHzInput = _LPFHzInput;
+        buildMotorOpenLoop.LPFAlphaInput = _LPFAlphaInput;
 
 
         uint8_t* rawData = (uint8_t*) &buildMotorOpenLoop;
@@ -169,8 +174,8 @@ namespace robotican_hardware {
         _server.setCallback(_callbackType);
 
         robotican_hardware_interface::RiCBoardConfig config;
-        config.motor_lpf_hz = param.LPFHz;
-        config.motor_lpf_alpha = param.LPFAlpha;
+        config.motor_lpf_hz = param.LPFHzSpeed;
+        config.motor_lpf_alpha = param.LPFAlphaSpeed;
         config.motor_pid_hz = param.PIDHz;
         config.motor_kp = param.KP;
         config.motor_ki = param.KI;
@@ -195,7 +200,8 @@ namespace robotican_hardware {
         buildMotorCloseLoop.eSwitchType = getESwitchType();
         buildMotorCloseLoop.encoderPinA = _params.encoderPinA;
         buildMotorCloseLoop.encoderPinB = _params.encoderPinB;
-        buildMotorCloseLoop.LPFHz = _params.LPFHz;
+        buildMotorCloseLoop.LPFHzSpeed = _params.LPFHzSpeed;
+        buildMotorCloseLoop.LPFHzInput = _params.LPFHzInput;
         buildMotorCloseLoop.PIDHz = _params.PIDHz;
         buildMotorCloseLoop.PPR = _params.PPR;
         buildMotorCloseLoop.timeout = _params.timeout;
@@ -204,7 +210,8 @@ namespace robotican_hardware {
         buildMotorCloseLoop.stopLimitMax = _params.stopLimitMax;
         buildMotorCloseLoop.stopLimitMin = _params.stopLimitMin;
 
-        buildMotorCloseLoop.LPFAlpha = _params.LPFAlpha;
+        buildMotorCloseLoop.LPFAlphaSpeed = _params.LPFAlphaSpeed;
+        buildMotorCloseLoop.LPFAlphaInput = _params.LPFAlphaInput;
         buildMotorCloseLoop.KP = _params.KP;
         buildMotorCloseLoop.KI = _params.KI;
         buildMotorCloseLoop.KD = _params.KD;
@@ -223,13 +230,13 @@ namespace robotican_hardware {
     void CloseLoopMotorWithEncoder::setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,
                                               float KD) {
         _isSetParam = true;
-        _params.LPFHz = lpfHz;
+        _params.LPFHzSpeed = lpfHz;
         _params.PIDHz = pidHz;
-        _params.LPFAlpha = lpfAlpha;
+        _params.LPFAlphaSpeed = lpfAlpha;
         _params.KP = KP;
         _params.KI = KI;
         _params.KD = KD;
-        ROS_INFO("PARAMS: {%d , %d, %f, %f, %f, %f}",  _params.LPFHz, _params.PIDHz, _params.LPFAlpha, _params.KP, _params.KI, _params.KD);
+        ROS_INFO("PARAMS: {%d , %d, %f, %f, %f, %f}", _params.LPFHzSpeed, _params.PIDHz, _params.LPFAlphaSpeed, _params.KP, _params.KI, _params.KD);
 
     }
 
@@ -242,9 +249,9 @@ namespace robotican_hardware {
                 param.length = sizeof(param);
                 param.checkSum = 0;
                 param.id = getId();
-                param.lpfHz = _params.LPFHz;
+                param.lpfHz = _params.LPFHzSpeed;
                 param.pidHz = _params.PIDHz;
-                param.lfpAlpha = _params.LPFAlpha;
+                param.lfpAlpha = _params.LPFAlphaSpeed;
                 param.KP = _params.KP;
                 param.KI = _params.KI;
                 param.KD = _params.KD;
@@ -278,13 +285,13 @@ namespace robotican_hardware {
         buildCloseLoopWithPotentiometer.eSwitchPin = getESwitchPin();
         buildCloseLoopWithPotentiometer.eSwitchType = getESwitchType();
         buildCloseLoopWithPotentiometer.motorType = getCloseMotorType();
-        buildCloseLoopWithPotentiometer.LPFHz = _param.LPFHz;
+        buildCloseLoopWithPotentiometer.LPFHzSpeed = _param.LPFHzSpeed;
         buildCloseLoopWithPotentiometer.PIDHz = _param.PIDHz;
         buildCloseLoopWithPotentiometer.PPR = _param.PPR;
         buildCloseLoopWithPotentiometer.timeout = _param.timeout;
         buildCloseLoopWithPotentiometer.motorDirection = _param.motorDirection;
         buildCloseLoopWithPotentiometer.encoderDirection = _param.encoderDirection;
-        buildCloseLoopWithPotentiometer.LPFAlpha = _param.LPFAlpha;
+        buildCloseLoopWithPotentiometer.LPFAlphaSpeed = _param.LPFAlphaSpeed;
         buildCloseLoopWithPotentiometer.KP = _param.KP;
         buildCloseLoopWithPotentiometer.KI = _param.KI;
         buildCloseLoopWithPotentiometer.KD = _param.KD;
@@ -296,6 +303,8 @@ namespace robotican_hardware {
         buildCloseLoopWithPotentiometer.tolerance = _param.tolerance;
         buildCloseLoopWithPotentiometer.stopLimitMax = _param.stopLimitMax;
         buildCloseLoopWithPotentiometer.stopLimitMin = _param.stopLimitMin;
+        buildCloseLoopWithPotentiometer.LPFHzInput = _param.LPFHzInput;
+        buildCloseLoopWithPotentiometer.LPFAlphaInput = _param.LPFAlphaInput;
 
         uint8_t* rawData = (uint8_t*)&buildCloseLoopWithPotentiometer;
         buildCloseLoopWithPotentiometer.checkSum = _transportLayer->calcChecksum(rawData, buildCloseLoopWithPotentiometer.length);
@@ -316,9 +325,9 @@ namespace robotican_hardware {
 
         _server.setCallback(_callbackType);
         robotican_hardware_interface::RiCBoardPotentiometerConfig config;
-        config.motor_lpf_hz = motorParam.LPFHz;
+        config.motor_lpf_hz = motorParam.LPFHzSpeed;
         config.motor_pid_hz = motorParam.PIDHz;
-        config.motor_lpf_alpha = motorParam.LPFAlpha;
+        config.motor_lpf_alpha = motorParam.LPFAlphaSpeed;
         config.motor_kp = motorParam.KP;
         config.motor_ki = motorParam.KI;
         config.motor_kd = motorParam.KD;
@@ -336,9 +345,9 @@ namespace robotican_hardware {
 
     void CloseLoopMotorWithPotentiometer::setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,
                                                         float KD, float a, float b, float tolerance) {
-        _param.LPFHz = lpfHz;
+        _param.LPFHzSpeed = lpfHz;
         _param.PIDHz = pidHz;
-        _param.LPFAlpha = lpfAlpha;
+        _param.LPFAlphaSpeed = lpfAlpha;
         _param.KP = KP;
         _param.KI = KI;
         _param.KD = KD;
@@ -367,9 +376,9 @@ namespace robotican_hardware {
             setCloseMotorWithPotentiometer.checkSum = 0;
             setCloseMotorWithPotentiometer.id = getId();
 
-            setCloseMotorWithPotentiometer.lpfHz = _param.LPFHz;
+            setCloseMotorWithPotentiometer.lpfHz = _param.LPFHzSpeed;
             setCloseMotorWithPotentiometer.pidHz = _param.PIDHz;
-            setCloseMotorWithPotentiometer.lfpAlpha = _param.LPFAlpha;
+            setCloseMotorWithPotentiometer.lfpAlpha = _param.LPFAlphaSpeed;
             setCloseMotorWithPotentiometer.KP = _param.KP;
             setCloseMotorWithPotentiometer.KI = _param.KI;
             setCloseMotorWithPotentiometer.KD = _param.KD;

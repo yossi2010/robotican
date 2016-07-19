@@ -407,9 +407,9 @@ namespace robotican_hardware {
         ros::param::param("position_motor_size", closeMotorsWithPotentiometerSize, 0);
         for(int i = 0; i < closeMotorsWithPotentiometerSize; ++i) {
             std::string motorIdentifier = "positionMotor" + boost::lexical_cast<std::string>(i), positionMotorJointName = "";
-            int readPin,  LPFHz, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
+            int readPin, LPFHzSpeed, LPFHzInput, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
             , eSwitchPin, eSwitchType, motorType, motorMode;
-            float LPFAlpha, KP, KI, KD, maxSpeed, limit, a, b, tolerance, stopLimitMax, stopLimitMin;
+            float LPFAlphaSpeed, LPFAlphaInput, KP, KI, KD, maxSpeed, limit, a, b, tolerance, stopLimitMax, stopLimitMin;
             if(_nodeHandle.getParam(motorIdentifier + "_motor_type", motorType)) {
                 switch ((CloseMotorType::CloseMotorType) motorType) {
                     case CloseMotorType::CloseLoopWithEncoder:break;
@@ -418,13 +418,15 @@ namespace robotican_hardware {
 
                         if (_nodeHandle.getParam(motorIdentifier + "_a", a)
                             && _nodeHandle.getParam(motorIdentifier + "_b", b)
-                            && _nodeHandle.getParam(motorIdentifier + "_lpf_hz", LPFHz)
+                            && _nodeHandle.getParam(motorIdentifier + "_lpf_hz_speed", LPFHzSpeed)
+                            && _nodeHandle.getParam(motorIdentifier + "_lpf_hz_input", LPFHzInput)
                             && _nodeHandle.getParam(motorIdentifier + "_pid_hz", PIDHz)
                             && _nodeHandle.getParam(motorIdentifier + "_ppr", PPR)
                             && _nodeHandle.getParam(motorIdentifier + "_timeout", timeout)
                             && _nodeHandle.getParam(motorIdentifier + "_motor_direction", motorDirection)
                             && _nodeHandle.getParam(motorIdentifier + "_encoder_direction", encoderDirection)
-                            && _nodeHandle.getParam(motorIdentifier + "_lpf_alpha", LPFAlpha)
+                            && _nodeHandle.getParam(motorIdentifier + "_lpf_alpha_speed", LPFAlphaSpeed)
+                            && _nodeHandle.getParam(motorIdentifier + "_lpf_alpha_input", LPFAlphaInput)
                             && _nodeHandle.getParam(motorIdentifier + "_kp", KP)
                             && _nodeHandle.getParam(motorIdentifier + "_ki", KI)
                             && _nodeHandle.getParam(motorIdentifier + "_kd", KD)
@@ -440,13 +442,16 @@ namespace robotican_hardware {
                             && _nodeHandle.getParam(motorIdentifier + "_read_pin", readPin)
                             && _nodeHandle.getParam(motorIdentifier + "_tolerance", tolerance)) {
                             CloseMotorWithPotentiometerParam motorParams;
-                            motorParams.LPFHz = (uint16_t) LPFHz;
+                            motorParams.LPFHzSpeed = (uint16_t) LPFHzSpeed;
+                            motorParams.LPFHzInput = (uint16_t) LPFHzInput;
                             motorParams.PIDHz = (uint16_t) PIDHz;
                             motorParams.PPR = (uint16_t) PPR;
                             motorParams.timeout = (uint16_t) timeout;
                             motorParams.motorDirection = motorDirection;
                             motorParams.encoderDirection = encoderDirection;
-                            motorParams.LPFAlpha = LPFAlpha;
+                            motorParams.LPFAlphaSpeed = LPFAlphaSpeed;
+                            motorParams.LPFAlphaInput = LPFAlphaInput;
+
                             motorParams.KP = KP;
                             motorParams.KI = KI;
                             motorParams.KD = KD;
@@ -455,7 +460,7 @@ namespace robotican_hardware {
                             motorParams.stopLimitMax = stopLimitMax;
                             motorParams.stopLimitMin = stopLimitMin;
                             motorParams.a = a;
-                            motorParams.b =  b;
+                            motorParams.b = b;
                             motorParams.pin =  readPin;
                             motorParams.tolerance = tolerance;
 
@@ -499,21 +504,23 @@ namespace robotican_hardware {
             std::string closeMotorIdentifier = "motor" + boost::lexical_cast<std::string>(i), jointName;
             CloseMotorWithEncoderParam motorParams;
 
-            int encoderPinA, encoderPinB, LPFHz, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
+            int encoderPinA, encoderPinB, LPFHzSpeed, LPFHzInput, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
                 , eSwitchPin, eSwitchType, motorType, motorMode, baisMin, baisMax;
-            float LPFAlpha, KP, KI, KD, maxSpeed, limit, stopLimitMax, stopLimitMin;
+            float LPFAlphaSpeed, LPFAlphaInput, KP, KI, KD, maxSpeed, limit, stopLimitMax, stopLimitMin;
             if(_nodeHandle.getParam(closeMotorIdentifier + "_motor_type", motorType)) {
                 switch ((CloseMotorType::CloseMotorType) motorType) {
                     case CloseMotorType::CloseLoopWithEncoder:
                         if (_nodeHandle.getParam(closeMotorIdentifier + "_encoder_pin_A", encoderPinA)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_encoder_pin_B", encoderPinB)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_hz", LPFHz)
+                            && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_hz_speed", LPFHzSpeed)
+                            && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_hz_input", LPFHzInput)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_pid_hz", PIDHz)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_ppr", PPR)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_timeout", timeout)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_motor_direction", motorDirection)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_encoder_direction", encoderDirection)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_alpha", LPFAlpha)
+                            && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_alpha_speed", LPFAlphaSpeed)
+                            && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_alpha_input", LPFAlphaInput)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_kp", KP)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_ki", KI)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_kd", KD)
@@ -529,13 +536,15 @@ namespace robotican_hardware {
                             && _nodeHandle.getParam(closeMotorIdentifier + "_bais_min", baisMin)
                             && _nodeHandle.getParam(closeMotorIdentifier + "_bais_max", baisMax)) {
 
-                            motorParams.LPFHz = (uint16_t) LPFHz;
+                            motorParams.LPFHzSpeed = (uint16_t) LPFHzSpeed;
+                            motorParams.LPFHzInput = (uint16_t) LPFHzInput;
                             motorParams.PIDHz = (uint16_t) PIDHz;
                             motorParams.PPR = (uint16_t) PPR;
                             motorParams.timeout = (uint16_t) timeout;
                             motorParams.motorDirection = motorDirection;
                             motorParams.encoderDirection = encoderDirection;
-                            motorParams.LPFAlpha = LPFAlpha;
+                            motorParams.LPFAlphaSpeed = LPFAlphaSpeed;
+                            motorParams.LPFAlphaInput = LPFAlphaInput;
                             motorParams.KP = KP;
                             motorParams.KI = KI;
                             motorParams.KD = KD;
@@ -584,25 +593,29 @@ namespace robotican_hardware {
         ros::param::param<int>("open_motor_size", openLoopSize, 0);
         for(int i = 0; i < openLoopSize; ++i) {
             std::string openMotorIdentifier = "motor" + boost::lexical_cast<std::string>(i), jointName;
-            int motorAddress, eSwitchPin, eSwitchType ,encoderPinA, encoderPinB, LPFHz, PPR, motorDirection, encoderDirection;
-            float LPFAlpha, maxSpeed;
+            int motorAddress, eSwitchPin, eSwitchType ,encoderPinA, encoderPinB, LPFHzSpeed, LPFHzInput, PPR, motorDirection, encoderDirection;
+            float LPFAlphaSpeed, LPFAlphaInput, maxSpeed;
             if(_nodeHandle.getParam(openMotorIdentifier + "_motor_address", motorAddress)
                && _nodeHandle.getParam(openMotorIdentifier + "_motor_emergency_pin", eSwitchPin)
                && _nodeHandle.getParam(openMotorIdentifier + "_motor_emergency_pin_type", eSwitchType)
                && _nodeHandle.getParam(openMotorIdentifier + "_encoder_pin_a", encoderPinA)
                && _nodeHandle.getParam(openMotorIdentifier + "_encoder_pin_b", encoderPinB)
-               && _nodeHandle.getParam(openMotorIdentifier + "_lpf_hz", LPFHz)
+               && _nodeHandle.getParam(openMotorIdentifier + "_lpf_hz_speed", LPFHzSpeed)
+               && _nodeHandle.getParam(openMotorIdentifier + "_lpf_hz_input", LPFHzInput)
                && _nodeHandle.getParam(openMotorIdentifier + "_ppr", PPR)
                && _nodeHandle.getParam(openMotorIdentifier + "_motor_direction", motorDirection)
                && _nodeHandle.getParam(openMotorIdentifier + "_encoder_direction", encoderDirection)
-               && _nodeHandle.getParam(openMotorIdentifier + "_lpf_alpha", LPFAlpha)
+               && _nodeHandle.getParam(openMotorIdentifier + "_lpf_alpha_speed", LPFAlphaSpeed)
+               && _nodeHandle.getParam(openMotorIdentifier + "_lpf_alpha_input", LPFAlphaInput)
                && _nodeHandle.getParam(openMotorIdentifier + "_max_speed", maxSpeed)
                && _nodeHandle.getParam(openMotorIdentifier + "_joint", jointName)) {
 
                 OpenLoopMotor* openLoopMotor = new OpenLoopMotor(_idGen++, &_transportLayer, (byte) motorAddress,
                                                                  (byte) eSwitchPin, (byte) eSwitchType, maxSpeed,
-                                                                 (byte) encoderPinA, (byte) encoderPinB, motorDirection, encoderDirection,
-                                                                 (uint16_t) LPFHz, (uint16_t) PPR, LPFAlpha);
+                                                                 (byte) encoderPinA, (byte) encoderPinB, motorDirection,
+                                                                 encoderDirection, (uint16_t) LPFHzSpeed,
+                                                                 (uint16_t) LPFHzInput, LPFAlphaInput,
+                                                                 LPFAlphaSpeed, (uint16_t) PPR);
                 JointInfo_t* jointInfo = openLoopMotor->getJointInfo();
 
                 hardware_interface::JointStateHandle jointStateHandle(jointName,
