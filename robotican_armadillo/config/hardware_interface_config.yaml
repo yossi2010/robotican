@@ -8,8 +8,7 @@ right_finger_topic_pub: 'right_finger_controller/command'
 right_finger_topic_sub: 'right_finger_controller/state'
 right_finger_joint: 'right_finger_joint'
 
-
-
+                               
 # RiCBoard                                
 battery_pin: 17
 battery_voltage_divider_ratio: 46.85
@@ -127,17 +126,19 @@ position_motor_size: 1
 positionMotor0_motor_type: 1
 positionMotor0_a: 0.00064833
 positionMotor0_b: -0.018153241
-positionMotor0_lpf_hz: 63
+positionMotor0_lpf_hz_speed: 63
+positionMotor0_lpf_hz_input: 1000
 positionMotor0_pid_hz: 1000
 positionMotor0_ppr: 2503
 positionMotor0_timeout: 0
 positionMotor0_motor_direction: -1
 positionMotor0_encoder_direction: 1
-positionMotor0_lpf_alpha: 0.21
+positionMotor0_lpf_alpha_speed: 0.21
+positionMotor0_lpf_alpha_input: 1.0
 positionMotor0_kp: 6000.0
 positionMotor0_ki: 150.0
 positionMotor0_kd: 0.0
-positionMotor0_max_speed: 16.0
+positionMotor0_max_speed: 0.2
 positionMotor0_limit: 0.3
 positionMotor0_motor_address: 20
 positionMotor0_motor_emergency_pin: 12
@@ -147,7 +148,7 @@ positionMotor0_mode: 1
 positionMotor0_read_pin: 21
 positionMotor0_tolerance: 0.015
 positionMotor0_stop_limit_max: 0.37
-positionMotor0_stop_limit_min: -0.01
+positionMotor0_stop_limit_min: 0.05
 
 servo_size: 2
 
