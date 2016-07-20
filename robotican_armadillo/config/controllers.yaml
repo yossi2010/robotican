@@ -41,6 +41,7 @@ mobile_base_controller:
       max_velocity           : 3.0  # rad/s
       has_acceleration_limits: true
       max_acceleration       : 0.5  # rad/s^2
+      min_acceleration       : -0.5  # rad/s^2
       
 
 robot_state_controller:
