@@ -151,8 +151,8 @@ positionMotor0_joint: 'torso_joint'
 positionMotor0_mode: 1
 positionMotor0_read_pin: 21
 positionMotor0_tolerance: 0.015
-positionMotor0_stop_limit_max: 0.37
-positionMotor0_stop_limit_min: 0.05
+positionMotor0_stop_limit_max: 0.35
+positionMotor0_stop_limit_min: -0.015
 
 servo_size: 2
 
