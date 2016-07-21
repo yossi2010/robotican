@@ -94,12 +94,15 @@ namespace robotican_hardware {
         return _motorAddress;
     }
 
-    OpenLoopMotor::OpenLoopMotor(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin, byte eSwitchType,
-                                     float maxSpeed, byte encoderA, byte encoderB, int8_t motorDirection, int8_t encoderDirection,
-                                     uint16_t LPFHzSpeed, uint16_t LPFHzInput, float LPFAlphaInput, float LPFAlphaSpeed, uint16_t PPR)
+    OpenLoopMotor::OpenLoopMotor(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin,
+                                 byte eSwitchType,
+                                 float maxSetPointSpeed, byte encoderA, byte encoderB, int8_t motorDirection,
+                                 int8_t encoderDirection,
+                                 uint16_t LPFHzSpeed, uint16_t LPFHzInput, float LPFAlphaInput, float LPFAlphaSpeed,
+                                 uint16_t PPR)
             : RiCMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType) {
 
-        _maxSpeed = maxSpeed;
+        _maxSetPointSpeed = maxSetPointSpeed;
         _encoderPinA = encoderA;
         _encoderPinB = encoderB;
         _motorDirection = motorDirection;
@@ -144,7 +147,7 @@ namespace robotican_hardware {
         buildMotorOpenLoop.motorDirection = _motorDirection;
         buildMotorOpenLoop.eSwitchPin = getESwitchPin();
         buildMotorOpenLoop.eSwitchType = getESwitchType();
-        buildMotorOpenLoop.maxSpeed = _maxSpeed;
+        buildMotorOpenLoop.maxSetPointSpeed = _maxSetPointSpeed;
         buildMotorOpenLoop.encoderPinA = _encoderPinA;
         buildMotorOpenLoop.encoderPinB = _encoderPinB;
         buildMotorOpenLoop.encoderDirection = _encoderDirection;
@@ -216,7 +219,8 @@ namespace robotican_hardware {
         buildMotorCloseLoop.KP = _params.KP;
         buildMotorCloseLoop.KI = _params.KI;
         buildMotorCloseLoop.KD = _params.KD;
-        buildMotorCloseLoop.maxSpeed = _params.maxSpeed;
+        buildMotorCloseLoop.maxSetPointSpeed = _params.maxSetPointSpeed;
+        buildMotorCloseLoop.maxSetPointPos = _params.maxSetPointPos;
         buildMotorCloseLoop.limit = _params.limit;
         buildMotorCloseLoop.motorType = getCloseMotorType();
         buildMotorCloseLoop.motorMode = getMode();
@@ -296,7 +300,8 @@ namespace robotican_hardware {
         buildCloseLoopWithPotentiometer.KP = _param.KP;
         buildCloseLoopWithPotentiometer.KI = _param.KI;
         buildCloseLoopWithPotentiometer.KD = _param.KD;
-        buildCloseLoopWithPotentiometer.maxSpeed = _param.maxSpeed;
+        buildCloseLoopWithPotentiometer.maxSetPointSpeed = _param.maxSetPointSpeed;
+        buildCloseLoopWithPotentiometer.maxSetPointPos = _param.maxSetPointPos;
         buildCloseLoopWithPotentiometer.limit = _param.limit;
         buildCloseLoopWithPotentiometer.a = _param.a;
         buildCloseLoopWithPotentiometer.b = _param.b;

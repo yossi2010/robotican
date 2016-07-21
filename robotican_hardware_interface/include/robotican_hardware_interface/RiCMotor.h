@@ -51,14 +51,15 @@ namespace robotican_hardware {
         uint16_t _LPFHzSpeed;
         uint16_t _LPFHzInput;
         uint16_t _PPR;
-        float _maxSpeed;
+        float _maxSetPointSpeed;
         float _LPFAlphaSpeed;
         float _LPFAlphaInput;
     public:
 
         OpenLoopMotor(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin, byte eSwitchType,
-                              float maxSpeed, byte encoderA, byte encoderB, int8_t motorDirection, int8_t encoderDirection,
-                              uint16_t LPFHzSpeed, uint16_t LPFHzInput, float LPFAlphaInput, float LPFAlphaSpeed, uint16_t PPR);
+                      float maxSetPointSpeed, byte encoderA, byte encoderB, int8_t motorDirection,
+                      int8_t encoderDirection,
+                      uint16_t LPFHzSpeed, uint16_t LPFHzInput, float LPFAlphaInput, float LPFAlphaSpeed, uint16_t PPR);
 
         virtual void update(const DeviceMessage *deviceMessage);
 
@@ -83,7 +84,7 @@ namespace robotican_hardware {
         float KP;
         float KI;
         float KD;
-        float maxSpeed;
+        float maxSetPointSpeed;
         float limit;
         float stopLimitMax;
         float stopLimitMin;
@@ -96,6 +97,7 @@ namespace robotican_hardware {
         int16_t baisMax;
         float LPFAlphaInput;
         uint16_t LPFHzInput;
+        float maxSetPointPos;
     };
 
     struct CloseMotorWithPotentiometerParam : CloseMotorParams {
@@ -105,6 +107,7 @@ namespace robotican_hardware {
         float tolerance;
         uint16_t LPFHzInput;
         float LPFAlphaInput;
+        float maxSetPointPos;
     };
 
     class CloseLoopMotor : public RiCMotor {
