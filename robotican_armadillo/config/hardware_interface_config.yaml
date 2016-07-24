@@ -129,7 +129,7 @@ position_motor_size: 1
  
 positionMotor0_motor_type: 1
 positionMotor0_a: 0.00064833
-positionMotor0_b: -0.018153241
+positionMotor0_b: -0.05510805
 positionMotor0_lpf_hz_speed: 63
 positionMotor0_lpf_hz_input: 100
 positionMotor0_pid_hz: 1000
@@ -152,7 +152,7 @@ positionMotor0_joint: 'torso_joint'
 positionMotor0_mode: 1
 positionMotor0_read_pin: 21
 positionMotor0_tolerance: 0.01
-positionMotor0_stop_limit_max: 0.37
+positionMotor0_stop_limit_max: 0.31
 positionMotor0_stop_limit_min: -0.015
 
 servo_size: 2
@@ -167,7 +167,7 @@ servo0_joint_name: 'head_tilt_joint'
 
 servo1_pin: 3
 servo1_a: -305.577
-servo1_b: 1450.0
+servo1_b: 1600.0
 servo1_max: 1.57
 servo1_min: -1.57
 servo1_init_pos: 0
