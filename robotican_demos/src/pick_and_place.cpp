@@ -12,10 +12,26 @@
 #include <control_msgs/GripperCommandAction.h>
 #include <moveit/move_group_interface/move_group.h>
 
+#include <moveit/robot_model_loader/robot_model_loader.h>
+#include <moveit/robot_model/robot_model.h>
+#include <moveit/robot_state/robot_state.h>
+#include <moveit/kinematics_metrics/kinematics_metrics.h>
+#include <moveit_msgs/WorkspaceParameters.h>
+#include <moveit/planning_scene/planning_scene.h>
+
 typedef actionlib::SimpleActionClient<control_msgs::GripperCommandAction> GripperClient;
 
+robot_state::GroupStateValidityCallbackFn state_validity_callback_fn_;
+robot_model::JointModelGroup* joint_model_group;
 
+bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
+                               const robot_model::JointModelGroup *joint_model_group,
+                               const double *ik_solution);
 
+planning_scene::PlanningScenePtr *planning_scene_ptr;
+robot_state::RobotStatePtr *robot_state_ptr;
+
+bool checkIK(geometry_msgs::PoseStamped pose);
 void go(tf::Transform  dest);
 bool gripper_cmd(double gap,double effort);
 bool arm_cmd(geometry_msgs::PoseStamped target_pose1);
@@ -139,7 +155,28 @@ void pick_go_cb(std_msgs::Empty) {
     }
 }
 
+
+
+bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
+                               const robot_model::JointModelGroup *joint_model_group,
+                               const double *ik_solution)
+{
+    joint_state->setJointGroupPositions(joint_model_group, ik_solution);
+    bool result = !(*planning_scene_ptr)->isStateColliding(*joint_state, joint_model_group->getName());
+
+    return result;
+}
+
+bool checkIK(geometry_msgs::PoseStamped pose) {
+
+    bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 5, 0.005, state_validity_callback_fn_);
+     std::printf("IK %d: [%f , %f , %f] [%f , %f , %f , %f]\n",found_ik,pose.pose.position.x,pose.pose.position.y,pose.pose.position.z,pose.pose.orientation.x,pose.pose.orientation.y,pose.pose.orientation.z,pose.pose.orientation.w);
+    return found_ik;
+}
+
 bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
+
+
 
 
     moveit_ptr->setStartStateToCurrentState();
@@ -148,32 +185,35 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
 
     moveit::planning_interface::MoveGroup::Plan my_plan;
     double dz[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-       double dy[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-          double dx[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+    double dy[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+    double dx[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
     double dY[]={0, 0.04, -0.04 ,0.08, -0.08};
     double z=target_pose1.pose.position.z;
     double x=target_pose1.pose.position.x;
     double y=target_pose1.pose.position.y;
-      for (int n=0;n<sizeof(dx)/sizeof(double);n++) {
-            for (int m=0;m<sizeof(dy)/sizeof(double);m++) {
+    for (int n=0;n<sizeof(dx)/sizeof(double);n++) {
+        for (int m=0;m<sizeof(dy)/sizeof(double);m++) {
 
-    for (int i=0;i<sizeof(dz)/sizeof(double);i++) {
-        for (int j=0;j<sizeof(dY)/sizeof(double);j++) {
-            target_pose1.pose.position.z=z+dz[i];
-             target_pose1.pose.position.x=x+dx[n];
-              target_pose1.pose.position.y=y+dy[m];
-            target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(-pick_yaw+dY[j],M_PI/2.0,0.0 );
-            goal_pub.publish(target_pose1);
-            moveit_goal=target_pose1;
-           std::printf("---------> PLAN: [%f , %f , %f] [%f , %f , %f]\n",target_pose1.pose.position.x,target_pose1.pose.position.y,target_pose1.pose.position.z,-pick_yaw+dY[j],M_PI/2.0,0.0);
-            moveit_ptr->setPoseTarget(target_pose1);
-            bool success = moveit_ptr->plan(my_plan);
-            ROS_INFO("Moveit plan %s",success?"SUCCESS":"FAILED");
-            if (success) return true;
+            for (int i=0;i<sizeof(dz)/sizeof(double);i++) {
+                for (int j=0;j<sizeof(dY)/sizeof(double);j++) {
+                    target_pose1.pose.position.z=z+dz[i];
+                    target_pose1.pose.position.x=x+dx[n];
+                    target_pose1.pose.position.y=y+dy[m];
+                    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(-pick_yaw+dY[j],M_PI/2.0,0.0 );
+
+                    if (checkIK(target_pose1)) {
+                        goal_pub.publish(target_pose1);
+                        moveit_goal=target_pose1;
+
+                        moveit_ptr->setPoseTarget(target_pose1);
+                        bool success = moveit_ptr->plan(my_plan);
+                        ROS_INFO("Moveit plan %s",success?"SUCCESS":"FAILED");
+                        if (success) return true;
+                    }
+                }
+            }
         }
     }
-            }
-      }
     return false;
 }
 
@@ -227,14 +267,14 @@ int main(int argc, char **argv) {
 
     // moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
 
-   // group.allowReplanning(true);
+    // group.allowReplanning(true);
     // group.setPlanningTime(5.0);
-     //group.setNumPlanningAttempts(5);
+    //group.setNumPlanningAttempts(5);
     group.setPlannerId("RRTConnectkConfigDefault");
     //group.setPlannerId("LBKPIECEkConfigDefault");
     group.setMaxAccelerationScalingFactor(0.1);
     group.setMaxVelocityScalingFactor(0.1);
-     group.setGoalPositionTolerance(0.02);
+    group.setGoalPositionTolerance(0.02);
 
     moveit_ptr=&group;
 
@@ -255,6 +295,39 @@ int main(int argc, char **argv) {
     q.setRPY(0.0, 0, 0);
 
     ros::Duration(3.0).sleep();
+
+
+    state_validity_callback_fn_ = boost::bind(&isIKSolutionCollisionFree, _1, _2, _3);
+
+    std::string group_name="arm";
+
+    /* Load the robot model */
+    robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
+
+    /* Get a shared pointer to the model */
+    robot_model::RobotModelPtr robot_model = robot_model_loader.getModel();
+
+    /* Create a robot state*/
+    robot_state::RobotStatePtr robot_state(new robot_state::RobotState(robot_model));
+    robot_state_ptr=&robot_state;
+
+    if(!robot_model->hasJointModelGroup(group_name))
+        ROS_FATAL("Invalid group name: %s", group_name.c_str());
+
+    joint_model_group = robot_model->getJointModelGroup(group_name);
+
+    /* Construct a planning scene - NOTE: this is for illustration purposes only.
+      The recommended way to construct a planning scene is to use the planning_scene_monitor
+      to construct it for you.*/
+    planning_scene::PlanningScenePtr planning_scene(new planning_scene::PlanningScene(robot_model));
+    planning_scene_ptr=&planning_scene;
+
+
+
+    std::string robot_name_ = robot_state->getRobotModel()->getName();
+    std::string frame_id_ =  robot_state->getRobotModel()->getModelFrame();
+    ROS_INFO_STREAM("Root frame ID: " << frame_id_);
+
     ROS_INFO("Looking down...");
     look_down();
     if (arm_cmd(lift_arm())) {
@@ -263,8 +336,8 @@ int main(int argc, char **argv) {
             ROS_INFO("Arm is up");
         }
     }
-    ROS_INFO("Ready!");
 
+    ROS_INFO("Ready!");
     while (ros::ok())
     {
 
@@ -273,7 +346,7 @@ int main(int argc, char **argv) {
             listener_ptr->lookupTransform("base_link", object_frame, ros::Time(0), base_obj_transform);
         }
         catch (tf::TransformException ex){
-              ROS_ERROR("PNP NODE: %s",ex.what());
+            ROS_ERROR("PNP NODE: %s",ex.what());
         }
         // }
         if (have_goal) {
