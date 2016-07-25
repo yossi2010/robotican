@@ -275,7 +275,7 @@ int main(int argc, char **argv) {
     group.setMaxAccelerationScalingFactor(0.1);
     group.setMaxVelocityScalingFactor(0.1);
     group.setGoalPositionTolerance(0.02);
-
+group.setPoseReferenceFrame("base_link");
     moveit_ptr=&group;
 
     ros::Subscriber pick_sub = n.subscribe("pick_go", 1, pick_go_cb);
