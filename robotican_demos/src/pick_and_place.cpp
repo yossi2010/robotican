@@ -127,7 +127,7 @@ void pick_go_cb(std_msgs::Empty) {
             ROS_INFO("Arm planning is done, moving arm..");
             if(moveit_ptr->move()) {
                 ROS_INFO("Ready to grasp");
-                if(gripper_cmd(0.01,0.0)) {
+                if(gripper_cmd(0.01,0.2)) {
                     ROS_INFO("Grasping is done");
                     ros::Duration w(8);
                     w.sleep(); //wait for attach
@@ -275,7 +275,7 @@ int main(int argc, char **argv) {
     group.setMaxAccelerationScalingFactor(0.1);
     group.setMaxVelocityScalingFactor(0.1);
     group.setGoalPositionTolerance(0.02);
-group.setPoseReferenceFrame("base_link");
+//group.setPoseReferenceFrame("base_link");
     moveit_ptr=&group;
 
     ros::Subscriber pick_sub = n.subscribe("pick_go", 1, pick_go_cb);
@@ -309,6 +309,7 @@ group.setPoseReferenceFrame("base_link");
 
     /* Create a robot state*/
     robot_state::RobotStatePtr robot_state(new robot_state::RobotState(robot_model));
+
     robot_state_ptr=&robot_state;
 
     if(!robot_model->hasJointModelGroup(group_name))
@@ -324,8 +325,9 @@ group.setPoseReferenceFrame("base_link");
 
 
 
-    std::string robot_name_ = robot_state->getRobotModel()->getName();
+   // std::string robot_name_ = robot_state->getRobotModel()->getName();
     std::string frame_id_ =  robot_state->getRobotModel()->getModelFrame();
+
     ROS_INFO_STREAM("Root frame ID: " << frame_id_);
 
     ROS_INFO("Looking down...");
