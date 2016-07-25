@@ -215,16 +215,17 @@ namespace gripper_action_controller
 
         double current_position = pos2Gap(rightjoint_.getPosition());
         double current_velocity =  current_position - _lastPosition / period.toSec();
-        double current_effort = leftjoint_.getEffort() + rightjoint_.getEffort();
+        double current_effort = (fabs(leftjoint_.getEffort())>fabs(rightjoint_.getEffort())) ? fabs(leftjoint_.getEffort()):fabs(rightjoint_.getEffort());
 //ROS_INFO("current_position: %f     rightjoint: %f",current_position,rightjoint_.getPosition());
         double error_position = command_struct_rt_.position_ - current_position;
         double error_velocity = - current_velocity;
         _lastPosition = current_position;
-
-        checkForSuccess(time, error_position, current_position, current_velocity, current_effort);
+if (command_struct_rt_.max_effort_==0) current_effort=-1;
+        checkForSuccess(time, error_position, current_position, current_velocity, current_effort,command_struct_rt_.max_effort_);
 
         // Hardware interface adapter: Generate and send commands
         double jointsPos = gap2Pos(command_struct_rt_.position_);
+//ROS_INFO("gap: %f",command_struct_rt_.position_);
         computed_command_ = left_hw_iface_adapter_.updateCommand(time, period,
                                                                  -jointsPos, 0.0,
                                                                  error_position, error_velocity, command_struct_rt_.max_effort_);
@@ -278,6 +279,7 @@ namespace gripper_action_controller
                                                         rt_goal);
         goal_handle_timer_.start();
         rt_active_goal_ = rt_goal;
+ROS_INFO("GRIPPER: Got new goal");
     }
 
     template <class HardwareInterface>
@@ -305,15 +307,18 @@ namespace gripper_action_controller
     void GripperActionControllerTwo<HardwareInterface>::
     setHoldPosition(const ros::Time& time)
     {
-        command_struct_.position_ = gap2Pos(rightjoint_.getPosition());
-        command_struct_.max_effort_ = default_max_effort_;
+      //  command_struct_.position_ = gap2Pos(rightjoint_.getPosition());
+ command_struct_.position_ = pos2Gap(rightjoint_.getPosition());
+        //command_struct_.max_effort_ = default_max_effort_;
         command_.writeFromNonRT(command_struct_);
+//left_hw_iface_adapter_.updateCommand(time, ros::Duration(0.01),leftjoint_.getPosition(),0.0,0.0,0.0,0.0);
+//right_hw_iface_adapter_.updateCommand(time, ros::Duration(0.01),rightjoint_.getPosition(),0.0,0.0,0.0,0.0);
     }
 
     template <class HardwareInterface>
     void GripperActionControllerTwo<HardwareInterface>::
     checkForSuccess(const ros::Time &time, double error_position, double current_position, double current_velocity,
-                        double current_effort)
+                        double current_effort,double max_effort)
     {
         if(!rt_active_goal_)
             return;
@@ -323,6 +328,7 @@ namespace gripper_action_controller
 
         if(fabs(error_position) < goal_tolerance_)
         {
+ROS_DEBUG("GRIPPER: Reached Goal");
             pre_alloc_result_->effort = computed_command_;
             pre_alloc_result_->position = current_position;
             pre_alloc_result_->reached_goal = true;
@@ -331,17 +337,33 @@ namespace gripper_action_controller
         }
         else
         {
-            if(fabs(current_velocity) > stall_velocity_threshold_ || abs(current_effort) > default_max_effort_)
-            {
+	  if (current_effort >= fabs(max_effort)) {
+ROS_WARN("GRIPPER: MAX EFFORT");
+
+  pre_alloc_result_->effort = computed_command_;
+                pre_alloc_result_->position = current_position;
+                pre_alloc_result_->reached_goal = false;
+                pre_alloc_result_->stalled = true;
+
+                rt_active_goal_->setAborted(pre_alloc_result_);
+setHoldPosition(ros::Time(0.0));
+return;
+}
+
+            if(fabs(current_velocity) > stall_velocity_threshold_) {
+            
                 last_movement_time_ = time;
             }
             else if( (time - last_movement_time_).toSec() > stall_timeout_)
             {
+ROS_WARN("GRIPPER: STALLED");
                 pre_alloc_result_->effort = computed_command_;
                 pre_alloc_result_->position = current_position;
                 pre_alloc_result_->reached_goal = false;
                 pre_alloc_result_->stalled = true;
                 rt_active_goal_->setAborted(pre_alloc_result_);
+setHoldPosition(ros::Time(0.0));
+
             }
         }
     }

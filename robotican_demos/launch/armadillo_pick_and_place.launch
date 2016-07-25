@@ -1,19 +1,34 @@
 <?xml version="1.0"?>
 <launch>
 
-  
+ <arg name="gazebo" default="true"/>
+
+
+  <group if="$(arg gazebo)">
     <include file="$(find robotican_armadillo)/launch/armadillo.launch">
-    <arg name="gazebo" value="true"/>
-    
-    <arg name="world_name" value="$(find robotican_common)/worlds/objects_on_table.world"/> 
+
+    <arg name="gazebo" value="true"/> 
+   <arg name="world_name" value="$(find robotican_common)/worlds/objects_on_table.world"/> 
     <arg name="x" value="0.8"/>
     <arg name="y" value="-0.35"/>
     <arg name="Y" value="0"/>
-    <arg name="kinect2" value="true"/>     
-  
+
+
+    <arg name="kinect2" value="true"/>      
       <arg name="moveit" value="true"/>
   </include>
+ </group>
   
+ <group unless="$(arg gazebo)">
+
+    <include file="$(find robotican_armadillo)/launch/armadillo.launch">
+    <arg name="kinect2" value="true"/>      
+      <arg name="moveit" value="true"/>
+  </include>
+
+</group>
+
+
    <node name="pick__and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true"/>  
   
   

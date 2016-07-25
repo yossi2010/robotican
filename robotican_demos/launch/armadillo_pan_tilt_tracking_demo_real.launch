@@ -2,10 +2,10 @@
 <launch>
   
   
-  <include file="$(find robotican_demos)/launch/armadillo_find_objects_demo.launch"/>
+  <include file="$(find robotican_demos)/launch/armadillo_find_objects_demo_real.launch"/>
   
   <node name="pan_tilt_object_tracking_node" pkg="robotican_common" type="pan_tilt_object_tracking_node" output="screen">
-    <param name="~max_rate" value="0.3"/>
+    <param name="~max_rate" value="0.5"/>
     <param name="~object_frame" value="object_frame"/>
     <param name="~depth_camera_frame" value="kinect2_depth_optical_frame"/>
     <param name="~kp_pan" value="4.0"/>

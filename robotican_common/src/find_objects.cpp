@@ -120,6 +120,7 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
         target_pose2.pose.position.x =obj_transform.getOrigin().x();
         target_pose2.pose.position.y = obj_transform.getOrigin().y();
         target_pose2.pose.position.z = obj_transform.getOrigin().z();
+       //  std::printf("---------> OBJECT: [%f , %f , %f]\n",target_pose2.pose.position.x,target_pose2.pose.position.y,target_pose2.pose.position.z);
         tf::quaternionTFToMsg( obj_transform.getRotation(), target_pose2.pose.orientation);
         object_pub.publish(target_pose2);
     }
@@ -207,10 +208,16 @@ bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudp,Point
         pr->y=cloudp->points[pcl_index].y;
         pr->z=cloudp->points[pcl_index].z;
         char str[100];
-        if (isnan (pr->x) || isnan (pr->y) || isnan (pr->z) ) sprintf(str,"NaN");
-        else sprintf(str,"[%.3f,%.3f,%.3f] A=%lf",pr->x,pr->y,pr->z,largest_area);
+        if (isnan (pr->x) || isnan (pr->y) || isnan (pr->z) ) {
+            sprintf(str,"NaN");
+            ok=false;
+        }
+        else {
+            sprintf(str,"[%.3f,%.3f,%.3f] A=%lf",pr->x,pr->y,pr->z,largest_area);
+            ok=true;
+        }
         putText( input, str, mc, CV_FONT_HERSHEY_COMPLEX, 1, Scalar(255,255,255), 1, 8);
-        ok=true;
+
     }
 
 
@@ -306,7 +313,13 @@ int main(int argc, char **argv) {
     {
 
         if (have_object) {
-            br.sendTransform(obj_transform);
+            try{
+               br.sendTransform(obj_transform);
+            }
+            catch (tf::TransformException ex){
+                  ROS_ERROR("!!! %s",ex.what());
+            }
+
         }
 
         ros::spinOnce();

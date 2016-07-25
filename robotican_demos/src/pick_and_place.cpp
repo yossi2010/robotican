@@ -148,20 +148,32 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
 
     moveit::planning_interface::MoveGroup::Plan my_plan;
     double dz[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+       double dy[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+          double dx[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
     double dY[]={0, 0.04, -0.04 ,0.08, -0.08};
     double z=target_pose1.pose.position.z;
+    double x=target_pose1.pose.position.x;
+    double y=target_pose1.pose.position.y;
+      for (int n=0;n<sizeof(dx)/sizeof(double);n++) {
+            for (int m=0;m<sizeof(dy)/sizeof(double);m++) {
+
     for (int i=0;i<sizeof(dz)/sizeof(double);i++) {
-        for (int j=0;j<sizeof(dY)/sizeof(double);i++) {
+        for (int j=0;j<sizeof(dY)/sizeof(double);j++) {
             target_pose1.pose.position.z=z+dz[i];
-            target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(-pick_yaw+dY[i],M_PI/2.0,0 );
+             target_pose1.pose.position.x=x+dx[n];
+              target_pose1.pose.position.y=y+dy[m];
+            target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(-pick_yaw+dY[j],M_PI/2.0,0.0 );
             goal_pub.publish(target_pose1);
             moveit_goal=target_pose1;
+           std::printf("---------> PLAN: [%f , %f , %f] [%f , %f , %f]\n",target_pose1.pose.position.x,target_pose1.pose.position.y,target_pose1.pose.position.z,-pick_yaw+dY[j],M_PI/2.0,0.0);
             moveit_ptr->setPoseTarget(target_pose1);
             bool success = moveit_ptr->plan(my_plan);
             ROS_INFO("Moveit plan %s",success?"SUCCESS":"FAILED");
             if (success) return true;
         }
     }
+            }
+      }
     return false;
 }
 
@@ -215,12 +227,14 @@ int main(int argc, char **argv) {
 
     // moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
 
-    group.allowReplanning(true);
+   // group.allowReplanning(true);
     // group.setPlanningTime(5.0);
-    // group.setNumPlanningAttempts(5);
+     //group.setNumPlanningAttempts(5);
     group.setPlannerId("RRTConnectkConfigDefault");
+    //group.setPlannerId("LBKPIECEkConfigDefault");
     group.setMaxAccelerationScalingFactor(0.1);
     group.setMaxVelocityScalingFactor(0.1);
+     group.setGoalPositionTolerance(0.02);
 
     moveit_ptr=&group;
 
@@ -259,7 +273,7 @@ int main(int argc, char **argv) {
             listener_ptr->lookupTransform("base_link", object_frame, ros::Time(0), base_obj_transform);
         }
         catch (tf::TransformException ex){
-            //  ROS_ERROR("%s",ex.what());
+              ROS_ERROR("PNP NODE: %s",ex.what());
         }
         // }
         if (have_goal) {

@@ -182,7 +182,7 @@ double tip_r=0.09;
          * \brief Check for success and publish appropriate result and feedback.
          **/
         void checkForSuccess(const ros::Time &time, double error_position, double current_position, double current_velocity,
-                             double current_effort);
+                             double current_effort,double max_effort);
 
     };
 
