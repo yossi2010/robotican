@@ -405,7 +405,7 @@ namespace robotican_hardware {
     void CloseLoopMotorWithPotentiometer::update(const DeviceMessage *deviceMessage) {
         CloseLoopMotor::update(deviceMessage);
         if(isReady() && _firstTime) {
-//            _jointInfo.cmd = _jointInfo.position;
+            _jointInfo.cmd = _jointInfo.position;
             _firstTime = false;
         }
     }
