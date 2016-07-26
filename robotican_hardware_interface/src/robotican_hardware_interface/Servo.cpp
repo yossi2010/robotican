@@ -7,7 +7,10 @@
 namespace robotican_hardware {
 
     Servo::Servo(byte id, TransportLayer *transportLayer, byte pin, float a, float b, float max, float min,
-                 float initPos) : Device(id , transportLayer) {
+                     float initPos, std::string jointName) : Device(id , transportLayer),
+                                                             _mutex(), _nodeHandle((std::string("~/") + jointName)), _server(_mutex, _nodeHandle) {
+        _callbackType = boost::bind(&Servo::dynamicCallback, this, _1, _2);
+        _server.setCallback(_callbackType);
         _pin = pin;
         _a = a;
         _b = b;
@@ -15,8 +18,15 @@ namespace robotican_hardware {
         _min = min;
         _lastCmd = 0.0;
         _isChangeParam = false;
-        //_jointInfo.position = 0.0;
-        //_jointInfo.cmd = initPos;
+
+
+        robotican_hardware_interface::RiCBoardServoConfig config;
+        config.A = _a;
+        config.B = _b;
+        config.max = _max;
+        config.min = _min;
+
+        _server.updateConfig(config);
 
 
     }
@@ -106,6 +116,11 @@ namespace robotican_hardware {
         _b = b;
         _max = max;
         _min = min;
+
+    }
+
+    void Servo::dynamicCallback(robotican_hardware_interface::RiCBoardServoConfig &config, uint32_t level) {
+        setParam((float) config.A, (float) config.B, (float) config.max, (float) config.min);
 
     }
 }

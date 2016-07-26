@@ -38,32 +38,12 @@ namespace robotican_hardware {
     class CloseLoopMotor;
     class CloseLoopMotorWithPotentiometer;
 
-    class ServoParamHandler {
-    private:
-        ros::NodeHandle _nodeHandle;
-        std::map<std::string, Servo*> _servos;
-        dynamic_reconfigure::Server <robotican_hardware_interface::RiCBoardServoConfig> _server;
-        dynamic_reconfigure::Server<robotican_hardware_interface::RiCBoardServoConfig>::CallbackType _callbackType;
 
-        void dynamicCallback(robotican_hardware_interface::RiCBoardServoConfig &config, uint32_t level);
-
-        Servo* checkIfJointValid(std::string jointName);
-
-    public:
-        ServoParamHandler();
-
-        void add(std::string jointName, Servo* servo);
-
-        void remove(std::string jointName);
-
-    };
 
 
 
     class RiCBoardManager {
     private:
-        ServoParamHandler _servoParamHandler;
-
         byte _rcvBuff[MAX_BUFF_SIZE];
         TransportLayer _transportLayer;
         ConnectEnum::ConnectEnum  _connectState;
