@@ -4,14 +4,16 @@
 #include <std_msgs/Float64MultiArray.h>
 #include <tf/transform_listener.h>
 #include <sensor_msgs/JointState.h>
+#include <trajectory_msgs/JointTrajectory.h>
 
 template <typename T> int sgn(T val);
 void callback(const sensor_msgs::JointState::ConstPtr& joint_state);
 void reset();
 
 double pan_position=0,tilt_position=0;
-bool have_pan=false,have_tilt=false;
-ros::Publisher pan_tilt_pub;
+bool have_pan=false,have_tilt=false,tracking=false;
+ros::Publisher pub_controller_command;
+ trajectory_msgs::JointTrajectory traj;
 
 
 void callback(const sensor_msgs::JointState::ConstPtr& joint_state)
@@ -43,16 +45,19 @@ template <typename T> int sgn(T val) {
 
 void reset() {
 
-    std_msgs::Float64MultiArray multiArray;
-    multiArray.data.push_back(0); // pan (positive is left)
-    multiArray.data.push_back(0); // tilt (positive is down)
-    pan_tilt_pub.publish(multiArray);
+    traj.points[0].positions[0] = 0.0;
+    traj.points[0].positions[1] = 0.0;
+    traj.header.stamp = ros::Time::now();
+    traj.points[0].time_from_start = ros::Duration(0.1);
+    pub_controller_command.publish(traj);
 }
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "pan_tilt_api");
     ros::NodeHandle nh;
-    pan_tilt_pub = nh.advertise<std_msgs::Float64MultiArray>("pan_tilt_controller/command", 10);
+    pub_controller_command = nh.advertise<trajectory_msgs::JointTrajectory>("pan_tilt_trajectory_controller/command", 2);
+
+  //  pan_tilt_pub = nh.advertise<std_msgs::Float64MultiArray>("pan_tilt_controller/command", 10);
     ros::Subscriber sub = nh.subscribe ("joint_states", 10, callback);
     double max_rate,kp_pan,kp_tilt,kd_pan,kd_tilt,pre_pan_err=0,pre_tilt_err=0,target_tol;
     std::string object_frame,depth_camera_frame;
@@ -82,6 +87,16 @@ int main(int argc, char **argv) {
     }
     ROS_INFO("Ready to track!");
     bool first=true;
+
+
+     traj.joint_names.push_back("head_pan_joint");
+     traj.joint_names.push_back("head_tilt_joint");
+     traj.points.resize(1);
+      traj.points[0].velocities.push_back(0);
+      traj.points[0].velocities.push_back(0);
+      traj.points[0].positions.push_back(0);
+      traj.points[0].positions.push_back(0);
+
     while(ros::ok()) {
         if ((have_tilt)&&(have_pan)) {
             try {
@@ -89,10 +104,14 @@ int main(int argc, char **argv) {
                 listener.lookupTransform(depth_camera_frame, object_frame, ros::Time(0), transform);
 
                 ros::Duration d=ros::Time::now()-transform.stamp_;
-                if (d.toSec()>no_object_timeout) { //no object in last 3 seconds
-                    reset();
+                if (d.toSec()>no_object_timeout) { //no object timeout
+                    if (tracking) {
+                        reset();
+                        tracking=false;
+                    }
                     continue;
                 }
+                if (!tracking) tracking=true;
 
                 tf::Vector3 v=transform.getOrigin();
                 double pan_err=-atan2(v.x(),v.z());
@@ -123,12 +142,17 @@ int main(int argc, char **argv) {
 
                 pre_t=now;
 
-                std_msgs::Float64MultiArray multiArray;
+
+
                 double pan_cmd=pan_position+pan_rate*dt.toSec();
                 double tilt_cmd=tilt_position+tilt_rate*dt.toSec();
-                multiArray.data.push_back(pan_cmd); // pan (positive is left)
-                multiArray.data.push_back(tilt_cmd); // tilt (positive is down)
-                pan_tilt_pub.publish(multiArray);
+
+
+                traj.header.stamp = ros::Time::now();
+                traj.points[0].time_from_start = ros::Duration(dt.toSec());
+                traj.points[0].positions[0] = pan_cmd;
+                traj.points[0].positions[1] = tilt_cmd;
+                pub_controller_command.publish(traj);
 
 
             }

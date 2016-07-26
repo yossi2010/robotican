@@ -1,30 +1,44 @@
-//
-// Created by tom on 29/06/16.
-//
 
 #include <ros/ros.h>
-#include <std_msgs/Float64MultiArray.h>
-
-
+#include <trajectory_msgs/JointTrajectory.h>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "pan_tilt_api");
-    ros::NodeHandle nodeHandle;
-    ros::Publisher pan_tilt_pub = nodeHandle.advertise<std_msgs::Float64MultiArray>("pan_tilt_controller/command", 10);
+    std::vector<double> q_goal(2);
 
-    std_msgs::Float64MultiArray multiArray;
-    multiArray.data.push_back(0.2); // pan
-    multiArray.data.push_back(0.3); // tilt (positive is down)
-    multiArray.data.push_back(0.0); // pan
-    multiArray.data.push_back(0.0); // tilt
-    ros::Rate loopRate(1);
-    while(ros::ok()) {
-        pan_tilt_pub.publish(multiArray);
-        ros::spinOnce();
-        loopRate.sleep();
+    if (argc==3) {
+        q_goal[0]=atof(argv[0]);
+        q_goal[1]=atof(argv[1]);
+    }
+    else {
+        srand (time(NULL));
+        q_goal[0]=(double)((rand()%91)-45)*M_PI/180.0;
+        q_goal[1]=(double)((rand()%91)-45)*M_PI/180.0;
+    }
+      ROS_INFO("Pan-Tilt Goal: [%f,%f]",q_goal[0],q_goal[1]);
+    ros::NodeHandle nh;
+    ros::Publisher pub_controller_command = nh.advertise<trajectory_msgs::JointTrajectory>("pan_tilt_trajectory_controller/command", 2);
+    ros::Rate r(1); // 50 hz
+    while (ros::ok())
+    {
+        trajectory_msgs::JointTrajectory traj;
+        traj.header.stamp = ros::Time::now();
+        traj.joint_names.push_back("head_pan_joint");
+        traj.joint_names.push_back("head_tilt_joint");
+        traj.points.resize(1);
+        traj.points[0].time_from_start = ros::Duration(1.0);
+        traj.points[0].positions = q_goal;
+        traj.points[0].velocities.push_back(0);
+        traj.points[0].velocities.push_back(0);
+        pub_controller_command.publish(traj);
+
+        r.sleep();
+
     }
 
-    return 0;
+
 
 
 }
