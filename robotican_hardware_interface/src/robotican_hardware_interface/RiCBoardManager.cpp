@@ -385,7 +385,7 @@ namespace robotican_hardware {
                &&_nodeHandle.getParam(servoIdentifier + "_init_pos", initPos)
                &&_nodeHandle.getParam(servoIdentifier + "_pin", pin)
                &&_nodeHandle.getParam(servoIdentifier + "_joint_name", servoJointName)) {
-                Servo* servo = new Servo(_idGen++, &_transportLayer, (byte) pin, a, b, max, min, initPos);
+                Servo* servo = new Servo(_idGen++, &_transportLayer, (byte) pin, a, b, max, min, initPos, servoJointName);
                 JointInfo_t* servoJointInfo = servo->getJointInfo();
                 hardware_interface::JointStateHandle jointStateHandle(servoJointName,
                                                                       &servoJointInfo->position,
@@ -398,7 +398,7 @@ namespace robotican_hardware {
                                                                 &servoJointInfo->cmd);
                 jointPositionInterface->registerHandle(JointHandle);
                 _devices.push_back(servo);
-                _servoParamHandler.add(servoJointName, servo);
+                //_servoParamHandler.add(servoJointName, servo);
                 servo->buildDevice();
             }
         }
@@ -650,72 +650,6 @@ namespace robotican_hardware {
 
     }
 
-
-
-    ServoParamHandler::ServoParamHandler() : _nodeHandle("~/Servos") , _server(_nodeHandle){
-        _callbackType = boost::bind(&ServoParamHandler::dynamicCallback, this, _1, _2);
-        _server.setCallback(_callbackType);
-
-    }
-
-    void ServoParamHandler::add(std::string jointName, Servo *servo) {
-        if (!_servos.empty()) {
-            if (checkIfJointValid(jointName) == NULL) {
-                _servos.insert(std::pair<std::string, Servo* >(jointName, servo));
-            }
-            else {
-                char buff[128] = {'\0'};
-                sprintf(buff, "joint name: %s already in the list", jointName.c_str());
-                ros_utils::rosError(buff);
-                return;
-            }
-        }
-        else {
-            _servos.insert(std::pair<std::string, Servo* >(jointName, servo));
-        }
-    }
-
-    void ServoParamHandler::remove(std::string jointName) {
-        if (!_servos.empty()) {
-            if (checkIfJointValid(jointName) != NULL) {
-                _servos.erase(jointName);
-            }
-            else {
-                char buff[128] = {'\0'};
-                sprintf(buff, "joint name: %s not in the list", jointName.c_str());
-                ros_utils::rosError(buff);
-                return;
-            }
-        }
-        else {
-            ros_utils::rosError("List is empty");
-        }
-    }
-
-    Servo *ServoParamHandler::checkIfJointValid(std::string jointName) {
-        for (std::map<std::string, Servo* >::iterator servo = _servos.begin(); servo != _servos.end(); ++servo)
-            if (servo->first == jointName) return servo->second;
-
-        return NULL;
-    }
-
-    void ServoParamHandler::dynamicCallback(robotican_hardware_interface::RiCBoardServoConfig &config, uint32_t level) {
-        if(!_servos.empty()) {
-            Servo *servo = checkIfJointValid(config.servo_joint_name);
-            if(servo != NULL) {
-                servo->setParam((float) config.A, (float) config.B, (float) config.max, (float) config.min);
-            }
-            else {
-                char buff[128] = {'\0'};
-                sprintf(buff, "the joint %s is not on the list", config.servo_joint_name.c_str());
-                ros_utils::rosError(buff);
-            }
-        }
-        else {
-          ros_utils::rosError("servos list is empty");
-        }
-
-    }
 
 
 }
