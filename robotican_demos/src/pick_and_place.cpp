@@ -22,7 +22,7 @@
 typedef actionlib::SimpleActionClient<control_msgs::GripperCommandAction> GripperClient;
 
 robot_state::GroupStateValidityCallbackFn state_validity_callback_fn_;
-robot_model::JointModelGroup* joint_model_group;
+const robot_model::JointModelGroup* joint_model_group;
 
 bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
                                const robot_model::JointModelGroup *joint_model_group,
@@ -143,7 +143,18 @@ void pick_go_cb(std_msgs::Empty) {
                                 if(moveit_ptr->move()) {
                                     ROS_INFO("Openning gripper...");
                                     if(gripper_cmd(0.14,0.0)) {
-                                        ROS_INFO("Done!");
+                                        ros::Duration w(5);
+                                        w.sleep(); //wait for deattach
+                                        ROS_INFO("Lifting arm up...");
+                                        if (arm_cmd(lift_arm())) {
+                                             ROS_INFO("Arm planning is done, moving arm up..");
+                                            if (moveit_ptr->move()) {
+                                                ROS_INFO("Arm is up");
+                                                ROS_INFO("Done!");
+                                            }
+
+                                        }
+
                                     }
                                 }
                             }
@@ -158,11 +169,11 @@ void pick_go_cb(std_msgs::Empty) {
 
 
 bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
-                               const robot_model::JointModelGroup *joint_model_group,
+                               const robot_model::JointModelGroup *joint_model_group_,
                                const double *ik_solution)
 {
-    joint_state->setJointGroupPositions(joint_model_group, ik_solution);
-    bool result = !(*planning_scene_ptr)->isStateColliding(*joint_state, joint_model_group->getName());
+    joint_state->setJointGroupPositions(joint_model_group_, ik_solution);
+    bool result = !(*planning_scene_ptr)->isStateColliding(*joint_state, joint_model_group_->getName());
 
     return result;
 }
@@ -275,7 +286,7 @@ int main(int argc, char **argv) {
     group.setMaxAccelerationScalingFactor(0.1);
     group.setMaxVelocityScalingFactor(0.1);
     group.setGoalPositionTolerance(0.02);
-//group.setPoseReferenceFrame("base_link");
+group.setPoseReferenceFrame("base_link");
     moveit_ptr=&group;
 
     ros::Subscriber pick_sub = n.subscribe("pick_go", 1, pick_go_cb);
@@ -302,10 +313,10 @@ int main(int argc, char **argv) {
     std::string group_name="arm";
 
     /* Load the robot model */
-    robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
+    //robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
 
     /* Get a shared pointer to the model */
-    robot_model::RobotModelPtr robot_model = robot_model_loader.getModel();
+    robot_model::RobotModelConstPtr robot_model = group.getRobotModel();// robot_model_loader.getModel();
 
     /* Create a robot state*/
     robot_state::RobotStatePtr robot_state(new robot_state::RobotState(robot_model));
@@ -315,8 +326,9 @@ int main(int argc, char **argv) {
     if(!robot_model->hasJointModelGroup(group_name))
         ROS_FATAL("Invalid group name: %s", group_name.c_str());
 
+   // const robot_model::JointModelGroup* joint_model_group;
     joint_model_group = robot_model->getJointModelGroup(group_name);
-
+//joint_model_group_ptr=&joint_model_group;
     /* Construct a planning scene - NOTE: this is for illustration purposes only.
       The recommended way to construct a planning scene is to use the planning_scene_monitor
       to construct it for you.*/

@@ -1,8 +1,12 @@
 <?xml version="1.0"?>
 <launch>
   
+   <arg name="gazebo" default="true"/>
   
-  <include file="$(find robotican_demos)/launch/armadillo_find_objects_demo_real.launch"/>
+  
+   <include file="$(find robotican_demos)/launch/armadillo_find_objects.launch"> 
+     <arg name="gazebo" value="$(arg gazebo)"/>
+    </include>
   
   <node name="pan_tilt_object_tracking_node" pkg="robotican_common" type="pan_tilt_object_tracking_node" output="screen">
     <param name="~max_rate" value="0.5"/>

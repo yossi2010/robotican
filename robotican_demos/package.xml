@@ -53,7 +53,6 @@
   <build_depend>moveit_ros_planning</build_depend>
   <build_depend>moveit_ros_planning_interface</build_depend>
   <build_depend>tf</build_depend>
-  <build_depend>moveit_workspace_analysis</build_depend>
   <build_depend>moveit_msgs</build_depend>
   <build_depend>moveit_core</build_depend>
   <build_depend>moveit_ros_planning_interface</build_depend>
@@ -72,7 +71,6 @@
   <run_depend>moveit_ros_planning</run_depend>
   <run_depend>moveit_ros_planning_interface</run_depend>
    <run_depend>tf</run_depend>
-    <run_depend>moveit_workspace_analysis</run_depend>
     <run_depend>moveit_msgs</run_depend>
     <run_depend>moveit_core</run_depend>
     <run_depend>moveit_ros_planning_interface</run_depend>
