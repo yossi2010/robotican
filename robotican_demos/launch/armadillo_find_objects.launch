@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <arg name="gazebo" default="true"/>
+  
+  <group if="$(arg gazebo)">
+    
+    <include file="$(find robotican_armadillo)/launch/armadillo.launch">
+      <arg name="gazebo" value="true"/>
+      <arg name="world_name" value="$(find robotican_common)/worlds/objects_on_table.world"/> 
+      <arg name="x" value="0.0"/>
+      <arg name="y" value="0.0"/>
+      <arg name="Y" value="0"/>
+      <arg name="kinect2" value="true"/>     
+      <arg name="rqt" value="true"/> 
+    </include>
+  </group>
+  
+  <group unless="$(arg gazebo)">
+    <include file="$(find robotican_armadillo)/launch/armadillo.launch"> 
+      <arg name="x" value="0.0"/>
+      <arg name="y" value="0.0"/>
+      <arg name="Y" value="0"/>
+      <arg name="kinect2" value="true"/>     
+      <arg name="rqt" value="true"/> 
+    </include>
+  </group>
+  
+  <node name="find_object_node" pkg="robotican_common" type="find_objects_node" output="screen">
+    <param name="~object_extra_depth" value="0.03"/>
+    <param name="~object_frame" value="object_frame"/>
+    <param name="~depth_topic" value="/kinect2/qhd/points"/>
+    <rosparam file="$(find robotican_demos)/config/red_object.yaml" command="load"/>
+  </node>
+  
+  
+</launch>
+
