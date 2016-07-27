@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+  <group ns="pan_tilt_trajectory_controller">
+    <node name="point_head_action" pkg="robotican_common" type="point_head_action" output="screen" >
+      <rosparam>
+        pan_link:  head_pan_link
+        tilt_link: head_tilt_link
+        success_angle_threshold: 0.01
+      </rosparam>
+    </node>
+  </group>
+</launch>

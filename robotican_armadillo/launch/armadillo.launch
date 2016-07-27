@@ -211,6 +211,8 @@
 
   <group if="$(arg controllers)">
     
+    <include file="$(find robotican_common)/launch/head_action.launch"/>
+    
     <rosparam file="$(find robotican_armadillo)/config/controllers.yaml" command="load"/>
     
     

@@ -18,6 +18,11 @@ find_package(catkin REQUIRED COMPONENTS
         moveit_core
         moveit_ros_planning
         moveit_ros_planning_interface
+        kdl_parser
+        actionlib
+        pr2_controllers_msgs
+        tf_conversions
+        trajectory_msgs
         )
 
 ## System dependencies are found with CMake's conventions
@@ -144,18 +149,24 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(joy_teleop_node src/joy_teleop_node.cpp)
-add_executable(arm_joy_node src/arm_joy_node.cpp)
 target_link_libraries(joy_teleop_node ${catkin_LIBRARIES})
+
+add_executable(arm_joy_node src/arm_joy_node.cpp)
+target_link_libraries(arm_joy_node ${catkin_LIBRARIES})
+
+add_executable(point_head_action src/point_head_action.cpp)
+target_link_libraries(point_head_action ${catkin_LIBRARIES})
+
 add_executable(find_objects_node src/find_objects.cpp)
 add_dependencies(find_objects_node ${PROJECT_NAME}_gencfg)
+
+
 add_dependencies(find_objects_node ${PROJECT_NAME}_gencpp)
 target_link_libraries(find_objects_node ${catkin_LIBRARIES})
-target_link_libraries(arm_joy_node ${catkin_LIBRARIES})
+
 
 add_executable(reach_event src/reach_event_node.cpp)
 target_link_libraries(reach_event ${catkin_LIBRARIES})
-
-#set(_output_cpp ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_INCLUDE_DESTINATION}/${_cfgonly}Config.h)
 
 add_executable(pan_tilt_object_tracking_node src/pan_tilt_object_tracking.cpp)
 target_link_libraries(pan_tilt_object_tracking_node ${catkin_LIBRARIES})

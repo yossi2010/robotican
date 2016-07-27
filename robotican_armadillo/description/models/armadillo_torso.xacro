@@ -256,8 +256,8 @@
     <limit
       upper="${M_PI/4}"
 	  lower="${-M_PI/4}"
-      effort="1.11"
-      velocity="5.3" /> 
+      effort="3.1"
+      velocity="7.016223585" /> 
   </joint>
   <link
     name="head_tilt_link">
@@ -314,8 +314,8 @@
     <limit
     upper="${M_PI/4}"
 	  lower="${-M_PI/4}"
-      effort="1.11"
-      velocity="5.3" />
+      effort="3.1"
+      velocity="7.016223585" /> 
   </joint>
   <link
     name="kinect2_link">

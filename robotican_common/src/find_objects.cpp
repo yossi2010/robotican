@@ -314,6 +314,7 @@ int main(int argc, char **argv) {
 
         if (have_object) {
             try{
+
                br.sendTransform(obj_transform);
             }
             catch (tf::TransformException ex){

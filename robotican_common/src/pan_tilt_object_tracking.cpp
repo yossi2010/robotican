@@ -3,168 +3,71 @@
 #include <ros/ros.h>
 #include <std_msgs/Float64MultiArray.h>
 #include <tf/transform_listener.h>
-#include <sensor_msgs/JointState.h>
-#include <trajectory_msgs/JointTrajectory.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <actionlib/client/simple_action_client.h>
+#include <pr2_controllers_msgs/PointHeadAction.h>
 
-template <typename T> int sgn(T val);
-void callback(const sensor_msgs::JointState::ConstPtr& joint_state);
-void reset();
-
-double pan_position=0,tilt_position=0;
-bool have_pan=false,have_tilt=false,tracking=false;
-ros::Publisher pub_controller_command;
- trajectory_msgs::JointTrajectory traj;
+// Our Action interface type, provided as a typedef for convenience
+typedef actionlib::SimpleActionClient<pr2_controllers_msgs::PointHeadAction> PointHeadClient;
 
 
-void callback(const sensor_msgs::JointState::ConstPtr& joint_state)
+void callback(const geometry_msgs::PoseStamped::ConstPtr& pose);
+PointHeadClient* point_head_client;
+
+
+void callback(const geometry_msgs::PoseStamped::ConstPtr& pose)
 {
-    // std::vector<std::string> joint_names = joint_state->name;
-    for (int i=0;i<joint_state->name.size();i++)
-    {
-        if (joint_state->name[i] == "head_pan_joint")
-        {
-            pan_position = joint_state->position[i];
-            if (!have_pan) have_pan=true;
-        }
-        else if (joint_state->name[i] == "head_tilt_joint")
-        {
-            tilt_position = joint_state->position[i];
-            if (!have_tilt) have_tilt=true;
-        }
-    }
 
-    // tilt_position = joint_state->position[find (joint_names.begin(),joint_names.end(), "head_tilt_joint") - joint_names.begin()];
+//the goal message we will be sending
+pr2_controllers_msgs::PointHeadGoal goal;
 
+//the target point, expressed in the requested frame
+geometry_msgs::PointStamped point;
+point.header.frame_id = pose->header.frame_id;
+point.point.x = pose->pose.position.x; point.point.y = pose->pose.position.y; point.point.z = pose->pose.position.z;
+goal.target = point;
+
+//we are pointing the high-def camera frame
+//(pointing_axis defaults to X-axis)
+goal.pointing_frame = "kinect2_depth_frame";
+goal.pointing_axis.x = 1;
+goal.pointing_axis.y = 0;
+goal.pointing_axis.z = 0;
+
+//take at least 0.5 seconds to get there
+goal.min_duration = ros::Duration(0.5);
+
+//and go no faster than 1 rad/s
+goal.max_velocity = 1.0;
+
+//send the goal
+point_head_client->sendGoal(goal);
+
+//wait for it to get there (abort after 2 secs to prevent getting stuck)
+point_head_client->waitForResult(ros::Duration(2));
 
 }
 
 
-template <typename T> int sgn(T val) {
-    return (T(0) < val) - (val < T(0));
-}
 
-void reset() {
-
-    traj.points[0].positions[0] = 0.0;
-    traj.points[0].positions[1] = 0.0;
-    traj.header.stamp = ros::Time::now();
-    traj.points[0].time_from_start = ros::Duration(0.1);
-    pub_controller_command.publish(traj);
-}
 
 int main(int argc, char **argv) {
-    ros::init(argc, argv, "pan_tilt_api");
+    ros::init(argc, argv, "pan_tilt_object_trackking");
     ros::NodeHandle nh;
-    pub_controller_command = nh.advertise<trajectory_msgs::JointTrajectory>("pan_tilt_trajectory_controller/command", 2);
+ros::Subscriber obj_sub = nh.subscribe("object", 1, callback);
 
-  //  pan_tilt_pub = nh.advertise<std_msgs::Float64MultiArray>("pan_tilt_controller/command", 10);
-    ros::Subscriber sub = nh.subscribe ("joint_states", 10, callback);
-    double max_rate,kp_pan,kp_tilt,kd_pan,kd_tilt,pre_pan_err=0,pre_tilt_err=0,target_tol;
-    std::string object_frame,depth_camera_frame;
-    double no_object_timeout;
-    double loop_hz;
-    nh.param<double>("max_rate", max_rate, 0.3); //rad/s
-    nh.param<std::string>("object_frame", object_frame, "object_frame");
-    nh.param<double>("kp_pan", kp_pan, 4.0);
-    nh.param<double>("kp_tilt", kp_tilt, 3.0);
-    nh.param<double>("kd_pan", kd_pan, 0.01);
-    nh.param<double>("kd_tilt", kd_tilt, 0.01);
-    nh.param<double>("loop_hz", loop_hz, 30);
-    nh.param<double>("target_tol", target_tol,1.0*M_PI/180.0);
-     nh.param<double>("no_object_timeout", no_object_timeout,5.0);
-    nh.param<std::string>("depth_camera_frame", depth_camera_frame, "kinect2_depth_optical_frame");
+//Initialize the client for the Action interface to the head controller
+point_head_client = new PointHeadClient("/pan_tilt_trajectory_controller/point_head_action", true);
 
-    tf::TransformListener listener;
-    tf::StampedTransform transform;
+//wait for head controller action server to come up
+while(!point_head_client->waitForServer(ros::Duration(5.0))){
+  ROS_INFO("Waiting for the point_head_action server to come up");
+}
 
-    ros::Duration dt;
-    ros::Rate loopRate(loop_hz);
-    ros::Time pre_t=ros::Time::now();
-
-
-    while (!listener.waitForTransform(depth_camera_frame, object_frame,ros::Time::now(), ros::Duration(1.0))) {
-        ROS_INFO("Waiting for tranformations...");
-    }
     ROS_INFO("Ready to track!");
-    bool first=true;
 
 
-     traj.joint_names.push_back("head_pan_joint");
-     traj.joint_names.push_back("head_tilt_joint");
-     traj.points.resize(1);
-      traj.points[0].velocities.push_back(0);
-      traj.points[0].velocities.push_back(0);
-      traj.points[0].positions.push_back(0);
-      traj.points[0].positions.push_back(0);
-
-    while(ros::ok()) {
-        if ((have_tilt)&&(have_pan)) {
-            try {
-
-                listener.lookupTransform(depth_camera_frame, object_frame, ros::Time(0), transform);
-
-                ros::Duration d=ros::Time::now()-transform.stamp_;
-                if (d.toSec()>no_object_timeout) { //no object timeout
-                    if (tracking) {
-                        reset();
-                        tracking=false;
-                    }
-                    continue;
-                }
-                if (!tracking) tracking=true;
-
-                tf::Vector3 v=transform.getOrigin();
-                double pan_err=-atan2(v.x(),v.z());
-                double tilt_err=atan2(v.y(),v.z());
-
-                if (first) {
-
-                    pre_pan_err=pan_err;
-                    pre_tilt_err=tilt_err;
-                    first=false;
-
-
-                }
-                ros::Time now=ros::Time::now();
-                dt=(now-pre_t);
-
-                double pan_rate=pan_err*kp_pan+kd_pan*(pan_err-pre_pan_err)/dt.toSec();
-                double tilt_rate=tilt_err*kp_tilt+kd_tilt*(tilt_err-pre_tilt_err)/dt.toSec();;
-
-                if (pan_rate>max_rate) pan_rate=max_rate;
-                else if(pan_rate<-max_rate) pan_rate=-max_rate;
-                if (tilt_rate>max_rate) tilt_rate=max_rate;
-                else if(tilt_rate<-max_rate) tilt_rate=-max_rate;
-
-                if(fabs(pan_err)<target_tol) pan_rate=0;
-                if(fabs(tilt_err)<target_tol) tilt_rate=0;
-
-
-                pre_t=now;
-
-
-
-                double pan_cmd=pan_position+pan_rate*dt.toSec();
-                double tilt_cmd=tilt_position+tilt_rate*dt.toSec();
-
-
-                traj.header.stamp = ros::Time::now();
-                traj.points[0].time_from_start = ros::Duration(dt.toSec());
-                traj.points[0].positions[0] = pan_cmd;
-                traj.points[0].positions[1] = tilt_cmd;
-                pub_controller_command.publish(traj);
-
-
-            }
-            catch (tf::TransformException ex) {
-                 ROS_ERROR("Pan-Tilt tracking node error: %s",ex.what());
-                reset();
-            }
-        }
-        //
-        ros::spinOnce();
-        loopRate.sleep();
-    }
+        ros::spin();
 
 
     return 0;
