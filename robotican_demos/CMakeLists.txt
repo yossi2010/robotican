@@ -21,8 +21,7 @@ tf
 moveit_core
 moveit_ros_planning
 moveit_ros_planning_interface
-eigen_conversions
-moveit_visual_tools
+
 pr2_controllers_msgs
 )
 
@@ -30,9 +29,6 @@ pr2_controllers_msgs
  find_package(Boost REQUIRED COMPONENTS system)
 find_package(cmake_modules REQUIRED)
 
-find_package(Eigen REQUIRED)
-include_directories(${EIGEN_INCLUDE_DIRS})
-add_definitions(${EIGEN_DEFINITIONS})
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
