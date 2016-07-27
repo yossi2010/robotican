@@ -305,7 +305,9 @@ struct BuildMotorCloseLoop : BuildDevice {
     float KI;
     float KD;
     float maxSetPointSpeed;
+    float minSetPointSpeed;
     float maxSetPointPos;
+    float minSetPointPos;
     float limit;
     float stopLimitMax;
     float stopLimitMin;
@@ -347,6 +349,7 @@ struct BuildMotorOpenLoop : BuildDevice {
     int8_t motorDirection;
     int8_t encoderDirection;
     float maxSetPointSpeed;
+    float minSetPointSpeed;
     float LPFAlphaSpeed;
     float LPFAlphaInput;
 
