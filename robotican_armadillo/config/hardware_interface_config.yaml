@@ -54,7 +54,10 @@ ultrasonic2_topic_name: 'urf/rear'
 #~ motor0_kp: 2.0
 #~ motor0_ki: 80.0
 #~ motor0_kd: 0.0
-#~ motor0_max_speed: 16.0
+#~ motor0_max_set_point_speed: 16.0
+#~ motor0_min_set_point_speed: -16.0
+#~ motor0_max_set_point_position: 0.0
+#~ motor0_min_set_point_position: 0.0
 #~ motor0_limit: 0.2
 #~ motor0_stop_limit_max: 7.5
 #~ motor0_stop_limit_min: -7.5
@@ -86,7 +89,10 @@ ultrasonic2_topic_name: 'urf/rear'
 #~ motor1_kp: 2.0
 #~ motor1_ki: 80.0
 #~ motor1_kd: 0.0
-#~ motor1_max_speed: 16.0
+#~ motor1_max_set_point_speed: 16.0
+#~ motor1_min_set_point_speed: -16.0
+#~ motor1_max_set_point_position: 0.0
+#~ motor1_min_set_point_position: 0.0
 #~ motor1_limit: 0.2
 #~ motor1_stop_limit_max: 7.5
 #~ motor1_stop_limit_min: -7.5
@@ -113,6 +119,7 @@ motor0_encoder_direction: -1
 motor0_lpf_alpha_speed: 0.27
 motor0_lpf_alpha_input: 1.0
 motor0_max_set_point_speed: 8.0
+motor0_min_set_point_speed: -8.0
 motor0_joint: 'left_wheel_joint'
 
 
@@ -126,6 +133,7 @@ motor1_lpf_alpha_input: 1.0
 motor1_ppr: 1675
 motor1_motor_direction: -1
 motor1_max_set_point_speed: 8.0
+motor1_min_set_point_speed: -8.0
 motor1_motor_address: 1
 motor1_motor_emergency_pin: 12
 motor1_motor_emergency_pin_type: 1
@@ -137,15 +145,15 @@ position_motor_size: 1
 positionMotor0_motor_type: 1
 positionMotor0_a: 0.00064833
 positionMotor0_b: -0.05510805
-positionMotor0_lpf_hz_speed: 50
-positionMotor0_lpf_hz_input: 50
+positionMotor0_lpf_hz_speed: 63
+positionMotor0_lpf_hz_input: 100
 positionMotor0_pid_hz: 1000
 positionMotor0_ppr: 2503
 positionMotor0_timeout: 0
 positionMotor0_motor_direction: -1
 positionMotor0_encoder_direction: 1
-positionMotor0_lpf_alpha_speed: 0.2
-positionMotor0_lpf_alpha_input: 0.2
+positionMotor0_lpf_alpha_speed: 0.21
+positionMotor0_lpf_alpha_input: 0.5
 positionMotor0_kp: 3200.0
 positionMotor0_ki: 600.0
 positionMotor0_kd: 0.0
@@ -164,27 +172,27 @@ positionMotor0_tolerance: 0.01
 positionMotor0_stop_limit_max: 0.33
 positionMotor0_stop_limit_min: -0.01
 
-servo_size: 2
+#~ servo_size: 2
 
-servo0_pin: 4
-servo0_a: -291.94
-servo0_b: 1280.0
-servo0_max: 1.57
-servo0_min: -1.57
-servo0_init_pos: 0
-servo0_joint_name: 'head_tilt_joint'
-
-servo1_pin: 3
-servo1_a: -655.45
-servo1_b: 1580.0
-servo1_max: 1.57
-servo1_min: -1.57
-servo1_init_pos: 0
-servo1_joint_name: 'head_pan_joint'
-
-gps_baudrate: 9600
-gps_topic_name: 'gps'
-gps_frame_id: 'base_link'
+#~ servo0_pin: 4
+#~ servo0_a: -291.94
+#~ servo0_b: 1280.0
+#~ servo0_max: 1.57
+#~ servo0_min: -1.57
+#~ servo0_init_pos: 0
+#~ servo0_joint_name: 'head_tilt_joint'
+#~ 
+#~ servo1_pin: 3
+#~ servo1_a: -655.45
+#~ servo1_b: 1580.0
+#~ servo1_max: 1.57
+#~ servo1_min: -1.57
+#~ servo1_init_pos: 0
+#~ servo1_joint_name: 'head_pan_joint'
+#~ 
+#~ gps_baudrate: 9600
+#~ gps_topic_name: 'gps'
+#~ gps_frame_id: 'base_link'
 
 #RiCBoard
 
