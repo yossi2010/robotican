@@ -38,8 +38,8 @@ namespace robotican_hardware {
         ros::Subscriber _leftFingerState;
         ros::Subscriber _rightFingerState;
 
-        void panCallback(const std_msgs::Float32::ConstPtr &msg);
-        void tiltCallback(const std_msgs::Float32::ConstPtr &msg);
+        void panCallback(const dynamixel_msgs::JointState::ConstPtr &msg);
+        void tiltCallback(const dynamixel_msgs::JointState::ConstPtr &msg);
         void leftFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg);
         void rightFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg);
 
