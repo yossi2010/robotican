@@ -1,133 +1,134 @@
+#include <iostream>
+#include <stdio.h>
+
 #include <moveit/move_group_interface/move_group.h>
-#include <moveit/planning_scene_interface/planning_scene_interface.h>
 
-#include <moveit_msgs/DisplayRobotState.h>
-#include <moveit_msgs/DisplayTrajectory.h>
-
-#include <moveit_msgs/AttachedCollisionObject.h>
 #include <moveit_msgs/CollisionObject.h>
-#include <ros/ros.h>
+#include <moveit_msgs/ApplyPlanningScene.h>
+#include <moveit_msgs/Grasp.h>
 
-void demoPick(moveit::planning_interface::MoveGroup &group)
-{
-  std::vector<moveit_msgs::Grasp> grasps;
-  for (std::size_t i = 0 ; i < 20 ; ++i)
-  {
-    geometry_msgs::PoseStamped p = group.getRandomPose();
-    p.pose.orientation.x = 0;
-    p.pose.orientation.y = 0;
-    p.pose.orientation.z = 0;
-    p.pose.orientation.w = 1;
-    moveit_msgs::Grasp g;
-    g.grasp_pose = p;
-    g.pre_grasp_approach.direction.vector.x = 1.0;
-    g.post_grasp_retreat.direction.vector.z = 1.0;
-    g.post_grasp_retreat.direction.header = p.header;
-    g.pre_grasp_approach.min_distance = 0.2;
-    g.pre_grasp_approach.desired_distance = 0.4;
-    g.post_grasp_retreat.min_distance = 0.1;
-    g.post_grasp_retreat.desired_distance = 0.27;
-    g.pre_grasp_posture.joint_names.resize(1, "right_finger_joint");
-    g.pre_grasp_posture.points.resize(1);
-    g.pre_grasp_posture.points[0].positions.resize(1);
-    g.pre_grasp_posture.points[0].positions[0] = 1;
+#include <manipulation_msgs/GraspPlanning.h>
 
-    g.grasp_posture.joint_names.resize(1, "right_finger_joint");
-    g.grasp_posture.points.resize(1);
-    g.grasp_posture.points[0].positions.resize(1);
-    g.grasp_posture.points[0].positions[0] = 0;
+ros::Publisher goal_pub;
 
-    grasps.push_back(g);
-  }
-  group.pick("box1", grasps);
-}
+class PickAndPlaceTest{
 
-void demoPlace(moveit::planning_interface::MoveGroup &group)
-{
-  std::vector<moveit_msgs::PlaceLocation> loc;
-  for (std::size_t i = 0 ; i < 20 ; ++i)
-  {
-    geometry_msgs::PoseStamped p = group.getRandomPose();
-    p.pose.orientation.x = 0;
-    p.pose.orientation.y = 0;
-    p.pose.orientation.z = 0;
-    p.pose.orientation.w = 1;
-    moveit_msgs::PlaceLocation g;
-    g.place_pose = p;
-    g.pre_place_approach.direction.vector.x = 1.0;
-    g.post_place_retreat.direction.vector.z = 1.0;
-    g.post_place_retreat.direction.header = p.header;
-    g.pre_place_approach.min_distance = 0.2;
-    g.pre_place_approach.desired_distance = 0.4;
-    g.post_place_retreat.min_distance = 0.1;
-    g.post_place_retreat.desired_distance = 0.27;
+protected:
+    ros::NodeHandle node_handle;
+    ros::ServiceClient planning_scene_diff_client;
+    ros::ServiceClient grasp_planning_service;
 
-    g.post_place_posture.joint_names.resize(1, "right_finger_joint");
-    g.post_place_posture.points.resize(1);
-    g.post_place_posture.points[0].positions.resize(1);
-    g.post_place_posture.points[0].positions[0] = 0;
+public:
+    PickAndPlaceTest(){
+        planning_scene_diff_client = node_handle.serviceClient<moveit_msgs::ApplyPlanningScene>("apply_planning_scene");
+        planning_scene_diff_client.waitForExistence();
+         goal_pub=node_handle.advertise<geometry_msgs::PoseStamped>("pick_goal", 2, true);
+    }
 
-    loc.push_back(g);
-  }
-  group.place("box1", loc);
-}
+    ~PickAndPlaceTest(){
+    }
 
-int main(int argc, char **argv)
-{
-  ros::init(argc, argv, "move_group_interface_demo", ros::init_options::AnonymousName);
 
-  ros::AsyncSpinner spinner(1);
-  spinner.start();
+    void executePick(){
+        moveit::planning_interface::MoveGroup arm("arm");
 
-    moveit::planning_interface::MoveGroup group("arm");
- moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
-  // Add Collision Object
-  /********************************************/
-    moveit_msgs::AttachedCollisionObject attached_object;
-    attached_object.link_name = group.getEndEffectorLink();
 
-    moveit_msgs::CollisionObject collision_object;
+        moveit_msgs::Grasp grasp;
+        grasp.id = "grasp";
 
-    //Define header, that is used for interpreting the poses
-    collision_object.header.frame_id = group.getPlanningFrame();
+   grasp.pre_grasp_posture.joint_names.resize(2);
+        grasp.pre_grasp_posture.joint_names[0]="left_finger_joint";
+       grasp.pre_grasp_posture.joint_names[1]="right_finger_joint";
+        grasp.pre_grasp_posture.points.resize(1);
+        grasp.pre_grasp_posture.points[0].positions.resize(2);
+        grasp.pre_grasp_posture.points[0].positions[0] = -0.57;
+        grasp.pre_grasp_posture.points[0].positions[1] = 0.57;
 
-    collision_object.id = "box1";
+        grasp.grasp_posture.joint_names.resize(2);
+        grasp.grasp_posture.joint_names[0]="left_finger_joint";
+       grasp.grasp_posture.joint_names[1]="right_finger_joint";
+        grasp.grasp_posture.points.resize(1);
+        grasp.grasp_posture.points[0].positions.resize(2);
+        grasp.grasp_posture.points[0].positions[0] = 0.3;
+        grasp.grasp_posture.points[0].positions[1] = -0.3;
 
-    //Define shape
-    shape_msgs::SolidPrimitive primitive;
-    primitive.type = primitive.BOX;
-    primitive.dimensions.resize(3);
-    primitive.dimensions[0] = 0.04;
-    primitive.dimensions[1] = 0.01;
-    primitive.dimensions[2] = 0.2;
 
-    //Define pose
-    geometry_msgs::Pose box_pose;
-    box_pose.orientation.w = 1.0;
-    box_pose.position.x = 0.3;
-    box_pose.position.y = -0.4;
-    box_pose.position.z = 0.1;
 
-    //Define collision object
-    collision_object.primitives.push_back(primitive);
-    collision_object.primitive_poses.push_back(box_pose);
-    collision_object.operation = collision_object.ADD;
+        geometry_msgs::PoseStamped pose;
+        pose.header.frame_id = "map";
+        pose.pose.position.x = 0.4;
+        pose.pose.position.y = 0.0;
+        pose.pose.position.z = 0.8;
+      //  pose.pose.orientation.x = 0.215;
+      //  pose.pose.orientation.y = -0.674;
+       // pose.pose.orientation.z = 0.215;
+       // pose.pose.orientation.w = 0.674;
+       // pose.pose.orientation=tf::createQuaternionMsgFromRollPitchYaw(0,M_PI/2.0,0 );
+        grasp.grasp_pose = pose;
 
-    //Define attached object
-    attached_object.object = collision_object;
+       /* grasp.pre_grasp_approach.min_distance = 0.0;
+        grasp.pre_grasp_approach.desired_distance = 0.0;
+        grasp.pre_grasp_approach.direction.header.frame_id = "ft_fts_toolside";
+        grasp.pre_grasp_approach.direction.vector.z = 1.0;
 
-    //Add Object to the world
-    std::vector<moveit_msgs::CollisionObject> collision_objects;
-    collision_objects.push_back(collision_object);
-    ROS_INFO("Add an object into the world");
-    planning_scene_interface.addCollisionObjects(collision_objects);
-    ros::Duration(2.0).sleep();
+        grasp.post_grasp_retreat.min_distance = 0.0;
+        grasp.post_grasp_retreat.desired_distance = 0.0;
+        grasp.post_grasp_retreat.direction.header.frame_id = "ft_fts_toolside";
+        grasp.post_grasp_retreat.direction.vector.z = -1.0;
+*/
+int err=0;
+       // do {
+            spawnObject(&arm);
+             err=arm.pick("object");
+            ROS_INFO("err code: %d",err);
+       //     ros::Duration(2.0).sleep();
+      //  } while (err!=1);
+    }
 
-  // moveit::planning_interface::MoveGroup group(argc > 1 ? argv[1] : "right_arm");
+    void spawnObject(moveit::planning_interface::MoveGroup *arm){
+        moveit_msgs::ApplyPlanningScene srv;
+        moveit_msgs::PlanningScene planning_scene;
+        planning_scene.is_diff = true;
 
-  demoPlace(group);
+        moveit_msgs::CollisionObject object;
 
-  sleep(2);
+        object.header.frame_id = "map";
+        object.id = "object";
 
-  return 0;
+        shape_msgs::SolidPrimitive primitive;
+        primitive.type = primitive.BOX;
+        primitive.dimensions.resize(3);
+        primitive.dimensions[0] = 0.05;
+        primitive.dimensions[1] = 0.05;
+        primitive.dimensions[2] = 0.20;
+
+
+        geometry_msgs::Pose pose;
+        pose.orientation.w=1;//=tf::createQuaternionMsgFromRollPitchYaw(0,M_PI/2.0,0 );
+        pose.position.x = 0.7;
+        pose.position.y = 0.0;
+        pose.position.z = 0.6+primitive.dimensions[2]/2;
+        geometry_msgs::PoseStamped ps;
+        ps.pose=pose;
+        ps.header.stamp=ros::Time::now();
+        ps.header.frame_id="map";
+         goal_pub.publish(ps);
+
+ROS_INFO("%f    %f    %f",pose.position.x,pose.position.y,pose.position.z);
+        object.primitives.push_back(primitive);
+        object.primitive_poses.push_back(pose);
+        object.operation = object.ADD;
+        planning_scene.world.collision_objects.push_back(object);
+
+        srv.request.scene = planning_scene;
+        planning_scene_diff_client.call(srv);
+    }
+};
+
+int main(int argc, char** argv){
+    ros::init(argc, argv, "PaPTest");
+    PickAndPlaceTest testClass;
+    testClass.executePick();
+    ros::spin();
+    return 0;
 }

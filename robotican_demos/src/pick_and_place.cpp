@@ -4,7 +4,7 @@
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 #include <geometry_msgs/PointStamped.h>
-#include <std_msgs/Float64MultiArray.h>
+#include <trajectory_msgs/JointTrajectory.h>
 #include <std_msgs/Empty.h>
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
@@ -62,7 +62,7 @@ bool moving=false;
 
 ros::Publisher planning_scene_diff_publisher;
 ros::Publisher goal_pub;
-ros::Publisher pan_tilt_pub;
+ros::Publisher pub_controller_command;
 
 double wrist_distance_from_object=0.10;
 geometry_msgs::PoseStamped moveit_goal;
@@ -82,10 +82,21 @@ geometry_msgs::PoseStamped lift_arm(){
 
 
 void look_down() {
-    std_msgs::Float64MultiArray multiArray;
-    multiArray.data.push_back(0.0); // pan
-    multiArray.data.push_back(0.4); // tilt
-    pan_tilt_pub.publish(multiArray);
+
+    trajectory_msgs::JointTrajectory traj;
+    traj.header.stamp = ros::Time::now();
+    traj.joint_names.push_back("head_pan_joint");
+    traj.joint_names.push_back("head_tilt_joint");
+    traj.points.resize(1);
+    traj.points[0].time_from_start = ros::Duration(1.0);
+    std::vector<double> q_goal(2);
+    q_goal[0]=0.0;
+    q_goal[1]=0.4;
+    traj.points[0].positions=q_goal;
+    traj.points[0].velocities.push_back(0);
+    traj.points[0].velocities.push_back(0);
+    pub_controller_command.publish(traj);
+
 }
 
 
@@ -147,7 +158,7 @@ void pick_go_cb(std_msgs::Empty) {
                                         w.sleep(); //wait for deattach
                                         ROS_INFO("Lifting arm up...");
                                         if (arm_cmd(lift_arm())) {
-                                             ROS_INFO("Arm planning is done, moving arm up..");
+                                            ROS_INFO("Arm planning is done, moving arm up..");
                                             if (moveit_ptr->move()) {
                                                 ROS_INFO("Arm is up");
                                                 ROS_INFO("Done!");
@@ -181,7 +192,7 @@ bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
 bool checkIK(geometry_msgs::PoseStamped pose) {
 
     bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 5, 0.005, state_validity_callback_fn_);
-     std::printf("IK %d: [%f , %f , %f] [%f , %f , %f , %f]\n",found_ik,pose.pose.position.x,pose.pose.position.y,pose.pose.position.z,pose.pose.orientation.x,pose.pose.orientation.y,pose.pose.orientation.z,pose.pose.orientation.w);
+    std::printf("IK %d: [%f , %f , %f] [%f , %f , %f , %f]\n",found_ik,pose.pose.position.x,pose.pose.position.y,pose.pose.position.z,pose.pose.orientation.x,pose.pose.orientation.y,pose.pose.orientation.z,pose.pose.orientation.w);
     return found_ik;
 }
 
@@ -286,13 +297,13 @@ int main(int argc, char **argv) {
     group.setMaxAccelerationScalingFactor(0.1);
     group.setMaxVelocityScalingFactor(0.1);
     group.setGoalPositionTolerance(0.02);
-group.setPoseReferenceFrame("base_link");
+    group.setPoseReferenceFrame("base_link");
     moveit_ptr=&group;
 
     ros::Subscriber pick_sub = n.subscribe("pick_go", 1, pick_go_cb);
 
     goal_pub=n.advertise<geometry_msgs::PoseStamped>("pick_moveit_goal", 2, true);
-    pan_tilt_pub = n.advertise<std_msgs::Float64MultiArray>("/pan_tilt_controller/command", 10);
+    pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("pan_tilt_trajectory_controller/command", 2);
 
 
     tf::TransformListener listener;
@@ -326,9 +337,9 @@ group.setPoseReferenceFrame("base_link");
     if(!robot_model->hasJointModelGroup(group_name))
         ROS_FATAL("Invalid group name: %s", group_name.c_str());
 
-   // const robot_model::JointModelGroup* joint_model_group;
+    // const robot_model::JointModelGroup* joint_model_group;
     joint_model_group = robot_model->getJointModelGroup(group_name);
-//joint_model_group_ptr=&joint_model_group;
+    //joint_model_group_ptr=&joint_model_group;
     /* Construct a planning scene - NOTE: this is for illustration purposes only.
       The recommended way to construct a planning scene is to use the planning_scene_monitor
       to construct it for you.*/
@@ -337,7 +348,7 @@ group.setPoseReferenceFrame("base_link");
 
 
 
-   // std::string robot_name_ = robot_state->getRobotModel()->getName();
+    // std::string robot_name_ = robot_state->getRobotModel()->getName();
     std::string frame_id_ =  robot_state->getRobotModel()->getModelFrame();
 
     ROS_INFO_STREAM("Root frame ID: " << frame_id_);
