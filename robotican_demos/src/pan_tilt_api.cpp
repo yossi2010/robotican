@@ -3,14 +3,15 @@
 #include <trajectory_msgs/JointTrajectory.h>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
+#include <cstdio>
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "pan_tilt_api");
     std::vector<double> q_goal(2);
 
     if (argc==3) {
-        q_goal[0]=atof(argv[0]);
-        q_goal[1]=atof(argv[1]);
+        q_goal[0]=atof(argv[1]);
+        q_goal[1]=atof(argv[2]);
     }
     else {
         srand (time(NULL));

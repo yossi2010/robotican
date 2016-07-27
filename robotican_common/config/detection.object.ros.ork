@@ -20,10 +20,10 @@ source1:
     #z_max: 1.5
     # or again for the camera:
     rgb_frame_id: '/kinect2_rgb_optical_frame'
-    rgb_image_topic: '/kinect2/qhd/image_color'
-    rgb_camera_info: '/kinect2/qhd/camera_info'
-    depth_image_topic: '/kinect2/qhd/image_depth_rect'
-    depth_camera_info: '/kinect2/qhd/camera_info'
+    rgb_image_topic: '/kinect2/sd/image_color'
+    rgb_camera_info: '/kinect2/sd/camera_info'
+    depth_image_topic: '/kinect2/sd/image_depth_rect'
+    depth_camera_info: '/kinect2/sd/camera_info'
 
 sink1:
   type: TablePublisher
