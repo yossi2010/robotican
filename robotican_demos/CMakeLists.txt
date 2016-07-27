@@ -21,12 +21,18 @@ tf
 moveit_core
 moveit_ros_planning
 moveit_ros_planning_interface
-
+eigen_conversions
+moveit_visual_tools
+pr2_controllers_msgs
 )
 
 ## System dependencies are found with CMake's conventions
  find_package(Boost REQUIRED COMPONENTS system)
+find_package(cmake_modules REQUIRED)
 
+find_package(Eigen REQUIRED)
+include_directories(${EIGEN_INCLUDE_DIRS})
+add_definitions(${EIGEN_DEFINITIONS})
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -153,6 +159,9 @@ target_link_libraries(demo_pick_node ${catkin_LIBRARIES})
 
 add_executable(point_head src/point_head.cpp)
 target_link_libraries(point_head ${catkin_LIBRARIES})
+
+add_executable(simple_grasps src/simple_grasps.cpp)
+target_link_libraries(simple_grasps ${catkin_LIBRARIES})
 
 
 
