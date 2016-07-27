@@ -8,6 +8,13 @@ right_finger_topic_pub: 'right_finger_controller/command'
 right_finger_topic_sub: 'right_finger_controller/state'
 right_finger_joint: 'right_finger_joint'
 
+pan_topic_pub: 'pan_controller/command'
+pan_topic_sub: 'pan_controller/state'
+pan_joint: 'head_pan_joint'
+
+tilt_topic_pub: 'tilt_controller/command'
+tilt_topic_sub: 'tilt_controller/state'
+tilt_joint: 'head_pan_joint'
                                
 # RiCBoard                                
 battery_pin: 17
