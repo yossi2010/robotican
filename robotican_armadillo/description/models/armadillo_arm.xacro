@@ -389,6 +389,15 @@
       upper="3.14"
       velocity="3.455751915" />
   </joint>
+  
+   <link name="gripper_link"/>
+
+<joint name="gripper_joint" type="fixed">
+    <origin xyz="0 0 0.06" rpy="0 ${-M_PI/2} 0"/>
+    <parent link="wrist_link"/>
+    <child link="gripper_link"/>
+ </joint>
+ 
   <link
     name="left_finger_link">
     <inertial>

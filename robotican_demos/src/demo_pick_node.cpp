@@ -84,12 +84,12 @@ move_base_msgs::MoveBaseGoal move_to_table(){
 geometry_msgs::PoseStamped lift_arm(){
     geometry_msgs::PoseStamped target_pose1;
 
-    target_pose1.header.frame_id="base_link";
+    target_pose1.header.frame_id="base_footprint";
     target_pose1.header.stamp=ros::Time::now();
     target_pose1.pose.position.x = 0.4;
     target_pose1.pose.position.y =  0.0;
     target_pose1.pose.position.z =  0.845;
-    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,M_PI/2.0,0 );
+    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,0 );
     return target_pose1;
 }
 
@@ -217,7 +217,7 @@ void pick_go_cb(std_msgs::Empty) {
                 ROS_INFO("Arm planning is done, moving arm..");
                 if(moveit_ptr->move()) {
                     ROS_INFO("Ready to grasp");
-                    if(gripper_cmd(0.01,0.0)) {
+                    if(gripper_cmd(0.01,0.2)) {
                         ROS_INFO("Grasping is done");
                         ros::Duration w(5);
                         w.sleep(); //wait for attach
@@ -248,7 +248,7 @@ geometry_msgs::PoseStamped move_to_object(){
 
     double 	yaw=atan2(v.y(),v.x());
 
-    target_pose1.header.frame_id="base_link";
+    target_pose1.header.frame_id="base_footprint";
     target_pose1.header.stamp=ros::Time::now();
 
     float away=wrist_distance_from_object/sqrt(v.x()*v.x()+v.y()*v.y());
@@ -257,7 +257,7 @@ geometry_msgs::PoseStamped move_to_object(){
     target_pose1.pose.position.x = dest.x();
     target_pose1.pose.position.y =  dest.y();
     target_pose1.pose.position.z =  v.z();
-    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(-yaw,M_PI/2.0,0 );
+    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,yaw );
 
     return target_pose1;
 

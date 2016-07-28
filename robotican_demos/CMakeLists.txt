@@ -138,14 +138,14 @@ include_directories(
 add_executable(simple_navigation_goals src/simple_navigation_goals.cpp)
 target_link_libraries(simple_navigation_goals ${catkin_LIBRARIES})
 
-add_executable(simple_move_group_goals src/simple_move_group_goal.cpp)
-target_link_libraries(simple_move_group_goals ${catkin_LIBRARIES})
+add_executable(moveit_group_goal src/moveit_group_goal.cpp)
+target_link_libraries(moveit_group_goal ${catkin_LIBRARIES})
 
 add_executable(pan_tilt_api src/pan_tilt_api.cpp)
 target_link_libraries(pan_tilt_api ${catkin_LIBRARIES})
 
-add_executable(simple_moveit_full_api src/simple_moveit_full_api.cpp)
-target_link_libraries(simple_moveit_full_api ${catkin_LIBRARIES})
+add_executable(gripper_api src/gripper_api.cpp)
+target_link_libraries(gripper_api ${catkin_LIBRARIES})
 
 add_executable(pick_and_place src/pick_and_place.cpp)
 target_link_libraries(pick_and_place ${catkin_LIBRARIES})

@@ -71,12 +71,12 @@ geometry_msgs::PoseStamped moveit_goal;
 
 geometry_msgs::PoseStamped lift_arm(){
     geometry_msgs::PoseStamped target_pose1;
-    target_pose1.header.frame_id="base_link";
+    target_pose1.header.frame_id="map";
     target_pose1.header.stamp=ros::Time::now();
-    target_pose1.pose.position.x = 0.4;
+    target_pose1.pose.position.x = 0.5;
     target_pose1.pose.position.y =  0.0;
-    target_pose1.pose.position.z =  0.85;
-    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,M_PI/2.0,0 );
+    target_pose1.pose.position.z =  0.9;
+    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
     return target_pose1;
 }
 
@@ -110,7 +110,7 @@ geometry_msgs::PoseStamped move_to_object(){
 
     pick_yaw=atan2(v.y(),v.x());
 
-    target_pose1.header.frame_id="base_link";
+    target_pose1.header.frame_id="base_footprint";
     target_pose1.header.stamp=ros::Time::now();
 
     float away=wrist_distance_from_object/sqrt(v.x()*v.x()+v.y()*v.y());
@@ -119,7 +119,7 @@ geometry_msgs::PoseStamped move_to_object(){
     target_pose1.pose.position.x = dest.x();
     target_pose1.pose.position.y =  dest.y();
     target_pose1.pose.position.z =  v.z();
-    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(-pick_yaw,M_PI/2.0,0 );
+    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,-pick_yaw );
 
     return target_pose1;
 
@@ -221,7 +221,7 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
                     target_pose1.pose.position.z=z+dz[i];
                     target_pose1.pose.position.x=x+dx[n];
                     target_pose1.pose.position.y=y+dy[m];
-                    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(-pick_yaw+dY[j],M_PI/2.0,0.0 );
+                    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw+dY[j] );
 
                     if (checkIK(target_pose1)) {
                         goal_pub.publish(target_pose1);
@@ -271,7 +271,7 @@ int main(int argc, char **argv) {
     tf::TransformBroadcaster br;
     ROS_INFO("Hello");
 
-    n.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.10);
+    n.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.03);
     n.param<std::string>("object_frame", object_frame, "object_frame");
 
 
@@ -294,10 +294,10 @@ int main(int argc, char **argv) {
     //group.setNumPlanningAttempts(5);
     group.setPlannerId("RRTConnectkConfigDefault");
     //group.setPlannerId("LBKPIECEkConfigDefault");
-    group.setMaxAccelerationScalingFactor(0.1);
-    group.setMaxVelocityScalingFactor(0.1);
-    group.setGoalPositionTolerance(0.02);
-    group.setPoseReferenceFrame("base_link");
+    //group.setMaxAccelerationScalingFactor(0.1);
+   // group.setMaxVelocityScalingFactor(0.1);
+  //  group.setGoalPositionTolerance(0.02);
+    group.setPoseReferenceFrame("base_footprint");
     moveit_ptr=&group;
 
     ros::Subscriber pick_sub = n.subscribe("pick_go", 1, pick_go_cb);
@@ -368,7 +368,7 @@ int main(int argc, char **argv) {
 
 
         try{
-            listener_ptr->lookupTransform("base_link", object_frame, ros::Time(0), base_obj_transform);
+            listener_ptr->lookupTransform("base_footprint", object_frame, ros::Time(0), base_obj_transform);
         }
         catch (tf::TransformException ex){
             ROS_ERROR("PNP NODE: %s",ex.what());
@@ -382,7 +382,7 @@ int main(int argc, char **argv) {
             wr_goal.setRotation((q));
             wr_goal.stamp_=ros::Time::now();
             wr_goal.child_frame_id_="moveit_goal";
-            wr_goal.frame_id_="base_link";
+            wr_goal.frame_id_="base_footprint";
             br.sendTransform(wr_goal);
 
         }
