@@ -254,8 +254,8 @@
     <axis
       xyz="0 0 1" />
     <limit
-      upper="${M_PI/4}"
-	  lower="${-M_PI/4}"
+      upper="${M_PI/3}"
+	  lower="${-M_PI/3}"
       effort="3.1"
       velocity="7.016223585" /> 
   </joint>
@@ -312,8 +312,8 @@
     <axis
       xyz="0 1 0" />
     <limit
-    upper="${M_PI/4}"
-	  lower="${-M_PI/4}"
+    upper="${M_PI/3}"
+	  lower="${-M_PI/6}"
       effort="3.1"
       velocity="7.016223585" /> 
   </joint>
