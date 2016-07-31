@@ -22,7 +22,7 @@ namespace robotican_hardware {
 
     private:
         bool _first[2];
-        dynamixel_pro_controller::DynamixelProController _dynamixelProController;
+        dynamixel_pro_controller::DynamixelProController* _dynamixelProController;
         std::pair<std::string, JointInfo_t> _panInfo;
         std::pair<std::string, JointInfo_t> _tiltInfo;
         std::pair<std::string, JointInfo_t> _leftFingerInfo;
