@@ -15,8 +15,8 @@ int main(int argc, char **argv) {
     }
     else {
         srand (time(NULL));
-        q_goal[0]=(double)((rand()%91)-45)*M_PI/180.0;
-        q_goal[1]=(double)((rand()%91)-45)*M_PI/180.0;
+        q_goal[0]=(double)((rand()%121)-60)*M_PI/180.0;
+        q_goal[1]=(double)((rand()%61)-30)*M_PI/180.0;
     }
       ROS_INFO("Pan-Tilt Goal: [%f,%f]",q_goal[0],q_goal[1]);
     ros::NodeHandle nh;
