@@ -144,13 +144,17 @@ _first[1]=true;
     void ArmadilloRobot::write() {
         RobotBase::write();
         _dynamixelProController.write();
-        std_msgs::Float64 leftMsg, rightMsg;
+        std_msgs::Float64 leftMsg, rightMsg, panMsg, tiltMsg;
         if (_first[0] && _first[1]) { 
             leftMsg.data = _leftFingerInfo.second.cmd;
             rightMsg.data = _rightFingerInfo.second.cmd;
+            panMsg.data = _panInfo.second.cmd;
+            tiltMsg.data = _tiltInfo.second.cmd;
 
             _leftFingerCmd.publish(leftMsg);
             _rightFingerCmd.publish(rightMsg);
+            _panCmd.publish(panMsg);
+            _tiltCmd.publish(tiltMsg);
         }
 
     }

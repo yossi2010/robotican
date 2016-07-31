@@ -14,7 +14,7 @@ pan_joint: 'head_pan_joint'
 
 tilt_topic_pub: 'tilt_controller/command'
 tilt_topic_sub: 'tilt_controller/state'
-tilt_joint: 'head_pan_joint'
+tilt_joint: 'head_tilt_joint'
                                
 # RiCBoard                                
 battery_pin: 17

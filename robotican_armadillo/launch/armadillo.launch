@@ -135,15 +135,9 @@
 		</group>
 
 		<group if="$(arg f200)">
-<include file="$(find realsense)/realsense_f200_launch.launch">
-	<arg name="cHeight" value="480" />
-	<arg name="cWidth" value="640" />
-	<arg name="dHeight" value="480" />
-	<arg name="dWidth" value="640" />
-	<arg name="pcScale" value="100" />
-	<arg name="enableDepth" value="1" />
-	<arg name="enableColor" value="1" />
- </include>
+<include file="$(find robotican_common)/launch/f200.launch"/>
+
+
 
  
 		</group>
@@ -159,7 +153,7 @@
                   port_name: "/dev/ttyUSB0"
                   baud_rate: 57142
                   min_motor_id: 1
-                  max_motor_id: 2
+                  max_motor_id: 4
                   update_rate: 20
                 </rosparam>
 		</node>
@@ -168,7 +162,9 @@
 		  args="--manager=dxl_manager
 				--port=gripper_port
 		left_finger_controller
-		right_finger_controller"
+		right_finger_controller
+		pan_controller
+		tilt_controller"
 				output="screen"/>
 
 
