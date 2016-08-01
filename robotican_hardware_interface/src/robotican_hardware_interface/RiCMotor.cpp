@@ -172,11 +172,14 @@ namespace robotican_hardware {
                                                          CloseMotorMode::CloseMotorMode mode, CloseMotorWithEncoderParam param,
                                                          std::string jointName)
             : CloseLoopMotor(id, transportLayer, motorAddress, eSwitchPin, eSwitchType, motoryType, mode),
-              _mutex() ,_nodeHandle((std::string("~/") + jointName)), _server(_mutex , _nodeHandle) {
+              _mutex() ,_nodeHandle((std::string("~/") + jointName)), _server(_mutex , _nodeHandle) , _spinner(1){
         _callbackType = boost::bind(&CloseLoopMotorWithEncoder::dynamicCallback, this, _1, _2);
 
         _server.setCallback(_callbackType);
-
+        _spinner.start();
+        _timer = _nodeHandle.createTimer(ros::Duration(0.25), &CloseLoopMotorWithEncoder::timerCallback, this);
+        _timer.start();
+        _statusPub = _nodeHandle.advertise<std_msgs::Float64>("motor_current_set_point", 10);
         robotican_hardware_interface::RiCBoardConfig config;
         config.motor_lpf_hz = param.LPFHzSpeed;
         config.motor_lpf_alpha = param.LPFAlphaSpeed;
@@ -274,6 +277,13 @@ namespace robotican_hardware {
     void CloseLoopMotorWithEncoder::dynamicCallback(robotican_hardware_interface::RiCBoardConfig &config, uint32_t level) {
         setParams((uint16_t) config.motor_lpf_hz, (uint16_t) config.motor_pid_hz, (float) config.motor_lpf_alpha,
                   (float) config.motor_kp, (float) config.motor_ki, (float) config.motor_kd);
+    }
+
+    void CloseLoopMotorWithEncoder::timerCallback(const ros::TimerEvent &e) {
+        std_msgs::Float64 msg;
+        msg.data = _jointInfo.cmd;
+
+        _statusPub.publish(msg);
     }
 
     void CloseLoopMotorWithPotentiometer::setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,

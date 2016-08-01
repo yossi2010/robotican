@@ -7,6 +7,7 @@
 
 
 #include <dynamic_reconfigure/server.h>
+#include <std_msgs/Float64.h>
 #include <robotican_hardware_interface/Device.h>
 #include <robotican_hardware_interface/ros_utils.h>
 #include <robotican_hardware_interface/RiCBoardManager.h>
@@ -145,11 +146,15 @@ namespace robotican_hardware {
         CloseMotorWithEncoderParam _params;
         ros::NodeHandle _nodeHandle;
         boost::recursive_mutex _mutex;
+        ros::AsyncSpinner _spinner;
+        ros::Publisher _statusPub;
+        ros::Timer _timer;
         bool _isSetParam;
         //Dynamic param setting
         dynamic_reconfigure::Server <robotican_hardware_interface::RiCBoardConfig> _server;
         dynamic_reconfigure::Server<robotican_hardware_interface::RiCBoardConfig>::CallbackType _callbackType;
         void dynamicCallback(robotican_hardware_interface::RiCBoardConfig &config, uint32_t level);
+        void timerCallback(const ros::TimerEvent& e);
         virtual void setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,float KD);
 
     public:
