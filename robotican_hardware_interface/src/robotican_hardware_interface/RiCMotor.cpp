@@ -177,7 +177,7 @@ namespace robotican_hardware {
 
         _server.setCallback(_callbackType);
         _spinner.start();
-        _timer = _nodeHandle.createTimer(ros::Duration(0.25), &CloseLoopMotorWithEncoder::timerCallback, this);
+        _timer = _nodeHandle.createTimer(ros::Duration(0.02), &CloseLoopMotorWithEncoder::timerCallback, this);
         _timer.start();
         _statusPub = _nodeHandle.advertise<std_msgs::Float64>("motor_current_set_point", 10);
         robotican_hardware_interface::RiCBoardConfig config;
