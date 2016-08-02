@@ -4,6 +4,7 @@
 
 #include <robotican_hardware_interface/RiCMotor.h>
 #include <robotican_hardware_interface/RiCBoardPotentiometerConfig.h>
+#include <robotican_hardware_interface/RiCBoardConfig.h>
 
 namespace robotican_hardware {
 
@@ -181,8 +182,10 @@ namespace robotican_hardware {
         _timer.start();
         _statusPub = _nodeHandle.advertise<std_msgs::Float64>("motor_current_set_point", 10);
         robotican_hardware_interface::RiCBoardConfig config;
-        config.motor_lpf_hz = param.LPFHzSpeed;
-        config.motor_lpf_alpha = param.LPFAlphaSpeed;
+        config.motor_speed_lpf_hz = param.LPFHzSpeed;
+        config.motor_speed_lpf_alpha = param.LPFAlphaSpeed;
+        config.motor_input_lpf_hz = param.LPFHzInput;
+        config.motor_input_lpf_alpha = param.LPFAlphaInput;
         config.motor_pid_hz = param.PIDHz;
         config.motor_kp = param.KP;
         config.motor_ki = param.KI;
@@ -237,16 +240,18 @@ namespace robotican_hardware {
         _transportLayer->write(rawData, buildMotorCloseLoop.length);
     }
 
-    void CloseLoopMotorWithEncoder::setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,
-                                              float KD) {
+    void CloseLoopMotorWithEncoder::setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha, float inputLpfAlpha, float KP,
+                                                  float KI, float KD) {
         _isSetParam = true;
-        _params.LPFHzSpeed = lpfHz;
+        _params.LPFHzSpeed = speedLpfHz;
         _params.PIDHz = pidHz;
-        _params.LPFAlphaSpeed = lpfAlpha;
+        _params.LPFAlphaSpeed = speedLpfAlpha;
+        _params.LPFHzInput = inputLpfHz;
+        _params.LPFAlphaInput = inputLpfAlpha;
         _params.KP = KP;
         _params.KI = KI;
         _params.KD = KD;
-        ROS_INFO("PARAMS: {%d , %d, %f, %f, %f, %f}", _params.LPFHzSpeed, _params.PIDHz, _params.LPFAlphaSpeed, _params.KP, _params.KI, _params.KD);
+//        ROS_INFO("PARAMS: {%d , %d, %f, %f, %f, %f}", _params.LPFHzSpeed, _params.PIDHz, _params.LPFAlphaSpeed, _params.KP, _params.KI, _params.KD);
 
     }
 
@@ -259,12 +264,15 @@ namespace robotican_hardware {
                 param.length = sizeof(param);
                 param.checkSum = 0;
                 param.id = getId();
-                param.lpfHz = _params.LPFHzSpeed;
+                param.speedLpfHz = _params.LPFHzSpeed;
                 param.pidHz = _params.PIDHz;
-                param.lfpAlpha = _params.LPFAlphaSpeed;
+                param.speedLfpAlpha = _params.LPFAlphaSpeed;
                 param.KP = _params.KP;
                 param.KI = _params.KI;
                 param.KD = _params.KD;
+                param.inputLfpAlpha = 0;
+                param.inputLpfHz = _params.LPFHzInput;
+                param.inputLfpAlpha = _params.LPFAlphaInput;
 
                 uint8_t *rawData = (uint8_t *) &param;
 
@@ -275,8 +283,9 @@ namespace robotican_hardware {
     }
 
     void CloseLoopMotorWithEncoder::dynamicCallback(robotican_hardware_interface::RiCBoardConfig &config, uint32_t level) {
-        setParams((uint16_t) config.motor_lpf_hz, (uint16_t) config.motor_pid_hz, (float) config.motor_lpf_alpha,
-                  (float) config.motor_kp, (float) config.motor_ki, (float) config.motor_kd);
+        setParams((uint16_t) config.motor_speed_lpf_hz, config.motor_input_lpf_hz, (uint16_t) config.motor_pid_hz,
+                  (float) config.motor_speed_lpf_alpha, config.motor_input_lpf_alpha, (float) config.motor_kp, (float) config.motor_ki,
+                  (float) config.motor_kd);
     }
 
     void CloseLoopMotorWithEncoder::timerCallback(const ros::TimerEvent &e) {
@@ -286,8 +295,8 @@ namespace robotican_hardware {
         _statusPub.publish(msg);
     }
 
-    void CloseLoopMotorWithPotentiometer::setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,
-                                                    float KD) {
+    void CloseLoopMotorWithPotentiometer::setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha, float inputLpfAlpha, float KP,
+                                                    float KI, float KD) {
 
     }
 
@@ -345,9 +354,11 @@ namespace robotican_hardware {
 
         _server.setCallback(_callbackType);
         robotican_hardware_interface::RiCBoardPotentiometerConfig config;
-        config.motor_lpf_hz = motorParam.LPFHzSpeed;
+        config.motor_speed_lpf_hz = motorParam.LPFHzSpeed;
+        config.motor_input_lpf_hz = motorParam.LPFHzInput;
         config.motor_pid_hz = motorParam.PIDHz;
-        config.motor_lpf_alpha = motorParam.LPFAlphaSpeed;
+        config.motor_speed_lpf_alpha = motorParam.LPFAlphaSpeed;
+        config.motor_input_lpf_alpha = motorParam.LPFAlphaInput;
         config.motor_kp = motorParam.KP;
         config.motor_ki = motorParam.KI;
         config.motor_kd = motorParam.KD;
@@ -363,11 +374,13 @@ namespace robotican_hardware {
         _firstTime = true;
     }
 
-    void CloseLoopMotorWithPotentiometer::setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,
-                                                        float KD, float a, float b, float tolerance) {
-        _param.LPFHzSpeed = lpfHz;
+    void CloseLoopMotorWithPotentiometer::setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha, float inputLpfAlpha, float KP,
+                                                        float KI, float KD, float a, float b, float tolerance) {
+        _param.LPFHzSpeed = speedLpfHz;
+        _param.LPFHzInput = inputLpfHz;
         _param.PIDHz = pidHz;
-        _param.LPFAlphaSpeed = lpfAlpha;
+        _param.LPFAlphaSpeed = speedLpfAlpha;
+        _param.LPFAlphaInput = inputLpfAlpha;
         _param.KP = KP;
         _param.KI = KI;
         _param.KD = KD;
@@ -379,9 +392,10 @@ namespace robotican_hardware {
     }
 
     void CloseLoopMotorWithPotentiometer::dynamicCallback(robotican_hardware_interface::RiCBoardPotentiometerConfig &config, uint32_t level) {
-        setParams((uint16_t) config.motor_lpf_hz, (uint16_t) config.motor_pid_hz, (float) config.motor_lpf_alpha,
-                  (float) config.motor_kp, (float) config.motor_ki, (float) config.motor_kd, (float) config.motor_a,
-                  (float) config.motor_b, config.motor_tolerance);
+        setParams((uint16_t) config.motor_speed_lpf_hz, (uint16_t) config.motor_input_lpf_hz, (uint16_t) config.motor_pid_hz,
+                  (float) config.motor_speed_lpf_alpha, (float) config.motor_input_lpf_alpha, (float) config.motor_kp, (float) config.motor_ki,
+                  (float) config.motor_kd, (float) config.motor_a, (float) config.motor_b,
+                  (float) config.motor_tolerance);
     }
 
 
@@ -396,9 +410,11 @@ namespace robotican_hardware {
             setCloseMotorWithPotentiometer.checkSum = 0;
             setCloseMotorWithPotentiometer.id = getId();
 
-            setCloseMotorWithPotentiometer.lpfHz = _param.LPFHzSpeed;
+            setCloseMotorWithPotentiometer.speedLpfHz = _param.LPFHzSpeed;
+            setCloseMotorWithPotentiometer.inputLpfHz = _param.LPFHzInput;
             setCloseMotorWithPotentiometer.pidHz = _param.PIDHz;
-            setCloseMotorWithPotentiometer.lfpAlpha = _param.LPFAlphaSpeed;
+            setCloseMotorWithPotentiometer.speedLfpAlpha = _param.LPFAlphaSpeed;
+            setCloseMotorWithPotentiometer.inputLfpAlpha = _param.LPFAlphaInput;
             setCloseMotorWithPotentiometer.KP = _param.KP;
             setCloseMotorWithPotentiometer.KI = _param.KI;
             setCloseMotorWithPotentiometer.KD = _param.KD;

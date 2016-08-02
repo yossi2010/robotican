@@ -130,7 +130,8 @@ namespace robotican_hardware {
 
         virtual void write();
 
-        virtual void setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,float KD)=0;
+        virtual void setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha, float inputLpfAlpha, float KP,
+                                       float KI, float KD)=0;
 
         virtual void buildDevice() = 0;
 
@@ -155,7 +156,8 @@ namespace robotican_hardware {
         dynamic_reconfigure::Server<robotican_hardware_interface::RiCBoardConfig>::CallbackType _callbackType;
         void dynamicCallback(robotican_hardware_interface::RiCBoardConfig &config, uint32_t level);
         void timerCallback(const ros::TimerEvent& e);
-        virtual void setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,float KD);
+        virtual void setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha, float inputLpfAlpha, float KP,
+                                       float KI, float KD);
 
     public:
         CloseLoopMotorWithEncoder(byte id, TransportLayer *transportLayer, byte motorAddress, byte eSwitchPin,
@@ -188,10 +190,11 @@ namespace robotican_hardware {
                                                 CloseMotorWithPotentiometerParam motorParam,
                                                 std::string jointName);
 
-        virtual void setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI, float KD);
+        virtual void setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha, float inputLpfAlpha, float KP,
+                               float KI, float KD);
 
-        virtual void setParams(uint16_t lpfHz, uint16_t pidHz, float lpfAlpha, float KP, float KI,
-                                       float KD, float a, float b, float tolerance);
+        virtual void setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha, float inputLpfAlpha, float KP,
+                                       float KI, float KD, float a, float b, float tolerance);
 
         virtual void buildDevice();
 

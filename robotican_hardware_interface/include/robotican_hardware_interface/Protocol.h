@@ -473,9 +473,11 @@ struct SetMotorParam : DeviceMessage{
         deviceMessageType = DeviceMessageType::SetMotorParam;
     }
 
-    uint16_t lpfHz;
+    uint16_t speedLpfHz;
+    uint16_t inputLpfHz;
     uint16_t pidHz;
-    float lfpAlpha;
+    float speedLfpAlpha;
+    float inputLfpAlpha;
     float KP;
     float KI;
     float KD;
@@ -487,9 +489,11 @@ struct SetCloseMotorWithPotentiometer : DeviceMessage {
         deviceMessageType = DeviceMessageType::CloseLoopMotorWithPotentiometerSetParam;
     }
 
-    uint16_t lpfHz;
+    uint16_t speedLpfHz;
+    uint16_t inputLpfHz;
     uint16_t pidHz;
-    float lfpAlpha;
+    float speedLfpAlpha;
+    float inputLfpAlpha;
     float KP;
     float KI;
     float KD;
