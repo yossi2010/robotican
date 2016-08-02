@@ -54,7 +54,7 @@ point_head_client->waitForResult(ros::Duration(0.2));
 int main(int argc, char **argv) {
     ros::init(argc, argv, "pan_tilt_object_trackking");
     ros::NodeHandle nh;
-ros::Subscriber obj_sub = nh.subscribe("find_object_node/object", 1, callback);
+ros::Subscriber obj_sub = nh.subscribe("find_object_node/detected/red_object", 1, callback);
 
 //Initialize the client for the Action interface to the head controller
 point_head_client = new PointHeadClient("/pan_tilt_trajectory_controller/point_head_action", true);

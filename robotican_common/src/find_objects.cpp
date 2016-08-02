@@ -9,7 +9,6 @@
 #include <geometry_msgs/PointStamped.h>
 #include <std_msgs/Empty.h>
 #include <pcl_conversions/pcl_conversions.h>
-#include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
 #include <robotican_common/FindObjectDynParamConfig.h>
 #include <dynamic_reconfigure/server.h>
@@ -23,9 +22,9 @@ bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud,Point3
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input);
 void dynamicParamCallback(robotican_common::FindObjectDynParamConfig &config, uint32_t level);
 
-tf::StampedTransform obj_transform;
+
 double object_extra_depth=0;
-std::string object_frame;
+std::string object_name;
 
 
 std::string depth_topic;
@@ -57,6 +56,10 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
     if ((input->width==960*540)||((input->width==960)&&(input->height==540))) {
         image_w=960;
         image_h=540;
+    }
+    else if ((input->width==640*480)||((input->width==640)&&(input->height==480))) {
+        image_w=640;
+        image_h=480;
     }
     else if (input->width==1920*1080) {
         image_w=1920;
@@ -111,17 +114,15 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
     if (have_object) {
 
-        obj_transform.setOrigin( tf::Vector3(obj.x,obj.y,obj.z+object_extra_depth) );
-        obj_transform.stamp_=ros::Time::now();
 
         geometry_msgs::PoseStamped target_pose2;
         target_pose2.header.frame_id=input->header.frame_id;
         target_pose2.header.stamp=ros::Time::now();
-        target_pose2.pose.position.x =obj_transform.getOrigin().x();
-        target_pose2.pose.position.y = obj_transform.getOrigin().y();
-        target_pose2.pose.position.z = obj_transform.getOrigin().z();
+        target_pose2.pose.position.x =obj.x;
+        target_pose2.pose.position.y = obj.y;
+        target_pose2.pose.position.z = obj.z+object_extra_depth;
        //  std::printf("---------> OBJECT: [%f , %f , %f]\n",target_pose2.pose.position.x,target_pose2.pose.position.y,target_pose2.pose.position.z);
-        tf::quaternionTFToMsg( obj_transform.getRotation(), target_pose2.pose.orientation);
+       target_pose2.pose.orientation.w=1;
         object_pub.publish(target_pose2);
     }
 
@@ -262,7 +263,7 @@ int main(int argc, char **argv) {
     ROS_INFO("Hello");
 
 
-    n.param<std::string>("object_frame", object_frame, "object_frame");
+    n.param<std::string>("object_name", object_name, "object");
     n.param<double>("object_extra_depth", object_extra_depth, 0.03);
     n.param<std::string>("depth_topic", depth_topic, "/kinect2/qhd/points");
 
@@ -279,8 +280,8 @@ int main(int argc, char **argv) {
     bw_image_pub = it_.advertise("bw", 1);
 
     ros::Subscriber pcl_sub = n.subscribe(depth_topic, 1, cloud_cb);
-
-    object_pub=n.advertise<geometry_msgs::PoseStamped>("object", 2, true);
+string topic="detected/"+object_name;
+    object_pub=n.advertise<geometry_msgs::PoseStamped>(topic, 2, true);
 
     if (debug_vision) {
         namedWindow("Trackbars",CV_WINDOW_AUTOSIZE);              // trackbars window
@@ -297,36 +298,14 @@ int main(int argc, char **argv) {
         createTrackbar( "morph_size", "Trackbars", &morph_size, 50, on_trackbar );
         createTrackbar( "invert_Hue", "Trackbars", &inv_H, 1, on_trackbar );
     }
-    tf::TransformBroadcaster br;
 
-    ros::Rate r(50); // 50 hz
 
     ROS_INFO("Ready to find objects!");
 
-    tf::Quaternion q;
-    q.setRPY(0, 0, 0);
-    obj_transform.setRotation(q);
-    obj_transform.frame_id_="kinect2_depth_optical_frame";
-    obj_transform.child_frame_id_=object_frame;
 
-    while (ros::ok())
-    {
 
-        if (have_object) {
-            try{
+        ros::spin();
 
-               br.sendTransform(obj_transform);
-            }
-            catch (tf::TransformException ex){
-                  ROS_ERROR("!!! %s",ex.what());
-            }
-
-        }
-
-        ros::spinOnce();
-
-        r.sleep();
-    }
 
     return 0;
 }
