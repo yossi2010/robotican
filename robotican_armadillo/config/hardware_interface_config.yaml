@@ -105,39 +105,39 @@ motor1_bais_min: -1
 motor1_bais_max: 1
 
 
-#~ open_motor_size: 2
-#~ motor0_motor_address: 0
-#~ motor0_motor_emergency_pin: 12
-#~ motor0_motor_emergency_pin_type: 1
-#~ motor0_encoder_pin_a: 27
-#~ motor0_encoder_pin_b: 28
-#~ motor0_lpf_hz_speed: 80
-#~ motor0_lpf_hz_input: 1000
-#~ motor0_ppr: 1675
-#~ motor0_motor_direction: 1
-#~ motor0_encoder_direction: -1
-#~ motor0_lpf_alpha_speed: 0.27
-#~ motor0_lpf_alpha_input: 1.0
-#~ motor0_max_set_point_speed: 8.0
-#~ motor0_min_set_point_speed: -8.0
-#~ motor0_joint: 'left_wheel_joint'
-#~ 
-#~ 
-#~ motor1_encoder_pin_a: 29
-#~ motor1_encoder_pin_b: 30
-#~ motor1_encoder_direction: 1
-#~ motor1_lpf_hz_speed: 80
-#~ motor1_lpf_hz_input: 1000
-#~ motor1_lpf_alpha_speed: 0.27
-#~ motor1_lpf_alpha_input: 1.0
-#~ motor1_ppr: 1675
-#~ motor1_motor_direction: -1
-#~ motor1_max_set_point_speed: 8.0
-#~ motor1_min_set_point_speed: -8.0
-#~ motor1_motor_address: 1
-#~ motor1_motor_emergency_pin: 12
-#~ motor1_motor_emergency_pin_type: 1
-#~ motor1_joint: 'right_wheel_joint'
+open_motor_size: 2
+motor0_motor_address: 0
+motor0_motor_emergency_pin: 12
+motor0_motor_emergency_pin_type: 1
+motor0_encoder_pin_a: 27
+motor0_encoder_pin_b: 28
+motor0_lpf_hz_speed: 80
+motor0_lpf_hz_input: 1000
+motor0_ppr: 1675
+motor0_motor_direction: 1
+motor0_encoder_direction: -1
+motor0_lpf_alpha_speed: 0.27
+motor0_lpf_alpha_input: 1.0
+motor0_max_set_point_speed: 8.0
+motor0_min_set_point_speed: -8.0
+motor0_joint: 'left_wheel_joint'
+
+
+motor1_encoder_pin_a: 29
+motor1_encoder_pin_b: 30
+motor1_encoder_direction: 1
+motor1_lpf_hz_speed: 80
+motor1_lpf_hz_input: 1000
+motor1_lpf_alpha_speed: 0.27
+motor1_lpf_alpha_input: 1.0
+motor1_ppr: 1675
+motor1_motor_direction: -1
+motor1_max_set_point_speed: 8.0
+motor1_min_set_point_speed: -8.0
+motor1_motor_address: 1
+motor1_motor_emergency_pin: 12
+motor1_motor_emergency_pin_type: 1
+motor1_joint: 'right_wheel_joint'
 
 
 position_motor_size: 1
@@ -172,27 +172,9 @@ positionMotor0_tolerance: 0.01
 positionMotor0_stop_limit_max: 0.33
 positionMotor0_stop_limit_min: -0.01
 
-#~ servo_size: 2
-
-#~ servo0_pin: 4
-#~ servo0_a: -291.94
-#~ servo0_b: 1280.0
-#~ servo0_max: 1.57
-#~ servo0_min: -1.57
-#~ servo0_init_pos: 0
-#~ servo0_joint_name: 'head_tilt_joint'
-#~ 
-#~ servo1_pin: 3
-#~ servo1_a: -655.45
-#~ servo1_b: 1580.0
-#~ servo1_max: 1.57
-#~ servo1_min: -1.57
-#~ servo1_init_pos: 0
-#~ servo1_joint_name: 'head_pan_joint'
-#~ 
-#~ gps_baudrate: 9600
-#~ gps_topic_name: 'gps'
-#~ gps_frame_id: 'base_link'
+gps_baudrate: 9600
+gps_topic_name: 'gps'
+gps_frame_id: 'base_link'
 
 #RiCBoard
 

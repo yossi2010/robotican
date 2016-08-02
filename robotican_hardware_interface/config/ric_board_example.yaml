@@ -86,39 +86,39 @@ motor1_bais_min: -1
 motor1_bais_max: 1
 
 
-#~ open_motor_size: 2
-#~ motor0_motor_address: 0
-#~ motor0_motor_emergency_pin: 12
-#~ motor0_motor_emergency_pin_type: 1
-#~ motor0_encoder_pin_a: 27
-#~ motor0_encoder_pin_b: 28
-#~ motor0_lpf_hz_speed: 80
-#~ motor0_lpf_hz_input: 1000
-#~ motor0_ppr: 1675
-#~ motor0_motor_direction: 1
-#~ motor0_encoder_direction: -1
-#~ motor0_lpf_alpha_speed: 0.27
-#~ motor0_lpf_alpha_input: 1.0
-#~ motor0_max_set_point_speed: 8.0
-#~ motor0_min_set_point_speed: -8.0
-#~ motor0_joint: 'left_wheel_joint'
-#~ 
-#~ 
-#~ motor1_encoder_pin_a: 29
-#~ motor1_encoder_pin_b: 30
-#~ motor1_encoder_direction: 1
-#~ motor1_lpf_hz_speed: 80
-#~ motor1_lpf_hz_input: 1000
-#~ motor1_lpf_alpha_speed: 0.27
-#~ motor1_lpf_alpha_input: 1.0
-#~ motor1_ppr: 1675
-#~ motor1_motor_direction: -1
-#~ motor1_max_set_point_speed: 8.0
-#~ motor1_min_set_point_speed: -8.0
-#~ motor1_motor_address: 1
-#~ motor1_motor_emergency_pin: 12
-#~ motor1_motor_emergency_pin_type: 1
-#~ motor1_joint: 'right_wheel_joint'
+open_motor_size: 2
+motor0_motor_address: 0
+motor0_motor_emergency_pin: 12
+motor0_motor_emergency_pin_type: 1
+motor0_encoder_pin_a: 27
+motor0_encoder_pin_b: 28
+motor0_lpf_hz_speed: 80
+motor0_lpf_hz_input: 1000
+motor0_ppr: 1675
+motor0_motor_direction: 1
+motor0_encoder_direction: -1
+motor0_lpf_alpha_speed: 0.27
+motor0_lpf_alpha_input: 1.0
+motor0_max_set_point_speed: 8.0
+motor0_min_set_point_speed: -8.0
+motor0_joint: 'left_wheel_joint'
+
+
+motor1_encoder_pin_a: 29
+motor1_encoder_pin_b: 30
+motor1_encoder_direction: 1
+motor1_lpf_hz_speed: 80
+motor1_lpf_hz_input: 1000
+motor1_lpf_alpha_speed: 0.27
+motor1_lpf_alpha_input: 1.0
+motor1_ppr: 1675
+motor1_motor_direction: -1
+motor1_max_set_point_speed: 8.0
+motor1_min_set_point_speed: -8.0
+motor1_motor_address: 1
+motor1_motor_emergency_pin: 12
+motor1_motor_emergency_pin_type: 1
+motor1_joint: 'right_wheel_joint'
 
 
 position_motor_size: 1

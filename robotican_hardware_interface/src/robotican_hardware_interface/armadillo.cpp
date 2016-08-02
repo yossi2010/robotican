@@ -32,7 +32,7 @@ namespace robotican_hardware {
         }
         else {
             bool haveArm = true;
-            ros::param::param<bool>("hava_arm", haveArm, true);
+            ros::param::param<bool>("have_arm", haveArm, true);
             if(haveArm) {
                 _dynamixelProController = new dynamixel_pro_controller::DynamixelProController(&_jointStateInterface, &_posVelJointInterface);
                 _dynamixelProController->startBroadcastingJointStates();

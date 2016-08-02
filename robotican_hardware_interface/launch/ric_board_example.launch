@@ -5,6 +5,16 @@
 	<param name="robot_description" command="$(find xacro)/xacro.py '$(find robotican_armadillo)/description/models/armadillo.xacro'" />
 	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
 	<rosparam file="$(find robotican_hardware_interface)/config/controllers.yaml" command="load"/>
+	
+	<arg name="have_close_loop_motor" default="true" />
+	<arg name="have_open_loop_motor" default="false" />
+	<arg name="have_close_loop_position_motor" default="true" />
+	
+	<param name="have_close_loop_motor" value="$(arg have_close_loop_motor)" />
+	<param name="have_open_loop_motor" value="$(arg have_open_loop_motor)" />
+	<param name="have_close_loop_position_motor" value="$(arg have_close_loop_position_motor)" />
+	<param name="have_battery" value="false" />
+	<param name="have_ultrasonic" value="false" />
     
 <!--
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="
@@ -14,64 +24,25 @@
 	  " />
 -->
 
-    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="
-      robot_state_controller
-      mobile_base_controller
-	  " />
+
+
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="robot_state_controller " />
+    
+    <group unless="$(arg have_open_loop_motor)">
+		<group if="$(arg have_close_loop_motor)">
+			<node name="mobile_base_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="mobile_base_controller" />
+		</group>
+    </group>
+    <group unless="$(arg have_close_loop_motor)">
+		<group if="$(arg have_open_loop_motor)">
+			<node name="mobile_base_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="mobile_base_controller" />
+		</group>
+    </group>
+    
+    <group if="$(arg have_close_loop_position_motor)">
+		<node name="torso_controller_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="torso_position_controller" />
+    </group>
+
 	
-<!--
-	<include file="$(find robotican_hardware_interface)/launch/usb_cam.launch">
-		<arg name="input_dev" value="/dev/video1" />
-		<arg name="camera_frame_id" value="rear_cam_link" />
-		<arg name="pixel_format" value="yuyv" /> 
-		<arg name="image_width" value="640" />
-		<arg name="image_height" value="480" />
-		<arg name="node_name" value="rear_cam" />
-	</include>
-	
-	<include file="$(find robotican_hardware_interface)/launch/usb_cam.launch">
-		<arg name="input_dev" value="/dev/video0" />
-		<arg name="camera_frame_id" value="front_cam_link" />
-		<arg name="pixel_format" value="yuyv" /> 
-		<arg name="image_width" value="640" />
-		<arg name="image_height" value="480" />
-		<arg name="node_name" value="front_cam" />
-	</include>
-	
-	<include file="$(find robotican_hardware_interface)/launch/hokuyo_laser.launch">
-		<arg name="input_dev" value="/dev/Hokuyo" />
-		<arg name="frame_id" value="laser_link" />
-		<arg name="min_ang" value="-1.81" />
-		<arg name="max_ang" value="1.81" />
-	</include>
-	
-	<include file="$(find kinect2_bridge)/launch/kinect2_bridge.launch">
-		  <arg name="base_name"         value="kinect2"/>
-		  <arg name="sensor"            value=""/>
-		  <arg name="publish_tf"        value="true"/>
-		  <arg name="base_name_tf"      value="kinect2"/>
-		  <arg name="fps_limit"         value="-1.0"/>
-		  <arg name="calib_path"        value="$(find kinect2_bridge)/data/"/>
-		  <arg name="use_png"           value="false"/>
-		  <arg name="jpeg_quality"      value="90"/>
-		  <arg name="png_level"         value="1"/>
-		  <arg name="depth_method"      value="default"/>
-		  <arg name="depth_device"      value="-1"/>
-		  <arg name="reg_method"        value="default"/>
-		  <arg name="reg_device"        value="-1"/>
-		  <arg name="max_depth"         value="12.0"/>
-		  <arg name="min_depth"         value="0.1"/>
-		  <arg name="queue_size"        value="5"/>
-		  <arg name="bilateral_filter"  value="true"/>
-		  <arg name="edge_aware_filter" value="true"/>
-		  <arg name="worker_threads"    value="4"/>
-		  <arg name="machine"           value="localhost"/>
-		  <arg name="nodelet_manager"   value="kinect2"/>
-		  <arg name="start_manager"     value="true"/>
-		  <arg name="use_machine"       value="true"/>
-		  <arg name="respawn"           value="true"/>
-		  <arg name="use_nodelet"       value="true"/>
-	</include>
-	
--->
+
 </launch>

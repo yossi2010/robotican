@@ -14,7 +14,7 @@ namespace robotican_hardware {
             ros_utils::rosInfo("Motor is ready");
         }
         else {
-            ros_utils::rosError("RiCBoard can't build motor object for spme reason, this program will shut down now");
+            ros_utils::rosError("RiCBoard can't build motor object for some reason, this program will shut down now");
             ros::shutdown();
         }
     }
@@ -63,9 +63,6 @@ namespace robotican_hardware {
                 point.checkSum = _transportLayer->calcChecksum(rawData, point.length);
                 _transportLayer->write(rawData, point.length);
                 _lastCmd = (float) _jointInfo.cmd;
-            //~ char buff[128] = {'\0'};
-            //~ sprintf(buff, "position cmd:: %f", _jointInfo.cmd);
-            //~ ros_utils::rosInfo(buff);
             }
         }
     }
@@ -251,7 +248,6 @@ namespace robotican_hardware {
         _params.KP = KP;
         _params.KI = KI;
         _params.KD = KD;
-//        ROS_INFO("PARAMS: {%d , %d, %f, %f, %f, %f}", _params.LPFHzSpeed, _params.PIDHz, _params.LPFAlphaSpeed, _params.KP, _params.KI, _params.KD);
 
     }
 

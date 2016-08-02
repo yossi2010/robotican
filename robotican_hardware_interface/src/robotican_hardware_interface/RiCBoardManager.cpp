@@ -213,8 +213,9 @@ namespace robotican_hardware {
     }
 
     void RiCBoardManager::buildDevices() {
-
-        if(_nodeHandle.hasParam("battery_pin")) {
+        bool haveBattery;
+        ros::param::param<bool>("have_battery", haveBattery, false);
+        if(haveBattery) {
             int pin;
             float voltageDividerRatio, max, min;
             if(_nodeHandle.getParam("battery_pin", pin)
@@ -231,21 +232,28 @@ namespace robotican_hardware {
         }
 
         int ultrasonicSize = 0;
+        bool haveUltrasonic;
+        ros::param::param<bool>("have_ultrasonic", haveUltrasonic, false);
         ros::param::param("ultrasonic_size", ultrasonicSize, 0);
-        for(int i = 0; i < ultrasonicSize; ++i) {
-            std::string ultrasonicIdentifier = "ultrasonic" +  boost::lexical_cast<std::string>(i), frameId, topicName;
-            int pin;
-            ros_utils::rosInfo(ultrasonicIdentifier.c_str());
-            if(_nodeHandle.getParam(ultrasonicIdentifier + "_pin", pin)
-               && _nodeHandle.getParam(ultrasonicIdentifier + "_frame_id", frameId)
-               && _nodeHandle.getParam(ultrasonicIdentifier + "_topic_name", topicName)) {
-                Device *ultrasonic = new Ultrasonic(_idGen++, &_transportLayer, pin,  topicName, frameId);
-                _devices.push_back(ultrasonic);
-                ultrasonic->buildDevice();
+
+        if (haveUltrasonic) {
+            for(int i = 0; i < ultrasonicSize; ++i) {
+                std::string ultrasonicIdentifier = "ultrasonic" +  boost::lexical_cast<std::string>(i), frameId, topicName;
+                int pin;
+                ros_utils::rosInfo(ultrasonicIdentifier.c_str());
+                if(_nodeHandle.getParam(ultrasonicIdentifier + "_pin", pin)
+                   && _nodeHandle.getParam(ultrasonicIdentifier + "_frame_id", frameId)
+                   && _nodeHandle.getParam(ultrasonicIdentifier + "_topic_name", topicName)) {
+                    Device *ultrasonic = new Ultrasonic(_idGen++, &_transportLayer, pin,  topicName, frameId);
+                    _devices.push_back(ultrasonic);
+                    ultrasonic->buildDevice();
+                }
             }
         }
 
-        if(_nodeHandle.hasParam("imu_fusion_hz")) {
+        bool haveImu;
+        ros::param::param<bool>("have_imu", haveImu, false);
+        if(haveImu) {
             int fusionHz;
             bool enableGyro, fuseCompass;
             std::string frameId;
@@ -259,8 +267,9 @@ namespace robotican_hardware {
                 imu->buildDevice();
             }
         }
-
-        if(_nodeHandle.hasParam("gps_baudrate")) {
+        bool haveGps;
+        ros::param::param<bool>("have_gps", haveGps, false);
+        if(haveGps) {
             int baudrate;
             std::string frameId, topicName;
 
@@ -274,32 +283,42 @@ namespace robotican_hardware {
                 gps->buildDevice();
             }
         }
+
+
         int switchSize = 0;
+        bool haveSwitch;
+        ros::param::param<bool>("have_switch", haveSwitch, false);
         ros::param::param<int>("switch_size", switchSize, 0);
 
-        for(int i = 0; i < switchSize; ++i) {
-            std::string switchIdentifier = "switch" + boost::lexical_cast<std::string>(i), topicName;
-            int pin;
-            if(_nodeHandle.getParam(switchIdentifier + "_topic_name", topicName)
-               && _nodeHandle.getParam(switchIdentifier + "_pin", pin)) {
-                Device *switchDev = new Switch(_idGen++, &_transportLayer, (byte) pin, topicName);
-                _devices.push_back(switchDev);
-                switchDev->buildDevice();
+        if (haveSwitch) {
+            for(int i = 0; i < switchSize; ++i) {
+                std::string switchIdentifier = "switch" + boost::lexical_cast<std::string>(i), topicName;
+                int pin;
+                if(_nodeHandle.getParam(switchIdentifier + "_topic_name", topicName)
+                   && _nodeHandle.getParam(switchIdentifier + "_pin", pin)) {
+                    Device *switchDev = new Switch(_idGen++, &_transportLayer, (byte) pin, topicName);
+                    _devices.push_back(switchDev);
+                    switchDev->buildDevice();
+                }
             }
         }
 
         int relaySize = 0;
+        bool haveRelay;
+        ros::param::param<bool>("have_relay", haveRelay, false);
         ros::param::param<int>("relay_size", relaySize, 0);
-        for(int i = 0; i < relaySize; ++i) {
+        if (haveRelay) {
+            for(int i = 0; i < relaySize; ++i) {
 
-            std::string relayIdentifier = "relay" + boost::lexical_cast<std::string>(i), serviceName;
-            int pin;
-            if(_nodeHandle.getParam(relayIdentifier + "_service_name", serviceName)
-               && _nodeHandle.getParam(relayIdentifier + "_pin", pin)) {
-                Device *relay = new Relay(_idGen++, &_transportLayer, (byte) pin, serviceName);
-                _devices.push_back(relay);
-                relay->buildDevice();
+                std::string relayIdentifier = "relay" + boost::lexical_cast<std::string>(i), serviceName;
+                int pin;
+                if(_nodeHandle.getParam(relayIdentifier + "_service_name", serviceName)
+                   && _nodeHandle.getParam(relayIdentifier + "_pin", pin)) {
+                    Device *relay = new Relay(_idGen++, &_transportLayer, (byte) pin, serviceName);
+                    _devices.push_back(relay);
+                    relay->buildDevice();
 
+                }
             }
         }
     }
@@ -372,129 +391,138 @@ namespace robotican_hardware {
     void RiCBoardManager::buildDevices(hardware_interface::JointStateInterface* jointStateInterface,
                                        hardware_interface::PositionJointInterface* jointPositionInterface) {
         int servoSize = 0;
+        bool haveServo;
+        ros::param::param<bool>("have_servo", haveServo, false);
         ros::param::param<int>("servo_size", servoSize, 0);
-        for(int i = 0; i < servoSize; ++i) {
-            std::string servoIdentifier = "servo" + boost::lexical_cast<std::string>(i), servoJointName = "";
-            float a , b,  max,  min,  initPos;
-            int pin;
+        if (haveServo) {
+            for(int i = 0; i < servoSize; ++i) {
+                std::string servoIdentifier = "servo" + boost::lexical_cast<std::string>(i), servoJointName = "";
+                float a , b,  max,  min,  initPos;
+                int pin;
 
-            if(_nodeHandle.getParam(servoIdentifier + "_a", a)
-               &&_nodeHandle.getParam(servoIdentifier + "_b", b)
-               &&_nodeHandle.getParam(servoIdentifier + "_max", max)
-               &&_nodeHandle.getParam(servoIdentifier + "_min", min)
-               &&_nodeHandle.getParam(servoIdentifier + "_init_pos", initPos)
-               &&_nodeHandle.getParam(servoIdentifier + "_pin", pin)
-               &&_nodeHandle.getParam(servoIdentifier + "_joint_name", servoJointName)) {
-                Servo* servo = new Servo(_idGen++, &_transportLayer, (byte) pin, a, b, max, min, initPos, servoJointName);
-                JointInfo_t* servoJointInfo = servo->getJointInfo();
-                hardware_interface::JointStateHandle jointStateHandle(servoJointName,
-                                                                      &servoJointInfo->position,
-                                                                      &servoJointInfo->velocity,
-                                                                      &servoJointInfo->effort);
+                if(_nodeHandle.getParam(servoIdentifier + "_a", a)
+                   &&_nodeHandle.getParam(servoIdentifier + "_b", b)
+                   &&_nodeHandle.getParam(servoIdentifier + "_max", max)
+                   &&_nodeHandle.getParam(servoIdentifier + "_min", min)
+                   &&_nodeHandle.getParam(servoIdentifier + "_init_pos", initPos)
+                   &&_nodeHandle.getParam(servoIdentifier + "_pin", pin)
+                   &&_nodeHandle.getParam(servoIdentifier + "_joint_name", servoJointName)) {
+                    Servo* servo = new Servo(_idGen++, &_transportLayer, (byte) pin, a, b, max, min, initPos, servoJointName);
+                    JointInfo_t* servoJointInfo = servo->getJointInfo();
+                    hardware_interface::JointStateHandle jointStateHandle(servoJointName,
+                                                                          &servoJointInfo->position,
+                                                                          &servoJointInfo->velocity,
+                                                                          &servoJointInfo->effort);
 
 
-                jointStateInterface->registerHandle(jointStateHandle);
-                hardware_interface::JointHandle JointHandle(jointStateInterface->getHandle(servoJointName),
+                    jointStateInterface->registerHandle(jointStateHandle);
+                    hardware_interface::JointHandle JointHandle(jointStateInterface->getHandle(servoJointName),
                                                                 &servoJointInfo->cmd);
-                jointPositionInterface->registerHandle(JointHandle);
-                _devices.push_back(servo);
-                //_servoParamHandler.add(servoJointName, servo);
-                servo->buildDevice();
+                    jointPositionInterface->registerHandle(JointHandle);
+                    _devices.push_back(servo);
+                    //_servoParamHandler.add(servoJointName, servo);
+                    servo->buildDevice();
+                }
             }
         }
 
         int closeMotorsWithPotentiometerSize = 0;
+        bool haveCloseLoopPosition;
+        ros::param::param<bool>("have_close_loop_position_motor", haveCloseLoopPosition, true);
         ros::param::param("position_motor_size", closeMotorsWithPotentiometerSize, 0);
-        for(int i = 0; i < closeMotorsWithPotentiometerSize; ++i) {
-            std::string motorIdentifier = "positionMotor" + boost::lexical_cast<std::string>(i), positionMotorJointName = "";
-            int readPin, LPFHzSpeed, LPFHzInput, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
-            , eSwitchPin, eSwitchType, motorType, motorMode;
-            float LPFAlphaSpeed, LPFAlphaInput, KP, KI, KD, maxSetPointSpeed , minSetPointSpeed, maxSetPointPos, minSetPointPos,limit, a, b, tolerance, stopLimitMax, stopLimitMin;
-            if(_nodeHandle.getParam(motorIdentifier + "_motor_type", motorType)) {
-                switch ((CloseMotorType::CloseMotorType) motorType) {
-                    case CloseMotorType::CloseLoopWithEncoder:break;
 
-                    case CloseMotorType::CloseLoopWithPotentiometer:
+        if (haveCloseLoopPosition) {
+            for(int i = 0; i < closeMotorsWithPotentiometerSize; ++i) {
+                std::string motorIdentifier = "positionMotor" + boost::lexical_cast<std::string>(i), positionMotorJointName = "";
+                int readPin, LPFHzSpeed, LPFHzInput, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
+                , eSwitchPin, eSwitchType, motorType, motorMode;
+                float LPFAlphaSpeed, LPFAlphaInput, KP, KI, KD, maxSetPointSpeed , minSetPointSpeed, maxSetPointPos, minSetPointPos,limit, a, b, tolerance, stopLimitMax, stopLimitMin;
+                if(_nodeHandle.getParam(motorIdentifier + "_motor_type", motorType)) {
+                    switch ((CloseMotorType::CloseMotorType) motorType) {
+                        case CloseMotorType::CloseLoopWithEncoder:break;
 
-                        if (_nodeHandle.getParam(motorIdentifier + "_a", a)
-                            && _nodeHandle.getParam(motorIdentifier + "_b", b)
-                            && _nodeHandle.getParam(motorIdentifier + "_lpf_hz_speed", LPFHzSpeed)
-                            && _nodeHandle.getParam(motorIdentifier + "_lpf_hz_input", LPFHzInput)
-                            && _nodeHandle.getParam(motorIdentifier + "_pid_hz", PIDHz)
-                            && _nodeHandle.getParam(motorIdentifier + "_ppr", PPR)
-                            && _nodeHandle.getParam(motorIdentifier + "_timeout", timeout)
-                            && _nodeHandle.getParam(motorIdentifier + "_motor_direction", motorDirection)
-                            && _nodeHandle.getParam(motorIdentifier + "_encoder_direction", encoderDirection)
-                            && _nodeHandle.getParam(motorIdentifier + "_lpf_alpha_speed", LPFAlphaSpeed)
-                            && _nodeHandle.getParam(motorIdentifier + "_lpf_alpha_input", LPFAlphaInput)
-                            && _nodeHandle.getParam(motorIdentifier + "_kp", KP)
-                            && _nodeHandle.getParam(motorIdentifier + "_ki", KI)
-                            && _nodeHandle.getParam(motorIdentifier + "_kd", KD)
-                            && _nodeHandle.getParam(motorIdentifier + "_max_set_point_speed", maxSetPointSpeed)
-                            && _nodeHandle.getParam(motorIdentifier + "_min_set_point_speed", minSetPointSpeed)
-                            && _nodeHandle.getParam(motorIdentifier + "_max_set_point_position", maxSetPointPos)
-                            && _nodeHandle.getParam(motorIdentifier + "_min_set_point_position", minSetPointPos)
-                            && _nodeHandle.getParam(motorIdentifier + "_limit", limit)
-                            && _nodeHandle.getParam(motorIdentifier + "_stop_limit_max", stopLimitMax)
-                            && _nodeHandle.getParam(motorIdentifier + "_stop_limit_min", stopLimitMin)
-                            && _nodeHandle.getParam(motorIdentifier + "_motor_address", motorAddress)
-                            && _nodeHandle.getParam(motorIdentifier + "_motor_emergency_pin", eSwitchPin)
-                            && _nodeHandle.getParam(motorIdentifier + "_motor_emergency_pin_type", eSwitchType)
-                            && _nodeHandle.getParam(motorIdentifier + "_joint", positionMotorJointName)
-                            && _nodeHandle.getParam(motorIdentifier + "_mode", motorMode)
-                            && _nodeHandle.getParam(motorIdentifier + "_read_pin", readPin)
-                            && _nodeHandle.getParam(motorIdentifier + "_tolerance", tolerance)) {
-                            CloseMotorWithPotentiometerParam motorParams;
-                            motorParams.LPFHzSpeed = (uint16_t) LPFHzSpeed;
-                            motorParams.LPFHzInput = (uint16_t) LPFHzInput;
-                            motorParams.PIDHz = (uint16_t) PIDHz;
-                            motorParams.PPR = (uint16_t) PPR;
-                            motorParams.timeout = (uint16_t) timeout;
-                            motorParams.motorDirection = motorDirection;
-                            motorParams.encoderDirection = encoderDirection;
-                            motorParams.LPFAlphaSpeed = LPFAlphaSpeed;
-                            motorParams.LPFAlphaInput = LPFAlphaInput;
+                        case CloseMotorType::CloseLoopWithPotentiometer:
 
-                            motorParams.KP = KP;
-                            motorParams.KI = KI;
-                            motorParams.KD = KD;
-                            motorParams.maxSetPointSpeed = maxSetPointSpeed;
-                            motorParams.minSetPointSpeed = minSetPointSpeed;
-                            motorParams.maxSetPointPos = maxSetPointPos;
-                            motorParams.minSetPointPos = minSetPointPos;
-                            motorParams.limit = limit;
-                            motorParams.stopLimitMax = stopLimitMax;
-                            motorParams.stopLimitMin = stopLimitMin;
-                            motorParams.a = a;
-                            motorParams.b = b;
-                            motorParams.pin =  readPin;
-                            motorParams.tolerance = tolerance;
+                            if (_nodeHandle.getParam(motorIdentifier + "_a", a)
+                                && _nodeHandle.getParam(motorIdentifier + "_b", b)
+                                && _nodeHandle.getParam(motorIdentifier + "_lpf_hz_speed", LPFHzSpeed)
+                                && _nodeHandle.getParam(motorIdentifier + "_lpf_hz_input", LPFHzInput)
+                                && _nodeHandle.getParam(motorIdentifier + "_pid_hz", PIDHz)
+                                && _nodeHandle.getParam(motorIdentifier + "_ppr", PPR)
+                                && _nodeHandle.getParam(motorIdentifier + "_timeout", timeout)
+                                && _nodeHandle.getParam(motorIdentifier + "_motor_direction", motorDirection)
+                                && _nodeHandle.getParam(motorIdentifier + "_encoder_direction", encoderDirection)
+                                && _nodeHandle.getParam(motorIdentifier + "_lpf_alpha_speed", LPFAlphaSpeed)
+                                && _nodeHandle.getParam(motorIdentifier + "_lpf_alpha_input", LPFAlphaInput)
+                                && _nodeHandle.getParam(motorIdentifier + "_kp", KP)
+                                && _nodeHandle.getParam(motorIdentifier + "_ki", KI)
+                                && _nodeHandle.getParam(motorIdentifier + "_kd", KD)
+                                && _nodeHandle.getParam(motorIdentifier + "_max_set_point_speed", maxSetPointSpeed)
+                                && _nodeHandle.getParam(motorIdentifier + "_min_set_point_speed", minSetPointSpeed)
+                                && _nodeHandle.getParam(motorIdentifier + "_max_set_point_position", maxSetPointPos)
+                                && _nodeHandle.getParam(motorIdentifier + "_min_set_point_position", minSetPointPos)
+                                && _nodeHandle.getParam(motorIdentifier + "_limit", limit)
+                                && _nodeHandle.getParam(motorIdentifier + "_stop_limit_max", stopLimitMax)
+                                && _nodeHandle.getParam(motorIdentifier + "_stop_limit_min", stopLimitMin)
+                                && _nodeHandle.getParam(motorIdentifier + "_motor_address", motorAddress)
+                                && _nodeHandle.getParam(motorIdentifier + "_motor_emergency_pin", eSwitchPin)
+                                && _nodeHandle.getParam(motorIdentifier + "_motor_emergency_pin_type", eSwitchType)
+                                && _nodeHandle.getParam(motorIdentifier + "_joint", positionMotorJointName)
+                                && _nodeHandle.getParam(motorIdentifier + "_mode", motorMode)
+                                && _nodeHandle.getParam(motorIdentifier + "_read_pin", readPin)
+                                && _nodeHandle.getParam(motorIdentifier + "_tolerance", tolerance)) {
+                                CloseMotorWithPotentiometerParam motorParams;
+                                motorParams.LPFHzSpeed = (uint16_t) LPFHzSpeed;
+                                motorParams.LPFHzInput = (uint16_t) LPFHzInput;
+                                motorParams.PIDHz = (uint16_t) PIDHz;
+                                motorParams.PPR = (uint16_t) PPR;
+                                motorParams.timeout = (uint16_t) timeout;
+                                motorParams.motorDirection = motorDirection;
+                                motorParams.encoderDirection = encoderDirection;
+                                motorParams.LPFAlphaSpeed = LPFAlphaSpeed;
+                                motorParams.LPFAlphaInput = LPFAlphaInput;
 
-                            CloseLoopMotorWithPotentiometer *closeLoopMotor = new CloseLoopMotorWithPotentiometer(
-                                    _idGen++, &_transportLayer, (byte) motorAddress, eSwitchPin, eSwitchType,
-                                    CloseMotorType::CloseLoopWithPotentiometer,
-                                    (CloseMotorMode::CloseMotorMode) motorMode,
-                                    motorParams, positionMotorJointName);
-                            JointInfo_t *jointInfo = closeLoopMotor->getJointInfo();
+                                motorParams.KP = KP;
+                                motorParams.KI = KI;
+                                motorParams.KD = KD;
+                                motorParams.maxSetPointSpeed = maxSetPointSpeed;
+                                motorParams.minSetPointSpeed = minSetPointSpeed;
+                                motorParams.maxSetPointPos = maxSetPointPos;
+                                motorParams.minSetPointPos = minSetPointPos;
+                                motorParams.limit = limit;
+                                motorParams.stopLimitMax = stopLimitMax;
+                                motorParams.stopLimitMin = stopLimitMin;
+                                motorParams.a = a;
+                                motorParams.b = b;
+                                motorParams.pin =  readPin;
+                                motorParams.tolerance = tolerance;
 
-                            hardware_interface::JointStateHandle jointStateHandle(positionMotorJointName,
-                                                                                  &jointInfo->position,
-                                                                                  &jointInfo->velocity,
-                                                                                  &jointInfo->effort);
+                                CloseLoopMotorWithPotentiometer *closeLoopMotor = new CloseLoopMotorWithPotentiometer(
+                                        _idGen++, &_transportLayer, (byte) motorAddress, eSwitchPin, eSwitchType,
+                                        CloseMotorType::CloseLoopWithPotentiometer,
+                                        (CloseMotorMode::CloseMotorMode) motorMode,
+                                        motorParams, positionMotorJointName);
+                                JointInfo_t *jointInfo = closeLoopMotor->getJointInfo();
 
-                            jointStateInterface->registerHandle(jointStateHandle);
+                                hardware_interface::JointStateHandle jointStateHandle(positionMotorJointName,
+                                                                                      &jointInfo->position,
+                                                                                      &jointInfo->velocity,
+                                                                                      &jointInfo->effort);
 
-                            hardware_interface::JointHandle JointHandle(jointStateInterface->getHandle(positionMotorJointName),
-                                                                        &jointInfo->cmd);
-                            jointPositionInterface->registerHandle(JointHandle);
+                                jointStateInterface->registerHandle(jointStateHandle);
+
+                                hardware_interface::JointHandle JointHandle(jointStateInterface->getHandle(positionMotorJointName),
+                                                                            &jointInfo->cmd);
+                                jointPositionInterface->registerHandle(JointHandle);
 
 
-                            _devices.push_back(closeLoopMotor);
-                            // _potentiometerParamHandler.add(positionMotorJointName, closeLoopMotor);
-                            closeLoopMotor->buildDevice();
+                                _devices.push_back(closeLoopMotor);
+                                // _potentiometerParamHandler.add(positionMotorJointName, closeLoopMotor);
+                                closeLoopMotor->buildDevice();
 
-                        }
-                        break;
+                            }
+                            break;
+                    }
                 }
             }
         }
@@ -505,146 +533,154 @@ namespace robotican_hardware {
     void RiCBoardManager::buildDevices(hardware_interface::JointStateInterface *jointStateInterface,
                                        hardware_interface::VelocityJointInterface *jointVelocityInterface) {
         int closeMotorSize = 0;
+        bool haveCloseLoopMotors;
         ros::param::param<int>("close_motor_size", closeMotorSize, 0);
-        for(int i = 0; i < closeMotorSize; ++i) {
-            std::string closeMotorIdentifier = "motor" + boost::lexical_cast<std::string>(i), jointName;
-            CloseMotorWithEncoderParam motorParams;
+        ros::param::param<bool>("have_close_loop_motor", haveCloseLoopMotors, true);
+        if(haveCloseLoopMotors) {
+            for(int i = 0; i < closeMotorSize; ++i) {
+                std::string closeMotorIdentifier = "motor" + boost::lexical_cast<std::string>(i), jointName;
+                CloseMotorWithEncoderParam motorParams;
 
-            int encoderPinA, encoderPinB, LPFHzSpeed, LPFHzInput, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
+                int encoderPinA, encoderPinB, LPFHzSpeed, LPFHzInput, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
                 , eSwitchPin, eSwitchType, motorType, motorMode, baisMin, baisMax;
-            float LPFAlphaSpeed, LPFAlphaInput, KP, KI, KD, maxSetPointSpeed, minSetPointSpeed, maxSetPointPos, minSetPointPos, limit, stopLimitMax, stopLimitMin;
-            if(_nodeHandle.getParam(closeMotorIdentifier + "_motor_type", motorType)) {
-                switch ((CloseMotorType::CloseMotorType) motorType) {
-                    case CloseMotorType::CloseLoopWithEncoder:
-                        if (_nodeHandle.getParam(closeMotorIdentifier + "_encoder_pin_A", encoderPinA)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_encoder_pin_B", encoderPinB)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_hz_speed", LPFHzSpeed)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_hz_input", LPFHzInput)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_pid_hz", PIDHz)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_ppr", PPR)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_timeout", timeout)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_motor_direction", motorDirection)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_encoder_direction", encoderDirection)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_alpha_speed", LPFAlphaSpeed)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_alpha_input", LPFAlphaInput)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_kp", KP)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_ki", KI)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_kd", KD)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_max_set_point_speed", maxSetPointSpeed)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_min_set_point_speed", minSetPointSpeed)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_max_set_point_position", maxSetPointPos)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_min_set_point_position", minSetPointPos)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_limit", limit)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_stop_limit_max", stopLimitMax)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_stop_limit_min", stopLimitMin)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_motor_address", motorAddress)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_motor_emergency_pin", eSwitchPin)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_motor_emergency_pin_type", eSwitchType)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_joint", jointName)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_mode", motorMode)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_bais_min", baisMin)
-                            && _nodeHandle.getParam(closeMotorIdentifier + "_bais_max", baisMax)) {
+                float LPFAlphaSpeed, LPFAlphaInput, KP, KI, KD, maxSetPointSpeed, minSetPointSpeed, maxSetPointPos, minSetPointPos, limit, stopLimitMax, stopLimitMin;
+                if (_nodeHandle.getParam(closeMotorIdentifier + "_motor_type", motorType)) {
+                    switch ((CloseMotorType::CloseMotorType) motorType) {
+                        case CloseMotorType::CloseLoopWithEncoder:
+                            if (_nodeHandle.getParam(closeMotorIdentifier + "_encoder_pin_A", encoderPinA)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_encoder_pin_B", encoderPinB)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_hz_speed", LPFHzSpeed)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_hz_input", LPFHzInput)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_pid_hz", PIDHz)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_ppr", PPR)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_timeout", timeout)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_motor_direction", motorDirection)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_encoder_direction", encoderDirection)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_alpha_speed", LPFAlphaSpeed)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_lpf_alpha_input", LPFAlphaInput)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_kp", KP)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_ki", KI)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_kd", KD)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_max_set_point_speed", maxSetPointSpeed)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_min_set_point_speed", minSetPointSpeed)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_max_set_point_position", maxSetPointPos)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_min_set_point_position", minSetPointPos)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_limit", limit)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_stop_limit_max", stopLimitMax)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_stop_limit_min", stopLimitMin)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_motor_address", motorAddress)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_motor_emergency_pin", eSwitchPin)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_motor_emergency_pin_type", eSwitchType)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_joint", jointName)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_mode", motorMode)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_bais_min", baisMin)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_bais_max", baisMax)) {
 
-                            motorParams.LPFHzSpeed = (uint16_t) LPFHzSpeed;
-                            motorParams.LPFHzInput = (uint16_t) LPFHzInput;
-                            motorParams.PIDHz = (uint16_t) PIDHz;
-                            motorParams.PPR = (uint16_t) PPR;
-                            motorParams.timeout = (uint16_t) timeout;
-                            motorParams.motorDirection = motorDirection;
-                            motorParams.encoderDirection = encoderDirection;
-                            motorParams.LPFAlphaSpeed = LPFAlphaSpeed;
-                            motorParams.LPFAlphaInput = LPFAlphaInput;
-                            motorParams.KP = KP;
-                            motorParams.KI = KI;
-                            motorParams.KD = KD;
-                            motorParams.maxSetPointSpeed = maxSetPointSpeed;
-                            motorParams.minSetPointSpeed = minSetPointSpeed;
-                            motorParams.maxSetPointPos = maxSetPointPos;
-                            motorParams.minSetPointPos = minSetPointPos;
-                            motorParams.limit = limit;
-                            motorParams.stopLimitMax = stopLimitMax;
-                            motorParams.stopLimitMin = stopLimitMin;
-                            motorParams.encoderPinA = (byte) encoderPinA;
-                            motorParams.encoderPinB = (byte) encoderPinB;
-                            motorParams.baisMin = (int16_t) baisMin;
-                            motorParams.baisMax = (int16_t) baisMax;
+                                motorParams.LPFHzSpeed = (uint16_t) LPFHzSpeed;
+                                motorParams.LPFHzInput = (uint16_t) LPFHzInput;
+                                motorParams.PIDHz = (uint16_t) PIDHz;
+                                motorParams.PPR = (uint16_t) PPR;
+                                motorParams.timeout = (uint16_t) timeout;
+                                motorParams.motorDirection = motorDirection;
+                                motorParams.encoderDirection = encoderDirection;
+                                motorParams.LPFAlphaSpeed = LPFAlphaSpeed;
+                                motorParams.LPFAlphaInput = LPFAlphaInput;
+                                motorParams.KP = KP;
+                                motorParams.KI = KI;
+                                motorParams.KD = KD;
+                                motorParams.maxSetPointSpeed = maxSetPointSpeed;
+                                motorParams.minSetPointSpeed = minSetPointSpeed;
+                                motorParams.maxSetPointPos = maxSetPointPos;
+                                motorParams.minSetPointPos = minSetPointPos;
+                                motorParams.limit = limit;
+                                motorParams.stopLimitMax = stopLimitMax;
+                                motorParams.stopLimitMin = stopLimitMin;
+                                motorParams.encoderPinA = (byte) encoderPinA;
+                                motorParams.encoderPinB = (byte) encoderPinB;
+                                motorParams.baisMin = (int16_t) baisMin;
+                                motorParams.baisMax = (int16_t) baisMax;
 
-                            CloseLoopMotor *closeLoopMotor = new CloseLoopMotorWithEncoder(_idGen++, &_transportLayer,
-                                                                                           (byte) motorAddress,
-                                                                                           eSwitchPin, eSwitchType,
-                                                                                           CloseMotorType::CloseLoopWithEncoder,
-                                                                                           (CloseMotorMode::CloseMotorMode) motorMode,
-                                                                                           motorParams, jointName);
-                            JointInfo_t *jointInfo = closeLoopMotor->getJointInfo();
+                                CloseLoopMotor *closeLoopMotor = new CloseLoopMotorWithEncoder(_idGen++, &_transportLayer,
+                                                                                               (byte) motorAddress,
+                                                                                               eSwitchPin, eSwitchType,
+                                                                                               CloseMotorType::CloseLoopWithEncoder,
+                                                                                               (CloseMotorMode::CloseMotorMode) motorMode,
+                                                                                               motorParams, jointName);
+                                JointInfo_t *jointInfo = closeLoopMotor->getJointInfo();
 
-                            hardware_interface::JointStateHandle jointStateHandle(jointName,
-                                                                                  &jointInfo->position,
-                                                                                  &jointInfo->velocity,
-                                                                                  &jointInfo->effort);
+                                hardware_interface::JointStateHandle jointStateHandle(jointName,
+                                                                                      &jointInfo->position,
+                                                                                      &jointInfo->velocity,
+                                                                                      &jointInfo->effort);
 
-                            jointStateInterface->registerHandle(jointStateHandle);
+                                jointStateInterface->registerHandle(jointStateHandle);
 
-                            hardware_interface::JointHandle JointHandle(jointStateInterface->getHandle(jointName),
-                                                                        &jointInfo->cmd);
-                            jointVelocityInterface->registerHandle(JointHandle);
+                                hardware_interface::JointHandle JointHandle(jointStateInterface->getHandle(jointName),
+                                                                            &jointInfo->cmd);
+                                jointVelocityInterface->registerHandle(JointHandle);
 
-                            _devices.push_back(closeLoopMotor);
-                            //_closeMotorParamHandler.add(jointName, closeLoopMotor);
-                            closeLoopMotor->buildDevice();
+                                _devices.push_back(closeLoopMotor);
+                                closeLoopMotor->buildDevice();
 
+                            }
+                            break;
                     }
-                        break;
                 }
-            }
-            else {
-                ros_utils::rosError("Unable to Identify motor type");
+                else {
+                    ros_utils::rosError("Unable to Identify motor type");
+                }
             }
         }
 
         int openLoopSize = 0;
+        bool haveOpenLoopMotors;
+        ros::param::param<bool>("have_open_loop_motor", haveOpenLoopMotors, true);
         ros::param::param<int>("open_motor_size", openLoopSize, 0);
-        for(int i = 0; i < openLoopSize; ++i) {
-            std::string openMotorIdentifier = "motor" + boost::lexical_cast<std::string>(i), jointName;
-            int motorAddress, eSwitchPin, eSwitchType ,encoderPinA, encoderPinB, LPFHzSpeed, LPFHzInput, PPR, motorDirection, encoderDirection;
-            float LPFAlphaSpeed, LPFAlphaInput, maxSetPointSpeed, minSetPointSpeed;
-            if(_nodeHandle.getParam(openMotorIdentifier + "_motor_address", motorAddress)
-               && _nodeHandle.getParam(openMotorIdentifier + "_motor_emergency_pin", eSwitchPin)
-               && _nodeHandle.getParam(openMotorIdentifier + "_motor_emergency_pin_type", eSwitchType)
-               && _nodeHandle.getParam(openMotorIdentifier + "_encoder_pin_a", encoderPinA)
-               && _nodeHandle.getParam(openMotorIdentifier + "_encoder_pin_b", encoderPinB)
-               && _nodeHandle.getParam(openMotorIdentifier + "_lpf_hz_speed", LPFHzSpeed)
-               && _nodeHandle.getParam(openMotorIdentifier + "_lpf_hz_input", LPFHzInput)
-               && _nodeHandle.getParam(openMotorIdentifier + "_ppr", PPR)
-               && _nodeHandle.getParam(openMotorIdentifier + "_motor_direction", motorDirection)
-               && _nodeHandle.getParam(openMotorIdentifier + "_encoder_direction", encoderDirection)
-               && _nodeHandle.getParam(openMotorIdentifier + "_lpf_alpha_speed", LPFAlphaSpeed)
-               && _nodeHandle.getParam(openMotorIdentifier + "_lpf_alpha_input", LPFAlphaInput)
-               && _nodeHandle.getParam(openMotorIdentifier + "_max_set_point_speed", maxSetPointSpeed)
-               && _nodeHandle.getParam(openMotorIdentifier + "_min_set_point_speed", minSetPointSpeed)
-               && _nodeHandle.getParam(openMotorIdentifier + "_joint", jointName)) {
 
-                OpenLoopMotor* openLoopMotor = new OpenLoopMotor(_idGen++, &_transportLayer, (byte) motorAddress,
-                                                                 (byte) eSwitchPin, (byte) eSwitchType,
-                                                                 maxSetPointSpeed, minSetPointSpeed, (byte) encoderPinA,
-                                                                 (byte) encoderPinB, motorDirection, encoderDirection,
-                                                                 (uint16_t) LPFHzSpeed, (uint16_t) LPFHzInput,
-                                                                 LPFAlphaInput, LPFAlphaSpeed, (uint16_t) PPR);
-                JointInfo_t* jointInfo = openLoopMotor->getJointInfo();
+        if (haveOpenLoopMotors) {
+            for(int i = 0; i < openLoopSize; ++i) {
+                std::string openMotorIdentifier = "motor" + boost::lexical_cast<std::string>(i), jointName;
+                int motorAddress, eSwitchPin, eSwitchType ,encoderPinA, encoderPinB, LPFHzSpeed, LPFHzInput, PPR, motorDirection, encoderDirection;
+                float LPFAlphaSpeed, LPFAlphaInput, maxSetPointSpeed, minSetPointSpeed;
+                if(_nodeHandle.getParam(openMotorIdentifier + "_motor_address", motorAddress)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_motor_emergency_pin", eSwitchPin)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_motor_emergency_pin_type", eSwitchType)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_encoder_pin_a", encoderPinA)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_encoder_pin_b", encoderPinB)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_lpf_hz_speed", LPFHzSpeed)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_lpf_hz_input", LPFHzInput)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_ppr", PPR)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_motor_direction", motorDirection)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_encoder_direction", encoderDirection)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_lpf_alpha_speed", LPFAlphaSpeed)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_lpf_alpha_input", LPFAlphaInput)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_max_set_point_speed", maxSetPointSpeed)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_min_set_point_speed", minSetPointSpeed)
+                   && _nodeHandle.getParam(openMotorIdentifier + "_joint", jointName)) {
 
-                hardware_interface::JointStateHandle jointStateHandle(jointName,
-                                                                      &jointInfo->position,
-                                                                      &jointInfo->velocity,
-                                                                      &jointInfo->effort);
+                    OpenLoopMotor* openLoopMotor = new OpenLoopMotor(_idGen++, &_transportLayer, (byte) motorAddress,
+                                                                     (byte) eSwitchPin, (byte) eSwitchType,
+                                                                     maxSetPointSpeed, minSetPointSpeed, (byte) encoderPinA,
+                                                                     (byte) encoderPinB, motorDirection, encoderDirection,
+                                                                     (uint16_t) LPFHzSpeed, (uint16_t) LPFHzInput,
+                                                                     LPFAlphaInput, LPFAlphaSpeed, (uint16_t) PPR);
+                    JointInfo_t* jointInfo = openLoopMotor->getJointInfo();
 
-                jointStateInterface->registerHandle(jointStateHandle);
+                    hardware_interface::JointStateHandle jointStateHandle(jointName,
+                                                                          &jointInfo->position,
+                                                                          &jointInfo->velocity,
+                                                                          &jointInfo->effort);
 
-                hardware_interface::JointHandle JointHandle(jointStateInterface->getHandle(jointName),
-                                                            &jointInfo->cmd);
-                jointVelocityInterface->registerHandle(JointHandle);
+                    jointStateInterface->registerHandle(jointStateHandle);
 
-                _devices.push_back(openLoopMotor);
-                openLoopMotor->buildDevice();
+                    hardware_interface::JointHandle JointHandle(jointStateInterface->getHandle(jointName),
+                                                                &jointInfo->cmd);
+                    jointVelocityInterface->registerHandle(JointHandle);
 
+                    _devices.push_back(openLoopMotor);
+                    openLoopMotor->buildDevice();
+
+                }
             }
         }
 
