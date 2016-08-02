@@ -110,8 +110,8 @@ pan_controller:
         package: dynamixel_controllers
         module: joint_position_controller
         type: JointPositionController
-    joint_name: left_finger_joint
-    joint_speed: 1.0
+    joint_name: head_pan_joint
+    joint_speed: 2.0
     max_torque: 0.1
     motor:
         id: 3
@@ -124,12 +124,12 @@ tilt_controller:
         package: dynamixel_controllers
         module: joint_position_controller
         type: JointPositionController
-    joint_name: right_finger_joint
-    joint_speed: 1.0
+    joint_name: head_tilt_joint
+    joint_speed: 2.0
     max_torque: 0.1
     motor:
         id: 4
-        init: 1990
+        init: 2500
         min: 1000
         max: 3100
 

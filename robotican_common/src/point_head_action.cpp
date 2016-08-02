@@ -358,11 +358,16 @@ public:
       }
 
       // account for pan_link joint limit in back.
-      if(jnt_pos(0) < limits_[0].lower && limit_flips++ == 0){ jnt_pos(0) += 1.5*M_PI; }
-      if(jnt_pos(0) > limits_[0].upper && limit_flips++ == 0){ jnt_pos(0) -= 1.5*M_PI; }
+     // if(jnt_pos(0) < limits_[0].lower && limit_flips++ == 0){ jnt_pos(0) += 1.5*M_PI; }
+     // if(jnt_pos(0) > limits_[0].upper && limit_flips++ == 0){ jnt_pos(0) -= 1.5*M_PI; }
+      for (unsigned int i = 0; i < joints; i++)
+      {
+          jnt_pos(i) = std::max(limits_[i].lower, jnt_pos(i));
+          jnt_pos(i) = std::min(limits_[i].upper, jnt_pos(i));
+      }
 
-      jnt_pos(1) = std::max(limits_[1].lower, jnt_pos(1));
-      jnt_pos(1) = std::min(limits_[1].upper, jnt_pos(1));
+     // jnt_pos(1) = std::max(limits_[1].lower, jnt_pos(1));
+     // jnt_pos(1) = std::min(limits_[1].upper, jnt_pos(1));
 
       count++;
 
@@ -419,14 +424,14 @@ public:
     traj.joint_names.push_back(traj_state.response.name[0]);
     traj.joint_names.push_back(traj_state.response.name[1]);
 
-    traj.points.resize(2);
-    traj.points[0].positions = traj_state.response.position;
-    traj.points[0].velocities = traj_state.response.velocity;
-    traj.points[0].time_from_start = ros::Duration(0.0);
-    traj.points[1].positions = q_goal;
-    traj.points[1].velocities.push_back(0);
-    traj.points[1].velocities.push_back(0);
-    traj.points[1].time_from_start = ros::Duration(min_duration);
+    traj.points.resize(1);
+   // traj.points[0].positions = traj_state.response.position;
+    //traj.points[0].velocities = traj_state.response.velocity;
+    //traj.points[0].time_from_start = ros::Duration(0.0);
+    traj.points[0].positions = q_goal;
+    traj.points[0].velocities.push_back(0);
+    traj.points[0].velocities.push_back(0);
+    traj.points[0].time_from_start = ros::Duration(min_duration);
 
     pub_controller_command_.publish(traj);
   }
