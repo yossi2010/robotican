@@ -54,6 +54,7 @@ motor0_encoder_direction: -1
 motor0_kp: 2.0
 motor0_ki: 80.0
 motor0_kd: 0.0
+motor0_kff: 0.0
 motor0_max_set_point_speed: 9.0
 motor0_min_set_point_speed: -9.0
 motor0_max_set_point_position: 0.0
@@ -89,6 +90,7 @@ motor1_motor_direction: -1
 motor1_kp: 2.0
 motor1_ki: 80.0
 motor1_kd: 0.0
+motor1_kff: 0.0
 motor1_max_set_point_speed: 9.0
 motor1_min_set_point_speed: -9.0
 motor1_max_set_point_position: 0.0
@@ -157,6 +159,7 @@ positionMotor0_lpf_alpha_input: 0.5
 positionMotor0_kp: 3200.0
 positionMotor0_ki: 600.0
 positionMotor0_kd: 0.0
+positionMotor0_kff: 0.0
 positionMotor0_max_set_point_speed: 0.06
 positionMotor0_min_set_point_speed: -0.06
 positionMotor0_max_set_point_position: 0.32

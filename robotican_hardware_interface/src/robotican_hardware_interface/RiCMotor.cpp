@@ -187,6 +187,8 @@ namespace robotican_hardware {
         config.motor_kp = param.KP;
         config.motor_ki = param.KI;
         config.motor_kd = param.KD;
+        config.motor_kff = param.KFF;
+        config.motor_limit = param.limit;
 
         _server.updateConfig(config);
 
@@ -222,6 +224,7 @@ namespace robotican_hardware {
         buildMotorCloseLoop.KP = _params.KP;
         buildMotorCloseLoop.KI = _params.KI;
         buildMotorCloseLoop.KD = _params.KD;
+        buildMotorCloseLoop.KFF = _params.KFF;
         buildMotorCloseLoop.maxSetPointSpeed = _params.maxSetPointSpeed;
         buildMotorCloseLoop.minSetPointSpeed = _params.minSetPointSpeed;
         buildMotorCloseLoop.maxSetPointPos = _params.maxSetPointPos;
@@ -237,8 +240,8 @@ namespace robotican_hardware {
         _transportLayer->write(rawData, buildMotorCloseLoop.length);
     }
 
-    void CloseLoopMotorWithEncoder::setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha, float inputLpfAlpha, float KP,
-                                                  float KI, float KD) {
+    void CloseLoopMotorWithEncoder::setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha,
+                                                  float inputLpfAlpha, float KP, float KI, float KD, float KFF, float limit) {
         _isSetParam = true;
         _params.LPFHzSpeed = speedLpfHz;
         _params.PIDHz = pidHz;
@@ -248,6 +251,8 @@ namespace robotican_hardware {
         _params.KP = KP;
         _params.KI = KI;
         _params.KD = KD;
+        _params.KFF = KFF;
+        _params.limit = limit;
 
     }
 
@@ -266,6 +271,8 @@ namespace robotican_hardware {
                 param.KP = _params.KP;
                 param.KI = _params.KI;
                 param.KD = _params.KD;
+                param.KFF = _params.KFF;
+                param.limit = _params.limit;
                 param.inputLfpAlpha = 0;
                 param.inputLpfHz = _params.LPFHzInput;
                 param.inputLfpAlpha = _params.LPFAlphaInput;
@@ -279,9 +286,10 @@ namespace robotican_hardware {
     }
 
     void CloseLoopMotorWithEncoder::dynamicCallback(robotican_hardware_interface::RiCBoardConfig &config, uint32_t level) {
-        setParams((uint16_t) config.motor_speed_lpf_hz, config.motor_input_lpf_hz, (uint16_t) config.motor_pid_hz,
-                  (float) config.motor_speed_lpf_alpha, config.motor_input_lpf_alpha, (float) config.motor_kp, (float) config.motor_ki,
-                  (float) config.motor_kd);
+        setParams((uint16_t) config.motor_speed_lpf_hz, (uint16_t) config.motor_input_lpf_hz,
+                  (uint16_t) config.motor_pid_hz, (float) config.motor_speed_lpf_alpha,
+                  (float) config.motor_input_lpf_alpha, (float) config.motor_kp, (float) config.motor_ki,
+                  (float) config.motor_kd, (float) config.motor_kff, (float) config.motor_limit);
     }
 
     void CloseLoopMotorWithEncoder::timerCallback(const ros::TimerEvent &e) {
@@ -291,8 +299,8 @@ namespace robotican_hardware {
         _statusPub.publish(msg);
     }
 
-    void CloseLoopMotorWithPotentiometer::setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha, float inputLpfAlpha, float KP,
-                                                    float KI, float KD) {
+    void CloseLoopMotorWithPotentiometer::setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha,
+                                                    float inputLpfAlpha, float KP, float KI, float KD, float KFF, float limit) {
 
     }
 
@@ -317,6 +325,7 @@ namespace robotican_hardware {
         buildCloseLoopWithPotentiometer.KP = _param.KP;
         buildCloseLoopWithPotentiometer.KI = _param.KI;
         buildCloseLoopWithPotentiometer.KD = _param.KD;
+        buildCloseLoopWithPotentiometer.KFF = _param.KFF;
         buildCloseLoopWithPotentiometer.maxSetPointSpeed = _param.maxSetPointSpeed;
         buildCloseLoopWithPotentiometer.minSetPointSpeed = _param.minSetPointSpeed;
         buildCloseLoopWithPotentiometer.maxSetPointPos = _param.maxSetPointPos;
@@ -358,8 +367,10 @@ namespace robotican_hardware {
         config.motor_kp = motorParam.KP;
         config.motor_ki = motorParam.KI;
         config.motor_kd = motorParam.KD;
+        config.motor_kff = motorParam.KFF;
         config.motor_a = motorParam.a;
         config.motor_b = motorParam.b;
+        config.motor_limit = motorParam.limit;
         config.motor_tolerance = motorParam.tolerance;
 
         _server.updateConfig(config);
@@ -370,8 +381,9 @@ namespace robotican_hardware {
         _firstTime = true;
     }
 
-    void CloseLoopMotorWithPotentiometer::setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha, float inputLpfAlpha, float KP,
-                                                        float KI, float KD, float a, float b, float tolerance) {
+    void CloseLoopMotorWithPotentiometer::setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz,
+                                                        float speedLpfAlpha, float inputLpfAlpha, float KP, float KI, float KD,
+                                                        float KFF, float a, float b, float tolerance, float limit) {
         _param.LPFHzSpeed = speedLpfHz;
         _param.LPFHzInput = inputLpfHz;
         _param.PIDHz = pidHz;
@@ -380,18 +392,21 @@ namespace robotican_hardware {
         _param.KP = KP;
         _param.KI = KI;
         _param.KD = KD;
+        _param.KFF = KFF;
         _param.a = a;
         _param.b = b;
         _param.tolerance = tolerance;
+        _param.limit = limit;
         _isParamChange = true;
 
     }
 
     void CloseLoopMotorWithPotentiometer::dynamicCallback(robotican_hardware_interface::RiCBoardPotentiometerConfig &config, uint32_t level) {
-        setParams((uint16_t) config.motor_speed_lpf_hz, (uint16_t) config.motor_input_lpf_hz, (uint16_t) config.motor_pid_hz,
-                  (float) config.motor_speed_lpf_alpha, (float) config.motor_input_lpf_alpha, (float) config.motor_kp, (float) config.motor_ki,
-                  (float) config.motor_kd, (float) config.motor_a, (float) config.motor_b,
-                  (float) config.motor_tolerance);
+        setParams((uint16_t) config.motor_speed_lpf_hz, (uint16_t) config.motor_input_lpf_hz,
+                  (uint16_t) config.motor_pid_hz, (float) config.motor_speed_lpf_alpha,
+                  (float) config.motor_input_lpf_alpha, (float) config.motor_kp, (float) config.motor_ki,
+                  (float) config.motor_kd, (float) config.motor_kff, (float) config.motor_a, (float) config.motor_b,
+                  (float) config.motor_tolerance, (float) config.motor_limit);
     }
 
 

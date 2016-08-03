@@ -304,6 +304,7 @@ struct BuildMotorCloseLoop : BuildDevice {
     float KP;
     float KI;
     float KD;
+    float KFF;
     float maxSetPointSpeed;
     float minSetPointSpeed;
     float maxSetPointPos;
@@ -478,9 +479,11 @@ struct SetMotorParam : DeviceMessage{
     uint16_t pidHz;
     float speedLfpAlpha;
     float inputLfpAlpha;
+    float limit;
     float KP;
     float KI;
     float KD;
+    float KFF;
 
 }__attribute__((__packed__));
 
@@ -494,9 +497,11 @@ struct SetCloseMotorWithPotentiometer : DeviceMessage {
     uint16_t pidHz;
     float speedLfpAlpha;
     float inputLfpAlpha;
+    float limit;
     float KP;
     float KI;
     float KD;
+    float KFF;
     float a;
     float b;
     float tolerance;

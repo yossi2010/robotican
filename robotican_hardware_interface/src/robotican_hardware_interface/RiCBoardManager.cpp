@@ -436,7 +436,7 @@ namespace robotican_hardware {
                 std::string motorIdentifier = "positionMotor" + boost::lexical_cast<std::string>(i), positionMotorJointName = "";
                 int readPin, LPFHzSpeed, LPFHzInput, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
                 , eSwitchPin, eSwitchType, motorType, motorMode;
-                float LPFAlphaSpeed, LPFAlphaInput, KP, KI, KD, maxSetPointSpeed , minSetPointSpeed, maxSetPointPos, minSetPointPos,limit, a, b, tolerance, stopLimitMax, stopLimitMin;
+                float LPFAlphaSpeed, LPFAlphaInput, KP, KI, KD, KFF, maxSetPointSpeed, minSetPointSpeed, maxSetPointPos, minSetPointPos,limit, a, b, tolerance, stopLimitMax, stopLimitMin;
                 if(_nodeHandle.getParam(motorIdentifier + "_motor_type", motorType)) {
                     switch ((CloseMotorType::CloseMotorType) motorType) {
                         case CloseMotorType::CloseLoopWithEncoder:break;
@@ -457,6 +457,7 @@ namespace robotican_hardware {
                                 && _nodeHandle.getParam(motorIdentifier + "_kp", KP)
                                 && _nodeHandle.getParam(motorIdentifier + "_ki", KI)
                                 && _nodeHandle.getParam(motorIdentifier + "_kd", KD)
+                                && _nodeHandle.getParam(motorIdentifier + "_kff", KFF)
                                 && _nodeHandle.getParam(motorIdentifier + "_max_set_point_speed", maxSetPointSpeed)
                                 && _nodeHandle.getParam(motorIdentifier + "_min_set_point_speed", minSetPointSpeed)
                                 && _nodeHandle.getParam(motorIdentifier + "_max_set_point_position", maxSetPointPos)
@@ -485,6 +486,7 @@ namespace robotican_hardware {
                                 motorParams.KP = KP;
                                 motorParams.KI = KI;
                                 motorParams.KD = KD;
+                                motorParams.KFF = KFF;
                                 motorParams.maxSetPointSpeed = maxSetPointSpeed;
                                 motorParams.minSetPointSpeed = minSetPointSpeed;
                                 motorParams.maxSetPointPos = maxSetPointPos;
@@ -517,7 +519,6 @@ namespace robotican_hardware {
 
 
                                 _devices.push_back(closeLoopMotor);
-                                // _potentiometerParamHandler.add(positionMotorJointName, closeLoopMotor);
                                 closeLoopMotor->buildDevice();
 
                             }
@@ -543,7 +544,7 @@ namespace robotican_hardware {
 
                 int encoderPinA, encoderPinB, LPFHzSpeed, LPFHzInput, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
                 , eSwitchPin, eSwitchType, motorType, motorMode, baisMin, baisMax;
-                float LPFAlphaSpeed, LPFAlphaInput, KP, KI, KD, maxSetPointSpeed, minSetPointSpeed, maxSetPointPos, minSetPointPos, limit, stopLimitMax, stopLimitMin;
+                float LPFAlphaSpeed, LPFAlphaInput, KP, KI, KD, KFF, maxSetPointSpeed, minSetPointSpeed, maxSetPointPos, minSetPointPos, limit, stopLimitMax, stopLimitMin;
                 if (_nodeHandle.getParam(closeMotorIdentifier + "_motor_type", motorType)) {
                     switch ((CloseMotorType::CloseMotorType) motorType) {
                         case CloseMotorType::CloseLoopWithEncoder:
@@ -561,6 +562,7 @@ namespace robotican_hardware {
                                 && _nodeHandle.getParam(closeMotorIdentifier + "_kp", KP)
                                 && _nodeHandle.getParam(closeMotorIdentifier + "_ki", KI)
                                 && _nodeHandle.getParam(closeMotorIdentifier + "_kd", KD)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_kff", KFF)
                                 && _nodeHandle.getParam(closeMotorIdentifier + "_max_set_point_speed", maxSetPointSpeed)
                                 && _nodeHandle.getParam(closeMotorIdentifier + "_min_set_point_speed", minSetPointSpeed)
                                 && _nodeHandle.getParam(closeMotorIdentifier + "_max_set_point_position", maxSetPointPos)
@@ -588,6 +590,8 @@ namespace robotican_hardware {
                                 motorParams.KP = KP;
                                 motorParams.KI = KI;
                                 motorParams.KD = KD;
+                                motorParams.KFF = KFF;
+
                                 motorParams.maxSetPointSpeed = maxSetPointSpeed;
                                 motorParams.minSetPointSpeed = minSetPointSpeed;
                                 motorParams.maxSetPointPos = maxSetPointPos;
