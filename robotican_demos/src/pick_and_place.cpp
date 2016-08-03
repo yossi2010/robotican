@@ -22,6 +22,7 @@
 #include <moveit_msgs/WorkspaceParameters.h>
 #include <moveit/planning_scene/planning_scene.h>
 
+
 typedef actionlib::SimpleActionClient<control_msgs::GripperCommandAction> GripperClient;
 
 robot_state::GroupStateValidityCallbackFn state_validity_callback_fn_;
@@ -37,6 +38,9 @@ robot_state::RobotStatePtr *robot_state_ptr;
 tf::TransformListener *listener_ptr;
 tf::MessageFilter<geometry_msgs::PoseStamped> * tf_filter_;
 
+moveit_msgs::AttachedCollisionObject attached_object;
+
+void update_table(geometry_msgs::Pose pose);
 bool checkIK(geometry_msgs::PoseStamped pose);
 void go(tf::Transform  dest);
 bool gripper_cmd(double gap,double effort);
@@ -137,8 +141,7 @@ void pick_go_cb(std_msgs::Empty) {
     ROS_INFO("Openning gripper...");
     if(gripper_cmd(0.14,0.0)) {
         ROS_INFO("Gripper is oppend, planning for pre-grasping..");
-        ros::Duration w2(2);
-        w2.sleep(); //wait for re-detection
+        ros::Duration(2).sleep();//wait for re-detection
         pick_pose=move_to_object();
         if (arm_cmd(pick_pose)) {
             ROS_INFO("Arm planning is done, moving arm..");
@@ -146,8 +149,7 @@ void pick_go_cb(std_msgs::Empty) {
                 ROS_INFO("Ready to grasp");
                 if(gripper_cmd(0.0,0.3)) {
                     ROS_INFO("Grasping is done");
-                    ros::Duration w(8);
-                    w.sleep(); //wait for attach
+                    ros::Duration(8).sleep(); //wait for attach
                     ROS_INFO("Lifting object...");
                     if (arm_cmd(lift_arm())) {
                         ROS_INFO("Arm planning is done, moving arm up..");
@@ -160,14 +162,14 @@ void pick_go_cb(std_msgs::Empty) {
                                 if(moveit_ptr->move()) {
                                     ROS_INFO("Openning gripper...");
                                     if(gripper_cmd(0.14,0.0)) {
-                                        ros::Duration w(5);
-                                        w.sleep(); //wait for deattach
+                                        ros::Duration(5).sleep(); //wait for deattach
                                         ROS_INFO("Lifting arm up...");
                                         if (arm_cmd(lift_arm())) {
                                             ROS_INFO("Arm planning is done, moving arm up..");
                                             if (moveit_ptr->move()) {
                                                 ROS_INFO("Arm is up");
                                                 ROS_INFO("Done!");
+
                                             }
 
                                         }
@@ -181,6 +183,7 @@ void pick_go_cb(std_msgs::Empty) {
             }
         }
     }
+    moving=false;
 }
 
 
@@ -283,13 +286,32 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
   {
     listener_ptr->transformPose("base_footprint", *point_ptr, object_pose);
 
+    if (!moving) {
+    geometry_msgs::PoseStamped pose_in_map=object_pose;
+    pose_in_map.pose.position.z-=0.05;
+    pose_in_map.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
+    update_table(pose_in_map.pose);
+}
     //printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
   }
   catch (tf::TransformException &ex)
   {
     printf ("Failure %s\n", ex.what()); //Print exception which was caught
   }
-};
+}
+
+void update_table(geometry_msgs::Pose pose) {
+
+
+    moveit_msgs::PlanningScene planning_scene1;
+    attached_object.object.primitive_poses.clear();
+     attached_object.object.primitive_poses.push_back(pose);
+
+    planning_scene1.world.collision_objects.push_back(attached_object.object);
+    planning_scene1.is_diff = true;
+    planning_scene_diff_publisher.publish(planning_scene1);
+   // ROS_INFO("Adding the table object into the world 2.");
+}
 
 
 int main(int argc, char **argv) {
@@ -306,19 +328,13 @@ int main(int argc, char **argv) {
 n.param<std::string>("object_name", object_name, "kinect2_object");
 std::string topic="/detected_objects/"+object_name;
 
-    GripperClient gripperClient("/gripper_controller/gripper_cmd", true);
-    //wait for the gripper action server to come up
-    while (!gripperClient.waitForServer(ros::Duration(5.0))){
-        ROS_INFO("Waiting for the /gripper_controller/gripper_cmd action server to come up");
-    }
-
-    gripperClient_ptr=&gripperClient;
 
 
     ROS_INFO("Waiting for the moveit action server to come up");
     moveit::planning_interface::MoveGroup group("arm");
 
     // moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
+
 
    // group.allowReplanning(true);
     group.setPlanningTime(5.0);
@@ -350,17 +366,50 @@ message_filters::Subscriber<geometry_msgs::PoseStamped> point_sub_;
     pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("pan_tilt_trajectory_controller/command", 2);
 
 
+    planning_scene_diff_publisher = n.advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
+
+    while(planning_scene_diff_publisher.getNumSubscribers() < 1)
+    {
+      ros::WallDuration sleep_t(0.5);
+      sleep_t.sleep();
+    }
+
+    attached_object.link_name = "base_footprint";
+    /* The header must contain a valid TF frame*/
+    attached_object.object.header.frame_id = "base_footprint";
+    /* The id of the object */
+    attached_object.object.id = "table";
+
+
+    /* Define a box to be attached */
+    shape_msgs::SolidPrimitive primitive;
+    primitive.type = primitive.BOX;
+    primitive.dimensions.resize(3);
+    primitive.dimensions[0] = 0.2;
+    primitive.dimensions[1] = 0.5;
+    primitive.dimensions[2] = 0.01;
+
+    attached_object.object.primitives.push_back(primitive);
+
+attached_object.object.operation = attached_object.object.ADD;
+/* A default pose */
+geometry_msgs::Pose pose;
+pose.orientation.w = 1.0;
+pose.position.x=3;
+pose.position.y=0;
+pose.position.z=3;
+update_table(pose);
 
 
 
-    ros::Rate r(50); // 50 hz
+GripperClient gripperClient("/gripper_controller/gripper_cmd", true);
+//wait for the gripper action server to come up
+while ((!gripperClient.waitForServer(ros::Duration(5.0)))&&(ros::ok())){
+    ROS_INFO("Waiting for the /gripper_controller/gripper_cmd action server to come up");
+}
+if (!ros::ok()) return -1;
 
-
-
-    tf::Quaternion q;
-    q.setRPY(0.0, 0, 0);
-
-    ros::Duration(3.0).sleep();
+gripperClient_ptr=&gripperClient;
 
 
     state_validity_callback_fn_ = boost::bind(&isIKSolutionCollisionFree, _1, _2, _3);
@@ -389,7 +438,6 @@ message_filters::Subscriber<geometry_msgs::PoseStamped> point_sub_;
       to construct it for you.*/
     planning_scene::PlanningScenePtr planning_scene(new planning_scene::PlanningScene(robot_model));
     planning_scene_ptr=&planning_scene;
-
 
 
     // std::string robot_name_ = robot_state->getRobotModel()->getName();
