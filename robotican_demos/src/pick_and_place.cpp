@@ -123,9 +123,9 @@ geometry_msgs::PoseStamped move_to_object(){
     tf::Vector3 dest=v*(1-away);
 
     target_pose1.pose.position.x = dest.x();
-    target_pose1.pose.position.y =  dest.y();
+    target_pose1.pose.position.y = dest.y();
     target_pose1.pose.position.z =  v.z();
-    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,-pick_yaw );
+    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw );
 
     return target_pose1;
 
@@ -137,14 +137,14 @@ void pick_go_cb(std_msgs::Empty) {
     ROS_INFO("Openning gripper...");
     if(gripper_cmd(0.14,0.0)) {
         ROS_INFO("Gripper is oppend, planning for pre-grasping..");
-        ros::Duration w2(5);
+        ros::Duration w2(2);
         w2.sleep(); //wait for re-detection
         pick_pose=move_to_object();
         if (arm_cmd(pick_pose)) {
             ROS_INFO("Arm planning is done, moving arm..");
             if(moveit_ptr->move()) {
                 ROS_INFO("Ready to grasp");
-                if(gripper_cmd(0.01,0.2)) {
+                if(gripper_cmd(0.0,0.3)) {
                     ROS_INFO("Grasping is done");
                     ros::Duration w(8);
                     w.sleep(); //wait for attach
@@ -190,14 +190,15 @@ bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
                                const double *ik_solution)
 {
     joint_state->setJointGroupPositions(joint_model_group_, ik_solution);
-    bool result = !(*planning_scene_ptr)->isStateColliding(*joint_state, joint_model_group_->getName());
+    bool result = !(*planning_scene_ptr)->isStateColliding(*joint_state, joint_model_group_->getName(),true);
 
     return result;
 }
 
 bool checkIK(geometry_msgs::PoseStamped pose) {
 
-    bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 5, 0.005, state_validity_callback_fn_);
+   // bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 10,1);
+    bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 10,0.1, state_validity_callback_fn_);
     std::printf("IK %d: [%f , %f , %f] [%f , %f , %f , %f]\n",found_ik,pose.pose.position.x,pose.pose.position.y,pose.pose.position.z,pose.pose.orientation.x,pose.pose.orientation.y,pose.pose.orientation.z,pose.pose.orientation.w);
     return found_ik;
 }
@@ -212,10 +213,10 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
     if (!have_goal) have_goal=true;
 
     moveit::planning_interface::MoveGroup::Plan my_plan;
-    double dz[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-    double dy[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-    double dx[]={0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-    double dY[]={0, 0.04, -0.04 ,0.08, -0.08};
+    double dz[]={0, 0.02, -0.02};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+    double dy[]={0, 0.02, -0.02};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+    double dx[]={0, 0.02, -0.02};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+    double dY[]={0, 0.04, -0.04};//, 0.04, -0.04 ,0.18, -0.18};
     double z=target_pose1.pose.position.z;
     double x=target_pose1.pose.position.x;
     double y=target_pose1.pose.position.y;
@@ -227,7 +228,12 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
                     target_pose1.pose.position.z=z+dz[i];
                     target_pose1.pose.position.x=x+dx[n];
                     target_pose1.pose.position.y=y+dy[m];
+
                     target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw+dY[j] );
+                //     tf::Quaternion q( target_pose1.pose.orientation.x,  target_pose1.pose.orientation.y,  target_pose1.pose.orientation.z, target_pose1.pose.orientation.w);
+              //      double roll, pitch, yaw;
+       //             tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
+//ROS_INFO("%f",yaw*180/M_PI);
 
                     if (checkIK(target_pose1)) {
                         goal_pub.publish(target_pose1);
@@ -277,7 +283,7 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
   {
     listener_ptr->transformPose("base_footprint", *point_ptr, object_pose);
 
-  //  printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
+    //printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
   }
   catch (tf::TransformException &ex)
   {
@@ -314,14 +320,14 @@ std::string topic="/detected_objects/"+object_name;
 
     // moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
 
-    // group.allowReplanning(true);
-    // group.setPlanningTime(5.0);
-    //group.setNumPlanningAttempts(5);
+   // group.allowReplanning(true);
+    group.setPlanningTime(5.0);
+    group.setNumPlanningAttempts(15);
     group.setPlannerId("RRTConnectkConfigDefault");
     //group.setPlannerId("LBKPIECEkConfigDefault");
     //group.setMaxAccelerationScalingFactor(0.1);
    // group.setMaxVelocityScalingFactor(0.1);
-  //  group.setGoalPositionTolerance(0.02);
+    //group.setGoalPositionTolerance(0.05);
     group.setPoseReferenceFrame("base_footprint");
     moveit_ptr=&group;
 
@@ -393,12 +399,12 @@ message_filters::Subscriber<geometry_msgs::PoseStamped> point_sub_;
 
     ROS_INFO("Looking down...");
     look_down();
-   /* if (arm_cmd(lift_arm())) {
+    if (arm_cmd(lift_arm())) {
         ROS_INFO("Arm planning is done, moving arm up..");
         if (moveit_ptr->move()) {
             ROS_INFO("Arm is up");
         }
-    }*/
+    }
 
     ROS_INFO("Ready!");
     while (ros::ok())

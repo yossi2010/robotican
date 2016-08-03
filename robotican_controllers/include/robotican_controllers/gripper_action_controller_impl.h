@@ -345,7 +345,7 @@ ROS_WARN("GRIPPER: MAX EFFORT");
                 pre_alloc_result_->reached_goal = false;
                 pre_alloc_result_->stalled = true;
 
-                rt_active_goal_->setAborted(pre_alloc_result_);
+                rt_active_goal_->setSucceeded(pre_alloc_result_);
 setHoldPosition(ros::Time(0.0));
 return;
 }
