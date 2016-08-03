@@ -8,6 +8,9 @@
 #include <std_msgs/Empty.h>
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
+#include "tf/message_filter.h"
+#include "message_filters/subscriber.h"
+
 #include <actionlib/client/simple_action_client.h>
 #include <control_msgs/GripperCommandAction.h>
 #include <moveit/move_group_interface/move_group.h>
@@ -31,14 +34,17 @@ bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
 planning_scene::PlanningScenePtr *planning_scene_ptr;
 robot_state::RobotStatePtr *robot_state_ptr;
 
+tf::TransformListener *listener_ptr;
+tf::MessageFilter<geometry_msgs::PoseStamped> * tf_filter_;
+
 bool checkIK(geometry_msgs::PoseStamped pose);
 void go(tf::Transform  dest);
 bool gripper_cmd(double gap,double effort);
 bool arm_cmd(geometry_msgs::PoseStamped target_pose1);
 geometry_msgs::PoseStamped move_to_object();
-
-
 geometry_msgs::PoseStamped lift_arm();
+
+geometry_msgs::PoseStamped object_pose;
 
 
 void pick_go_cb(std_msgs::Empty);
@@ -48,10 +54,7 @@ void look_down();
 GripperClient *gripperClient_ptr;
 
 moveit::planning_interface::MoveGroup *moveit_ptr;
-tf::TransformListener *listener_ptr;
-
-tf::StampedTransform base_obj_transform;
-std::string object_frame;
+std::string object_name;
 
 geometry_msgs::PoseStamped pick_pose;
 double pick_yaw=0;
@@ -103,10 +106,13 @@ void look_down() {
 geometry_msgs::PoseStamped move_to_object(){
     geometry_msgs::PoseStamped target_pose1;
 
-    tf::StampedTransform transform_base_obj=base_obj_transform;
 
 
-    tf::Vector3 v= transform_base_obj.getOrigin();
+
+    tf::Vector3 v;
+    v.setX(object_pose.pose.position.x);
+    v.setY(object_pose.pose.position.y);
+    v.setZ(object_pose.pose.position.z);
 
     pick_yaw=atan2(v.y(),v.x());
 
@@ -225,7 +231,7 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
 
                     if (checkIK(target_pose1)) {
                         goal_pub.publish(target_pose1);
-                        moveit_goal=target_pose1;
+
 
                         moveit_ptr->setPoseTarget(target_pose1);
                         bool success = moveit_ptr->plan(my_plan);
@@ -261,6 +267,25 @@ bool gripper_cmd(double gap,double effort) {
 }
 
 
+
+
+//  Callback to register with tf::MessageFilter to be called when transforms are available
+void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr)
+{
+  //geometry_msgs::PoseStamped point_out;
+  try
+  {
+    listener_ptr->transformPose("base_footprint", *point_ptr, object_pose);
+
+  //  printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
+  }
+  catch (tf::TransformException &ex)
+  {
+    printf ("Failure %s\n", ex.what()); //Print exception which was caught
+  }
+};
+
+
 int main(int argc, char **argv) {
 
     ros::init(argc, argv, "pick_and_plce_node");
@@ -272,8 +297,8 @@ int main(int argc, char **argv) {
     ROS_INFO("Hello");
 
     n.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.03);
-    n.param<std::string>("object_frame", object_frame, "object_frame");
-
+n.param<std::string>("object_name", object_name, "kinect2_object");
+std::string topic="/detected_objects/"+object_name;
 
     GripperClient gripperClient("/gripper_controller/gripper_cmd", true);
     //wait for the gripper action server to come up
@@ -300,14 +325,27 @@ int main(int argc, char **argv) {
     group.setPoseReferenceFrame("base_footprint");
     moveit_ptr=&group;
 
+
+    tf::TransformListener listener;
+    listener_ptr=&listener;
+message_filters::Subscriber<geometry_msgs::PoseStamped> point_sub_;
+
+    point_sub_.subscribe(n, topic, 10);
+    tf_filter_ = new tf::MessageFilter<geometry_msgs::PoseStamped>(point_sub_, listener, "base_footprint", 10);
+    tf_filter_->registerCallback( boost::bind(msgCallback, _1) );
+
+
+    // ros::Subscriber object_sub = n.subscribe(topic, 1, object_cb);
+
     ros::Subscriber pick_sub = n.subscribe("pick_go", 1, pick_go_cb);
+
 
     goal_pub=n.advertise<geometry_msgs::PoseStamped>("pick_moveit_goal", 2, true);
     pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("pan_tilt_trajectory_controller/command", 2);
 
 
-    tf::TransformListener listener;
-    listener_ptr=&listener;
+
+
 
     ros::Rate r(50); // 50 hz
 
@@ -355,40 +393,19 @@ int main(int argc, char **argv) {
 
     ROS_INFO("Looking down...");
     look_down();
-    if (arm_cmd(lift_arm())) {
+   /* if (arm_cmd(lift_arm())) {
         ROS_INFO("Arm planning is done, moving arm up..");
         if (moveit_ptr->move()) {
             ROS_INFO("Arm is up");
         }
-    }
+    }*/
 
     ROS_INFO("Ready!");
     while (ros::ok())
     {
 
 
-        try{
-            listener_ptr->lookupTransform("base_footprint", object_frame, ros::Time(0), base_obj_transform);
-        }
-        catch (tf::TransformException ex){
-            ROS_ERROR("PNP NODE: %s",ex.what());
-        }
-        // }
-        if (have_goal) {
-            tf::StampedTransform wr_goal;
-            tf::Quaternion q;
-            tf::quaternionMsgToTF(moveit_goal.pose.orientation,q);
-            wr_goal.setOrigin(tf::Vector3(moveit_goal.pose.position.x,moveit_goal.pose.position.y,moveit_goal.pose.position.z));
-            wr_goal.setRotation((q));
-            wr_goal.stamp_=ros::Time::now();
-            wr_goal.child_frame_id_="moveit_goal";
-            wr_goal.frame_id_="base_footprint";
-            br.sendTransform(wr_goal);
 
-        }
-
-
-        r.sleep();
     }
 
     return 0;

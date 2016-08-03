@@ -280,7 +280,7 @@ int main(int argc, char **argv) {
     bw_image_pub = it_.advertise("bw", 1);
 
     ros::Subscriber pcl_sub = n.subscribe(depth_topic, 1, cloud_cb);
-string topic="detected/"+object_name;
+string topic="/detected_objects/"+object_name;
     object_pub=n.advertise<geometry_msgs::PoseStamped>(topic, 2, true);
 
     if (debug_vision) {

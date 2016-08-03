@@ -400,7 +400,7 @@ public:
 
 
     // Computes the duration of the movement.
-    ros::Duration min_duration(0.01);
+    ros::Duration min_duration(0.1);
 
     if (gh.getGoal()->min_duration > min_duration)
         min_duration = gh.getGoal()->min_duration;

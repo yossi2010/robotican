@@ -35,16 +35,16 @@ goal.pointing_axis.y = 0;
 goal.pointing_axis.z = 0;
 
 //take at least 0.5 seconds to get there
-goal.min_duration = ros::Duration(0.2);
+goal.min_duration = ros::Duration(0.5);
 
-//and go no faster than 1 rad/s
-goal.max_velocity = 1.0;
+//and go no faster than 0.2 rad/s
+goal.max_velocity = 0.2;
 
 //send the goal
 point_head_client->sendGoal(goal);
 
 //wait for it to get there (abort after 2 secs to prevent getting stuck)
-point_head_client->waitForResult(ros::Duration(0.2));
+point_head_client->waitForResult(goal.min_duration );
 
 }
 
@@ -54,7 +54,7 @@ point_head_client->waitForResult(ros::Duration(0.2));
 int main(int argc, char **argv) {
     ros::init(argc, argv, "pan_tilt_object_trackking");
     ros::NodeHandle nh;
-ros::Subscriber obj_sub = nh.subscribe("find_object_node/detected/red_object", 1, callback);
+ros::Subscriber obj_sub = nh.subscribe("/detected_objects/object", 1, callback);
 
 //Initialize the client for the Action interface to the head controller
 point_head_client = new PointHeadClient("/pan_tilt_trajectory_controller/point_head_action", true);
