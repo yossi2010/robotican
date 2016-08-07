@@ -574,6 +574,7 @@ bool DynamixelProController::onToggleTorque(std_srvs::Empty::Request &req,
                                             std_srvs::EmptyResponse &) {
 
     if(_toggleTorque) {
+        ROS_INFO("[%s]: Torque off", ros::this_node::getName().c_str());
         for (map<string, dynamixel_info>::iterator iter = joint2dynamixel.begin();
              iter != joint2dynamixel.end(); iter++) {
             driver->setTorqueEnabled(iter->second.id, 0);
@@ -581,6 +582,7 @@ bool DynamixelProController::onToggleTorque(std_srvs::Empty::Request &req,
         _toggleTorque = false;
     }
     else {
+        ROS_INFO("[%s]: Torque on", ros::this_node::getName().c_str());
         for (map<string, dynamixel_info>::iterator iter = joint2dynamixel.begin();
              iter != joint2dynamixel.end(); iter++) {
             driver->setTorqueEnabled(iter->second.id, 1);
