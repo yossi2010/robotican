@@ -39,6 +39,7 @@
 #include <map>
 
 #include <ros/ros.h>
+#include <std_srvs/Empty.h>
 #include <sensor_msgs/JointState.h>
 #include <robotican_hardware_interface/ChainEnable.h>
 #include <robotican_hardware_interface/ChainLimits.h>
@@ -151,12 +152,13 @@ private:
 
     int32_t posToTicks(double rads, const dynamixel_info& info) const;
     double posToRads(int32_t ticks, const dynamixel_info& info) const;
+    bool onToggleTorque(std_srvs::Empty::Request &req, std_srvs::EmptyResponse &res);
 
     ros::NodeHandle *nh;
     dynamixel_pro_driver::DynamixelProDriver *driver;
     double publish_rate;
     bool publish_velocities;
-
+    bool _toggleTorque;
     volatile bool shutting_down;
 
     std::map<std::string, dynamixel_info> joint2dynamixel;
@@ -167,6 +169,7 @@ private:
     ros::Subscriber jointStateSubscriber;
     ros::Subscriber chainEnableSubscriber;
     ros::Subscriber chainLimitsSubscriber;
+    ros::ServiceServer _toggleTorqueService;
     ros::Timer broadcastTimer;
     ros::Time _time;
     std::map<std::string, JointInfo_t> _jointsInfo;
