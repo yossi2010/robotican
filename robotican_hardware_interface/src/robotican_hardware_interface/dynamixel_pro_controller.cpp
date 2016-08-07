@@ -598,21 +598,3 @@ bool DynamixelProController::onToggleTorque(std_srvs::Empty::Request &req,
     return true;
 }
 
-//int main(int argc, char **argv)
-//{
-//    ros::init(argc, argv, "dynamixel_pro_controller");
-//    DynamixelProController controller;
-//    controller.startBroadcastingJointStates();
-//    controller_manager::ControllerManager controllerManager(&controller);
-//    ros::AsyncSpinner spinner(2);
-//    spinner.start();
-//    ros::Rate rate(50);
-//    while(ros::ok()) {
-//        controller.read();
-//        controllerManager.update(controller.getTime(), controller.getPeriod());
-//        controller.write();
-//        rate.sleep();
-//    }
-//
-//ros::spin(); //use a single threaded spinner as I'm pretty sure this code isn't thread safe.
-//}
