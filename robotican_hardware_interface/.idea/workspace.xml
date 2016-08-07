@@ -126,9 +126,12 @@
       <file leaf-file-name="dynamixel_pro_controller.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/dynamixel_pro_controller.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="576" column="72" selection-start-line="576" selection-start-column="72" selection-end-line="576" selection-end-column="72" />
-              <folding />
+            <state relative-caret-position="311">
+              <caret line="277" column="15" selection-start-line="277" selection-start-column="15" selection-end-line="277" selection-end-column="15" />
+              <folding>
+                <element signature="e#18712#20086#0" expanded="false" />
+                <element signature="e#20088#20168#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -908,12 +911,12 @@
       <workItem from="1470316928485" duration="21000" />
       <workItem from="1470318043475" duration="132000" />
       <workItem from="1470546291551" duration="319000" />
-      <workItem from="1470549027938" duration="2113000" />
+      <workItem from="1470549027938" duration="2617000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35205000" />
+    <option name="totallyTimeSpent" value="35709000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -930,7 +933,7 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2264151" sideWeight="0.4946401" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295099" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14271152" sideWeight="0.49649596" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14271152" sideWeight="0.49649596" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2130479" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14852493" sideWeight="0.50350404" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295099" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -981,7 +984,14 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="131" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/robotican_hardware_interface/dynamixel_pro_controller.cpp</url>
+          <line>522</line>
+          <option name="timeStamp" value="131" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="132" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1336,9 +1346,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/dynamixel_pro_controller.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="576" column="72" selection-start-line="576" selection-start-column="72" selection-end-line="576" selection-end-column="72" />
-          <folding />
+        <state relative-caret-position="311">
+          <caret line="277" column="15" selection-start-line="277" selection-start-column="15" selection-end-line="277" selection-end-column="15" />
+          <folding>
+            <element signature="e#18712#20086#0" expanded="false" />
+            <element signature="e#20088#20168#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -274,6 +274,9 @@ void DynamixelProController::jointStateCallback(sensor_msgs::JointState &msg)
     if (shutting_down)
         return;
 
+    if(!_toggleTorque)
+        return;
+
     bool has_pos = false, has_vel = false, has_torque = false;
     control_mode new_mode = UNKOWN;
 
