@@ -50,7 +50,8 @@
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/posvel_command_interface.h>
-
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/lock_guard.hpp>
 
 namespace dynamixel_pro_controller
 {
@@ -159,6 +160,7 @@ private:
     double publish_rate;
     bool publish_velocities;
     bool _toggleTorque;
+    boost::mutex _lock;
     volatile bool shutting_down;
 
     std::map<std::string, dynamixel_info> joint2dynamixel;

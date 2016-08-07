@@ -246,7 +246,6 @@ DynamixelProController::DynamixelProController(hardware_interface::JointStateInt
     _toggleTorque = true;
 
 
-
 }
 
 DynamixelProController::~DynamixelProController()
@@ -271,6 +270,7 @@ void DynamixelProController::startBroadcastingJointStates()
 
 void DynamixelProController::jointStateCallback(sensor_msgs::JointState &msg)
 {
+    boost::lock_guard<boost::mutex> scopeLook(_lock);
     if (shutting_down)
         return;
 
@@ -575,7 +575,7 @@ double DynamixelProController::posToRads(int32_t ticks, const dynamixel_info& in
 
 bool DynamixelProController::onToggleTorque(std_srvs::Empty::Request &req,
                                             std_srvs::EmptyResponse &) {
-
+    boost::lock_guard<boost::mutex> scopeLook(_lock);
     if(_toggleTorque) {
         ROS_INFO("[%s]: Torque off", ros::this_node::getName().c_str());
         for (map<string, dynamixel_info>::iterator iter = joint2dynamixel.begin();
