@@ -338,8 +338,8 @@ int main(int argc, char **argv) {
 
 
     // group.allowReplanning(true);
-    group.setPlanningTime(5.0);
-    group.setNumPlanningAttempts(15);
+    group.setPlanningTime(10.0);
+    group.setNumPlanningAttempts(150);
     group.setPlannerId("RRTConnectkConfigDefault");
     //group.setPlannerId("LBKPIECEkConfigDefault");
     //group.setMaxAccelerationScalingFactor(0.1);
