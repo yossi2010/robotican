@@ -238,7 +238,7 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
                     //             tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
 //ROS_INFO("%f",yaw*180/M_PI);
 
-                    if (checkIK(target_pose1)) {
+//                    if (checkIK(target_pose1)) {
                         goal_pub.publish(target_pose1);
 
 
@@ -246,7 +246,7 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
                         bool success = moveit_ptr->plan(my_plan);
                         ROS_INFO("Moveit plan %s",success?"SUCCESS":"FAILED");
                         if (success) return true;
-                    }
+//                    }
                 }
             }
         }
