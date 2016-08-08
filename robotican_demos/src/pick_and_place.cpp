@@ -193,7 +193,7 @@ bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
                                const double *ik_solution)
 {
     joint_state->setJointGroupPositions(joint_model_group_, ik_solution);
-    bool result = !(*planning_scene_ptr)->isStateColliding(*joint_state, joint_model_group_->getName(),true);
+    bool result = !(*planning_scene_ptr)->isStateColliding(*joint_state, joint_model_group_->getName(),false);
 
     return result;
 }
@@ -201,7 +201,7 @@ bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
 bool checkIK(geometry_msgs::PoseStamped pose) {
 
    // bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 10,1);
-    bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 10,0.1, state_validity_callback_fn_);
+    bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 3000,120.1, state_validity_callback_fn_);
     std::printf("IK %d: [%f , %f , %f] [%f , %f , %f , %f]\n",found_ik,pose.pose.position.x,pose.pose.position.y,pose.pose.position.z,pose.pose.orientation.x,pose.pose.orientation.y,pose.pose.orientation.z,pose.pose.orientation.w);
     return found_ik;
 }
@@ -290,7 +290,7 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
     geometry_msgs::PoseStamped pose_in_map=object_pose;
     pose_in_map.pose.position.z-=0.05;
     pose_in_map.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
-    update_table(pose_in_map.pose);
+    //update_table(pose_in_map.pose);
 }
     //printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
   }
@@ -398,7 +398,7 @@ pose.orientation.w = 1.0;
 pose.position.x=3;
 pose.position.y=0;
 pose.position.z=3;
-update_table(pose);
+//update_table(pose);
 
 
 
