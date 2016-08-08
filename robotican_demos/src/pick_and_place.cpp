@@ -200,7 +200,7 @@ bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
 
 bool checkIK(geometry_msgs::PoseStamped pose) {
 
-   // bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 10,1);
+    // bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 10,1);
     bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 3000,120.1, state_validity_callback_fn_);
     std::printf("IK %d: [%f , %f , %f] [%f , %f , %f , %f]\n",found_ik,pose.pose.position.x,pose.pose.position.y,pose.pose.position.z,pose.pose.orientation.x,pose.pose.orientation.y,pose.pose.orientation.z,pose.pose.orientation.w);
     return found_ik;
@@ -233,9 +233,9 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
                     target_pose1.pose.position.y=y+dy[m];
 
                     target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw+dY[j] );
-                //     tf::Quaternion q( target_pose1.pose.orientation.x,  target_pose1.pose.orientation.y,  target_pose1.pose.orientation.z, target_pose1.pose.orientation.w);
-              //      double roll, pitch, yaw;
-       //             tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
+                    //     tf::Quaternion q( target_pose1.pose.orientation.x,  target_pose1.pose.orientation.y,  target_pose1.pose.orientation.z, target_pose1.pose.orientation.w);
+                    //      double roll, pitch, yaw;
+                    //             tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
 //ROS_INFO("%f",yaw*180/M_PI);
 
                     if (checkIK(target_pose1)) {
@@ -251,6 +251,7 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
             }
         }
     }
+    ROS_INFO("FAILED to find plan");
     return false;
 }
 
@@ -281,23 +282,23 @@ bool gripper_cmd(double gap,double effort) {
 //  Callback to register with tf::MessageFilter to be called when transforms are available
 void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr)
 {
-  //geometry_msgs::PoseStamped point_out;
-  try
-  {
-    listener_ptr->transformPose("base_footprint", *point_ptr, object_pose);
+    //geometry_msgs::PoseStamped point_out;
+    try
+    {
+        listener_ptr->transformPose("base_footprint", *point_ptr, object_pose);
 
-    if (!moving) {
-    geometry_msgs::PoseStamped pose_in_map=object_pose;
-    pose_in_map.pose.position.z-=0.05;
-    pose_in_map.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
-    //update_table(pose_in_map.pose);
-}
-    //printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
-  }
-  catch (tf::TransformException &ex)
-  {
-    printf ("Failure %s\n", ex.what()); //Print exception which was caught
-  }
+        if (!moving) {
+            geometry_msgs::PoseStamped pose_in_map=object_pose;
+            pose_in_map.pose.position.z-=0.05;
+            pose_in_map.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
+            //update_table(pose_in_map.pose);
+        }
+        //printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
+    }
+    catch (tf::TransformException &ex)
+    {
+        printf ("Failure %s\n", ex.what()); //Print exception which was caught
+    }
 }
 
 void update_table(geometry_msgs::Pose pose) {
@@ -305,12 +306,12 @@ void update_table(geometry_msgs::Pose pose) {
 
     moveit_msgs::PlanningScene planning_scene1;
     attached_object.object.primitive_poses.clear();
-     attached_object.object.primitive_poses.push_back(pose);
+    attached_object.object.primitive_poses.push_back(pose);
 
     planning_scene1.world.collision_objects.push_back(attached_object.object);
     planning_scene1.is_diff = true;
     planning_scene_diff_publisher.publish(planning_scene1);
-   // ROS_INFO("Adding the table object into the world 2.");
+    // ROS_INFO("Adding the table object into the world 2.");
 }
 
 
@@ -325,8 +326,8 @@ int main(int argc, char **argv) {
     ROS_INFO("Hello");
 
     n.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.03);
-n.param<std::string>("object_name", object_name, "kinect2_object");
-std::string topic="/detected_objects/"+object_name;
+    n.param<std::string>("object_name", object_name, "kinect2_object");
+    std::string topic="/detected_objects/"+object_name;
 
 
 
@@ -336,13 +337,13 @@ std::string topic="/detected_objects/"+object_name;
     // moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
 
 
-   // group.allowReplanning(true);
+    // group.allowReplanning(true);
     group.setPlanningTime(5.0);
     group.setNumPlanningAttempts(15);
     group.setPlannerId("RRTConnectkConfigDefault");
     //group.setPlannerId("LBKPIECEkConfigDefault");
     //group.setMaxAccelerationScalingFactor(0.1);
-   // group.setMaxVelocityScalingFactor(0.1);
+    // group.setMaxVelocityScalingFactor(0.1);
     //group.setGoalPositionTolerance(0.05);
     group.setPoseReferenceFrame("base_footprint");
     moveit_ptr=&group;
@@ -350,7 +351,7 @@ std::string topic="/detected_objects/"+object_name;
 
     tf::TransformListener listener;
     listener_ptr=&listener;
-message_filters::Subscriber<geometry_msgs::PoseStamped> point_sub_;
+    message_filters::Subscriber<geometry_msgs::PoseStamped> point_sub_;
 
     point_sub_.subscribe(n, topic, 10);
     tf_filter_ = new tf::MessageFilter<geometry_msgs::PoseStamped>(point_sub_, listener, "base_footprint", 10);
@@ -370,8 +371,8 @@ message_filters::Subscriber<geometry_msgs::PoseStamped> point_sub_;
 
     while(planning_scene_diff_publisher.getNumSubscribers() < 1)
     {
-      ros::WallDuration sleep_t(0.5);
-      sleep_t.sleep();
+        ros::WallDuration sleep_t(0.5);
+        sleep_t.sleep();
     }
 
     attached_object.link_name = "base_footprint";
@@ -391,25 +392,25 @@ message_filters::Subscriber<geometry_msgs::PoseStamped> point_sub_;
 
     attached_object.object.primitives.push_back(primitive);
 
-attached_object.object.operation = attached_object.object.ADD;
+    attached_object.object.operation = attached_object.object.ADD;
 /* A default pose */
-geometry_msgs::Pose pose;
-pose.orientation.w = 1.0;
-pose.position.x=3;
-pose.position.y=0;
-pose.position.z=3;
+    geometry_msgs::Pose pose;
+    pose.orientation.w = 1.0;
+    pose.position.x=3;
+    pose.position.y=0;
+    pose.position.z=3;
 //update_table(pose);
 
 
 
-GripperClient gripperClient("/gripper_controller/gripper_cmd", true);
+    GripperClient gripperClient("/gripper_controller/gripper_cmd", true);
 //wait for the gripper action server to come up
-while ((!gripperClient.waitForServer(ros::Duration(5.0)))&&(ros::ok())){
-    ROS_INFO("Waiting for the /gripper_controller/gripper_cmd action server to come up");
-}
-if (!ros::ok()) return -1;
+    while ((!gripperClient.waitForServer(ros::Duration(5.0)))&&(ros::ok())){
+        ROS_INFO("Waiting for the /gripper_controller/gripper_cmd action server to come up");
+    }
+    if (!ros::ok()) return -1;
 
-gripperClient_ptr=&gripperClient;
+    gripperClient_ptr=&gripperClient;
 
 
     state_validity_callback_fn_ = boost::bind(&isIKSolutionCollisionFree, _1, _2, _3);
