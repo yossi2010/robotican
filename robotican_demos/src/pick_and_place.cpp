@@ -201,7 +201,7 @@ bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
 bool checkIK(geometry_msgs::PoseStamped pose) {
 
     // bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 10,1);
-    bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 3000,120.1, state_validity_callback_fn_);
+    bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 10,3.1, state_validity_callback_fn_);
     std::printf("IK %d: [%f , %f , %f] [%f , %f , %f , %f]\n",found_ik,pose.pose.position.x,pose.pose.position.y,pose.pose.position.z,pose.pose.orientation.x,pose.pose.orientation.y,pose.pose.orientation.z,pose.pose.orientation.w);
     return found_ik;
 }
@@ -292,6 +292,9 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
             pose_in_map.pose.position.z-=0.05;
             pose_in_map.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
             //update_table(pose_in_map.pose);
+
+            bool ik=checkIK(object_pose);
+
         }
         //printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
     }
