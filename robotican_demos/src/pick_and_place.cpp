@@ -216,10 +216,10 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
     if (!have_goal) have_goal=true;
 
     moveit::planning_interface::MoveGroup::Plan my_plan;
-    double dz[]={0, 0.02, -0.02};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-    double dy[]={0, 0.02, -0.02};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-    double dx[]={0, 0.02, -0.02};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-    double dY[]={0, 0.04, -0.04};//, 0.04, -0.04 ,0.18, -0.18};
+    double dz[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+    double dy[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+    double dx[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+    double dY[]={0, 0.05, -0.05};//, 0.04, -0.04 ,0.18, -0.18};
     double z=target_pose1.pose.position.z;
     double x=target_pose1.pose.position.x;
     double y=target_pose1.pose.position.y;
