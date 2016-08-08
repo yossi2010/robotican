@@ -239,13 +239,13 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
 //ROS_INFO("%f",yaw*180/M_PI);
 
 //                    if (checkIK(target_pose1)) {
-                        goal_pub.publish(target_pose1);
+                    goal_pub.publish(target_pose1);
 
 
-                        moveit_ptr->setPoseTarget(target_pose1);
-                        bool success = moveit_ptr->plan(my_plan);
-                        ROS_INFO("Moveit plan %s",success?"SUCCESS":"FAILED");
-                        if (success) return true;
+                    moveit_ptr->setPoseTarget(target_pose1);
+                    bool success = moveit_ptr->plan(my_plan);
+                    ROS_INFO("Moveit plan %s",success?"SUCCESS":"FAILED");
+                    if (success) return true;
 //                    }
                 }
             }
@@ -292,6 +292,10 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
             pose_in_map.pose.position.z-=0.05;
             pose_in_map.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
             //update_table(pose_in_map.pose);
+            tf::Quaternion q( object_pose.pose.orientation.x,  object_pose.pose.orientation.y,  object_pose.pose.orientation.z, object_pose.pose.orientation.w);
+            double roll, pitch, yaw;
+            tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
+            ROS_INFO("%f  %f  %f",roll*180/M_PI,pitch*180/M_PI,yaw*180/M_PI);
 
             bool ik=checkIK(object_pose);
 
