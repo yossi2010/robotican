@@ -116,7 +116,7 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
 
         geometry_msgs::PoseStamped target_pose2;
-        target_pose2.header.frame_id=input->header.frame_id;
+        target_pose2.header.frame_id="kinect2_depth_optical_frame";//input->header.frame_id;
         target_pose2.header.stamp=ros::Time::now();
         target_pose2.pose.position.x =obj.x;
         target_pose2.pose.position.y = obj.y;

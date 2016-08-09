@@ -118,7 +118,7 @@ geometry_msgs::PoseStamped move_to_object(){
     v.setY(object_pose.pose.position.y);
     v.setZ(object_pose.pose.position.z);
 
-    pick_yaw=atan2(v.y(),v.x());
+    pick_yaw=0;//atan2(v.y(),v.x());
 
     target_pose1.header.frame_id="base_footprint";
     target_pose1.header.stamp=ros::Time::now();
@@ -126,8 +126,8 @@ geometry_msgs::PoseStamped move_to_object(){
     float away=wrist_distance_from_object/sqrt(v.x()*v.x()+v.y()*v.y());
     tf::Vector3 dest=v*(1-away);
 
-    target_pose1.pose.position.x = dest.x();
-    target_pose1.pose.position.y = dest.y();
+    target_pose1.pose.position.x = v.x();
+    target_pose1.pose.position.y = v.y();
     target_pose1.pose.position.z =  v.z();
     target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw );
 
@@ -238,7 +238,7 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
                     //             tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
 //ROS_INFO("%f",yaw*180/M_PI);
 
-//                    if (checkIK(target_pose1)) {
+                   if (checkIK(target_pose1)) {
                     goal_pub.publish(target_pose1);
 
 
@@ -246,7 +246,7 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
                     bool success = moveit_ptr->plan(my_plan);
                     ROS_INFO("Moveit plan %s",success?"SUCCESS":"FAILED");
                     if (success) return true;
-//                    }
+                    }
                 }
             }
         }
@@ -291,13 +291,13 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
             geometry_msgs::PoseStamped pose_in_map=object_pose;
             pose_in_map.pose.position.z-=0.05;
             pose_in_map.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
-            //update_table(pose_in_map.pose);
-            tf::Quaternion q( object_pose.pose.orientation.x,  object_pose.pose.orientation.y,  object_pose.pose.orientation.z, object_pose.pose.orientation.w);
-            double roll, pitch, yaw;
-            tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
-            ROS_INFO("%f  %f  %f",roll*180/M_PI,pitch*180/M_PI,yaw*180/M_PI);
+            update_table(pose_in_map.pose);
+           // tf::Quaternion q( pose_in_map.pose.orientation.x,  pose_in_map.pose.orientation.y,  pose_in_map.pose.orientation.z, pose_in_map.pose.orientation.w);
+           // double roll, pitch, yaw;
+            //tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
+           // ROS_INFO("%f  %f  %f",roll*180/M_PI,pitch*180/M_PI,yaw*180/M_PI);
 
-            bool ik=checkIK(object_pose);
+            bool ik=checkIK(pose_in_map);
 
         }
         //printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
@@ -326,7 +326,7 @@ int main(int argc, char **argv) {
 
     ros::init(argc, argv, "pick_and_plce_node");
     ros::AsyncSpinner spinner(2);
-    spinner.start();
+
     ros::NodeHandle n;
 
     tf::TransformBroadcaster br;
@@ -346,9 +346,9 @@ int main(int argc, char **argv) {
 
     // group.allowReplanning(true);
     group.setPlanningTime(10.0);
-    group.setNumPlanningAttempts(150);
+    group.setNumPlanningAttempts(300);
     group.setPlannerId("RRTConnectkConfigDefault");
-    //group.setPlannerId("LBKPIECEkConfigDefault");
+   // group.setPlannerId("LBKPIECEkConfigDefault");
     //group.setMaxAccelerationScalingFactor(0.1);
     // group.setMaxVelocityScalingFactor(0.1);
     //group.setGoalPositionTolerance(0.05);
@@ -406,7 +406,7 @@ int main(int argc, char **argv) {
     pose.position.x=3;
     pose.position.y=0;
     pose.position.z=3;
-//update_table(pose);
+update_table(pose);
 
 
 
@@ -452,7 +452,7 @@ int main(int argc, char **argv) {
     std::string frame_id_ =  robot_state->getRobotModel()->getModelFrame();
 
     ROS_INFO_STREAM("Root frame ID: " << frame_id_);
-
+spinner.start();
     ROS_INFO("Looking down...");
     look_down();
     if (arm_cmd(lift_arm())) {
