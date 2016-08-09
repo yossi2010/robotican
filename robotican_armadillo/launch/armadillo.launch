@@ -16,6 +16,7 @@
   <arg name="joystick" default='false'/>
   <arg name="joystick_dev" default='/dev/input/js0'/>
   <arg name="twist_mux" default='true'/>
+  <arg name="gmapping" default='false'/>
   
 
   <arg name="gazebo" default='false'/>
@@ -230,7 +231,7 @@
 		 </include>
 	</group>
 
-    <group if="$(arg gmapping_slam)">
+    <group if="$(arg gmapping)">
       <include file="$(find robotican_common)/launch/gmapping_slam.launch"/>
       </group>
       
@@ -265,9 +266,12 @@
 		<node pkg="rqt_gui" type="rqt_gui" name="rqt_gui" output="screen" respawn="false">
       </node>
 	</group>
+	
 	<group unless="$(arg amcl)">
 		<group unless="$(arg hector_slam)">
-			<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /odom 20" />
+			<group unless="$(arg gmapping)">
+				<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /odom 20" />
+			</group>
 		</group>
 	</group>
 </launch>
