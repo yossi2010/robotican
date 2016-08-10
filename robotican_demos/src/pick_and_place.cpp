@@ -354,7 +354,7 @@ planning_scene_interface_ptr=&planning_scene_interface;
 
     // group.allowReplanning(true);
     group.setPlanningTime(15.0);
-    group.setNumPlanningAttempts(30);
+    group.setNumPlanningAttempts(3000);
     group.setPlannerId("RRTConnectkConfigDefault");
    // group.setPlannerId("RRTstarkConfigDefault");
 
