@@ -18,12 +18,12 @@ using namespace cv;
 
 bool debug_vision=false;
 
-bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud,Point3d *obj);
+bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud,Point3d *obj,std::string frame);
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input);
 void dynamicParamCallback(robotican_common::FindObjectDynParamConfig &config, uint32_t level);
 
 
-double object_extra_depth=0;
+
 std::string object_name;
 
 
@@ -106,7 +106,7 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
 
     Point3d obj;
-    have_object= find_object(result,cloudp,&obj);
+    have_object= find_object(result,cloudp,&obj,input->header.frame_id);
 
     waitKey(1);
 
@@ -116,11 +116,11 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
 
         geometry_msgs::PoseStamped target_pose2;
-        target_pose2.header.frame_id="kinect2_depth_optical_frame";//input->header.frame_id;
+        target_pose2.header.frame_id=input->header.frame_id;
         target_pose2.header.stamp=ros::Time::now();
         target_pose2.pose.position.x =obj.x;
         target_pose2.pose.position.y = obj.y;
-        target_pose2.pose.position.z = obj.z+object_extra_depth;
+        target_pose2.pose.position.z = obj.z;
        //  std::printf("---------> OBJECT: [%f , %f , %f]\n",target_pose2.pose.position.x,target_pose2.pose.position.y,target_pose2.pose.position.z);
        target_pose2.pose.orientation.w=1;
         object_pub.publish(target_pose2);
@@ -129,13 +129,13 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
 }
 
-bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudp,Point3d *pr) {
+bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudp,Point3d *pr,std::string frame) {
 
     Mat hsv,filtered,bw,mask;
 
     cv_bridge::CvImage out_msg;
     out_msg.header.stamp=ros::Time::now();
-    out_msg.header.frame_id="kinect2_depth_optical_frame";
+    out_msg.header.frame_id=  frame;
 
     cvtColor(input,hsv,CV_BGR2HSV);
 
@@ -264,7 +264,6 @@ int main(int argc, char **argv) {
 
 
     n.param<std::string>("object_name", object_name, "object");
-    n.param<double>("object_extra_depth", object_extra_depth, 0.03);
     n.param<std::string>("depth_topic", depth_topic, "/kinect2/qhd/points");
 
     dynamic_reconfigure::Server<robotican_common::FindObjectDynParamConfig> dynamicServer;

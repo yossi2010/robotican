@@ -30,8 +30,10 @@
 </group>
 
 
-<node name="pick__and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true"/> 
-  
+<node name="pick_and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true"> 
+   <param name="~object_name" value="kinect2_object"/>
+    <param name="~wrist_distance_from_object" value="0.02"/>
+  </node>
   
     <node name="find_object_node_kinect2" pkg="robotican_common" type="find_objects_node" output="screen">
     <param name="~object_extra_depth" value="0.03"/>
@@ -46,7 +48,7 @@
   </node>
   -->
   <node name="object_view" pkg="rqt_image_view" type="rqt_image_view" >
-    <remap from="image" to="demo_pick_node/result" />
+    <remap from="image" to="find_object_node_kinect2/result" />
   </node>
   
 </launch>

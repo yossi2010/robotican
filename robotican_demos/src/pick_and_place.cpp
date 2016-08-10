@@ -239,7 +239,7 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
 //ROS_INFO("%f",yaw*180/M_PI);
 
                    if (checkIK(target_pose1)) {
-                    goal_pub.publish(target_pose1);
+                  //  goal_pub.publish(target_pose1);
 
 
                     moveit_ptr->setPoseTarget(target_pose1);
@@ -286,18 +286,17 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
     try
     {
         listener_ptr->transformPose("base_footprint", *point_ptr, object_pose);
-
+        object_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
         if (!moving) {
-            geometry_msgs::PoseStamped pose_in_map=object_pose;
-            pose_in_map.pose.position.z-=0.05;
-            pose_in_map.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
-            update_table(pose_in_map.pose);
+            geometry_msgs::PoseStamped table=object_pose;
+            table.pose.position.z-=0.05;
+            update_table(table.pose);
            // tf::Quaternion q( pose_in_map.pose.orientation.x,  pose_in_map.pose.orientation.y,  pose_in_map.pose.orientation.z, pose_in_map.pose.orientation.w);
            // double roll, pitch, yaw;
             //tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
            // ROS_INFO("%f  %f  %f",roll*180/M_PI,pitch*180/M_PI,yaw*180/M_PI);
-
-            bool ik=checkIK(pose_in_map);
+            goal_pub.publish(object_pose);
+            bool ik=checkIK(object_pose);
 
         }
         //printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
@@ -327,13 +326,14 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "pick_and_plce_node");
     ros::AsyncSpinner spinner(2);
 
+    ros::NodeHandle pn("~");
     ros::NodeHandle n;
 
-    tf::TransformBroadcaster br;
+   // tf::TransformBroadcaster br;
     ROS_INFO("Hello");
 
-    n.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.03);
-    n.param<std::string>("object_name", object_name, "kinect2_object");
+    pn.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.03);
+    pn.param<std::string>("object_name", object_name, "object");
     std::string topic="/detected_objects/"+object_name;
 
 
@@ -345,10 +345,11 @@ int main(int argc, char **argv) {
 
 
     // group.allowReplanning(true);
-    group.setPlanningTime(10.0);
-    group.setNumPlanningAttempts(300);
-    group.setPlannerId("RRTConnectkConfigDefault");
-   // group.setPlannerId("LBKPIECEkConfigDefault");
+    group.setPlanningTime(15.0);
+    group.setNumPlanningAttempts(30);
+    //group.setPlannerId("RRTConnectkConfigDefault");
+
+    group.setPlannerId("RRTstarkConfigDefault");
     //group.setMaxAccelerationScalingFactor(0.1);
     // group.setMaxVelocityScalingFactor(0.1);
     //group.setGoalPositionTolerance(0.05);
@@ -371,7 +372,7 @@ int main(int argc, char **argv) {
 
 
     goal_pub=n.advertise<geometry_msgs::PoseStamped>("pick_moveit_goal", 2, true);
-    pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("pan_tilt_trajectory_controller/command", 2);
+    pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("/pan_tilt_trajectory_controller/command", 2);
 
 
     planning_scene_diff_publisher = n.advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
