@@ -207,7 +207,7 @@ bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
 bool checkIK(geometry_msgs::PoseStamped pose) {
 
     // bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 10,1);
-    bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 10,3.1, state_validity_callback_fn_);
+    bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 3,3.0, state_validity_callback_fn_);
     std::printf("IK %d: [%f , %f , %f] [%f , %f , %f , %f]\n",found_ik,pose.pose.position.x,pose.pose.position.y,pose.pose.position.z,pose.pose.orientation.x,pose.pose.orientation.y,pose.pose.orientation.z,pose.pose.orientation.w);
     return found_ik;
 }
@@ -354,7 +354,7 @@ planning_scene_interface_ptr=&planning_scene_interface;
 
     // group.allowReplanning(true);
     group.setPlanningTime(15.0);
-    group.setNumPlanningAttempts(300);
+    group.setNumPlanningAttempts(10);
     group.setPlannerId("RRTConnectkConfigDefault");
    // group.setPlannerId("RRTstarkConfigDefault");
 
