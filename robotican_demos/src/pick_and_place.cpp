@@ -21,6 +21,7 @@
 #include <moveit/kinematics_metrics/kinematics_metrics.h>
 #include <moveit_msgs/WorkspaceParameters.h>
 #include <moveit/planning_scene/planning_scene.h>
+#include <moveit_msgs/CollisionObject.h>
 
 
 typedef actionlib::SimpleActionClient<control_msgs::GripperCommandAction> GripperClient;
@@ -38,14 +39,14 @@ robot_state::RobotStatePtr *robot_state_ptr;
 tf::TransformListener *listener_ptr;
 tf::MessageFilter<geometry_msgs::PoseStamped> * tf_filter_;
 
-moveit_msgs::AttachedCollisionObject attached_object;
+moveit_msgs::CollisionObject collision_object;
 
 void update_table(geometry_msgs::Pose pose);
 bool checkIK(geometry_msgs::PoseStamped pose);
 void go(tf::Transform  dest);
 bool gripper_cmd(double gap,double effort);
 bool arm_cmd(geometry_msgs::PoseStamped target_pose1);
-geometry_msgs::PoseStamped move_to_object();
+geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object);
 geometry_msgs::PoseStamped lift_arm();
 
 geometry_msgs::PoseStamped object_pose;
@@ -67,7 +68,7 @@ bool moving=false;
 
 
 
-ros::Publisher planning_scene_diff_publisher;
+ros::Publisher collision_publisher;
 ros::Publisher goal_pub;
 ros::Publisher pub_controller_command;
 
@@ -107,31 +108,31 @@ void look_down() {
 }
 
 
-geometry_msgs::PoseStamped move_to_object(){
-    geometry_msgs::PoseStamped target_pose1;
 
 
+geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
+    geometry_msgs::PoseStamped target_pose;
 
 
     tf::Vector3 v;
-    v.setX(object_pose.pose.position.x);
-    v.setY(object_pose.pose.position.y);
-    v.setZ(object_pose.pose.position.z);
+    v.setX(object.pose.position.x);
+    v.setY(object.pose.position.y);
+    v.setZ(object.pose.position.z);
 
-    pick_yaw=0;//atan2(v.y(),v.x());
+    pick_yaw=atan2(v.y(),v.x());
 
-    target_pose1.header.frame_id="base_footprint";
-    target_pose1.header.stamp=ros::Time::now();
+    target_pose.header.frame_id=object.header.frame_id;
+    target_pose.header.stamp=ros::Time::now();
 
     float away=wrist_distance_from_object/sqrt(v.x()*v.x()+v.y()*v.y());
     tf::Vector3 dest=v*(1-away);
 
-    target_pose1.pose.position.x = v.x();
-    target_pose1.pose.position.y = v.y();
-    target_pose1.pose.position.z =  v.z();
-    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw );
+    target_pose.pose.position.x = dest.x();
+    target_pose.pose.position.y = dest.y();
+    target_pose.pose.position.z =  v.z();
+    target_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw );
 
-    return target_pose1;
+    return target_pose;
 
 }
 
@@ -142,7 +143,7 @@ void pick_go_cb(std_msgs::Empty) {
     if(gripper_cmd(0.14,0.0)) {
         ROS_INFO("Gripper is oppend, planning for pre-grasping..");
         ros::Duration(2).sleep();//wait for re-detection
-        pick_pose=move_to_object();
+        pick_pose=pre_grasp_pose(object_pose);
         if (arm_cmd(pick_pose)) {
             ROS_INFO("Arm planning is done, moving arm..");
             if(moveit_ptr->move()) {
@@ -239,10 +240,11 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
 //ROS_INFO("%f",yaw*180/M_PI);
 
                    if (checkIK(target_pose1)) {
-                  //  goal_pub.publish(target_pose1);
+                    goal_pub.publish(target_pose1);
 
 
                     moveit_ptr->setPoseTarget(target_pose1);
+
                     bool success = moveit_ptr->plan(my_plan);
                     ROS_INFO("Moveit plan %s",success?"SUCCESS":"FAILED");
                     if (success) return true;
@@ -290,13 +292,13 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
         if (!moving) {
             geometry_msgs::PoseStamped table=object_pose;
             table.pose.position.z-=0.05;
-            update_table(table.pose);
+           update_table(table.pose);
+
            // tf::Quaternion q( pose_in_map.pose.orientation.x,  pose_in_map.pose.orientation.y,  pose_in_map.pose.orientation.z, pose_in_map.pose.orientation.w);
            // double roll, pitch, yaw;
             //tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
            // ROS_INFO("%f  %f  %f",roll*180/M_PI,pitch*180/M_PI,yaw*180/M_PI);
-            goal_pub.publish(object_pose);
-            bool ik=checkIK(object_pose);
+            bool ik=checkIK(pre_grasp_pose(object_pose));
 
         }
         //printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
@@ -309,15 +311,13 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
 
 void update_table(geometry_msgs::Pose pose) {
 
+collision_object.primitive_poses.clear();
 
-    moveit_msgs::PlanningScene planning_scene1;
-    attached_object.object.primitive_poses.clear();
-    attached_object.object.primitive_poses.push_back(pose);
-
-    planning_scene1.world.collision_objects.push_back(attached_object.object);
-    planning_scene1.is_diff = true;
-    planning_scene_diff_publisher.publish(planning_scene1);
-    // ROS_INFO("Adding the table object into the world 2.");
+    collision_object.primitive_poses.push_back(pose);
+    pose.position.z+=0.05;
+     pose.position.x+=0.015;
+   // collision_object.primitive_poses.push_back(pose);
+   collision_publisher.publish(collision_object);
 }
 
 
@@ -326,10 +326,10 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "pick_and_plce_node");
     ros::AsyncSpinner spinner(2);
 
+
     ros::NodeHandle pn("~");
     ros::NodeHandle n;
 
-   // tf::TransformBroadcaster br;
     ROS_INFO("Hello");
 
     pn.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.03);
@@ -347,26 +347,12 @@ int main(int argc, char **argv) {
     // group.allowReplanning(true);
     group.setPlanningTime(15.0);
     group.setNumPlanningAttempts(30);
-    //group.setPlannerId("RRTConnectkConfigDefault");
+    group.setPlannerId("RRTConnectkConfigDefault");
+   // group.setPlannerId("RRTstarkConfigDefault");
 
-    group.setPlannerId("RRTstarkConfigDefault");
-    //group.setMaxAccelerationScalingFactor(0.1);
-    // group.setMaxVelocityScalingFactor(0.1);
-    //group.setGoalPositionTolerance(0.05);
     group.setPoseReferenceFrame("base_footprint");
     moveit_ptr=&group;
 
-
-    tf::TransformListener listener;
-    listener_ptr=&listener;
-    message_filters::Subscriber<geometry_msgs::PoseStamped> point_sub_;
-
-    point_sub_.subscribe(n, topic, 10);
-    tf_filter_ = new tf::MessageFilter<geometry_msgs::PoseStamped>(point_sub_, listener, "base_footprint", 10);
-    tf_filter_->registerCallback( boost::bind(msgCallback, _1) );
-
-
-    // ros::Subscriber object_sub = n.subscribe(topic, 1, object_cb);
 
     ros::Subscriber pick_sub = n.subscribe("pick_go", 1, pick_go_cb);
 
@@ -374,40 +360,14 @@ int main(int argc, char **argv) {
     goal_pub=n.advertise<geometry_msgs::PoseStamped>("pick_moveit_goal", 2, true);
     pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("/pan_tilt_trajectory_controller/command", 2);
 
+ collision_publisher  = n.advertise<moveit_msgs::CollisionObject>("collision_object", 10);
 
-    planning_scene_diff_publisher = n.advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
-
-    while(planning_scene_diff_publisher.getNumSubscribers() < 1)
-    {
-        ros::WallDuration sleep_t(0.5);
-        sleep_t.sleep();
-    }
-
-    attached_object.link_name = "base_footprint";
-    /* The header must contain a valid TF frame*/
-    attached_object.object.header.frame_id = "base_footprint";
-    /* The id of the object */
-    attached_object.object.id = "table";
-
-
-    /* Define a box to be attached */
-    shape_msgs::SolidPrimitive primitive;
-    primitive.type = primitive.BOX;
-    primitive.dimensions.resize(3);
-    primitive.dimensions[0] = 0.2;
-    primitive.dimensions[1] = 0.5;
-    primitive.dimensions[2] = 0.01;
-
-    attached_object.object.primitives.push_back(primitive);
-
-    attached_object.object.operation = attached_object.object.ADD;
-/* A default pose */
-    geometry_msgs::Pose pose;
-    pose.orientation.w = 1.0;
-    pose.position.x=3;
-    pose.position.y=0;
-    pose.position.z=3;
-update_table(pose);
+tf::TransformListener listener;
+listener_ptr=&listener;
+message_filters::Subscriber<geometry_msgs::PoseStamped> point_sub_;
+point_sub_.subscribe(n, topic, 10);
+tf_filter_ = new tf::MessageFilter<geometry_msgs::PoseStamped>(point_sub_, listener, "base_footprint", 10);
+tf_filter_->registerCallback( boost::bind(msgCallback, _1) );
 
 
 
@@ -416,17 +376,12 @@ update_table(pose);
     while ((!gripperClient.waitForServer(ros::Duration(5.0)))&&(ros::ok())){
         ROS_INFO("Waiting for the /gripper_controller/gripper_cmd action server to come up");
     }
-    if (!ros::ok()) return -1;
-
     gripperClient_ptr=&gripperClient;
 
 
     state_validity_callback_fn_ = boost::bind(&isIKSolutionCollisionFree, _1, _2, _3);
 
-    std::string group_name="arm";
 
-    /* Load the robot model */
-    //robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
 
     /* Get a shared pointer to the model */
     robot_model::RobotModelConstPtr robot_model = group.getRobotModel();// robot_model_loader.getModel();
@@ -436,24 +391,38 @@ update_table(pose);
 
     robot_state_ptr=&robot_state;
 
+   std::string group_name="arm";
     if(!robot_model->hasJointModelGroup(group_name))
         ROS_FATAL("Invalid group name: %s", group_name.c_str());
 
-    // const robot_model::JointModelGroup* joint_model_group;
     joint_model_group = robot_model->getJointModelGroup(group_name);
-    //joint_model_group_ptr=&joint_model_group;
-    /* Construct a planning scene - NOTE: this is for illustration purposes only.
-      The recommended way to construct a planning scene is to use the planning_scene_monitor
-      to construct it for you.*/
     planning_scene::PlanningScenePtr planning_scene(new planning_scene::PlanningScene(robot_model));
     planning_scene_ptr=&planning_scene;
 
 
-    // std::string robot_name_ = robot_state->getRobotModel()->getName();
-    std::string frame_id_ =  robot_state->getRobotModel()->getModelFrame();
 
-    ROS_INFO_STREAM("Root frame ID: " << frame_id_);
+collision_object.header.frame_id = "base_footprint";
+collision_object.id = "table";
+shape_msgs::SolidPrimitive table_primitive;
+table_primitive.type = table_primitive.BOX;
+table_primitive.dimensions.resize(3);
+table_primitive.dimensions[0] = 0.2;
+table_primitive.dimensions[1] = 0.5;
+table_primitive.dimensions[2] = 0.01;
+collision_object.primitives.push_back(table_primitive);
+
+shape_msgs::SolidPrimitive object_primitive;
+object_primitive.type = object_primitive.CYLINDER;
+object_primitive.dimensions.resize(2);
+object_primitive.dimensions[0] = 0.1;
+object_primitive.dimensions[1] = 0.03;
+
+//collision_object.primitives.push_back(object_primitive);
+
+  collision_object.operation = collision_object.ADD;
+
 spinner.start();
+
     ROS_INFO("Looking down...");
     look_down();
     if (arm_cmd(lift_arm())) {
