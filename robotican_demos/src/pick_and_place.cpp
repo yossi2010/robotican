@@ -43,7 +43,8 @@ robot_state::RobotStatePtr *robot_state_ptr;
 tf::TransformListener *listener_ptr;
 tf::MessageFilter<geometry_msgs::PoseStamped> * tf_filter_;
 
-moveit_msgs::CollisionObject collision_object;
+
+std::vector<moveit_msgs::CollisionObject> col_objects;
 
 void update_table(geometry_msgs::Pose pose);
 bool checkIK(geometry_msgs::PoseStamped pose);
@@ -72,7 +73,7 @@ bool moving=false;
 bool ready=false;
 
 
-ros::Publisher collision_publisher;
+
 ros::Publisher goal_pub;
 ros::Publisher pub_controller_command;
 
@@ -315,15 +316,14 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
 
 void update_table(geometry_msgs::Pose pose) {
 
-collision_object.primitive_poses.clear();
+col_objects[0].primitive_poses.clear();
 
-    collision_object.primitive_poses.push_back(pose);
-    pose.position.z+=0.05;
-     pose.position.x+=0.015;
+    col_objects[0].primitive_poses.push_back(pose);
+
+    //pose.position.z+=0.05;
+    // pose.position.x+=0.015;
    // collision_object.primitive_poses.push_back(pose);
-  // collision_publisher.publish(collision_object);
-std::vector<moveit_msgs::CollisionObject> col_objects;
-col_objects.push_back(collision_object);
+
    planning_scene_interface_ptr->addCollisionObjects(col_objects);
 }
 
@@ -368,7 +368,6 @@ planning_scene_interface_ptr=&planning_scene_interface;
     goal_pub=n.advertise<geometry_msgs::PoseStamped>("pick_moveit_goal", 2, true);
     pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("/pan_tilt_trajectory_controller/command", 2);
 
- collision_publisher  = n.advertise<moveit_msgs::CollisionObject>("collision_object", 10);
 
 tf::TransformListener listener;
 listener_ptr=&listener;
@@ -408,7 +407,7 @@ tf_filter_->registerCallback( boost::bind(msgCallback, _1) );
     planning_scene_ptr=&planning_scene;
 
 
-
+moveit_msgs::CollisionObject collision_object;
 collision_object.header.frame_id = "base_footprint";
 collision_object.id = "table";
 shape_msgs::SolidPrimitive table_primitive;
@@ -419,15 +418,15 @@ table_primitive.dimensions[1] = 0.5;
 table_primitive.dimensions[2] = 0.01;
 collision_object.primitives.push_back(table_primitive);
 
-shape_msgs::SolidPrimitive object_primitive;
-object_primitive.type = object_primitive.CYLINDER;
-object_primitive.dimensions.resize(2);
-object_primitive.dimensions[0] = 0.1;
-object_primitive.dimensions[1] = 0.03;
-
+//shape_msgs::SolidPrimitive object_primitive;
+//object_primitive.type = object_primitive.CYLINDER;
+//object_primitive.dimensions.resize(2);
+//object_primitive.dimensions[0] = 0.1;
+//object_primitive.dimensions[1] = 0.03;
 //collision_object.primitives.push_back(object_primitive);
 
   collision_object.operation = collision_object.ADD;
+  col_objects.push_back(collision_object);
 
 spinner.start();
 
