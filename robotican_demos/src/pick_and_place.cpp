@@ -353,10 +353,10 @@ planning_scene_interface_ptr=&planning_scene_interface;
 
 
     // group.allowReplanning(true);
-    group.setMaxVelocityScalingFactor(1.0);
-    group.setMaxAccelerationScalingFactor(0.5);
+    group.setMaxVelocityScalingFactor(0.1);
+    group.setMaxAccelerationScalingFactor(0.1);
     group.setPlanningTime(15.0);
-    group.setNumPlanningAttempts(1000);
+    group.setNumPlanningAttempts(300);
     group.setPlannerId("RRTConnectkConfigDefault");
    // group.setPlannerId("RRTstarkConfigDefault");
 
