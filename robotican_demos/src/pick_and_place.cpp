@@ -65,7 +65,7 @@ geometry_msgs::PoseStamped pick_pose;
 double pick_yaw=0;
 bool have_goal=false;
 bool moving=false;
-
+bool ready=false;
 
 
 ros::Publisher collision_publisher;
@@ -292,7 +292,7 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
         if (!moving) {
             geometry_msgs::PoseStamped table=object_pose;
             table.pose.position.z-=0.05;
-           update_table(table.pose);
+           if (ready) update_table(table.pose);
 
            // tf::Quaternion q( pose_in_map.pose.orientation.x,  pose_in_map.pose.orientation.y,  pose_in_map.pose.orientation.z, pose_in_map.pose.orientation.w);
            // double roll, pitch, yaw;
@@ -431,7 +431,7 @@ spinner.start();
             ROS_INFO("Arm is up");
         }
     }
-
+ready=true;
     ROS_INFO("Ready!");
     while (ros::ok())
     {
