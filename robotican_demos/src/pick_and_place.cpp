@@ -353,7 +353,7 @@ planning_scene_interface_ptr=&planning_scene_interface;
 
 
     // group.allowReplanning(true);
-    group.setMaxVelocityScalingFactor(0.1);
+    group.setMaxVelocityScalingFactor(0.01);
     group.setMaxAccelerationScalingFactor(0.01);
     group.setPlanningTime(15.0);
     group.setNumPlanningAttempts(1000);
