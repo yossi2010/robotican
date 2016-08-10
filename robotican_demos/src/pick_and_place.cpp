@@ -71,7 +71,7 @@ double pick_yaw=0;
 bool have_goal=false;
 bool moving=false;
 bool ready=false;
-
+bool pub_can=true;
 
 
 ros::Publisher goal_pub;
@@ -153,6 +153,11 @@ void pick_go_cb(std_msgs::Empty) {
             ROS_INFO("Arm planning is done, moving arm..");
             if(moveit_ptr->move()) {
                 ROS_INFO("Ready to grasp");
+pub_can=false;
+                std::vector<std::string> rem;
+                rem.push_back("can");
+                planning_scene_interface_ptr->removeCollisionObjects(rem);
+
                 if(gripper_cmd(0.0,0.3)) {
                     ROS_INFO("Grasping is done");
                     ros::Duration(8).sleep(); //wait for attach
@@ -289,7 +294,7 @@ bool gripper_cmd(double gap,double effort) {
 //  Callback to register with tf::MessageFilter to be called when transforms are available
 void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr)
 {
-    //geometry_msgs::PoseStamped point_out;
+   if (!ready) return;
     try
     {
         listener_ptr->transformPose("base_footprint", *point_ptr, object_pose);
@@ -297,7 +302,7 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
         if (!moving) {
             geometry_msgs::PoseStamped table=object_pose;
             table.pose.position.z-=0.03;
-           if (ready) update_table(table.pose);
+           update_table(table.pose);
 
            // tf::Quaternion q( pose_in_map.pose.orientation.x,  pose_in_map.pose.orientation.y,  pose_in_map.pose.orientation.z, pose_in_map.pose.orientation.w);
            // double roll, pitch, yaw;
@@ -317,14 +322,17 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
 void update_table(geometry_msgs::Pose pose) {
 
 col_objects[0].primitive_poses.clear();
+col_objects[0].primitive_poses.push_back(pose);
 
-    col_objects[0].primitive_poses.push_back(pose);
 
-    //pose.position.z+=0.05;
-    // pose.position.x+=0.015;
-   // collision_object.primitive_poses.push_back(pose);
+    pose.position.z+=0.05;
+     pose.position.x+=0.015;
+     col_objects[1].primitive_poses.clear();
+    if(pub_can) col_objects[1].primitive_poses.push_back(pose);
 
    planning_scene_interface_ptr->addCollisionObjects(col_objects);
+
+
 }
 
 
@@ -356,7 +364,7 @@ planning_scene_interface_ptr=&planning_scene_interface;
     group.setMaxVelocityScalingFactor(0.1);
     group.setMaxAccelerationScalingFactor(0.1);
     group.setPlanningTime(15.0);
-    group.setNumPlanningAttempts(300);
+    group.setNumPlanningAttempts(100);
     group.setPlannerId("RRTConnectkConfigDefault");
    // group.setPlannerId("RRTstarkConfigDefault");
 
@@ -409,26 +417,30 @@ tf_filter_->registerCallback( boost::bind(msgCallback, _1) );
     planning_scene_ptr=&planning_scene;
 
 
-moveit_msgs::CollisionObject collision_object;
-collision_object.header.frame_id = "base_footprint";
-collision_object.id = "table";
+moveit_msgs::CollisionObject table_collision_object;
+table_collision_object.header.frame_id = "base_footprint";
+table_collision_object.id = "table";
 shape_msgs::SolidPrimitive table_primitive;
 table_primitive.type = table_primitive.BOX;
 table_primitive.dimensions.resize(3);
 table_primitive.dimensions[0] = 0.2;
 table_primitive.dimensions[1] = 0.5;
 table_primitive.dimensions[2] = 0.01;
-collision_object.primitives.push_back(table_primitive);
+table_collision_object.primitives.push_back(table_primitive);
+table_collision_object.operation = table_collision_object.ADD;
+col_objects.push_back(table_collision_object);
 
-//shape_msgs::SolidPrimitive object_primitive;
-//object_primitive.type = object_primitive.CYLINDER;
-//object_primitive.dimensions.resize(2);
-//object_primitive.dimensions[0] = 0.1;
-//object_primitive.dimensions[1] = 0.03;
-//collision_object.primitives.push_back(object_primitive);
-
-  collision_object.operation = collision_object.ADD;
-  col_objects.push_back(collision_object);
+moveit_msgs::CollisionObject can_collision_object;
+can_collision_object.header.frame_id = "base_footprint";
+can_collision_object.id = "can";
+shape_msgs::SolidPrimitive object_primitive;
+object_primitive.type = object_primitive.CYLINDER;
+object_primitive.dimensions.resize(2);
+object_primitive.dimensions[0] = 0.1;
+object_primitive.dimensions[1] = 0.03;
+can_collision_object.primitives.push_back(object_primitive);
+can_collision_object.operation = can_collision_object.ADD;
+col_objects.push_back(can_collision_object);
 
 spinner.start();
 
