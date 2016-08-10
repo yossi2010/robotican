@@ -19,9 +19,11 @@
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
 #include <moveit/kinematics_metrics/kinematics_metrics.h>
+#include <moveit/planning_scene/planning_scene.h>
 #include <moveit_msgs/WorkspaceParameters.h>
 #include <moveit/planning_scene/planning_scene.h>
 #include <moveit_msgs/CollisionObject.h>
+#include <moveit/planning_scene_interface/planning_scene_interface.h>
 
 
 typedef actionlib::SimpleActionClient<control_msgs::GripperCommandAction> GripperClient;
@@ -32,6 +34,8 @@ const robot_model::JointModelGroup* joint_model_group;
 bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
                                const robot_model::JointModelGroup *joint_model_group,
                                const double *ik_solution);
+
+moveit::planning_interface::PlanningSceneInterface *planning_scene_interface_ptr;
 
 planning_scene::PlanningScenePtr *planning_scene_ptr;
 robot_state::RobotStatePtr *robot_state_ptr;
@@ -317,7 +321,10 @@ collision_object.primitive_poses.clear();
     pose.position.z+=0.05;
      pose.position.x+=0.015;
    // collision_object.primitive_poses.push_back(pose);
-   collision_publisher.publish(collision_object);
+  // collision_publisher.publish(collision_object);
+std::vector<moveit_msgs::CollisionObject> col_objects;
+col_objects.push_back(collision_object);
+   planning_scene_interface_ptr->addCollisionObjects(col_objects);
 }
 
 
@@ -341,7 +348,8 @@ int main(int argc, char **argv) {
     ROS_INFO("Waiting for the moveit action server to come up");
     moveit::planning_interface::MoveGroup group("arm");
 
-    // moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
+    moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
+planning_scene_interface_ptr=&planning_scene_interface;
 
 
     // group.allowReplanning(true);
