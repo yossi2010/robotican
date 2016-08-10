@@ -291,7 +291,7 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
         object_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
         if (!moving) {
             geometry_msgs::PoseStamped table=object_pose;
-            table.pose.position.z-=0.05;
+            table.pose.position.z-=0.03;
            if (ready) update_table(table.pose);
 
            // tf::Quaternion q( pose_in_map.pose.orientation.x,  pose_in_map.pose.orientation.y,  pose_in_map.pose.orientation.z, pose_in_map.pose.orientation.w);
