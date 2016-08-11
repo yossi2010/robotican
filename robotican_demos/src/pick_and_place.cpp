@@ -151,7 +151,12 @@ bool done=false;
                 if(gripper_cmd(0.0,0.3)) {
                     ROS_INFO("Grasping is done");
                     pub_can=false;
-                   group_ptr->attachObject("can","gripper_link");
+                    std::vector<std::string> touch_links;
+                    touch_links.push_back("left_finger_link");
+                    touch_links.push_back("right_finger_link");
+                    touch_links.push_back("wrist_link");
+                    touch_links.push_back("gripper_link");
+                   group_ptr->attachObject("can","gripper_link",touch_links);
                     ros::Duration(8).sleep(); //wait for attach
                     ROS_INFO("Lifting object...");
                     if (arm_cmd(lift_arm())) {
@@ -295,7 +300,7 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
         object_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
         if (!moving) {
             geometry_msgs::PoseStamped table=object_pose;
-            table.pose.position.z-=0.03;
+            table.pose.position.z-=0.05;
             update_table(table.pose);
 
             // tf::Quaternion q( pose_in_map.pose.orientation.x,  pose_in_map.pose.orientation.y,  pose_in_map.pose.orientation.z, pose_in_map.pose.orientation.w);
@@ -319,7 +324,7 @@ void update_table(geometry_msgs::Pose pose) {
     col_objects[0].primitive_poses.push_back(pose);
 
 
-    pose.position.z+=0.05;
+    pose.position.z+=0.07;
     pose.position.x+=0.015;
     col_objects[1].primitive_poses.clear();
     if(pub_can) col_objects[1].primitive_poses.push_back(pose);
@@ -355,10 +360,10 @@ int main(int argc, char **argv) {
 
 
     // group.allowReplanning(true);
-    group.setMaxVelocityScalingFactor(0.1);
-    group.setMaxAccelerationScalingFactor(0.1);
+    group.setMaxVelocityScalingFactor(0.05);
+    group.setMaxAccelerationScalingFactor(0.01);
     group.setPlanningTime(15.0);
-    group.setNumPlanningAttempts(100);
+    group.setNumPlanningAttempts(30);
     group.setPlannerId("RRTConnectkConfigDefault");
     // group.setPlannerId("RRTstarkConfigDefault");
     group.setPoseReferenceFrame("base_footprint");
