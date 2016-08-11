@@ -46,7 +46,7 @@ tf::MessageFilter<geometry_msgs::PoseStamped> * tf_filter_;
 
 std::vector<moveit_msgs::CollisionObject> col_objects;
 
-void update_table(geometry_msgs::Pose pose);
+void update_collision_objects(geometry_msgs::Pose pose);
 bool checkIK(geometry_msgs::PoseStamped pose);
 void go(tf::Transform  dest);
 bool gripper_cmd(double gap,double effort);
@@ -89,6 +89,7 @@ geometry_msgs::PoseStamped lift_arm(){
     target_pose1.pose.position.y =  0.0;
     target_pose1.pose.position.z =  0.9;
     target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
+
     return target_pose1;
 }
 
@@ -111,7 +112,7 @@ void look_down() {
 }
 
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
-    geometry_msgs::PoseStamped target_pose;
+    geometry_msgs::PoseStamped target_pose=object;
 
 
     tf::Vector3 v;
@@ -121,16 +122,15 @@ geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
 
     pick_yaw=atan2(v.y(),v.x());
 
-    target_pose.header.frame_id=object.header.frame_id;
-    target_pose.header.stamp=ros::Time::now();
 
     float away=wrist_distance_from_object/sqrt(v.x()*v.x()+v.y()*v.y());
     tf::Vector3 dest=v*(1-away);
 
     target_pose.pose.position.x = dest.x();
     target_pose.pose.position.y = dest.y();
-    target_pose.pose.position.z =  v.z();
+    target_pose.pose.position.z +=0.15;
     target_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw );
+ goal_pub.publish(target_pose);
 
     return target_pose;
 
@@ -148,7 +148,7 @@ bool done=false;
             ROS_INFO("Arm planning is done, moving arm..");
             if(group_ptr->move()) {
                 ROS_INFO("Ready to grasp");
-                if(gripper_cmd(0.0,0.3)) {
+                if(gripper_cmd(0.0,0.4)) {
                     ROS_INFO("Grasping is done");
                     pub_can=false;
                     std::vector<std::string> touch_links;
@@ -236,6 +236,11 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
     double z=target_pose1.pose.position.z;
     double x=target_pose1.pose.position.x;
     double y=target_pose1.pose.position.y;
+    tf::Quaternion q( target_pose1.pose.orientation.x,  target_pose1.pose.orientation.y,  target_pose1.pose.orientation.z, target_pose1.pose.orientation.w);
+    double roll, pitch, yaw;
+     tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
+//ROS_INFO("%f",yaw*180/M_PI);
+
     for (int n=0;n<sizeof(dx)/sizeof(double);n++) {
         for (int m=0;m<sizeof(dy)/sizeof(double);m++) {
 
@@ -245,11 +250,8 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
                     target_pose1.pose.position.x=x+dx[n];
                     target_pose1.pose.position.y=y+dy[m];
 
-                    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw+dY[j] );
-                    //     tf::Quaternion q( target_pose1.pose.orientation.x,  target_pose1.pose.orientation.y,  target_pose1.pose.orientation.z, target_pose1.pose.orientation.w);
-                    //      double roll, pitch, yaw;
-                    //             tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
-                    //ROS_INFO("%f",yaw*180/M_PI);
+                    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,yaw+dY[j] );
+
 
                     if (checkIK(target_pose1)) {
                         goal_pub.publish(target_pose1);
@@ -293,15 +295,15 @@ bool gripper_cmd(double gap,double effort) {
 //  Callback to register with tf::MessageFilter to be called when transforms are available
 void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr)
 {
-    if (!ready) return;
+    if ((!ready)||(moving)) return;
     try
     {
         listener_ptr->transformPose("base_footprint", *point_ptr, object_pose);
         object_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
-        if (!moving) {
-            geometry_msgs::PoseStamped table=object_pose;
-            table.pose.position.z-=0.05;
-            update_table(table.pose);
+object_pose.header.frame_id="base_footprint";
+object_pose.header.stamp=ros::Time::now();
+
+            update_collision_objects(object_pose.pose);
 
             // tf::Quaternion q( pose_in_map.pose.orientation.x,  pose_in_map.pose.orientation.y,  pose_in_map.pose.orientation.z, pose_in_map.pose.orientation.w);
             // double roll, pitch, yaw;
@@ -309,7 +311,7 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
             // ROS_INFO("%f  %f  %f",roll*180/M_PI,pitch*180/M_PI,yaw*180/M_PI);
             bool ik=checkIK(pre_grasp_pose(object_pose));
 
-        }
+
         //printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
     }
     catch (tf::TransformException &ex)
@@ -318,14 +320,13 @@ void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& poin
     }
 }
 
-void update_table(geometry_msgs::Pose pose) {
+void update_collision_objects(geometry_msgs::Pose pose) {
 
+    geometry_msgs::Pose table=pose;
+     table.position.z-=0.1;
     col_objects[0].primitive_poses.clear();
-    col_objects[0].primitive_poses.push_back(pose);
+    col_objects[0].primitive_poses.push_back(table);
 
-
-    pose.position.z+=0.07;
-    pose.position.x+=0.015;
     col_objects[1].primitive_poses.clear();
     if(pub_can) col_objects[1].primitive_poses.push_back(pose);
 
@@ -338,7 +339,7 @@ void update_table(geometry_msgs::Pose pose) {
 int main(int argc, char **argv) {
 
     ros::init(argc, argv, "pick_and_plce_node");
-    ros::AsyncSpinner spinner(2);
+    ros::AsyncSpinner spinner(4);
 
 
     ros::NodeHandle pn("~");
@@ -346,7 +347,7 @@ int main(int argc, char **argv) {
 
     ROS_INFO("Hello");
 
-    pn.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.02);
+    pn.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.05);
     pn.param<std::string>("object_name", object_name, "kinect2_object");
     std::string topic="/detected_objects/"+object_name;
 
@@ -360,8 +361,8 @@ int main(int argc, char **argv) {
 
 
     // group.allowReplanning(true);
-    group.setMaxVelocityScalingFactor(0.05);
-    group.setMaxAccelerationScalingFactor(0.01);
+    group.setMaxVelocityScalingFactor(0.2);
+    group.setMaxAccelerationScalingFactor(0.1);
     group.setPlanningTime(15.0);
     group.setNumPlanningAttempts(30);
     group.setPlannerId("RRTConnectkConfigDefault");
@@ -372,7 +373,7 @@ int main(int argc, char **argv) {
     ros::Subscriber pick_sub = n.subscribe("pick_go", 1, pick_go_cb);
 
 
-    goal_pub=n.advertise<geometry_msgs::PoseStamped>("pick_moveit_goal", 2, true);
+    goal_pub=n.advertise<geometry_msgs::PoseStamped>("pick_moveit_goal", 10);
     pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("/pan_tilt_trajectory_controller/command", 2);
 
 
@@ -422,7 +423,7 @@ int main(int argc, char **argv) {
     table_primitive.dimensions.resize(3);
     table_primitive.dimensions[0] = 0.2;
     table_primitive.dimensions[1] = 0.5;
-    table_primitive.dimensions[2] = 0.01;
+    table_primitive.dimensions[2] = 0.02;
     table_collision_object.primitives.push_back(table_primitive);
     table_collision_object.operation = table_collision_object.ADD;
     col_objects.push_back(table_collision_object);
@@ -433,8 +434,8 @@ int main(int argc, char **argv) {
     shape_msgs::SolidPrimitive object_primitive;
     object_primitive.type = object_primitive.CYLINDER;
     object_primitive.dimensions.resize(2);
-    object_primitive.dimensions[0] = 0.1;
-    object_primitive.dimensions[1] = 0.02;
+    object_primitive.dimensions[0] = 0.16;
+    object_primitive.dimensions[1] = 0.025;
     can_collision_object.primitives.push_back(object_primitive);
     can_collision_object.operation = can_collision_object.ADD;
     col_objects.push_back(can_collision_object);
@@ -458,8 +459,8 @@ int main(int argc, char **argv) {
     ocm.orientation.y = 0;
     ocm.orientation.z = 0;
     ocm.orientation.w = 1;
-    ocm.absolute_x_axis_tolerance = 5.0*M_PI/180.0;
-    ocm.absolute_y_axis_tolerance = 5.0*M_PI/180.0;
+    ocm.absolute_x_axis_tolerance = 10.0*M_PI/180.0;
+    ocm.absolute_y_axis_tolerance = 10.0*M_PI/180.0;
     ocm.absolute_z_axis_tolerance = M_PI;
     ocm.weight = 1.0;
     moveit_msgs::Constraints constr;

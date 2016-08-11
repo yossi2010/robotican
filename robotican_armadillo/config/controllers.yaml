@@ -88,18 +88,7 @@ arm_trajectory_controller:
      - rotation2_joint 
      - shoulder3_joint 
      - wrist_joint 
-  constraints:
-      goal_time: 10.0
-      stopped_velocity_tolerance: 0.05
-      rotation1_joint: {trajectory: 10.5, goal: 0.1}
-      shoulder1_joint: {trajectory: 10.5, goal: 0.1}
-      shoulder2_joint: {trajectory: 10.5, goal: 0.1}
-      rotation2_joint: {trajectory: 10.5, goal: 0.1}
-      shoulder3_joint: {trajectory: 10.5, goal: 0.1}
-      wrist_joint: {trajectory: 10.5, goal: 0.01}
-  stop_trajectory_duration: 5.0
-  state_publish_rate:  50
-  action_monitor_rate: 50
+
 
 
 gripper_controller:
@@ -120,7 +109,7 @@ pan_controller:
     max_torque: 0.1
     motor:
         id: 3
-        init: 2040
+        init: 2080
         min: 1000
         max: 3100
 
@@ -134,6 +123,6 @@ tilt_controller:
     max_torque: 0.1
     motor:
         id: 4
-        init: 1970
+        init: 1935
         min: 1000
         max: 3100

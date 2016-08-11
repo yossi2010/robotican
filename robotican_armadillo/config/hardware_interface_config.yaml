@@ -146,7 +146,7 @@ position_motor_size: 1
  
 positionMotor0_motor_type: 1
 positionMotor0_a: 0.00064833
-positionMotor0_b: -0.05510805
+positionMotor0_b: -0.09
 positionMotor0_lpf_hz_speed: 63
 positionMotor0_lpf_hz_input: 50
 positionMotor0_pid_hz: 1000
@@ -155,9 +155,9 @@ positionMotor0_timeout: 0
 positionMotor0_motor_direction: -1
 positionMotor0_encoder_direction: 1
 positionMotor0_lpf_alpha_speed: 0.21
-positionMotor0_lpf_alpha_input: 0.2
-positionMotor0_kp: 3200.0
-positionMotor0_ki: 300.0
+positionMotor0_lpf_alpha_input: 0.05
+positionMotor0_kp: 3000.0
+positionMotor0_ki: 250.0
 positionMotor0_kd: 0.0
 positionMotor0_kff: 0.0
 positionMotor0_max_set_point_speed: 0.06
@@ -171,7 +171,7 @@ positionMotor0_motor_emergency_pin_type: 1
 positionMotor0_joint: 'torso_joint'
 positionMotor0_mode: 1
 positionMotor0_read_pin: 21
-positionMotor0_tolerance: 0.06
+positionMotor0_tolerance: 0.01
 positionMotor0_stop_limit_max: 0.33
 positionMotor0_stop_limit_min: -0.01
 
