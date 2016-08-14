@@ -476,13 +476,19 @@ namespace joint_trajectory_controller
         {
             trajectory_msgs::JointTrajectory tjToSend = (*msg);
             TrajectoryPtr traj_ptr(new Trajectory);
+
             size_t  tjSize = msg->points.size();
+
+             if (tjToSend.points[0].time_from_start.toSec() <= 0.0) {
             for(int i = 0; i < tjSize; i++) {
-                if (tjToSend.points[i].time_from_start.toSec() <= 0.0) {
-                    tjToSend.points[i].time_from_start = ros::Duration(0.2);
-                    ROS_WARN("Some point have zero time from start setting it to 0.2 from start");
-                }
+
+                    tjToSend.points[i].time_from_start += ros::Duration(0.5);
+
+
             }
+              ROS_WARN("Adding 0.5 sed to all points");
+             }
+
             *traj_ptr = initJointTrajectory<Trajectory>(tjToSend, next_update_time, options);
             if (!traj_ptr->empty())
             {
