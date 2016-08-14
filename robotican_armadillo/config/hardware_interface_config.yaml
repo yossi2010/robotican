@@ -146,7 +146,7 @@ position_motor_size: 1
  
 positionMotor0_motor_type: 1
 positionMotor0_a: 0.00064833
-positionMotor0_b: -0.09
+positionMotor0_b: -0.026
 positionMotor0_lpf_hz_speed: 63
 positionMotor0_lpf_hz_input: 50
 positionMotor0_pid_hz: 1000
@@ -162,8 +162,8 @@ positionMotor0_kd: 0.0
 positionMotor0_kff: 0.0
 positionMotor0_max_set_point_speed: 0.06
 positionMotor0_min_set_point_speed: -0.06
-positionMotor0_max_set_point_position: 0.32
-positionMotor0_min_set_point_position: 0.0
+positionMotor0_max_set_point_position: 0.37
+positionMotor0_min_set_point_position: 0.05
 positionMotor0_limit: 0.3
 positionMotor0_motor_address: 20
 positionMotor0_motor_emergency_pin: 12
@@ -172,8 +172,8 @@ positionMotor0_joint: 'torso_joint'
 positionMotor0_mode: 1
 positionMotor0_read_pin: 21
 positionMotor0_tolerance: 0.01
-positionMotor0_stop_limit_max: 0.33
-positionMotor0_stop_limit_min: -0.01
+positionMotor0_stop_limit_max: 0.38
+positionMotor0_stop_limit_min: 0.04
 
 gps_baudrate: 9600
 gps_topic_name: 'gps'

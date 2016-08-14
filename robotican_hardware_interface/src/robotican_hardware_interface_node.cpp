@@ -25,9 +25,9 @@ int main(int argc, char **argv) {
     robotican_hardware::RobotBase robot;
     robot.registerInterfaces();
     controller_manager::ControllerManager controllerManager(&robot);
-    ros::AsyncSpinner asyncSpinner(1);
+    ros::AsyncSpinner asyncSpinner(2);
     asyncSpinner.start();
-    ros::Rate loopRate(50);
+    ros::Rate loopRate(100);
 
     while (ros::ok()) {
         robot.read();
@@ -60,9 +60,9 @@ int main(int argc, char **argv) {
             robot.registerInterfaces();
             controller_manager::ControllerManager controllerManager(&robot);
 
-            ros::AsyncSpinner asyncSpinner(1);
+            ros::AsyncSpinner asyncSpinner(2);
             asyncSpinner.start();
-            ros::Rate loopRate(50);
+            ros::Rate loopRate(100);
             while (ros::ok()) {
                 robot.read();
                 controllerManager.update(robot.getTime(), robot.getPeriod());
@@ -78,7 +78,7 @@ int main(int argc, char **argv) {
             controller_manager::ControllerManager controllerManager(&robot);
             ros::AsyncSpinner asyncSpinner(1);
             asyncSpinner.start();
-            ros::Rate rate(20);
+            ros::Rate rate(50);
             while (ros::ok()) {
                 robot.read();
                 controllerManager.update(robot.getTime(), robot.getPeriod());
@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
             controller_manager::ControllerManager controllerManager(&robot);
             ros::AsyncSpinner asyncSpinner(1);
             asyncSpinner.start();
-            ros::Rate rate(20);
+            ros::Rate rate(50);
             while (ros::ok()) {
                 robot.read();
                 controllerManager.update(robot.getTime(), robot.getPeriod());

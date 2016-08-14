@@ -16,7 +16,7 @@
 	
 	<!--    LOAD JOINTS    -->
 	<joint name="torso_joint" type="prismatic">
-		<origin xyz="-0.1403 0 0.54381" rpy="0 0 0" />
+		<origin xyz="-0.1403 0 0.49381" rpy="0 0 0" />
 		<parent link="base_link" />
 		<child link="torso_link" />
 		<axis xyz="0 0 1" />

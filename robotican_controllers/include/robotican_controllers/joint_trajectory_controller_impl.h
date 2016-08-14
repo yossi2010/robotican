@@ -164,7 +164,7 @@ namespace joint_trajectory_controller
             rt_segment_goal->preallocated_result_->error_code =
                     control_msgs::FollowJointTrajectoryResult::PATH_TOLERANCE_VIOLATED;
             rt_segment_goal->setAborted(rt_segment_goal->preallocated_result_);
-            _isAborted  = true;
+           // _isAborted  = true;
             rt_active_goal_.reset();
         }
     }

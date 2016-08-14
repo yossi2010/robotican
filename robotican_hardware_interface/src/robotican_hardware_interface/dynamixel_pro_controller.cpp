@@ -336,6 +336,7 @@ void DynamixelProController::jointStateCallback(sensor_msgs::JointState &msg)
 
             double rad_s_vel = msg.velocity[i];
             int vel = static_cast<int>(rad_s_vel / 2.0 / M_PI * 60.0 * info.gear_reduction);
+          //  std::cout << rad_s_vel<<"   "<<vel<<std::endl;
             velocities.push_back(vel);
         }
         if (has_torque)
@@ -507,11 +508,14 @@ void DynamixelProController::write() {
     for(std::map<std::string, JointInfo_t>::iterator it = _jointsInfo.begin(); it != _jointsInfo.end(); ++it) {
         msg.name.push_back(it->first);
         msg.position.push_back(it->second.cmd_pos);
-        if(it->second.cmd_vel > 0) {
-            msg.velocity.push_back(it->second.cmd_vel);
+
+        if(it->second.cmd_vel != 0.0) {
+            //msg.velocity.push_back(it->second.cmd_vel);
+              msg.velocity.push_back(2.0);
         }
         else {
-            msg.velocity.push_back(0.2);
+            msg.velocity.push_back(2.0);
+              //std::cout << it->first << "   "<< it->second.cmd_pos << "   "<<it->second.cmd_vel<<std::endl;
         }
     }
 
@@ -547,7 +551,7 @@ void DynamixelProController::publishJointStates(const ros::TimerEvent& e)
 //            {
 //
 //                double rad_vel = ((double) velocity) * 2.0 * M_PI / 60.0 / info.gear_reduction;
-//                _jointsInfo[joint_name].velocity = rad_vel;
+//                _jointsInfo[joint_name] = rad_vel;
 //                //msg.velocity.push_back(rad_vel);
 //            }
 //        }

@@ -128,7 +128,7 @@ geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
 
     target_pose.pose.position.x = dest.x();
     target_pose.pose.position.y = dest.y();
-    target_pose.pose.position.z +=0.15;
+    target_pose.pose.position.z +=0;
     target_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw );
  goal_pub.publish(target_pose);
 
@@ -232,7 +232,7 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
     double dz[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
     double dy[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
     double dx[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-    double dY[]={0, 0.05, -0.05};//, 0.04, -0.04 ,0.18, -0.18};
+    double dY[]={0};//, 0.04, -0.04 ,0.18, -0.18};
     double z=target_pose1.pose.position.z;
     double x=target_pose1.pose.position.x;
     double y=target_pose1.pose.position.y;
@@ -347,7 +347,7 @@ int main(int argc, char **argv) {
 
     ROS_INFO("Hello");
 
-    pn.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.05);
+    pn.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.03);
     pn.param<std::string>("object_name", object_name, "kinect2_object");
     std::string topic="/detected_objects/"+object_name;
 
@@ -361,9 +361,9 @@ int main(int argc, char **argv) {
 
 
     // group.allowReplanning(true);
-    group.setMaxVelocityScalingFactor(0.2);
-    group.setMaxAccelerationScalingFactor(0.1);
-    group.setPlanningTime(15.0);
+    group.setMaxVelocityScalingFactor(0.5);
+    group.setMaxAccelerationScalingFactor(0.01);
+    group.setPlanningTime(1.0);
     group.setNumPlanningAttempts(30);
     group.setPlannerId("RRTConnectkConfigDefault");
     // group.setPlannerId("RRTstarkConfigDefault");
@@ -434,8 +434,8 @@ int main(int argc, char **argv) {
     shape_msgs::SolidPrimitive object_primitive;
     object_primitive.type = object_primitive.CYLINDER;
     object_primitive.dimensions.resize(2);
-    object_primitive.dimensions[0] = 0.16;
-    object_primitive.dimensions[1] = 0.025;
+    object_primitive.dimensions[0] = 0.15;
+    object_primitive.dimensions[1] = 0.02;
     can_collision_object.primitives.push_back(object_primitive);
     can_collision_object.operation = can_collision_object.ADD;
     col_objects.push_back(can_collision_object);

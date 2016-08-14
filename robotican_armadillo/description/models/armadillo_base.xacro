@@ -7,7 +7,7 @@
  <joint name="base_footprint_joint" type="fixed">
     <parent link="base_footprint"/>
     <child link="base_link"/>
-    <origin xyz="0.00 0.00 0.1" rpy="0.0 0.0 0.0"/>
+    <origin xyz="0.00 0.00 0.095" rpy="0.0 0.0 0.0"/>
   </joint> 
   
   <link
@@ -43,10 +43,10 @@
    
       <collision name='caster_collision'>
       <origin
-        xyz="-0.30 0 -0.05"
+        xyz="-0.30 0 -0.0475"
         rpy="0 0 0" />
             <geometry>
-              <sphere radius="0.05"/>
+              <sphere radius="0.0475"/>
             </geometry>
             <surface>
               <friction>
@@ -61,10 +61,10 @@
           </collision>
 	<!--  <visual name='caster_visual'>
 	 <origin
-        xyz="-0.30 0 -0.05"
+        xyz="-0.30 0 -0.0475"
         rpy="0 0 0" />
             <geometry>
-	    <sphere radius="0.05"/>
+	    <sphere radius="0.0475"/>
             </geometry>
 	  </visual> -->
   </link>
@@ -306,7 +306,7 @@
          rpy="1.57079632679 0 0" />
       <geometry>
     <!--  <mesh filename="package://robotican_armadillo/description/meshes/left_wheel_link.STL" /> -->
-                 <cylinder  length="0.05" radius="0.1"/> 
+                 <cylinder  length="0.05" radius="0.095"/> 
       </geometry>
       <material
         name="">
@@ -320,7 +320,7 @@
         rpy="${M_PI/2} 0 0" />
       <geometry>
     <!--  <mesh filename="package://robotican_armadillo/description/meshes/left_wheel_link.STL" /> -->
-                 <cylinder  length="0.05" radius="0.1"/> 
+                 <cylinder  length="0.05" radius="0.095"/> 
       </geometry>
     </collision>
   </link>
@@ -359,7 +359,7 @@
          rpy="${M_PI/2} 0 0" />
       <geometry>
     <!--  <mesh filename="package://robotican_armadillo/description/meshes/right_wheel_link.STL" /> -->
-      <cylinder  length="0.05" radius="0.1"/>
+      <cylinder  length="0.05" radius="0.095"/>
       </geometry>
       <material
         name="">
@@ -373,7 +373,7 @@
         rpy="${M_PI/2} 0 0" />
       <geometry>
      <!--  <mesh filename="package://robotican_armadillo/description/meshes/right_wheel_link.STL" /> -->
-      <cylinder  length="0.05" radius="0.1"/> 
+      <cylinder  length="0.05" radius="0.095"/> 
       </geometry>
     </collision>
   </link>
