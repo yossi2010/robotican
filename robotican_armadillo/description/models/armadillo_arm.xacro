@@ -517,7 +517,7 @@
       <dynamics friction ="1000" damping="100"/>
   </joint>
   <link
-    name="f200_link">
+    name="sr300_link">
     <inertial>
       <origin
         xyz="-0.015404 -1.7297E-09 -0.007331"
@@ -538,7 +538,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotican_armadillo/description/meshes/f200_optical_link.STL" />
+          filename="package://robotican_armadillo/description/meshes/sr300_optical_link.STL" />
       </geometry>
       <material
         name="">
@@ -551,12 +551,12 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robotican_armadillo/description/meshes/f200_optical_link.STL" />
+        <mesh filename="package://robotican_armadillo/description/meshes/sr300_optical_link.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="f200_joint"
+    name="sr300_joint"
     type="fixed">
     <origin
       xyz="-0.06355 0 0.041852"
@@ -565,35 +565,35 @@
     <parent
       link="wrist_link" />
     <child
-      link="f200_link" />
+      link="sr300_link" />
     <axis
       xyz="0 0 0" />
   </joint>
-  		<link name="f200_rgb_frame" />
-		<joint name="f200_rgb_joint" type="fixed">
+  		<link name="sr300_rgb_frame" />
+		<joint name="sr300_rgb_joint" type="fixed">
 		  <origin xyz="0 0 0" rpy="0 0 0" />
-		  <parent link="f200_link" />
-		  <child link="f200_rgb_frame" />
+		  <parent link="sr300_link" />
+		  <child link="sr300_rgb_frame" />
 		</joint>
 		
-		 <link name="f200_rgb_optical_frame" />
-		<joint name="f200_rgb_optical_joint" type="fixed">
+		 <link name="sr300_rgb_optical_frame" />
+		<joint name="sr300_rgb_optical_joint" type="fixed">
 		  <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
-		  <parent link="f200_rgb_frame" />
-		  <child link="f200_rgb_optical_frame" />
+		  <parent link="sr300_rgb_frame" />
+		  <child link="sr300_rgb_optical_frame" />
 		</joint>
 		
-		<link name="f200_depth_frame" />
-		<joint name="f200_depth_joint" type="fixed">
+		<link name="sr300_depth_frame" />
+		<joint name="sr300_depth_joint" type="fixed">
 		  <origin xyz="0 -0.0235 0" rpy="0 0 0" />
-		  <parent link="f200_link" />
-		  <child link="f200_depth_frame" />
+		  <parent link="sr300_link" />
+		  <child link="sr300_depth_frame" />
 		</joint>
 		
-		<link name="f200_depth_optical_frame" />
-		<joint name="f200_depth_optical_joint" type="fixed">
+		<link name="sr300_depth_optical_frame" />
+		<joint name="sr300_depth_optical_joint" type="fixed">
 		  <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
-		  <parent link="f200_depth_frame" />
-		  <child link="f200_depth_optical_frame" />
+		  <parent link="sr300_depth_frame" />
+		  <child link="sr300_depth_optical_frame" />
 		</joint>
 </robot>
