@@ -159,11 +159,12 @@ namespace joint_trajectory_controller
     {
         const RealtimeGoalHandlePtr rt_segment_goal = segment.getGoalHandle();
         const SegmentTolerances<Scalar>& tolerances = segment.getTolerances();
-        if (!checkStateTolerance(state_error, tolerances.state_tolerance))
+        if (!checkStateTolerance(state_error, tolerances.state_tolerance, true))
         {
             rt_segment_goal->preallocated_result_->error_code =
                     control_msgs::FollowJointTrajectoryResult::PATH_TOLERANCE_VIOLATED;
             rt_segment_goal->setAborted(rt_segment_goal->preallocated_result_);
+            _isAborted  = true;
             rt_active_goal_.reset();
         }
     }
@@ -209,9 +210,11 @@ namespace joint_trajectory_controller
     template <class SegmentImpl, class HardwareInterface>
     JointTrajectoryController<SegmentImpl, HardwareInterface>::
     JointTrajectoryController()
-            : verbose_(false), // Set to true during debugging
+            : verbose_(true), // Set to true during debugging
               hold_trajectory_ptr_(new Trajectory)
-    {}
+    {
+        _isAborted = false;
+    }
 
     template <class SegmentImpl, class HardwareInterface>
     bool JointTrajectoryController<SegmentImpl, HardwareInterface>::init(HardwareInterface* hw,
@@ -411,8 +414,10 @@ namespace joint_trajectory_controller
         }
 
         // Hardware interface adapter: Generate and send commands
-        hw_iface_adapter_.updateCommand(time_data.uptime, time_data.period,
-                                        desired_state_, state_error_);
+        if(!_isAborted) {
+            hw_iface_adapter_.updateCommand(time_data.uptime, time_data.period,
+                                            desired_state_, state_error_);
+        }
 
         // Publish state
         publishState(time_data.uptime);
@@ -469,8 +474,16 @@ namespace joint_trajectory_controller
         // Update currently executing trajectory
         try
         {
+            trajectory_msgs::JointTrajectory tjToSend = (*msg);
             TrajectoryPtr traj_ptr(new Trajectory);
-            *traj_ptr = initJointTrajectory<Trajectory>(*msg, next_update_time, options);
+            size_t  tjSize = msg->points.size();
+            for(int i = 0; i < tjSize; i++) {
+                if (tjToSend.points[i].time_from_start.toSec() <= 0.0) {
+                    tjToSend.points[i].time_from_start = ros::Duration(0.2);
+                    ROS_WARN("Some point have zero time from start setting it to 0.2 from start");
+                }
+            }
+            *traj_ptr = initJointTrajectory<Trajectory>(tjToSend, next_update_time, options);
             if (!traj_ptr->empty())
             {
                 curr_trajectory_box_.set(traj_ptr);
@@ -499,6 +512,7 @@ namespace joint_trajectory_controller
     void JointTrajectoryController<SegmentImpl, HardwareInterface>::
     goalCB(GoalHandle gh)
     {
+
         ROS_DEBUG_STREAM_NAMED(name_,"Recieved new action goal");
 
         // Precondition: Running controller
@@ -535,7 +549,7 @@ namespace joint_trajectory_controller
             preemptActiveGoal();
             gh.setAccepted();
             rt_active_goal_ = rt_goal;
-
+            _isAborted = false;
             // Setup goal status checking timer
             goal_handle_timer_ = controller_nh_.createTimer(action_monitor_period_,
                                                             &RealtimeGoalHandle::runNonRealtime,

@@ -88,7 +88,8 @@ arm_trajectory_controller:
      - rotation2_joint 
      - shoulder3_joint 
      - wrist_joint 
-
+  state_publish_rate:  50
+  action_monitor_rate: 50
 
 
 gripper_controller:
