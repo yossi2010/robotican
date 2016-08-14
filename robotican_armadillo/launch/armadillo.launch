@@ -12,7 +12,7 @@
   <arg name="kinect2_hd" default="false"/>
   <arg name="kinect2_qhd" default="true"/>
   <arg name="kinect2_sd" default="false"/>
-  <arg name="f200" default='false'/>
+  <arg name="sr300" default='false'/>
   <arg name="joystick" default='false'/>
   <arg name="joystick_dev" default='/dev/input/js0'/>
   <arg name="twist_mux" default='true'/>
@@ -83,7 +83,7 @@
 	   kinect2_hd:=$(arg kinect2_hd)
 	   kinect2_qhd:=$(arg kinect2_qhd)
 	   kinect2_sd:=$(arg kinect2_sd)
-	   f200:=$(arg f200)
+	   sr300:=$(arg sr300)
 	   " /> 
 	  
 
@@ -149,8 +149,8 @@
 
 		</group>
 
-		<group if="$(arg f200)">
-<include file="$(find robotican_common)/launch/f200.launch"/>
+		<group if="$(arg sr300)">
+<include file="$(find robotican_common)/launch/sr300.launch"/>
 
 
 
