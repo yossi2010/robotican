@@ -48,9 +48,13 @@
     <param name="~depth_topic" value="/sr300/depth/points"/>
   </node>
 
-  <node name="object_view" pkg="rqt_image_view" type="rqt_image_view" >
+  <node name="object_view_kinect2" pkg="rqt_image_view" type="rqt_image_view" >
+    <remap from="image" to="find_object_node_kinect2/result" />
+  </node>
+    <node name="object_view_sr300" pkg="rqt_image_view" type="rqt_image_view" >
     <remap from="image" to="find_object_node_sr300/result" />
   </node>
+  
   
 </launch>
 

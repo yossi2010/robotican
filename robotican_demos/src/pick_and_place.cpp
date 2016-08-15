@@ -6,15 +6,12 @@
 #include <geometry_msgs/PointStamped.h>
 #include <trajectory_msgs/JointTrajectory.h>
 #include <std_msgs/Empty.h>
-#include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
 #include "tf/message_filter.h"
 #include "message_filters/subscriber.h"
-
 #include <actionlib/client/simple_action_client.h>
 #include <control_msgs/GripperCommandAction.h>
 #include <moveit/move_group_interface/move_group.h>
-
 #include <moveit/robot_model_loader/robot_model_loader.h>
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
@@ -65,17 +62,17 @@ bool have_goal=false;
 bool moving=false;
 bool ready=false;
 bool pub_can=true;
-
-
-ros::Publisher pick_pub,object_pub;
-ros::Publisher pub_controller_command;
-
-double wrist_distance_from_object=0.10;
+double wrist_distance_from_object;
 geometry_msgs::PoseStamped moveit_goal;
 
 
+ros::Publisher pick_pub,head_object_pub,arm_object_pub;
+ros::Publisher pub_controller_command;
+
+
+
 bool lift_arm(){
-    group_ptr->setNamedTarget("pre_grasp1");
+    group_ptr->setNamedTarget("pre_grasp2");
     moveit::planning_interface::MoveGroup::Plan my_plan;
     return group_ptr->plan(my_plan);
 
@@ -125,7 +122,7 @@ geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
 }
 
 void pick_go_cb(std_msgs::Empty) {
-    bool done=false;
+    bool attached=false;
     if (!moving) moving=true;
     ROS_INFO("Openning gripper...");
     if(gripper_cmd(0.14,0.0)) {
@@ -146,6 +143,7 @@ void pick_go_cb(std_msgs::Empty) {
                     touch_links.push_back("wrist_link");
                     touch_links.push_back("gripper_link");
                     group_ptr->attachObject("can","gripper_link",touch_links);
+                    attached=true;
                     ros::Duration(8).sleep(); //wait for attach
                     ROS_INFO("Lifting object...");
                     if (lift_arm()) {
@@ -164,6 +162,7 @@ void pick_go_cb(std_msgs::Empty) {
                                           gripper_constraints(false);
                                         if (lift_arm()) {
                                             group_ptr->detachObject("can");
+                                            attached=false;
                                             //  std::vector<std::string> rem;
                                             //  rem.push_back("can");
                                             //  planning_scene_interface_ptr->removeCollisionObjects(rem);
@@ -172,7 +171,7 @@ void pick_go_cb(std_msgs::Empty) {
                                             if (group_ptr->move()) {
                                                 ROS_INFO("Arm is up");
                                                 ROS_INFO("Done!");
-                                                done=true;
+
 
                                             }
 
@@ -187,7 +186,7 @@ void pick_go_cb(std_msgs::Empty) {
             }
         }
     }
-    if (!done) group_ptr->detachObject("can");
+    if (attached) group_ptr->detachObject("can");
     moving=false;
     pub_can=true;
 }
@@ -295,7 +294,7 @@ void head_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>&
 
         update_collision_objects(head_object_pose.pose);
         bool ik=checkIK(pre_grasp_pose(head_object_pose));
-        object_pub.publish(head_object_pose);
+        head_object_pub.publish(head_object_pose);
     }
     catch (tf::TransformException &ex)
     {
@@ -316,7 +315,7 @@ void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& 
 
         // update_collision_objects(arm_object_pose.pose);
         //bool ik=checkIK(pre_grasp_pose(arm_object_pose));
-        object_pub.publish(head_object_pose);
+        arm_object_pub.publish(head_object_pose);
     }
     catch (tf::TransformException &ex)
     {
@@ -412,7 +411,8 @@ int main(int argc, char **argv) {
 
 
     pick_pub=n.advertise<geometry_msgs::PoseStamped>("pick_moveit_goal", 10);
-    object_pub=n.advertise<geometry_msgs::PoseStamped>("objects_in_base_frame", 10);
+    head_object_pub=n.advertise<geometry_msgs::PoseStamped>("head_objects_in_base_frame", 10);
+    arm_object_pub=n.advertise<geometry_msgs::PoseStamped>("arm_objects_in_base_frame", 10);
     pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("/pan_tilt_trajectory_controller/command", 2);
 
 
