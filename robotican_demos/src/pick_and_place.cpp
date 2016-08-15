@@ -28,24 +28,9 @@
 
 typedef actionlib::SimpleActionClient<control_msgs::GripperCommandAction> GripperClient;
 
-robot_state::GroupStateValidityCallbackFn state_validity_callback_fn_;
-const robot_model::JointModelGroup* joint_model_group;
-
-bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
-                               const robot_model::JointModelGroup *joint_model_group,
-                               const double *ik_solution);
-
-moveit::planning_interface::PlanningSceneInterface *planning_scene_interface_ptr;
-
-planning_scene::PlanningScenePtr *planning_scene_ptr;
-robot_state::RobotStatePtr *robot_state_ptr;
-
-tf::TransformListener *listener_ptr;
-tf::MessageFilter<geometry_msgs::PoseStamped> *head_tf_filter_,*arm_tf_filter_;
 
 
-std::vector<moveit_msgs::CollisionObject> col_objects;
-
+void gripper_constraints(bool state);
 void head_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr);
 void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr);
 void update_collision_objects(geometry_msgs::Pose pose);
@@ -55,20 +40,26 @@ bool gripper_cmd(double gap,double effort);
 bool arm_cmd(geometry_msgs::PoseStamped target_pose1);
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object);
 bool lift_arm();
-
-geometry_msgs::PoseStamped head_object_pose,arm_object_pose;
-
-
 void pick_go_cb(std_msgs::Empty);
 void button_go_cb(std_msgs::Empty);
 void look_down();
 
-GripperClient *gripperClient_ptr;
+robot_state::GroupStateValidityCallbackFn state_validity_callback_fn_;
+const robot_model::JointModelGroup* joint_model_group;
+bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
+                               const robot_model::JointModelGroup *joint_model_group,
+                               const double *ik_solution);
 
+moveit::planning_interface::PlanningSceneInterface *planning_scene_interface_ptr;
+planning_scene::PlanningScenePtr *planning_scene_ptr;
+robot_state::RobotStatePtr *robot_state_ptr;
+tf::TransformListener *listener_ptr;
+tf::MessageFilter<geometry_msgs::PoseStamped> *head_tf_filter_,*arm_tf_filter_;
+std::vector<moveit_msgs::CollisionObject> col_objects;
+geometry_msgs::PoseStamped head_object_pose,arm_object_pose;
+GripperClient *gripperClient_ptr;
 moveit::planning_interface::MoveGroup *group_ptr;
 
-
-geometry_msgs::PoseStamped pick_pose;
 double pick_yaw=0;
 bool have_goal=false;
 bool moving=false;
@@ -86,7 +77,7 @@ geometry_msgs::PoseStamped moveit_goal;
 bool lift_arm(){
     group_ptr->setNamedTarget("pre_grasp1");
     moveit::planning_interface::MoveGroup::Plan my_plan;
-         return group_ptr->plan(my_plan);
+    return group_ptr->plan(my_plan);
 
 }
 
@@ -127,33 +118,34 @@ geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
     target_pose.pose.position.y = dest.y();
     target_pose.pose.position.z +=0;
     target_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw );
- pick_pub.publish(target_pose);
+    pick_pub.publish(target_pose);
 
     return target_pose;
 
 }
 
 void pick_go_cb(std_msgs::Empty) {
-bool done=false;
+    bool done=false;
     if (!moving) moving=true;
     ROS_INFO("Openning gripper...");
     if(gripper_cmd(0.14,0.0)) {
         ROS_INFO("Gripper is oppend, planning for pre-grasping..");
         ros::Duration(2).sleep();//wait for re-detection
-        pick_pose=pre_grasp_pose(head_object_pose);
+        geometry_msgs::PoseStamped pick_pose=pre_grasp_pose(head_object_pose);
         if (arm_cmd(pick_pose)) {
             ROS_INFO("Arm planning is done, moving arm..");
             if(group_ptr->move()) {
                 ROS_INFO("Ready to grasp");
-                if(gripper_cmd(0.0,0.4)) {
+                if(gripper_cmd(0.01,0.4)) {
                     ROS_INFO("Grasping is done");
+                      gripper_constraints(true);
                     pub_can=false;
                     std::vector<std::string> touch_links;
                     touch_links.push_back("left_finger_link");
                     touch_links.push_back("right_finger_link");
                     touch_links.push_back("wrist_link");
                     touch_links.push_back("gripper_link");
-                   group_ptr->attachObject("can","gripper_link",touch_links);
+                    group_ptr->attachObject("can","gripper_link",touch_links);
                     ros::Duration(8).sleep(); //wait for attach
                     ROS_INFO("Lifting object...");
                     if (lift_arm()) {
@@ -169,11 +161,12 @@ bool done=false;
                                     if(gripper_cmd(0.14,0.0)) {
                                         ros::Duration(5).sleep(); //wait for deattach
                                         ROS_INFO("Lifting arm up...");
+                                          gripper_constraints(false);
                                         if (lift_arm()) {
-                                             group_ptr->detachObject("can");
-                                           //  std::vector<std::string> rem;
-                                           //  rem.push_back("can");
-                                           //  planning_scene_interface_ptr->removeCollisionObjects(rem);
+                                            group_ptr->detachObject("can");
+                                            //  std::vector<std::string> rem;
+                                            //  rem.push_back("can");
+                                            //  planning_scene_interface_ptr->removeCollisionObjects(rem);
 
                                             ROS_INFO("Arm planning is done, moving arm up..");
                                             if (group_ptr->move()) {
@@ -235,8 +228,8 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
     double y=target_pose1.pose.position.y;
     tf::Quaternion q( target_pose1.pose.orientation.x,  target_pose1.pose.orientation.y,  target_pose1.pose.orientation.z, target_pose1.pose.orientation.w);
     double roll, pitch, yaw;
-     tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
-//ROS_INFO("%f",yaw*180/M_PI);
+    tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
+    //ROS_INFO("%f",yaw*180/M_PI);
 
     for (int n=0;n<sizeof(dx)/sizeof(double);n++) {
         for (int m=0;m<sizeof(dy)/sizeof(double);m++) {
@@ -297,13 +290,13 @@ void head_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>&
     {
         listener_ptr->transformPose("base_footprint", *point_ptr, head_object_pose);
         head_object_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
-head_object_pose.header.frame_id="base_footprint";
-head_object_pose.header.stamp=ros::Time::now();
+        head_object_pose.header.frame_id="base_footprint";
+        head_object_pose.header.stamp=ros::Time::now();
 
-            update_collision_objects(head_object_pose.pose);
-            bool ik=checkIK(pre_grasp_pose(head_object_pose));
-            object_pub.publish(head_object_pose);
- }
+        update_collision_objects(head_object_pose.pose);
+        bool ik=checkIK(pre_grasp_pose(head_object_pose));
+        object_pub.publish(head_object_pose);
+    }
     catch (tf::TransformException &ex)
     {
         printf ("Failure %s\n", ex.what()); //Print exception which was caught
@@ -318,13 +311,13 @@ void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& 
     {
         listener_ptr->transformPose("base_footprint", *point_ptr, arm_object_pose);
         arm_object_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
-arm_object_pose.header.frame_id="base_footprint";
-arm_object_pose.header.stamp=ros::Time::now();
+        arm_object_pose.header.frame_id="base_footprint";
+        arm_object_pose.header.stamp=ros::Time::now();
 
-           // update_collision_objects(arm_object_pose.pose);
-            //bool ik=checkIK(pre_grasp_pose(arm_object_pose));
-object_pub.publish(head_object_pose);
- }
+        // update_collision_objects(arm_object_pose.pose);
+        //bool ik=checkIK(pre_grasp_pose(arm_object_pose));
+        object_pub.publish(head_object_pose);
+    }
     catch (tf::TransformException &ex)
     {
         printf ("Failure %s\n", ex.what()); //Print exception which was caught
@@ -334,7 +327,7 @@ object_pub.publish(head_object_pose);
 void update_collision_objects(geometry_msgs::Pose pose) {
 
     geometry_msgs::Pose table=pose;
-     table.position.z-=0.1;
+    table.position.z-=0.1;
     col_objects[0].primitive_poses.clear();
     col_objects[0].primitive_poses.push_back(table);
 
@@ -347,10 +340,39 @@ void update_collision_objects(geometry_msgs::Pose pose) {
 }
 
 
+void gripper_constraints(bool apply) {
+
+     moveit_msgs::Constraints c=group_ptr->getPathConstraints();
+
+    if ((apply)&&(c.orientation_constraints.size()==0)) {
+
+        moveit_msgs::OrientationConstraint ocm;
+        ocm.link_name = "gripper_link";
+        ocm.header.frame_id = "gripper_link";
+        ocm.orientation.x = 0;
+        ocm.orientation.y = 0;
+        ocm.orientation.z = 0;
+        ocm.orientation.w = 1;
+        ocm.absolute_x_axis_tolerance = 10.0*M_PI/180.0;
+        ocm.absolute_y_axis_tolerance = 10.0*M_PI/180.0;
+        ocm.absolute_z_axis_tolerance = M_PI;
+        ocm.weight = 1.0;
+        moveit_msgs::Constraints constr;
+        constr.orientation_constraints.push_back(ocm);
+        group_ptr->setPathConstraints(constr);
+        ROS_INFO("Applying gripper orientation constraints");
+    }
+    else if (!apply) {
+        group_ptr->clearPathConstraints();
+        ROS_INFO("Clearing gripper orientation constraints");
+    }
+}
+
+
 int main(int argc, char **argv) {
 
     ros::init(argc, argv, "pick_and_plce_node");
-    ros::AsyncSpinner spinner(4);
+    ros::AsyncSpinner spinner(2);
 
 
     ros::NodeHandle pn("~");
@@ -365,7 +387,9 @@ int main(int argc, char **argv) {
     pn.param<std::string>("object_name_arm_camera", object_name_arm_camera, "sr300_object");
     std::string arm_topic="/detected_objects/"+object_name_arm_camera;
 
-
+    double MaxAccelerationScalingFactor,MaxVelocityScalingFactor;
+ pn.param<double>("MaxAccelerationScalingFactor", MaxAccelerationScalingFactor, 0.01);
+ pn.param<double>("MaxVelocityScalingFactor", MaxVelocityScalingFactor, 0.5);
 
     ROS_INFO("Waiting for the moveit action server to come up");
     moveit::planning_interface::MoveGroup group("arm");
@@ -375,9 +399,9 @@ int main(int argc, char **argv) {
 
 
     // group.allowReplanning(true);
-    group.setMaxVelocityScalingFactor(0.5);
-    group.setMaxAccelerationScalingFactor(0.01);
-    group.setPlanningTime(1.0);
+    group.setMaxVelocityScalingFactor(MaxVelocityScalingFactor);
+    group.setMaxAccelerationScalingFactor(MaxAccelerationScalingFactor);
+    group.setPlanningTime(5.0);
     group.setNumPlanningAttempts(30);
     group.setPlannerId("RRTConnectkConfigDefault");
     // group.setPlannerId("RRTstarkConfigDefault");
@@ -473,20 +497,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    moveit_msgs::OrientationConstraint ocm;
-    ocm.link_name = "gripper_link";
-    ocm.header.frame_id = "gripper_link";
-    ocm.orientation.x = 0;
-    ocm.orientation.y = 0;
-    ocm.orientation.z = 0;
-    ocm.orientation.w = 1;
-    ocm.absolute_x_axis_tolerance = 10.0*M_PI/180.0;
-    ocm.absolute_y_axis_tolerance = 10.0*M_PI/180.0;
-    ocm.absolute_z_axis_tolerance = M_PI;
-    ocm.weight = 1.0;
-    moveit_msgs::Constraints constr;
-    constr.orientation_constraints.push_back(ocm);
-    group.setPathConstraints(constr);
+
 
 
     ready=true;
