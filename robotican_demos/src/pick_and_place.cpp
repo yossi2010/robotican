@@ -41,11 +41,13 @@ planning_scene::PlanningScenePtr *planning_scene_ptr;
 robot_state::RobotStatePtr *robot_state_ptr;
 
 tf::TransformListener *listener_ptr;
-tf::MessageFilter<geometry_msgs::PoseStamped> * tf_filter_;
+tf::MessageFilter<geometry_msgs::PoseStamped> *head_tf_filter_,*arm_tf_filter_;
 
 
 std::vector<moveit_msgs::CollisionObject> col_objects;
 
+void head_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr);
+void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr);
 void update_collision_objects(geometry_msgs::Pose pose);
 bool checkIK(geometry_msgs::PoseStamped pose);
 void go(tf::Transform  dest);
@@ -54,7 +56,7 @@ bool arm_cmd(geometry_msgs::PoseStamped target_pose1);
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object);
 geometry_msgs::PoseStamped lift_arm();
 
-geometry_msgs::PoseStamped object_pose;
+geometry_msgs::PoseStamped head_object_pose,arm_object_pose;
 
 
 void pick_go_cb(std_msgs::Empty);
@@ -64,7 +66,7 @@ void look_down();
 GripperClient *gripperClient_ptr;
 
 moveit::planning_interface::MoveGroup *group_ptr;
-std::string object_name;
+
 
 geometry_msgs::PoseStamped pick_pose;
 double pick_yaw=0;
@@ -74,7 +76,7 @@ bool ready=false;
 bool pub_can=true;
 
 
-ros::Publisher goal_pub;
+ros::Publisher pick_pub,object_pub;
 ros::Publisher pub_controller_command;
 
 double wrist_distance_from_object=0.10;
@@ -130,7 +132,7 @@ geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
     target_pose.pose.position.y = dest.y();
     target_pose.pose.position.z +=0;
     target_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw );
- goal_pub.publish(target_pose);
+ pick_pub.publish(target_pose);
 
     return target_pose;
 
@@ -143,7 +145,7 @@ bool done=false;
     if(gripper_cmd(0.14,0.0)) {
         ROS_INFO("Gripper is oppend, planning for pre-grasping..");
         ros::Duration(2).sleep();//wait for re-detection
-        pick_pose=pre_grasp_pose(object_pose);
+        pick_pose=pre_grasp_pose(head_object_pose);
         if (arm_cmd(pick_pose)) {
             ROS_INFO("Arm planning is done, moving arm..");
             if(group_ptr->move()) {
@@ -254,7 +256,7 @@ bool arm_cmd( geometry_msgs::PoseStamped target_pose1) {
 
 
                     if (checkIK(target_pose1)) {
-                        goal_pub.publish(target_pose1);
+                        pick_pub.publish(target_pose1);
 
 
                         group_ptr->setPoseTarget(target_pose1);
@@ -293,27 +295,41 @@ bool gripper_cmd(double gap,double effort) {
 }
 
 //  Callback to register with tf::MessageFilter to be called when transforms are available
-void msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr)
+void head_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr)
 {
     if ((!ready)||(moving)) return;
     try
     {
-        listener_ptr->transformPose("base_footprint", *point_ptr, object_pose);
-        object_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
-object_pose.header.frame_id="base_footprint";
-object_pose.header.stamp=ros::Time::now();
+        listener_ptr->transformPose("base_footprint", *point_ptr, head_object_pose);
+        head_object_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
+head_object_pose.header.frame_id="base_footprint";
+head_object_pose.header.stamp=ros::Time::now();
 
-            update_collision_objects(object_pose.pose);
-
-            // tf::Quaternion q( pose_in_map.pose.orientation.x,  pose_in_map.pose.orientation.y,  pose_in_map.pose.orientation.z, pose_in_map.pose.orientation.w);
-            // double roll, pitch, yaw;
-            //tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
-            // ROS_INFO("%f  %f  %f",roll*180/M_PI,pitch*180/M_PI,yaw*180/M_PI);
-            bool ik=checkIK(pre_grasp_pose(object_pose));
-
-
-        //printf("point of object in frame of base_footprint Position(x:%f y:%f z:%f)\n", object_pose.pose.position.x, object_pose.pose.position.y,object_pose.pose.position.z);
+            update_collision_objects(head_object_pose.pose);
+            bool ik=checkIK(pre_grasp_pose(head_object_pose));
+            object_pub.publish(head_object_pose);
+ }
+    catch (tf::TransformException &ex)
+    {
+        printf ("Failure %s\n", ex.what()); //Print exception which was caught
     }
+}
+
+//  Callback to register with tf::MessageFilter to be called when transforms are available
+void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr)
+{
+    if ((!ready)||(moving)) return;
+    try
+    {
+        listener_ptr->transformPose("base_footprint", *point_ptr, arm_object_pose);
+        arm_object_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
+arm_object_pose.header.frame_id="base_footprint";
+arm_object_pose.header.stamp=ros::Time::now();
+
+           // update_collision_objects(arm_object_pose.pose);
+            //bool ik=checkIK(pre_grasp_pose(arm_object_pose));
+object_pub.publish(head_object_pose);
+ }
     catch (tf::TransformException &ex)
     {
         printf ("Failure %s\n", ex.what()); //Print exception which was caught
@@ -348,8 +364,11 @@ int main(int argc, char **argv) {
     ROS_INFO("Hello");
 
     pn.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.03);
-    pn.param<std::string>("object_name", object_name, "kinect2_object");
-    std::string topic="/detected_objects/"+object_name;
+    std::string object_name_head_camera,object_name_arm_camera;
+    pn.param<std::string>("object_name_head_camera", object_name_head_camera, "kinect2_object");
+    std::string head_topic="/detected_objects/"+object_name_head_camera;
+    pn.param<std::string>("object_name_arm_camera", object_name_arm_camera, "sr300_object");
+    std::string arm_topic="/detected_objects/"+object_name_arm_camera;
 
 
 
@@ -373,16 +392,23 @@ int main(int argc, char **argv) {
     ros::Subscriber pick_sub = n.subscribe("pick_go", 1, pick_go_cb);
 
 
-    goal_pub=n.advertise<geometry_msgs::PoseStamped>("pick_moveit_goal", 10);
+    pick_pub=n.advertise<geometry_msgs::PoseStamped>("pick_moveit_goal", 10);
+    object_pub=n.advertise<geometry_msgs::PoseStamped>("objects_in_base_frame", 10);
     pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("/pan_tilt_trajectory_controller/command", 2);
 
 
     tf::TransformListener listener;
     listener_ptr=&listener;
-    message_filters::Subscriber<geometry_msgs::PoseStamped> point_sub_;
-    point_sub_.subscribe(n, topic, 10);
-    tf_filter_ = new tf::MessageFilter<geometry_msgs::PoseStamped>(point_sub_, listener, "base_footprint", 10);
-    tf_filter_->registerCallback( boost::bind(msgCallback, _1) );
+
+    message_filters::Subscriber<geometry_msgs::PoseStamped> head_point_sub_;
+    head_point_sub_.subscribe(n, head_topic, 10);
+    head_tf_filter_ = new tf::MessageFilter<geometry_msgs::PoseStamped>(head_point_sub_, listener, "base_footprint", 10);
+    head_tf_filter_->registerCallback( boost::bind(head_msgCallback, _1) );
+
+    message_filters::Subscriber<geometry_msgs::PoseStamped> arm_point_sub_;
+    arm_point_sub_.subscribe(n, arm_topic, 10);
+    arm_tf_filter_ = new tf::MessageFilter<geometry_msgs::PoseStamped>(arm_point_sub_, listener, "base_footprint", 10);
+    arm_tf_filter_->registerCallback( boost::bind(arm_msgCallback, _1) );
 
 
 
