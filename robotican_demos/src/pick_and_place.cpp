@@ -54,7 +54,7 @@ void go(tf::Transform  dest);
 bool gripper_cmd(double gap,double effort);
 bool arm_cmd(geometry_msgs::PoseStamped target_pose1);
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object);
-geometry_msgs::PoseStamped lift_arm();
+bool lift_arm();
 
 geometry_msgs::PoseStamped head_object_pose,arm_object_pose;
 
@@ -83,16 +83,11 @@ double wrist_distance_from_object=0.10;
 geometry_msgs::PoseStamped moveit_goal;
 
 
-geometry_msgs::PoseStamped lift_arm(){
-    geometry_msgs::PoseStamped target_pose1;
-    target_pose1.header.frame_id="map";
-    target_pose1.header.stamp=ros::Time::now();
-    target_pose1.pose.position.x = 0.5;
-    target_pose1.pose.position.y =  0.0;
-    target_pose1.pose.position.z =  0.9;
-    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
+bool lift_arm(){
+    group_ptr->setNamedTarget("zero");
+    moveit::planning_interface::MoveGroup::Plan my_plan;
+         return group_ptr->plan(my_plan);
 
-    return target_pose1;
 }
 
 void look_down() {
@@ -161,7 +156,7 @@ bool done=false;
                    group_ptr->attachObject("can","gripper_link",touch_links);
                     ros::Duration(8).sleep(); //wait for attach
                     ROS_INFO("Lifting object...");
-                    if (arm_cmd(lift_arm())) {
+                    if (lift_arm()) {
                         ROS_INFO("Arm planning is done, moving arm up..");
                         if (group_ptr->move()) {
                             ROS_INFO("Arm is up, placing on table...");
@@ -174,7 +169,7 @@ bool done=false;
                                     if(gripper_cmd(0.14,0.0)) {
                                         ros::Duration(5).sleep(); //wait for deattach
                                         ROS_INFO("Lifting arm up...");
-                                        if (arm_cmd(lift_arm())) {
+                                        if (lift_arm()) {
                                              group_ptr->detachObject("can");
                                            //  std::vector<std::string> rem;
                                            //  rem.push_back("can");
@@ -471,7 +466,7 @@ int main(int argc, char **argv) {
     ros::Duration(2.0).sleep();
     ROS_INFO("Looking down...");
     look_down();
-    if (arm_cmd(lift_arm())) {
+    if (lift_arm()) {
         ROS_INFO("Arm planning is done, moving arm up..");
         if (group_ptr->move()) {
             ROS_INFO("Arm is up");
