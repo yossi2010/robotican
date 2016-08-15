@@ -84,7 +84,7 @@ geometry_msgs::PoseStamped moveit_goal;
 
 
 bool lift_arm(){
-    group_ptr->setNamedTarget("zero");
+    group_ptr->setNamedTarget("pre_grasp1");
     moveit::planning_interface::MoveGroup::Plan my_plan;
          return group_ptr->plan(my_plan);
 
