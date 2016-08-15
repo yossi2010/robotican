@@ -5,74 +5,67 @@
 
 namespace robotican_hardware {
 
-    void KomodoRobot::rearRightMotorStateCallback(const ric_board::Motor::ConstPtr &msg) {
-        _rearRightMotorJointInfo.second.position = msg->position;
-        _rearRightMotorJointInfo.second.velocity = msg->velocity;
-    }
-
-    void KomodoRobot::rearLeftMotorStateCallback(const ric_board::Motor::ConstPtr &msg) {
-        _rearLeftMotorJointInfo.second.position = msg->position;
-        _rearLeftMotorJointInfo.second.velocity = msg->velocity;
-    }
 
     KomodoRobot::KomodoRobot() {
-        _haveFourMotors = true;
-        std::string rearLeftMotorPub, rearRightMotorPub, rearLeftMotorSub,
-                rearRightMotorSub, rearLeftJointName, rearRightJointName;
+        std::string  leftFingerPubTopic, leftFingerSubTopic, leftFingerJointName,
+                rightFingerPubTopic, rightFingerSubTopic, rightFingerJointName;
 
-        if(!_nodeHandle.getParam("rear_left_motor_joint_name", rearLeftJointName)
-           || !_nodeHandle.getParam("rear_right_motor_joint_name", rearRightJointName)) {    /* parameters that must be instalize for the robot to work*/
-
-            ros_utils::rosError("The robot operator need to provide parameters : "
-                                        "'rear_left_motor_joint_name', 'rear_right_motor_joint_name' to run the robot");
+        _dynamixelProController = NULL;
+        if(!_nodeHandle.getParam("left_finger_topic_pub", leftFingerPubTopic) ||
+           !_nodeHandle.getParam("left_finger_topic_sub", leftFingerSubTopic) ||
+           !_nodeHandle.getParam("left_finger_joint", leftFingerJointName) ||
+           !_nodeHandle.getParam("right_finger_topic_pub", rightFingerPubTopic) ||
+           !_nodeHandle.getParam("right_finger_topic_sub", rightFingerSubTopic) ||
+           !_nodeHandle.getParam("right_finger_joint", rightFingerJointName)) {
+            /* parameters that must be instalize for the robot to work*/
             ros::shutdown();
         }
+        else {
+            bool haveArm = true;
+            ros::param::param<bool>("have_arm", haveArm, true);
+            if(haveArm) {
+                _dynamixelProController = new dynamixel_pro_controller::DynamixelProController(&_jointStateInterface, &_posVelJointInterface);
+                _dynamixelProController->startBroadcastingJointStates();
+            }
+            _first[0] = _first[1] = false;
+            _leftFingerCmd = _nodeHandle.advertise<std_msgs::Float64>(leftFingerPubTopic, 10);
+            _rightFingerCmd = _nodeHandle.advertise<std_msgs::Float64>(rightFingerPubTopic, 10);
 
-        if(!_nodeHandle.getParam("rear_left_motor_pub", rearLeftMotorPub)
-           || !_nodeHandle.getParam("rear_right_motor_pub", rearRightMotorPub)
-           || !_nodeHandle.getParam("rear_right_motor_sub", rearRightMotorSub)
-           || !_nodeHandle.getParam("rear_left_motor_sub", rearLeftMotorSub)) {
+            _leftFingerState = _nodeHandle.subscribe<dynamixel_msgs::JointState>(leftFingerSubTopic, 10,
+                                                                                 &KomodoRobot::leftFingerCallback, this);
+            _rightFingerState = _nodeHandle.subscribe<dynamixel_msgs::JointState>(rightFingerSubTopic, 10,
+                                                                                  &KomodoRobot::rightFingerCallback, this);
+            _leftFingerInfo = std::pair<std::string, JointInfo_t>(leftFingerJointName, JointInfo_t());
+            _rightFingerInfo = std::pair<std::string, JointInfo_t>(rightFingerJointName, JointInfo_t());
 
-            _nodeHandle.getParam("left_motor_sub", rearLeftMotorSub);
-            _nodeHandle.getParam("right_motor_sub", rearRightMotorSub);
-            _haveFourMotors = false;
+            hardware_interface::JointStateHandle leftJointStateHandle(_leftFingerInfo.first,
+                                                                      &_leftFingerInfo.second.position,
+                                                                      &_leftFingerInfo.second.velocity,
+                                                                      &_leftFingerInfo.second.effort);
+
+            hardware_interface::JointStateHandle rightJointStateHandle(_rightFingerInfo.first,
+                                                                       &_rightFingerInfo.second.position,
+                                                                       &_rightFingerInfo.second.velocity,
+                                                                       &_rightFingerInfo.second.effort);
+            _jointStateInterface.registerHandle(leftJointStateHandle);
+            _jointStateInterface.registerHandle(rightJointStateHandle);
+
+            hardware_interface::JointHandle leftJointHandle(_jointStateInterface.getHandle(_leftFingerInfo.first),
+                                                            &_leftFingerInfo.second.cmd);
+            hardware_interface::JointHandle rightJointHandle(_jointStateInterface.getHandle(_rightFingerInfo.first),
+                                                             &_rightFingerInfo.second.cmd);
+
+            _positionJointInterface.registerHandle(leftJointHandle);
+            _positionJointInterface.registerHandle(rightJointHandle);
         }
-
-        _rearLeftMotorJointInfo = std::pair<std::string, JointInfo_t>(rearLeftJointName, JointInfo_t());
-        _rearRightMotorJointInfo = (std::pair<std::string, JointInfo_t>(rearRightJointName, JointInfo_t()));
-
-        if(_haveFourMotors) {
-            _rearLeftMotorCmd = _nodeHandle.advertise<std_msgs::Float32>(rearLeftMotorPub, 10);
-            _rearRightMotorCmd = _nodeHandle.advertise<std_msgs::Float32>(rearRightMotorPub, 10);
-        }
-
-        _rearLeftMotorState = _nodeHandle.subscribe<ric_board::Motor>(rearLeftMotorSub, 10 ,&KomodoRobot::rearLeftMotorStateCallback, this);
-        _rearRightMotorState = _nodeHandle.subscribe<ric_board::Motor>(rearRightMotorSub, 10 ,&KomodoRobot::rearRightMotorStateCallback, this);
-
-        hardware_interface::JointStateHandle leftJointStateHandle(_rearLeftMotorJointInfo.first,
-                                                                  &_rearLeftMotorJointInfo.second.position,
-                                                                  &_rearLeftMotorJointInfo.second.velocity,
-                                                                  &_rearLeftMotorJointInfo.second.effort);
-        hardware_interface::JointStateHandle rightJointStateHandle(_rearRightMotorJointInfo.first,
-                                                                   &_rearRightMotorJointInfo.second.position,
-                                                                   &_rearRightMotorJointInfo.second.velocity,
-                                                                   &_rearRightMotorJointInfo.second.effort);
-
-        _jointStateInterface.registerHandle(leftJointStateHandle);
-        _jointStateInterface.registerHandle(rightJointStateHandle);
-
-        hardware_interface::JointHandle leftJointHandle(_jointStateInterface.getHandle(_rearLeftMotorJointInfo.first),
-                                                        &_rearLeftMotorJointInfo.second.cmd);
-        hardware_interface::JointHandle rightJointHandle(_jointStateInterface.getHandle(_rearRightMotorJointInfo.first),
-                                                         &_rearRightMotorJointInfo.second.cmd);
-
-        _velocityJointInterface.registerHandle(leftJointHandle);
-        _velocityJointInterface.registerHandle(rightJointHandle);
 
     }
 
     KomodoRobot::~KomodoRobot() {
-
+        if(_dynamixelProController != NULL) {
+            delete _dynamixelProController;
+            _dynamixelProController = NULL;
+        }
     }
 
     void KomodoRobot::registerInterfaces() {
@@ -85,14 +78,40 @@ namespace robotican_hardware {
 
     void KomodoRobot::write() {
         RobotBase::write();
-        if(_haveFourMotors) {
-            std_msgs::Float32 leftMsg, rightMsg;
+        if(_dynamixelProController != NULL)
+            _dynamixelProController->write();
+        std_msgs::Float64 leftMsg, rightMsg;
+        if (_first[0] && _first[1]) {
+            leftMsg.data = _leftFingerInfo.second.cmd;
+            rightMsg.data = _rightFingerInfo.second.cmd;
 
-            leftMsg.data = _rearLeftMotorJointInfo.second.cmd;
-            rightMsg.data = _rearRightMotorJointInfo.second.cmd;
 
-            _rearLeftMotorCmd.publish(leftMsg);
-            _rearRightMotorCmd.publish(rightMsg);
+            _leftFingerCmd.publish(leftMsg);
+            _rightFingerCmd.publish(rightMsg);
+        }
+
+
+    }
+
+    void KomodoRobot::leftFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg) {
+        _leftFingerInfo.second.position = msg->current_pos;
+        _leftFingerInfo.second.velocity = msg->velocity;
+        _leftFingerInfo.second.effort = msg->load;
+        if (!_first[0]) {
+
+            _leftFingerInfo.second.cmd = _leftFingerInfo.second.position;
+            _first[0]=true;
+        }
+    }
+
+    void KomodoRobot::rightFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg) {
+        _rightFingerInfo.second.position = msg->current_pos;
+        _rightFingerInfo.second.velocity = msg->velocity;
+        _rightFingerInfo.second.effort = msg->load;
+        if (!_first[1]) {
+
+            _rightFingerInfo.second.cmd = _rightFingerInfo.second.position;
+            _first[1]=true;
         }
     }
 }
