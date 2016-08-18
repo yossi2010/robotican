@@ -110,28 +110,28 @@ namespace gripper_action_controller
         Commands command_struct_, command_struct_rt_; // pre-allocated memory that is re-used to set the realtime buffer
 
         double gap2Pos(double gap) {
-        double max_gap=0.15;
-double rad_when_stright=0.0855; //full_gap=0.04
-double half_gap_on_zero_rad=0.02;
-double tip_r=0.09;
+            double max_gap=0.15;
+            double rad_when_stright=0.0855; //full_gap=0.04
+            double half_gap_on_zero_rad=0.02;
+            double tip_r=0.09;
 
-if (gap  <0) gap=0;
-else if (gap>max_gap) gap=max_gap;
+            if (gap  <0) gap=0;
+            else if (gap>max_gap) gap=max_gap;
 
 
-                double computeGap = ((gap / 2.0f) - half_gap_on_zero_rad) / tip_r;
-                const double gap2Pos = asin(computeGap) - rad_when_stright;
-                return gap2Pos;
+            double computeGap = ((gap / 2.0f) - half_gap_on_zero_rad) / tip_r;
+            const double gap2Pos = asin(computeGap) - rad_when_stright;
+            return gap2Pos;
 
         }
-        
+
         double pos2Gap(double pos) {
-double rad_when_stright=0.0855;
-double half_gap_on_zero_rad=0.02;
-double tip_r=0.09;
+            double rad_when_stright=0.0855;
+            double half_gap_on_zero_rad=0.02;
+            double tip_r=0.09;
             return 2 * (half_gap_on_zero_rad + tip_r * sin(pos + rad_when_stright));
         }
-        
+
     private:
         double _lastPosition;
         typedef actionlib::ActionServer<control_msgs::GripperCommandAction>                         ActionServer;
