@@ -23,25 +23,31 @@ private:
     ros::Subscriber _rightFingerState;
     std::pair<std::string, dynamixel_pro_controller::JointInfo_t> _leftFingerInfo;
     std::pair<std::string, dynamixel_pro_controller::JointInfo_t> _rightFingerInfo;
-    bool _first;
+    bool _first[2];
 
     void leftFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg) {
         _leftFingerInfo.second.position = msg->current_pos;
         _leftFingerInfo.second.velocity = msg->velocity;
         _leftFingerInfo.second.effort = msg->load;
+        if(!_first[1]) {
+            _leftFingerInfo.second.cmd_pos = _leftFingerInfo.second.position;
+            _first[1] = true;
+        }
     }
-
     void rightFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg) {
         _rightFingerInfo.second.position = msg->current_pos;
         _rightFingerInfo.second.velocity = msg->velocity;
         _rightFingerInfo.second.effort = msg->load;
+        if(!_first[0]) {
+            _rightFingerInfo.second.cmd_pos = _rightFingerInfo.second.position;
+            _first[0] = true;
+        }
     }
-
 public:
 
     Arm() : _jointStateInterface(), _posVelJointInterface(), _positionJointInterface(), _controller(&_jointStateInterface, &_posVelJointInterface) {
+        _first[0] = _first[1] = false;
         _time = ros::Time::now();
-        _first = true;
         std::string  leftFingerPubTopic, leftFingerSubTopic, leftFingerJointName,
                 rightFingerPubTopic, rightFingerSubTopic, rightFingerJointName;
         if(!_nodeHandle.getParam("left_finger_topic_pub", leftFingerPubTopic) ||
@@ -101,18 +107,13 @@ public:
 
     void read() {
         _controller.read();
-        if(_first) {
-            _leftFingerInfo.second.cmd_pos = _leftFingerInfo.second.position;
-            _rightFingerInfo.second.cmd_pos = _rightFingerInfo.second.position;
-            _first = false;
-        }
     }
 
     void write() {
         _controller.write();
         std_msgs::Float64 leftMsg, rightMsg;
 
-        if(_first) {
+        if(_first[0] && _first[1]) {
             leftMsg.data = _leftFingerInfo.second.cmd_pos;
             rightMsg.data = _rightFingerInfo.second.cmd_pos;
 
@@ -128,7 +129,7 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "arm_node");
     Arm arm;
     controller_manager::ControllerManager controllerManager(&arm);
-    ros::AsyncSpinner asyncSpinner(1);
+    ros::AsyncSpinner asyncSpinner(2);
     asyncSpinner.start();
     ros::Rate loopRate(100);
 

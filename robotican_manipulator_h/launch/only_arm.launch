@@ -1,0 +1,33 @@
+<launch>
+	<arg name="gazebo" default="false" />
+	
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+
+	<group unless="$(arg gazebo)">
+		<param name="robot_description" command="$(find xacro)/xacro.py '$(find robotican_manipulator_h)/models/manipulator_h.xacro'" />
+		<rosparam command="load" file="$(find robotican_manipulator_h)/config/gripper.yaml" />
+		<node name="arm_node" pkg="robotican_manipulator_h" type="arm_node" output="screen" >
+			<rosparam command="load" file="$(find robotican_manipulator_h)/config/arm_config.yaml" />
+		</node>
+
+		<node name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen">          
+		  <rosparam>
+                namespace: dxl_manager
+                serial_ports:
+                 gripper_port:
+                  port_name: "/dev/ttyUSB0"
+                  baud_rate: 57142
+                  min_motor_id: 1
+                  max_motor_id: 2
+                  update_rate: 20
+                </rosparam>
+		</node>
+				<node name="arm_controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
+		  args="--manager=dxl_manager
+				--port=gripper_port
+		left_finger_controller
+		right_finger_controller"
+				output="screen"/>
+
+	</group>
+</launch>
