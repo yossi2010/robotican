@@ -187,7 +187,7 @@
 
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="	  
       robot_state_controller
-	  mobile_base_controller
+      mobile_base_controller
 	  " />
      </group>
     <group if="$(arg arm)">

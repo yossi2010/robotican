@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot
-  name="armadillo_base_urdf" description="Armadillo robot base">
+  name="armadillo_base" description="ARMadillo robot base">
   
     <link name="base_footprint"/>
   
