@@ -70,6 +70,9 @@ namespace robotican_hardware {
 
     void KomodoRobot::registerInterfaces() {
         RobotBase::registerInterfaces();
+        registerInterface(&_positionJointInterface);
+        registerInterface(&_posVelJointInterface);
+
     }
 
     void KomodoRobot::read() {
