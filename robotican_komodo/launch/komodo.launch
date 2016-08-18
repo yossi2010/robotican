@@ -147,7 +147,7 @@
                   port_name: "/dev/ttyUSB0"
                   baud_rate: 57142
                   min_motor_id: 1
-                  max_motor_id: 4
+                  max_motor_id: 2
                   update_rate: 20
                 </rosparam>
 		</node>
@@ -156,7 +156,7 @@
 		  args="--manager=dxl_manager
 				--port=gripper_port
 		left_finger_controller
-		right_finger_controllerr"
+		right_finger_controller"
 				output="screen"/>
 
 </group>
@@ -176,8 +176,7 @@
 
   <group if="$(arg controllers)">
     
-    <include file="$(find robotican_common)/launch/head_action.launch"/>
-    
+ 
     <rosparam file="$(find robotican_komodo)/config/controllers.yaml" command="load"/>
     
     
@@ -189,8 +188,6 @@
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="	  
       robot_state_controller
 	  mobile_base_controller
-	  torso_controller
-	  pan_tilt_trajectory_controller
 	  " />
      </group>
     <group if="$(arg arm)">
