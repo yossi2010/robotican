@@ -156,7 +156,7 @@
     <limit
       effort="44.7"
       lower="-1.57"
-      upper="1.83"
+      upper="1.95"
       velocity="2.0" /> <!--3.455751915-->
   </joint>
   <link
