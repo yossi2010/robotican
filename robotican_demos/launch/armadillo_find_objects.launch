@@ -11,8 +11,7 @@
       <arg name="x" value="0.0"/>
       <arg name="y" value="0.0"/>
       <arg name="Y" value="0"/>
-      <!--  <arg name="kinect2" value="true"/>  -->  
-     <arg name="f200" value="true"/>     
+      <arg name="kinect2" value="true"/>  
     </include>
   </group>
   
@@ -21,16 +20,15 @@
       <arg name="x" value="0.0"/>
       <arg name="y" value="0.0"/>
       <arg name="Y" value="0"/>
-      <!-- <arg name="kinect2" value="true"/>   -->  
-      <arg name="f200" value="true"/> 
+      <arg name="kinect2" value="true"/>   
       <arg name="rqt" value="true"/> 
     </include>
   </group>
   
   <node name="find_object_node" pkg="robotican_common" type="find_objects_node" output="screen">
     <param name="~object_name" value="object"/>
-  <!-- <param name="~depth_topic" value="/kinect2/qhd/points"/> -->
-  <param name="~depth_topic" value="/sr300/depth/points"/> 
+  <param name="~depth_topic" value="/kinect2/qhd/points"/>
+
     <rosparam file="$(find robotican_demos)/config/red_object.yaml" command="load"/>
   </node>
   

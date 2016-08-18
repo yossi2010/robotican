@@ -1,101 +1,134 @@
 komodo: true
 
-CON_PORT: RiCBoard
-FILE_NAME: komodo_test
-URF0/publishHz: 20
-URF0/name: rear_urf
-URF0/frameId: Rear_URF_link
-URF0/type: 10
-URF0/port: 1
-URF1/publishHz: 50
-URF1/name: left_urf
-URF1/frameId: Left_URF_link
-URF1/type: 10
-URF1/port: 2
-URF2/publishHz: 50
-URF2/name: right_urf
-URF2/frameId: Right_URF_link
-URF2/type: 10
-URF2/port: 3
+left_finger_topic_pub: 'left_finger_controller/command'
+left_finger_topic_sub: 'left_finger_controller/state'
+left_finger_joint: 'left_finger_joint'
 
-closeLoop0/publishHz: 20
-closeLoop0/name: left_motor
-closeLoop0/LPFAlpha: 0.495
-closeLoop0/LPFHz: 447
-closeLoop0/driverAddress: 999
-closeLoop0/channel: 0
-closeLoop0/port: 2
-closeLoop0/PIDHz: 1000
-closeLoop0/kP: 7.0
-closeLoop0/kI: 14.0
-closeLoop0/kD: 0
-closeLoop0/limit: 1.0
-closeLoop0/maxSpeed: 16.0
-closeLoop0/cpr: 2503
-closeLoop0/timeout: 1000
-closeLoop0/motorType: 1
-closeLoop0/encoderType: 1
-closeLoop0/direction: 1
-closeLoop0/directionE: -1
+right_finger_topic_pub: 'right_finger_controller/command'
+right_finger_topic_sub: 'right_finger_controller/state'
+right_finger_joint: 'right_finger_joint'
 
-closeLoop1/publishHz: 20
-closeLoop1/name: right_motor
-closeLoop1/LPFAlpha: 0.7
-closeLoop1/LPFHz: 50
-closeLoop1/driverAddress: 999
-closeLoop1/channel: 1
-closeLoop1/port: 1
-closeLoop1/PIDHz: 1000
-closeLoop1/kP: 10.0
-closeLoop1/kI: 30.0
-closeLoop1/kD: 0
-closeLoop1/limit: 1.0
-closeLoop1/maxSpeed: 16.0
-closeLoop1/cpr: 2503
-closeLoop1/timeout: 1000
-closeLoop1/motorType: 1
-closeLoop1/encoderType: 1
-closeLoop1/direction: -1
-closeLoop1/directionE: 1
+                              
+# RiCBoard                                
+battery_pin: 17
+battery_voltage_divider_ratio: 46.85
+battery_max: 24.3
+battery_min: 21.0
+ 
+ultrasonic_size: 3
 
-IMU/publishHz: 20
-IMU/name: imu
-IMU/frameId: RiC_Frame
-IMU/camp: 0
-IMU/orientation: 0
-IMU/fusionHz: 50
-IMU/fuseGyro: 0
-GPS/publishHz: 10
-GPS/name: gps
-GPS/frameId: gps_link
-GPS/baudrate: 9600
-Battery/name: battery_monitor
-Battery/pubHz: 10
-Battery/voltageDividerRatio: 6
-emergency_switch0/pin: 27
-emergency_switch0/state: 2
-emergency_switch0/name: emergency_switch
-IMU_INIT: 1
-GPS_INIT: 1
-PPM_INIT: 0
-BAT_INIT: 1
-DIFF_INIT: 0
-DIFF_INIT_OP: 0
-DIFF_CLOSE_FOUR: 0
-closeLoopNum: 2
-switchNum: 0
-servoNum: 0
-relayNum: 0
-URFNum: 3
-openLoopNum: 0
-emergencySwitchNum: 1
+ultrasonic0_pin: 14
+ultrasonic0_frame_id: 'left_urf_link'
+ultrasonic0_topic_name: 'urf/left'
 
-left_motor_pub: 'left_motor/command'
-left_motor_sub: 'left_motor/feedback'
-right_motor_pub: 'right_motor/command'
-right_motor_sub: 'right_motor/feedback'
-left_motor_joint_name: 'fl_wheel_joint'
-right_motor_joint_name: 'fr_wheel_joint'
+ultrasonic1_pin: 15
+ultrasonic1_frame_id: 'right_urf_link'
+ultrasonic1_topic_name: 'urf/right'
 
-rear_left_motor_joint_name: 'rl_wheel_joint'
-rear_right_motor_joint_name: 'rr_wheel_joint'
+ultrasonic2_pin: 16
+ultrasonic2_frame_id: 'rear_urf_link'
+ultrasonic2_topic_name: 'urf/rear'
+
+
+close_motor_size: 2
+
+motor0_motor_type: 0
+motor0_encoder_pin_A: 27
+motor0_encoder_pin_B: 28
+motor0_lpf_hz_speed: 80
+motor0_lpf_hz_input: 1000
+motor0_lpf_alpha_speed: 0.27
+motor0_lpf_alpha_input: 1.0
+motor0_pid_hz: 1000
+motor0_ppr: 2503
+motor0_timeout: 0
+motor0_motor_direction: 1
+motor0_encoder_direction: -1
+motor0_kp: 7.0
+motor0_ki: 14.0
+motor0_kd: 0.0
+motor0_kff: 0.0
+motor0_max_set_point_speed: 21.872
+motor0_min_set_point_speed: -21.872
+motor0_max_set_point_position: 0.0
+motor0_min_set_point_position: 0.0
+motor0_limit: 0.2
+motor0_stop_limit_max: 25.0
+motor0_stop_limit_min: -25.0
+motor0_motor_address: 0
+motor0_motor_emergency_pin: 12
+motor0_motor_emergency_pin_type: 1
+motor0_joint: 'FL_wheel_joint'
+motor0_mode: 0
+motor0_bais_min: -1
+motor0_bais_max: 1
+
+
+motor1_motor_type: 0
+motor1_encoder_pin_A: 29
+motor1_encoder_pin_B: 30
+motor1_encoder_direction: 1
+motor1_lpf_hz_speed: 80
+motor1_lpf_hz_input: 1000
+motor1_lpf_alpha_speed: 0.27
+motor1_lpf_alpha_input: 1.0
+motor1_pid_hz: 1000
+motor1_ppr: 2503
+motor1_timeout: 0
+motor1_motor_direction: -1
+motor1_kp: 7.0
+motor1_ki: 14.0
+motor1_kd: 0.0
+motor1_kff: 0.0
+motor1_max_set_point_speed: 21.872
+motor1_min_set_point_speed: -21.872
+motor1_max_set_point_position: 0.0
+motor1_min_set_point_position: 0.0
+motor1_limit: 0.2
+motor1_stop_limit_max: 25.0
+motor1_stop_limit_min: -25.0
+motor1_motor_address: 1
+motor1_motor_emergency_pin: 12
+motor1_motor_emergency_pin_type: 1
+motor1_joint: 'FR_wheel_joint'
+motor1_mode: 0
+motor1_bais_min: -1
+motor1_bais_max: 1
+
+
+
+gps_baudrate: 9600
+gps_topic_name: 'gps'
+gps_frame_id: 'base_link'
+
+#RiCBoard
+
+
+
+left_finger_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: left_finger_joint
+    joint_speed: 0.2
+    max_torque: 0.1
+    motor:
+        id: 1
+        init: 2048
+        min: 1480
+        max: 2622
+
+right_finger_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: right_finger_joint
+    joint_speed: 0.2
+    max_torque: 0.1
+    motor:
+        id: 2
+        init: 2048
+        min: 1480
+        max: 2622
