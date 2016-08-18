@@ -74,6 +74,7 @@ namespace robotican_hardware {
         void buildDevices(hardware_interface::JointStateInterface*, hardware_interface::VelocityJointInterface*);
 
         void buildDevices(hardware_interface::JointStateInterface*, hardware_interface::PositionJointInterface*);
+//        void buildDevices(hardware_interface::JointStateInterface*, hardware_interface::PositionJointInterface*);
 
         void connect();
 

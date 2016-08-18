@@ -11,6 +11,7 @@
 #include <hardware_interface/robot_hw.h>
 #include <robotican_hardware_interface/ros_utils.h>
 #include <hardware_interface/joint_command_interface.h>
+#include <hardware_interface/imu_sensor_interface.h>
 #include <robotican_hardware_interface/Device.h>
 #include <robotican_hardware_interface/RiCBoardManager.h>
 
@@ -26,6 +27,7 @@ namespace robotican_hardware {
         ros::NodeHandle _nodeHandle;
         hardware_interface::JointStateInterface _jointStateInterface;
         hardware_interface::VelocityJointInterface _velocityJointInterface;
+        hardware_interface::ImuSensorInterface _imuSensorInterface;
 #ifdef RIC_BOARD_TEST
         hardware_interface::PositionJointInterface _positionJointInterface;
 #endif
