@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
-	<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="armadillo_with_arm" description="Armadillo robot">
+	<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="armadillo_robot" description="ARMadillo Robot">
 	<xacro:property name="M_PI" value="3.1415926535897931" />
 	
-	<!--    BASE ROBOT     -->
+	<!--    BASE      -->
 	<xacro:include filename="$(find robotican_armadillo)/description/models/armadillo_base.xacro" />
 	<!--      END          -->
 	
-	<!--    ELEV ROBOT     -->
+	<!--   TORSO     -->
 	<xacro:include filename="$(find robotican_armadillo)/description/models/armadillo_torso.xacro" />
 	<!--      END          -->
 	
-	<!--    ELEV ROBOT     -->
-	<xacro:include filename="$(find robotican_armadillo)/description/models/armadillo_arm.xacro" />
+	<!--    ARM     -->
+	<xacro:include filename="$(find robotican_manipulator_h)/models/manipulator_h.xacro" />
 	<!--      END          -->
 	
 	<!--    LOAD JOINTS    -->

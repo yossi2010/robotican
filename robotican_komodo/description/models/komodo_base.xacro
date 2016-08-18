@@ -75,7 +75,7 @@
     <visual>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="0 0 1.57" />
       <geometry>
         <mesh
           filename="package://robotican_komodo/description/meshes/RR_wheel_link.STL" />
@@ -128,7 +128,7 @@
     <visual>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="0 0 1.57" />
       <geometry>
         <mesh
           filename="package://robotican_komodo/description/meshes/RL_wheel_link.STL" />
@@ -181,7 +181,7 @@
     <visual>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="0 0 1.57" />
       <geometry>
         <mesh
           filename="package://robotican_komodo/description/meshes/FR_wheel_link.STL" />
@@ -234,7 +234,7 @@
     <visual>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="0 0 1.57" />
       <geometry>
         <mesh
           filename="package://robotican_komodo/description/meshes/FL_wheel_link.STL" />
@@ -601,57 +601,5 @@
     <axis
       xyz="0 0 0" />
   </joint>
-  <link
-    name="arm_link">
-    <inertial>
-      <origin
-        xyz="-0.022197 -1.9122E-07 0.044251"
-        rpy="0 0 0" />
-      <mass
-        value="1.3188" />
-      <inertia
-        ixx="0.0049508"
-        ixy="-6.559E-09"
-        ixz="-0.0011709"
-        iyy="0.0084361"
-        iyz="1.3268E-08"
-        izz="0.010567" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/arm_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.27843 0.2902 0.31765 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/arm_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="arm_joint"
-    type="fixed">
-    <origin
-      xyz="-0.11925 0 0.16716"
-      rpy="9.68E-16 -2.5959E-15 -1.3587E-14" />
-    <parent
-      link="base_link" />
-    <child
-      link="arm_link" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
+  
 </robot>

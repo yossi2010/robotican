@@ -1,3 +1,0 @@
-<launch>
-   <rosparam command="load" file="$(find armadillo_arm)/config/depth_sensor.yaml" />
-</launch>
