@@ -77,6 +77,8 @@ namespace robotican_hardware {
 
     void KomodoRobot::read() {
         RobotBase::read();
+        if(_dynamixelProController != NULL)
+            _dynamixelProController->read();
     }
 
     void KomodoRobot::write() {
