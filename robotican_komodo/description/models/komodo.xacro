@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-	<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="armadillo_robot" description="ARMadillo Robot">
+	<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="komodo_robot" description="Komodo Robot">
 	<xacro:property name="M_PI" value="3.1415926535897931" />
 	
 	<!--    BASE      -->
@@ -10,21 +10,21 @@
 	<xacro:include filename="$(find robotican_manipulator_h)/models/manipulator_h.xacro" />
 	<!--      END          -->
 	
-<link
+ <link
     name="arm_link">
     <inertial>
       <origin
         xyz="-0.022197 -1.9122E-07 0.044251"
         rpy="0 0 0" />
       <mass
-        value="1.3188" />
+        value="0.16757" />
       <inertia
-        ixx="0.0049508"
-        ixy="-6.559E-09"
-        ixz="-0.0011709"
-        iyy="0.0084361"
-        iyz="1.3268E-08"
-        izz="0.010567" />
+        ixx="0.00062908"
+        ixy="-8.3342E-10"
+        ixz="-0.00014877"
+        iyy="0.0010719"
+        iyz="1.6859E-09"
+        izz="0.0013427" />
     </inertial>
     <visual>
       <origin
@@ -37,7 +37,7 @@
       <material
         name="">
         <color
-          rgba="0.27843 0.2902 0.31765 1" />
+          rgba="0.79216 0.81961 0.93333 1" />
       </material>
     </visual>
     <collision>
@@ -55,7 +55,7 @@
     type="fixed">
     <origin
       xyz="-0.11925 0 0.16716"
-      rpy="9.68E-16 -2.5959E-15 -1.3587E-14" />
+      rpy="0 0 0" />
     <parent
       link="base_link" />
     <child
@@ -66,13 +66,12 @@
   
 	
 	<joint name="base_arm_joint" type="fixed">
-		<origin xyz="0.033 0 0.03575" rpy="0 0 0" />
+		<origin xyz="-0.091 0 0.093" rpy="0 0 0" />
 		<parent link="arm_link" />
 		<child link="base_arm_link" />
 		<axis xyz="0 0 0" />
 	</joint>
 	
-	<!--      END          -->
-	
+
 	
 </robot>

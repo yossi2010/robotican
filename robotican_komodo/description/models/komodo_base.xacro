@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <robot
-  name="Komodo_base">
+  name="robotican_komodo">
   <link
     name="base_link">
     <inertial>
       <origin
-        xyz="-0.029184 -0.0003442 0.0086835"
+        xyz="0.0030152 0.00057861 0.0749"
         rpy="0 0 0" />
       <mass
-        value="0.87157" />
+        value="2.0058" />
       <inertia
-        ixx="0.012492"
-        ixy="7.0693E-05"
-        ixz="-0.0019088"
-        iyy="0.027664"
-        iyz="-1.6685E-05"
-        izz="0.036797" />
+        ixx="0.025582"
+        ixy="0.0010034"
+        ixz="-0.0041152"
+        iyy="0.086418"
+        iyz="-3.8058E-05"
+        izz="0.091994" />
     </inertial>
     <visual>
       <origin
@@ -42,9 +42,9 @@
     </collision>
   </link>
   <link
-    name="base_footprint_link" />
+    name="base_footprint" />
   <joint
-    name="base_footprint_joint"
+    name="footprint_joint"
     type="fixed">
     <origin
       xyz="0 0 -0.1275"
@@ -52,100 +52,47 @@
     <parent
       link="base_link" />
     <child
-      link="base_footprint_link" />
+      link="base_footprint" />
     <axis
       xyz="0 0 0" />
-  </joint>
-  <link
-    name="RR_wheel_link">
-    <inertial>
-      <origin
-        xyz="1.2974E-05 -0.00017781 -1.1646E-05"
-        rpy="0 0 0" />
-      <mass
-        value="3.5882" />
-      <inertia
-        ixx="0.016234"
-        ixy="1.9586E-06"
-        ixz="-1.7465E-06"
-        iyy="0.029573"
-        iyz="-1.5657E-06"
-        izz="0.016234" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 1.57" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/RR_wheel_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.75294 0.75294 0.75294 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/RR_wheel_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="RR_wheel_joint"
-    type="continuous">
-    <origin
-      xyz="-0.165 -0.1893 0"
-      rpy="0 0 0" />
-    <parent
-      link="base_link" />
-    <child
-      link="RR_wheel_link" />
-    <axis
-      xyz="0 1 0" />
   </joint>
   <link
     name="RL_wheel_link">
     <inertial>
       <origin
-        xyz="-1.2974E-05 0.00017781 -1.1646E-05"
+        xyz="9.8684E-07 -9.3003E-05 -1.8753E-05"
         rpy="0 0 0" />
       <mass
-        value="3.5882" />
+        value="2.6829" />
       <inertia
-        ixx="0.016234"
-        ixy="1.9586E-06"
-        ixz="1.7465E-06"
-        iyy="0.029573"
-        iyz="1.5657E-06"
-        izz="0.016234" />
+        ixx="0.012758"
+        ixy="8.7952E-09"
+        ixz="-1.0406E-07"
+        iyy="0.023277"
+        iyz="2.0115E-06"
+        izz="0.012755" />
     </inertial>
     <visual>
       <origin
         xyz="0 0 0"
-        rpy="0 0 1.57" />
+        rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotican_komodo/description/meshes/RL_wheel_link.STL" />
+          filename="package://robotican_komodo/description/meshes/wheel_link.STL" />
       </geometry>
       <material
         name="">
         <color
-          rgba="0.75294 0.75294 0.75294 1" />
+          rgba="0.79216 0.81961 0.93333 1" />
       </material>
     </visual>
     <collision>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="${M_PI/2} 0 0" />
       <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/RL_wheel_link.STL" />
+	<!--  <mesh filename="package://robotican_komodo/description/meshes/wheel_link.STL" /> -->
+	  <cylinder  length="0.05" radius="0.127"/> 
       </geometry>
     </collision>
   </link>
@@ -153,7 +100,7 @@
     name="RL_wheel_joint"
     type="continuous">
     <origin
-      xyz="-0.165 0.1893 0"
+      xyz="-0.165 0.18955 0"
       rpy="0 0 0" />
     <parent
       link="base_link" />
@@ -163,95 +110,42 @@
       xyz="0 1 0" />
   </joint>
   <link
-    name="FR_wheel_link">
-    <inertial>
-      <origin
-        xyz="1.2974E-05 -0.00017781 -1.1646E-05"
-        rpy="0 0 0" />
-      <mass
-        value="3.5882" />
-      <inertia
-        ixx="0.016234"
-        ixy="1.9586E-06"
-        ixz="-1.7465E-06"
-        iyy="0.029573"
-        iyz="-1.5657E-06"
-        izz="0.016234" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 1.57" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/FR_wheel_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.75294 0.75294 0.75294 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/FR_wheel_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="FR_wheel_joint"
-    type="continuous">
-    <origin
-      xyz="0.165 -0.1893 0"
-      rpy="0 0 0" />
-    <parent
-      link="base_link" />
-    <child
-      link="FR_wheel_link" />
-    <axis
-      xyz="0 1 0" />
-  </joint>
-  <link
     name="FL_wheel_link">
     <inertial>
       <origin
-        xyz="-1.2974E-05 0.00017781 -1.1646E-05"
+        xyz="9.8687E-07 -9.3003E-05 -1.8753E-05"
         rpy="0 0 0" />
       <mass
-        value="3.5882" />
+        value="2.6829" />
       <inertia
-        ixx="0.016234"
-        ixy="1.9586E-06"
-        ixz="1.7466E-06"
-        iyy="0.029573"
-        iyz="1.5657E-06"
-        izz="0.016234" />
+        ixx="0.012758"
+        ixy="8.7932E-09"
+        ixz="-1.0406E-07"
+        iyy="0.023277"
+        iyz="2.0115E-06"
+        izz="0.012755" />
     </inertial>
     <visual>
       <origin
         xyz="0 0 0"
-        rpy="0 0 1.57" />
+        rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotican_komodo/description/meshes/FL_wheel_link.STL" />
+          filename="package://robotican_komodo/description/meshes/wheel_link.STL" />
       </geometry>
       <material
         name="">
         <color
-          rgba="0.75294 0.75294 0.75294 1" />
+          rgba="0.79216 0.81961 0.93333 1" />
       </material>
     </visual>
     <collision>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="${M_PI/2} 0 0" />
       <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/FL_wheel_link.STL" />
+	<!--  <mesh filename="package://robotican_komodo/description/meshes/wheel_link.STL" /> -->
+	  <cylinder  length="0.05" radius="0.127"/> 
       </geometry>
     </collision>
   </link>
@@ -259,7 +153,7 @@
     name="FL_wheel_joint"
     type="continuous">
     <origin
-      xyz="0.165 0.1893 0"
+      xyz="0.165 0.18955 0"
       rpy="0 0 0" />
     <parent
       link="base_link" />
@@ -269,20 +163,20 @@
       xyz="0 1 0" />
   </joint>
   <link
-    name="sensore_link">
+    name="RR_wheel_link">
     <inertial>
       <origin
-        xyz="0.026904 -0.00065726 0.048666"
+        xyz="-9.8675E-07 9.3004E-05 -1.8753E-05"
         rpy="0 0 0" />
       <mass
-        value="1.782" />
+        value="2.6829" />
       <inertia
-        ixx="0.013092"
-        ixy="-1.2273E-05"
-        ixz="-0.0070029"
-        iyy="0.069486"
-        iyz="-2.2444E-05"
-        izz="0.077109" />
+        ixx="0.012758"
+        ixy="8.801E-09"
+        ixz="1.0405E-07"
+        iyy="0.023277"
+        iyz="-2.0115E-06"
+        izz="0.012755" />
     </inertial>
     <visual>
       <origin
@@ -290,52 +184,52 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotican_komodo/description/meshes/sensore_link.STL" />
+          filename="package://robotican_komodo/description/meshes/wheel_link.STL" />
       </geometry>
       <material
         name="">
         <color
-          rgba="0.75294 0.75294 0.75294 1" />
+          rgba="0.79216 0.81961 0.93333 1" />
       </material>
     </visual>
     <collision>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="${M_PI/2} 0 0" />
       <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/sensore_link.STL" />
+	<!--  <mesh filename="package://robotican_komodo/description/meshes/wheel_link.STL" /> -->
+	  <cylinder  length="0.05" radius="0.127"/> 
       </geometry>
     </collision>
   </link>
   <joint
-    name="sensor_joint"
-    type="fixed">
+    name="RR_wheel_joint"
+    type="continuous">
     <origin
-      xyz="-0.009 0 0.0835"
-      rpy="-1.6176E-31 -2.6642E-15 5.5511E-17" />
+      xyz="-0.165 -0.18955 0"
+      rpy="0 0 0" />
     <parent
       link="base_link" />
     <child
-      link="sensore_link" />
+      link="RR_wheel_link" />
     <axis
-      xyz="0 0 0" />
+      xyz="0 1 0" />
   </joint>
   <link
-    name="left_urf_link">
+    name="FR_wheel_link">
     <inertial>
       <origin
-        xyz="-0.0094226 1.6889E-05 -0.00019318"
+        xyz="-9.867E-07 9.3004E-05 -1.8753E-05"
         rpy="0 0 0" />
       <mass
-        value="0.0027749" />
+        value="2.6829" />
       <inertia
-        ixx="1.2831E-07"
-        ixy="-1.5459E-10"
-        ixz="3.1103E-09"
-        iyy="1.1894E-07"
-        iyz="4.3527E-09"
-        izz="1.2843E-07" />
+        ixx="0.012758"
+        ixy="8.8036E-09"
+        ixz="1.0405E-07"
+        iyy="0.023277"
+        iyz="-2.0115E-06"
+        izz="0.012755" />
     </inertial>
     <visual>
       <origin
@@ -343,191 +237,62 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotican_komodo/description/meshes/left_urf_link.STL" />
+          filename="package://robotican_komodo/description/meshes/wheel_link.STL" />
       </geometry>
       <material
         name="">
         <color
-          rgba="0.75294 0.75294 0.75294 1" />
+          rgba="0.79216 0.81961 0.93333 1" />
       </material>
     </visual>
     <collision>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="${M_PI/2} 0 0" />
       <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/left_urf_link.STL" />
+	<!--  <mesh filename="package://robotican_komodo/description/meshes/wheel_link.STL" /> -->
+	  <cylinder  length="0.05" radius="0.127"/> 
       </geometry>
     </collision>
   </link>
   <joint
-    name="left_urf_joint"
-    type="fixed">
+    name="FR_wheel_joint"
+    type="continuous">
     <origin
-      xyz="-0.020313 0.13725 0.055008"
-      rpy="0 0 1.5708" />
+      xyz="0.165 -0.18955 0"
+      rpy="0 0 0" />
     <parent
-      link="sensore_link" />
+      link="base_link" />
     <child
-      link="left_urf_link" />
+      link="FR_wheel_link" />
     <axis
-      xyz="0 0 0" />
+      xyz="0 1 0" />
   </joint>
   <link
-    name="rear_urf_link">
-    <inertial>
-      <origin
-        xyz="-0.0094226 1.6889E-05 -0.00019318"
-        rpy="0 0 0" />
-      <mass
-        value="0.0027749" />
-      <inertia
-        ixx="1.2831E-07"
-        ixy="-1.5459E-10"
-        ixz="3.1103E-09"
-        iyy="1.1894E-07"
-        iyz="4.3527E-09"
-        izz="1.2843E-07" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/rear_urf_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.75294 0.75294 0.75294 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/rear_urf_link.STL" />
-      </geometry>
-    </collision>
-  </link>
+    name="laser_link" />
   <joint
-    name="rear_urf_joint"
+    name="laser_joint"
     type="fixed">
     <origin
-      xyz="-0.2655 0 0.0245"
-      rpy="0 0 3.1416" />
+      xyz="0.2205 0 0.16233"
+      rpy="0 0 0" />
     <parent
-      link="sensore_link" />
+      link="base_link" />
     <child
-      link="rear_urf_link" />
+      link="laser_link" />
     <axis
       xyz="0 0 0" />
   </joint>
   <link
-    name="right_urf_link">
-    <inertial>
-      <origin
-        xyz="-0.0094226 1.6889E-05 -0.00019318"
-        rpy="0 0 0" />
-      <mass
-        value="0.0027749" />
-      <inertia
-        ixx="1.2831E-07"
-        ixy="-1.5459E-10"
-        ixz="3.1103E-09"
-        iyy="1.1894E-07"
-        iyz="4.3527E-09"
-        izz="1.2843E-07" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/right_urf_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.75294 0.75294 0.75294 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/right_urf_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="right_urf_joint"
-    type="fixed">
-    <origin
-      xyz="-0.020313 -0.13725 0.055008"
-      rpy="0 0 -1.5708" />
-    <parent
-      link="sensore_link" />
-    <child
-      link="right_urf_link" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-  <link
-    name="front_cam_link">
-    <inertial>
-      <origin
-        xyz="-0.0097991 -3.6602E-06 -0.00021345"
-        rpy="0 0 0" />
-      <mass
-        value="0.034683" />
-      <inertia
-        ixx="9.9521E-06"
-        ixy="-1.1809E-09"
-        ixz="-3.618E-08"
-        iyy="6.2879E-06"
-        iyz="-2.1162E-09"
-        izz="6.0802E-06" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/front_cam_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="1 1 1 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/front_cam_link.STL" />
-      </geometry>
-    </collision>
-  </link>
+    name="front_cam_link" />
   <joint
     name="front_cam_joint"
     type="fixed">
     <origin
-      xyz="0.26425 0.0875 0.0165"
-      rpy="0 1.5193E-64 -8.2066E-17" />
+      xyz="0.25425 0.0875 0.1"
+      rpy="0 0 0" />
     <parent
-      link="sensore_link" />
+      link="base_link" />
     <child
       link="front_cam_link" />
     <axis
@@ -539,67 +304,59 @@
     name="depth_cam_joint"
     type="fixed">
     <origin
-      xyz="0.26425 0 -0.02"
+      xyz="0.25525 0.0006082 0.063584"
       rpy="0 0 0" />
     <parent
-      link="sensore_link" />
+      link="base_link" />
     <child
       link="depth_cam_link" />
     <axis
       xyz="0 0 0" />
   </joint>
   <link
-    name="laser_link">
-    <inertial>
-      <origin
-        xyz="-0.00064383 9.3289E-10 -0.040168"
-        rpy="0 0 0" />
-      <mass
-        value="0.22916" />
-      <inertia
-        ixx="0.00020894"
-        ixy="-1.0322E-12"
-        ixz="1.1307E-06"
-        iyy="0.00021335"
-        iyz="4.2341E-12"
-        izz="0.00011244" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/laser_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0 0 0 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/laser_link.STL" />
-      </geometry>
-    </collision>
-  </link>
+    name="rear_urf_link" />
   <joint
-    name="laser_joint"
+    name="rear_urf_joint"
     type="fixed">
     <origin
-      xyz="0.2295 0 0.078827"
-      rpy="0 1.5193E-64 -8.2066E-17" />
+      xyz="-0.2745 0 0.108"
+      rpy="0 0 3.1416" />
     <parent
-      link="sensore_link" />
+      link="base_link" />
     <child
-      link="laser_link" />
+      link="rear_urf_link" />
     <axis
       xyz="0 0 0" />
   </joint>
-  
+  <link
+    name="right_urf_link" />
+  <joint
+    name="right_urf_joint"
+    type="fixed">
+    <origin
+      xyz="-0.029313 -0.13725 0.13851"
+      rpy="0 -2.0713E-16 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_urf_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="left_urf_link" />
+  <joint
+    name="left_urf_joint"
+    type="fixed">
+    <origin
+      xyz="-0.029313 0.13725 0.13851"
+      rpy="0 2.0713E-16 1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_urf_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+ 
 </robot>

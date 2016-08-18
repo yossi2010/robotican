@@ -33,9 +33,8 @@ bool have_object=false;
 ros::Publisher object_pub;
 image_transport::Publisher result_image_pub;
 image_transport::Publisher object_image_pub;
-
-
 image_transport::Publisher bw_image_pub;
+
 //red
 int minH=3,maxH=160;
 int minS=70,maxS=255;
@@ -51,6 +50,8 @@ int inv_H=1;
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
 
+
+/*
     int image_w=0,image_h=0;
    //   std::cout << input->width <<"   "<< input->height  <<std::endl;
     if ((input->width==960*540)||((input->width==960)&&(input->height==540))) {
@@ -73,11 +74,25 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
         ROS_ERROR("Unknown image resolutuin");
         return;
     }
+    */
     pcl::PointCloud<pcl::PointXYZRGBA> cloud;
     pcl::fromROSMsg (*input, cloud);
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudp (new pcl::PointCloud<pcl::PointXYZRGBA> (cloud));
 
+     if (cloudp->empty()) {
 
+         ROS_WARN("empty cloud");
+         return;
+     }
+
+    sensor_msgs::ImagePtr image_msg(new sensor_msgs::Image);
+    pcl::toROSMsg (*input, *image_msg);
+    image_msg->header.stamp = input->header.stamp;
+    image_msg->header.frame_id = input->header.frame_id;
+
+cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(image_msg, sensor_msgs::image_encodings::BGR8);
+ Mat result=cv_ptr->image;
+         /*
     Mat result = Mat(image_h, image_w, CV_8UC3);
     if (!cloudp->empty()) {
         for (int h=0; h<image_h; h++) {
@@ -103,7 +118,7 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
         ROS_WARN("empty cloud");
         return;
     }
-
+*/
 
     Point3d obj;
     have_object= find_object(result,cloudp,&obj,input->header.frame_id);
