@@ -159,7 +159,11 @@ target_link_libraries(point_head ${catkin_LIBRARIES})
 add_executable(simple_grasps src/simple_grasps.cpp)
 target_link_libraries(simple_grasps ${catkin_LIBRARIES})
 
+add_executable(add_collision_object src/add_collision_object.cpp)
+target_link_libraries(add_collision_object ${catkin_LIBRARIES})
 
+add_executable(arm_jta_client src/arm_jta_client.cpp)
+target_link_libraries(arm_jta_client ${catkin_LIBRARIES})
 
 
 

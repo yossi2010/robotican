@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+	    <param name="use_gui" value="true"/>
+	    <param name="upublish_default_velocities" value="false"/>
+  </node>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+  
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find robotican_komodo)/description/models/komodo.xacro'" />
+	
+ <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen"/>
+ 
+    <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /base_link 20" />
+
+</launch>
+

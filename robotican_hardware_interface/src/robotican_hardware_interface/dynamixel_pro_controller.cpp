@@ -66,7 +66,7 @@ DynamixelProController::DynamixelProController(hardware_interface::JointStateInt
     shutting_down = false;
     nh = new ros::NodeHandle("~");
     _time = ros::Time::now();
-    
+
     _first=false;
 
     _jointStateInterface = jointStateInterface;
@@ -237,9 +237,15 @@ DynamixelProController::DynamixelProController(hardware_interface::JointStateInt
 //    jointStateSubscriber = nh->subscribe<sensor_msgs::JointState>("/joint_commands",
 //        1000, &DynamixelProController::jointStateCallback, this);
     chainEnableSubscriber = nh->subscribe<robotican_hardware_interface::ChainEnable>("joint_enable",
-        1000, &DynamixelProController::chainEnableCallback, this);
+                                                                                     1000, &DynamixelProController::chainEnableCallback, this);
     chainLimitsSubscriber = nh->subscribe<robotican_hardware_interface::ChainLimits>("joint_limits",
-        1000, &DynamixelProController::chainLimitCallback, this);
+                                                                                     1000, &DynamixelProController::chainLimitCallback, this);
+
+
+    _toggleTorqueService = nh->advertiseService("toggle_torque", &DynamixelProController::onToggleTorque, this);
+    _toggleTorque = true;
+
+
 }
 
 DynamixelProController::~DynamixelProController()
@@ -251,7 +257,7 @@ DynamixelProController::~DynamixelProController()
     //something a tad more deterministic than this
     for (map<string, dynamixel_info>::iterator iter = joint2dynamixel.begin(); iter != joint2dynamixel.end(); iter++)
     {
-       // driver->setTorqueEnabled(iter->second.id, 0);
+        // driver->setTorqueEnabled(iter->second.id, 0);
     }
     delete driver;
 }
@@ -264,7 +270,11 @@ void DynamixelProController::startBroadcastingJointStates()
 
 void DynamixelProController::jointStateCallback(sensor_msgs::JointState &msg)
 {
+    boost::lock_guard<boost::mutex> scopeLook(_lock);
     if (shutting_down)
+        return;
+
+    if(!_toggleTorque)
         return;
 
     bool has_pos = false, has_vel = false, has_torque = false;
@@ -299,8 +309,8 @@ void DynamixelProController::jointStateCallback(sensor_msgs::JointState &msg)
         //change to new mode if needed
         if(status.mode != new_mode && new_mode != UNKOWN)
         {
-         //   if (status.torque_enabled)//you can't seem to change modes while the the servo is enabled
-                driver->setTorqueEnabled(info.id, 0);
+            //   if (status.torque_enabled)//you can't seem to change modes while the the servo is enabled
+            driver->setTorqueEnabled(info.id, 0);
             status.torque_enabled = false;
 
             driver->setOperatingMode(info.id, new_mode);//the enum is set up to correspond to the operating modes
@@ -308,10 +318,10 @@ void DynamixelProController::jointStateCallback(sensor_msgs::JointState &msg)
         }
 
         //enable torque if needed
-       // if (!status.torque_enabled)
-            driver->setTorqueEnabled(info.id, 1);
+        // if (!status.torque_enabled)
+        driver->setTorqueEnabled(info.id, 1);
         status.torque_enabled = true;
-
+        _toggleTorque = true;
         //prepare data to be sent to the motor
         ids.push_back(info.id);
 
@@ -326,6 +336,7 @@ void DynamixelProController::jointStateCallback(sensor_msgs::JointState &msg)
 
             double rad_s_vel = msg.velocity[i];
             int vel = static_cast<int>(rad_s_vel / 2.0 / M_PI * 60.0 * info.gear_reduction);
+          //  std::cout << rad_s_vel<<"   "<<vel<<std::endl;
             velocities.push_back(vel);
         }
         if (has_torque)
@@ -470,7 +481,7 @@ void DynamixelProController::read() {
         {
             double rad_pos = posToRads(position, info);
             _jointsInfo[joint_name].position = rad_pos;
-		if (!_first) _jointsInfo[joint_name].cmd_pos=rad_pos;
+            if (!_first) _jointsInfo[joint_name].cmd_pos=rad_pos;
 
             //msg.name.push_back(joint_name);
             //msg.position.push_back(rad_pos);
@@ -483,28 +494,31 @@ void DynamixelProController::read() {
             }
         }
         else {
-	  ROS_WARN("getPosition FAILED");
-	  return;
-	}
+            ROS_WARN("getPosition FAILED");
+            return;
+        }
     }
     _first=true;
     //jointStatePublisher.publish(msg);
 }
 
 void DynamixelProController::write() {
-  if (!_first) return;
+    if (!_first) return;
     sensor_msgs::JointState msg;
     for(std::map<std::string, JointInfo_t>::iterator it = _jointsInfo.begin(); it != _jointsInfo.end(); ++it) {
         msg.name.push_back(it->first);
         msg.position.push_back(it->second.cmd_pos);
-        if(it->second.cmd_vel > 0) {
-			msg.velocity.push_back(it->second.cmd_vel);
-	    }
-	    else {
-			msg.velocity.push_back(0.2);
-		}
+
+        if(it->second.cmd_vel != 0.0) {
+            //msg.velocity.push_back(it->second.cmd_vel);
+              msg.velocity.push_back(2.0);
+        }
+        else {
+            msg.velocity.push_back(2.0);
+              //std::cout << it->first << "   "<< it->second.cmd_pos << "   "<<it->second.cmd_vel<<std::endl;
+        }
     }
-    
+
     //sensor_msgs::JointState::ConstPtr send(&msg);
     jointStateCallback(msg);
 }
@@ -537,7 +551,7 @@ void DynamixelProController::publishJointStates(const ros::TimerEvent& e)
 //            {
 //
 //                double rad_vel = ((double) velocity) * 2.0 * M_PI / 60.0 / info.gear_reduction;
-//                _jointsInfo[joint_name].velocity = rad_vel;
+//                _jointsInfo[joint_name] = rad_vel;
 //                //msg.velocity.push_back(rad_vel);
 //            }
 //        }
@@ -563,21 +577,28 @@ double DynamixelProController::posToRads(int32_t ticks, const dynamixel_info& in
     return static_cast<double>(ticks) * FromTicks * M_PI;
 }
 
-//int main(int argc, char **argv)
-//{
-//    ros::init(argc, argv, "dynamixel_pro_controller");
-//    DynamixelProController controller;
-//    controller.startBroadcastingJointStates();
-//    controller_manager::ControllerManager controllerManager(&controller);
-//    ros::AsyncSpinner spinner(2);
-//    spinner.start();
-//    ros::Rate rate(50);
-//    while(ros::ok()) {
-//        controller.read();
-//        controllerManager.update(controller.getTime(), controller.getPeriod());
-//        controller.write();
-//        rate.sleep();
-//    }
-//
-    //ros::spin(); //use a single threaded spinner as I'm pretty sure this code isn't thread safe.
-//}
+bool DynamixelProController::onToggleTorque(std_srvs::Empty::Request &req,
+                                            std_srvs::EmptyResponse &) {
+    boost::lock_guard<boost::mutex> scopeLook(_lock);
+    if(_toggleTorque) {
+        ROS_INFO("[%s]: Torque off", ros::this_node::getName().c_str());
+        for (map<string, dynamixel_info>::iterator iter = joint2dynamixel.begin();
+             iter != joint2dynamixel.end(); iter++) {
+            driver->setTorqueEnabled(iter->second.id, 0);
+        }
+        _toggleTorque = false;
+    }
+    else {
+        ROS_INFO("[%s]: Torque on", ros::this_node::getName().c_str());
+        for (map<string, dynamixel_info>::iterator iter = joint2dynamixel.begin();
+             iter != joint2dynamixel.end(); iter++) {
+            driver->setTorqueEnabled(iter->second.id, 1);
+        }
+        _toggleTorque = true;
+    }
+
+
+
+    return true;
+}
+

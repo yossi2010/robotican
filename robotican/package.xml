@@ -20,6 +20,7 @@
 <run_depend>robotican_demos</run_depend>
 <run_depend>ric_board</run_depend>
 <run_depend>robotican_gui</run_depend>
+<run_depend>robotican_manipulator_h</run_depend>
 
 
   <export>

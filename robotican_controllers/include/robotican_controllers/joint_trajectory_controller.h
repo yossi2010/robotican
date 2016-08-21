@@ -186,6 +186,7 @@ namespace joint_trajectory_controller
         ActionServerPtr    action_server_;
         ros::ServiceServer query_state_service_;
         StatePublisherPtr  state_publisher_;
+        bool               _isAborted;
 
         ros::Timer         goal_handle_timer_;
         ros::Time          last_state_publish_time_;

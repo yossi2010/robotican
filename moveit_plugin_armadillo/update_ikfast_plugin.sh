@@ -1,1 +1,0 @@
-rosrun moveit_ikfast create_ikfast_moveit_plugin.py armadillo_arm arm moveti_plugin_armadillo /home/tom/catkin_ws/src/moveti_plugin_armadillo/src/armadillo_arm_arm_ikfast_solver.cpp

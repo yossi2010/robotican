@@ -1,9 +1,9 @@
-- name: H54
+- name: H54_s
   model_number: 54024
   cpr: 501900
   gear_reduction: 502.0
 
-- name: H54_s
+- name: H54
   model_number: 53768
   cpr: 502000
   gear_reduction: 502.0

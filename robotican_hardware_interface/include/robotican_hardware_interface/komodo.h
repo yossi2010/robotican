@@ -17,19 +17,22 @@
 namespace robotican_hardware {
     class KomodoRobot : public RobotBase {
     private:
-        bool _haveFourMotors;
-        std::pair<std::string, JointInfo_t> _rearLeftMotorJointInfo;
-        std::pair<std::string, JointInfo_t> _rearRightMotorJointInfo;
+        bool _first[2];
 
-        ros::Publisher _rearLeftMotorCmd;
-        ros::Publisher _rearRightMotorCmd;
+        hardware_interface::PositionJointInterface _positionJointInterface;
+        hardware_interface::PosVelJointInterface _posVelJointInterface;
+        dynamixel_pro_controller::DynamixelProController* _dynamixelProController;
+        std::pair<std::string, JointInfo_t> _leftFingerInfo;
+        std::pair<std::string, JointInfo_t> _rightFingerInfo;
 
-        ros::Subscriber _rearLeftMotorState;
-        ros::Subscriber _rearRightMotorState;
+        ros::Publisher _leftFingerCmd;
+        ros::Publisher _rightFingerCmd;
 
-        void rearRightMotorStateCallback(const ric_board::Motor::ConstPtr &msg);
+        ros::Subscriber _leftFingerState;
+        ros::Subscriber _rightFingerState;
 
-        void rearLeftMotorStateCallback(const ric_board::Motor::ConstPtr &msg);
+        void leftFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg);
+        void rightFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg);
 
     public:
         KomodoRobot();

@@ -31,7 +31,7 @@ namespace joint_trajectory_controller
             if (xml_array.getType() != XmlRpcValue::TypeArray)
             {
                 ROS_ERROR_STREAM("The '" << param_name << "' parameter is not an array (namespace: " <<
-                                 nh.getNamespace() << ").");
+                                         nh.getNamespace() << ").");
                 return std::vector<std::string>();
             }
 
@@ -41,7 +41,7 @@ namespace joint_trajectory_controller
                 if (xml_array[i].getType() != XmlRpcValue::TypeString)
                 {
                     ROS_ERROR_STREAM("The '" << param_name << "' parameter contains a non-string element (namespace: " <<
-                                     nh.getNamespace() << ").");
+                                             nh.getNamespace() << ").");
                     return std::vector<std::string>();
                 }
                 out.push_back(static_cast<std::string>(xml_array[i]));
@@ -60,7 +60,7 @@ namespace joint_trajectory_controller
                 if (!urdf->initString(urdf_str))
                 {
                     ROS_ERROR_STREAM("Failed to parse URDF contained in '" << param_name << "' parameter (namespace: " <<
-                                     nh.getNamespace() << ").");
+                                                                           nh.getNamespace() << ").");
                     return boost::shared_ptr<urdf::Model>();
                 }
             }
@@ -159,11 +159,12 @@ namespace joint_trajectory_controller
     {
         const RealtimeGoalHandlePtr rt_segment_goal = segment.getGoalHandle();
         const SegmentTolerances<Scalar>& tolerances = segment.getTolerances();
-        if (!checkStateTolerance(state_error, tolerances.state_tolerance))
+        if (!checkStateTolerance(state_error, tolerances.state_tolerance, true))
         {
             rt_segment_goal->preallocated_result_->error_code =
                     control_msgs::FollowJointTrajectoryResult::PATH_TOLERANCE_VIOLATED;
             rt_segment_goal->setAborted(rt_segment_goal->preallocated_result_);
+            // _isAborted  = true;
             rt_active_goal_.reset();
         }
     }
@@ -209,9 +210,11 @@ namespace joint_trajectory_controller
     template <class SegmentImpl, class HardwareInterface>
     JointTrajectoryController<SegmentImpl, HardwareInterface>::
     JointTrajectoryController()
-            : verbose_(false), // Set to true during debugging
+            : verbose_(true), // Set to true during debugging
               hold_trajectory_ptr_(new Trajectory)
-    {}
+    {
+        _isAborted = false;
+    }
 
     template <class SegmentImpl, class HardwareInterface>
     bool JointTrajectoryController<SegmentImpl, HardwareInterface>::init(HardwareInterface* hw,
@@ -273,7 +276,7 @@ namespace joint_trajectory_controller
             catch (...)
             {
                 ROS_ERROR_STREAM_NAMED(name_, "Could not find joint '" << joint_names_[i] << "' in '" <<
-                                              this->getHardwareInterfaceType() << "'.");
+                                                                       this->getHardwareInterfaceType() << "'.");
                 return false;
             }
 
@@ -282,14 +285,14 @@ namespace joint_trajectory_controller
             const std::string not_if = angle_wraparound_[i] ? "" : "non-";
 
             ROS_DEBUG_STREAM_NAMED(name_, "Found " << not_if << "continuous joint '" << joint_names_[i] << "' in '" <<
-                                          this->getHardwareInterfaceType() << "'.");
+                                                   this->getHardwareInterfaceType() << "'.");
         }
 
         assert(joints_.size() == angle_wraparound_.size());
         ROS_DEBUG_STREAM_NAMED(name_, "Initialized controller '" << name_ << "' with:" <<
-                                      "\n- Number of joints: " << joints_.size() <<
-                                      "\n- Hardware interface type: '" << this->getHardwareInterfaceType() << "'" <<
-                                      "\n- Trajectory segment type: '" << hardware_interface::internal::demangledTypeName<SegmentImpl>() << "'");
+                                                                 "\n- Number of joints: " << joints_.size() <<
+                                                                 "\n- Hardware interface type: '" << this->getHardwareInterfaceType() << "'" <<
+                                                                 "\n- Trajectory segment type: '" << hardware_interface::internal::demangledTypeName<SegmentImpl>() << "'");
 
         // Default tolerances
         ros::NodeHandle tol_nh(controller_nh_, "constraints");
@@ -411,8 +414,10 @@ namespace joint_trajectory_controller
         }
 
         // Hardware interface adapter: Generate and send commands
-        hw_iface_adapter_.updateCommand(time_data.uptime, time_data.period,
-                                        desired_state_, state_error_);
+        if(!_isAborted) {
+            hw_iface_adapter_.updateCommand(time_data.uptime, time_data.period,
+                                            desired_state_, state_error_);
+        }
 
         // Publish state
         publishState(time_data.uptime);
@@ -469,7 +474,21 @@ namespace joint_trajectory_controller
         // Update currently executing trajectory
         try
         {
+//            trajectory_msgs::JointTrajectory tjToSend = (*msg);
             TrajectoryPtr traj_ptr(new Trajectory);
+
+//            size_t  tjSize = msg->points.size();
+//
+//            if (tjToSend.points[0].time_from_start.toSec() <= 0.0) {
+//                for(int i = 0; i < tjSize; i++) {
+//
+//                    tjToSend.points[i].time_from_start += ros::Duration(0.5);
+//
+//
+//                }
+//                ROS_WARN("Adding 0.5 sed to all points");
+//            }
+
             *traj_ptr = initJointTrajectory<Trajectory>(*msg, next_update_time, options);
             if (!traj_ptr->empty())
             {
@@ -499,6 +518,7 @@ namespace joint_trajectory_controller
     void JointTrajectoryController<SegmentImpl, HardwareInterface>::
     goalCB(GoalHandle gh)
     {
+
         ROS_DEBUG_STREAM_NAMED(name_,"Recieved new action goal");
 
         // Precondition: Running controller
@@ -535,7 +555,7 @@ namespace joint_trajectory_controller
             preemptActiveGoal();
             gh.setAccepted();
             rt_active_goal_ = rt_goal;
-
+            _isAborted = false;
             // Setup goal status checking timer
             goal_handle_timer_ = controller_nh_.createTimer(action_monitor_period_,
                                                             &RealtimeGoalHandle::runNonRealtime,

@@ -539,7 +539,8 @@ namespace robotican_hardware {
         ros::param::param<bool>("have_close_loop_motor", haveCloseLoopMotors, true);
         if(haveCloseLoopMotors) {
             for(int i = 0; i < closeMotorSize; ++i) {
-                std::string closeMotorIdentifier = "motor" + boost::lexical_cast<std::string>(i), jointName;
+                std::string closeMotorIdentifier = "motor" + boost::lexical_cast<std::string>(i);
+                std::vector<std::string> jointNames;
                 CloseMotorWithEncoderParam motorParams;
 
                 int encoderPinA, encoderPinB, LPFHzSpeed, LPFHzInput, PIDHz, PPR, timeout, motorDirection, encoderDirection, motorAddress
@@ -573,7 +574,7 @@ namespace robotican_hardware {
                                 && _nodeHandle.getParam(closeMotorIdentifier + "_motor_address", motorAddress)
                                 && _nodeHandle.getParam(closeMotorIdentifier + "_motor_emergency_pin", eSwitchPin)
                                 && _nodeHandle.getParam(closeMotorIdentifier + "_motor_emergency_pin_type", eSwitchType)
-                                && _nodeHandle.getParam(closeMotorIdentifier + "_joint", jointName)
+                                && _nodeHandle.getParam(closeMotorIdentifier + "_joint", jointNames)
                                 && _nodeHandle.getParam(closeMotorIdentifier + "_mode", motorMode)
                                 && _nodeHandle.getParam(closeMotorIdentifier + "_bais_min", baisMin)
                                 && _nodeHandle.getParam(closeMotorIdentifier + "_bais_max", baisMax)) {
@@ -609,19 +610,20 @@ namespace robotican_hardware {
                                                                                                eSwitchPin, eSwitchType,
                                                                                                CloseMotorType::CloseLoopWithEncoder,
                                                                                                (CloseMotorMode::CloseMotorMode) motorMode,
-                                                                                               motorParams, jointName);
+                                                                                               motorParams, jointNames[0]);
                                 JointInfo_t *jointInfo = closeLoopMotor->getJointInfo();
+                                for(std::vector<std::string>::iterator jointName = jointNames.begin(); jointName != jointNames.end(); ++jointName) {
+                                    hardware_interface::JointStateHandle jointStateHandle((*jointName),
+                                                                                          &jointInfo->position,
+                                                                                          &jointInfo->velocity,
+                                                                                          &jointInfo->effort);
 
-                                hardware_interface::JointStateHandle jointStateHandle(jointName,
-                                                                                      &jointInfo->position,
-                                                                                      &jointInfo->velocity,
-                                                                                      &jointInfo->effort);
+                                    jointStateInterface->registerHandle(jointStateHandle);
 
-                                jointStateInterface->registerHandle(jointStateHandle);
-
-                                hardware_interface::JointHandle JointHandle(jointStateInterface->getHandle(jointName),
-                                                                            &jointInfo->cmd);
-                                jointVelocityInterface->registerHandle(JointHandle);
+                                    hardware_interface::JointHandle JointHandle(jointStateInterface->getHandle((*jointName)),
+                                                                                &jointInfo->cmd);
+                                    jointVelocityInterface->registerHandle(JointHandle);
+                                }
 
                                 _devices.push_back(closeLoopMotor);
                                 closeLoopMotor->buildDevice();
