@@ -17,7 +17,7 @@
 	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
 	
 	<group if="$(arg gazebo)">
-		<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /arm_link 20" />
+		<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /world 20" />
 		<env name="GAZEBO_MODEL_PATH" value="$(find robotican_common)/models:$(optenv GAZEBO_MODEL_PATH)"/>
 		<param name="robot_description" command="$(find xacro)/xacro.py '$(find robotican_manipulator_h)/models/manipulator_h_gazebo.xacro'" />
 
