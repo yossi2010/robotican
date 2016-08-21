@@ -12,7 +12,7 @@ void Kinect2::_chatterCallback(const sensor_msgs::Image::ConstPtr& msg)
 
 void Kinect2::subscribe()
 {
-    _nHandle.param<std::string>("front_cam_topic",_topicName, "kinect2/hd/image_depth_rect");
+    _nHandle.param<std::string>("kinect2_topic",_topicName, "kinect2/hd/image_depth_rect");
     _sub = _nHandle.subscribe(_topicName, 1000, &Kinect2::_chatterCallback, this);
 }
 

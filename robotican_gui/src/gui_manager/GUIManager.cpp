@@ -55,6 +55,7 @@ void GUImanager::_connectEvents()
 
 void GUImanager::_loopEvents(const ros::TimerEvent &timerEvent)
 {
+    ROS_INFO("[%s]: got msg", ros::this_node::getName().c_str());
     _eventSignal.signalBatVal(_batListener.getBatteryPwr());
     _eventSignal.signalLed(_batListener.getLastSignal(), &_batteryLed);
     _eventSignal.signalLed(_armListener.getLastSignal(), &_armLed);
@@ -70,7 +71,7 @@ void GUImanager::_loopEvents(const ros::TimerEvent &timerEvent)
     _eventSignal.signalLed(_urfRearListener.getLastSignal(), &_urfRearLed);
     _eventSignal.signalLed(_urfRightListener.getLastSignal(), &_urfRightLed);
     _eventSignal.signalLed(_kinect2Listener.getLastSignal(), &_kinect2Led);
-    _eventSignal.signalLed(_f200Listener.getLastSignal(), &_f200Led);
+    _eventSignal.signalLed(_sr300.getLastSignal(), &_sr300Led);
 }
 
 void GUImanager::_initiateLeds()
@@ -88,7 +89,7 @@ void GUImanager::_initiateLeds()
     _urfRearLed.initiate(*_win->urf_rear_led);
     _urfRightLed.initiate(*_win->urf_right_led);
     _kinect2Led.initiate(*_win->kinect2_led);
-    _f200Led.initiate(*_win->f200_led);
+    _sr300Led.initiate(*_win->sr300_led);
     _batteryLed.initiate(*_win->battery_led);
 }
 
@@ -109,7 +110,7 @@ void GUImanager::_subscribeListeners()
     _urfRearListener.subscribe();
     _urfLeftListener.subscribe();
     _kinect2Listener.subscribe();
-    _f200Listener.subscribe();
+    _sr300.subscribe();
 }
 
 void GUImanager::_initiateLbls()
@@ -149,7 +150,7 @@ void GUImanager::_initiateLbls()
     _nh.param<std::string>("kinect2_lbl_name",tempParam, "KINECT2");
     _win->kinnect2_lbl->setText(QApplication::translate("MainWindow", tempParam.c_str(), 0));
 
-    _nh.param<std::string>("f200_lbl_name",tempParam, "F200");
+    _nh.param<std::string>("sr300_lbl_name",tempParam, "SR300");
     _win->f200_lbl->setText(QApplication::translate("MainWindow", tempParam.c_str(), 0));
 
     _nh.param<std::string>("rear_cam_lbl_name",tempParam, "REAR");

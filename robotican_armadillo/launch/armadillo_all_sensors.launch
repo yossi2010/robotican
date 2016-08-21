@@ -1,26 +1,26 @@
 <?xml version="1.0"?>
 <launch>
   
-  <arg name="front_camera" default='false'/>
-  <arg name="rear_camera" default='false'/>
-  <arg name="lidar" default='false'/>
-  <arg name="gps" default='false'/>
-  <arg name="urf" default='false'/>
-  <arg name="imu" default='false'/>
+  <arg name="front_camera" default='true'/>
+  <arg name="rear_camera" default='true'/>
+  <arg name="lidar" default='true'/>
+  <arg name="gps" default='true'/>
+  <arg name="urf" default='true'/>
+  <arg name="imu" default='true'/>
   <arg name="kinect2" default='false'/>
   <arg name="kinect2_hz" default="10.0"/>
-  <arg name="kinect2_hd" default="false"/>
-  <arg name="kinect2_qhd" default="true"/>
+  <arg name="kinect2_hd" default="true"/>
+  <arg name="kinect2_qhd" default="false"/>
   <arg name="kinect2_sd" default="false"/>
-  <arg name="sr300" default='false'/>
+  <arg name="sr300" default='true'/>
   <arg name="joystick" default='false'/>
   <arg name="joystick_dev" default='/dev/input/js0'/>
   <arg name="twist_mux" default='true'/>
   <arg name="gmapping" default='false'/>
-  <arg name="robotican_gui" default='false'/>
+  <arg name="robotican_gui" default='true'/>
   
 
-  <arg name="gazebo" default='false'/>
+  <arg name="gazebo" default='true'/>
   <arg name="world_name" default="worlds/empty.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
   <arg name="x" default="0.0"/>
   <arg name="y" default="0.0"/>
@@ -30,12 +30,12 @@
   <arg name="Y" default="0.0" />
   <arg name="arm" default="true"/>
   
-     <arg name="paused" default="false"/>
-    <arg name="use_sim_time" default="true"/>
-    <arg name="gui" default="true"/>
-    <arg name="headless" default="false"/>
-    <arg name="debug" default="false"/> 
-    
+	<arg name="paused" default="false"/>
+	<arg name="use_sim_time" default="true"/>
+	<arg name="gui" default="true"/>
+	<arg name="headless" default="false"/>
+	<arg name="debug" default="false"/> 
+
   <arg name="controllers" default='true'/>
   <arg name="moveit" default='false'/>
   <arg name="use_depth" default='false'/>
@@ -57,11 +57,6 @@
   
   <group if="$(arg twist_mux)" >
 		<include file="$(find robotican_common)/launch/twist_mux.launch">
-		</include>
-  </group>
-
-  <group if="$(arg robotican_gui)" >
-		<include file="$(find robotican_gui)/launch/robotican_gui.launch">
 		</include>
   </group>
   
@@ -281,5 +276,12 @@
 			</group>
 		</group>
 	</group>
+
+	 <group if="$(arg robotican_gui)" >
+		<include file="$(find robotican_gui)/launch/robotican_gui.launch">
+		</include>
+  </group>
+
+
 </launch>
 
