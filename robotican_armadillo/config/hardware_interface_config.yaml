@@ -65,7 +65,7 @@ motor0_stop_limit_min: -10.0
 motor0_motor_address: 0
 motor0_motor_emergency_pin: 12
 motor0_motor_emergency_pin_type: 1
-motor0_joint: 'left_wheel_joint'
+motor0_joint: ['left_wheel_joint']
 motor0_mode: 0
 motor0_bais_min: -1
 motor0_bais_max: 1
@@ -98,7 +98,7 @@ motor1_stop_limit_min: -10.0
 motor1_motor_address: 1
 motor1_motor_emergency_pin: 12
 motor1_motor_emergency_pin_type: 1
-motor1_joint: 'right_wheel_joint'
+motor1_joint: ['right_wheel_joint']
 motor1_mode: 0
 motor1_bais_min: -1
 motor1_bais_max: 1
