@@ -2,15 +2,15 @@
 // Created by sub on 13/04/16.
 //
 
-#ifndef ROBOTICAN_GUI_F200Listener_H
-#define ROBOTICAN_GUI_F200Listener_H
+#ifndef ROBOTICAN_GUI_sr300Listener_H
+#define ROBOTICAN_GUI_sr300Listener_H
 #include "listeners/Listener.h"
 #include <sensor_msgs/Image.h>
 
-class F200 : public Listener
+class sr300 : public Listener
 {
 public:
-    F200();
+    sr300();
     long int getLastSignal();
     void subscribe();
 
@@ -24,5 +24,4 @@ private:
     void _chatterCallback(const sensor_msgs::Image::ConstPtr& msg);
 };
 
-
-#endif //ROBOTICAN_GUI_FrontCamListener_H
+#endif //ROBOTICAN_GUI_sr300Listener_H

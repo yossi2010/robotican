@@ -25,7 +25,7 @@
 #include "listeners/UrfRear.h"
 #include "listeners/UrfRight.h"
 #include "listeners/Kinect2.h"
-#include "listeners/F200.h"
+#include "listeners/sr300.h"
 
 #define LOOP_RATE 0.001
 
@@ -54,7 +54,7 @@ private:
     UrfRear _urfRearListener;
     UrfRight _urfRightListener;
     Kinect2 _kinect2Listener;
-    F200 _f200Listener;
+    sr300 _sr300;
 
     Led _armLed;
     Led _panTiltLed;
@@ -69,7 +69,7 @@ private:
     Led _urfRearLed;
     Led _urfRightLed;
     Led _kinect2Led;
-    Led _f200Led;
+    Led _sr300Led;
     Led _batteryLed;
 
     int _tempPublisherCounter; //delete after testing publishers

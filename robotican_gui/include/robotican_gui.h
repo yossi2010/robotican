@@ -85,7 +85,7 @@ public:
     QLabel *kinnect2_lbl;
     QLabel *kinect2_led;
     QLabel *f200_lbl;
-    QLabel *f200_led;
+    QLabel *sr300_led;
     QFrame *line_10;
     QLabel *battery_led;
     QMenuBar *menubar;
@@ -394,11 +394,11 @@ public:
         f200_lbl->setObjectName(QString("f200_lbl"));
         f200_lbl->setGeometry(QRect(80, 450, 31, 21));
         f200_lbl->setFont(font);
-        f200_led = new QLabel(centralwidget);
-        f200_led->setObjectName(QString("f200_led"));
-        f200_led->setGeometry(QRect(80, 410, 31, 31));
-        f200_led->setPixmap(QPixmap(QString::fromUtf8(":/images/ledOff.png")));
-        f200_led->setScaledContents(true);
+        sr300_led = new QLabel(centralwidget);
+        sr300_led->setObjectName(QString("sr300_led"));
+        sr300_led->setGeometry(QRect(80, 410, 31, 31));
+        sr300_led->setPixmap(QPixmap(QString::fromUtf8(":/images/ledOff.png")));
+        sr300_led->setScaledContents(true);
         line_10 = new QFrame(centralwidget);
         line_10->setObjectName(QString("line_10"));
         line_10->setGeometry(QRect(0, 470, 331, 20));
@@ -474,8 +474,8 @@ public:
         pan_tilt_lbl->setText(QApplication::translate("MainWindow", "PAN-TILT", 0));
         kinnect2_lbl->setText(QApplication::translate("MainWindow", "KINECT2", 0));
         kinect2_led->setText(QString());
-        f200_lbl->setText(QApplication::translate("MainWindow", "F200", 0));
-        f200_led->setText(QString());
+        f200_lbl->setText(QApplication::translate("MainWindow", "SR300", 0));
+        sr300_led->setText(QString());
         battery_led->setText(QString());
     } // retranslateUi
 
