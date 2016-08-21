@@ -6,6 +6,7 @@
 #define ROBOTICAN_GUI_Battery_H
 #include "Listener.h"
 #include <std_msgs/UInt32.h>
+#include <ric_board/Battery.h>
 
 class Battery : public Listener
 {
@@ -23,7 +24,7 @@ private:
     std::string _topicName;
     int _batPower;
     long int _signalTime;
-    void _chatterCallback(const std_msgs::UInt32::ConstPtr& msg);
+    void _chatterCallback(const ric_board::Battery::Ptr& msg);
 
 };
 

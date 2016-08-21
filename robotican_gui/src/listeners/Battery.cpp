@@ -13,9 +13,9 @@ Battery::Battery()
     _signalTime = 0;
 }
 
-void Battery::_chatterCallback(const std_msgs::UInt32::ConstPtr &msg)
+void Battery::_chatterCallback(const ric_board::Battery::Ptr& msg)
 {
-    _batPower = msg->data;
+    _batPower = ( msg->data / (msg->max - msg->min) ) * 100 ;
     _signalTime = clock();
 }
 

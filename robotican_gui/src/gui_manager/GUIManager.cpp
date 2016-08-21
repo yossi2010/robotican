@@ -55,7 +55,6 @@ void GUImanager::_connectEvents()
 
 void GUImanager::_loopEvents(const ros::TimerEvent &timerEvent)
 {
-    ROS_INFO("[%s]: got msg", ros::this_node::getName().c_str());
     _eventSignal.signalBatVal(_batListener.getBatteryPwr());
     _eventSignal.signalLed(_batListener.getLastSignal(), &_batteryLed);
     _eventSignal.signalLed(_armListener.getLastSignal(), &_armLed);
