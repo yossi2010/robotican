@@ -1,5 +1,5 @@
 <launch>
-	<arg name="world_name" default="worlds/empty.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
+	<arg name="world_name" default="$(find robotican_common)/worlds/objects_on_table.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
 	<arg name="gazebo" default="false" />
 	<arg name="paused" default="false"/>
 	<arg name="use_sim_time" default="true"/>
@@ -15,8 +15,9 @@
 	<arg name="Y" default="0.0" />
 	
 	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
-	<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /arm_link 20" />
+	
 	<group if="$(arg gazebo)">
+		<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /arm_link 20" />
 		<env name="GAZEBO_MODEL_PATH" value="$(find robotican_common)/models:$(optenv GAZEBO_MODEL_PATH)"/>
 		<param name="robot_description" command="$(find xacro)/xacro.py '$(find robotican_manipulator_h)/models/manipulator_h_gazebo.xacro'" />
 
@@ -30,7 +31,7 @@
 			<arg name="headless" value="$(arg headless)"/>
     	</include>
 	    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" 
-			args="-urdf -model komodo -param robot_description -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/> 
+			args="-urdf -model komodo -param robot_description -x 2.010867 -y -0.689194 -z 0.659883 -R -0.005690 -P -0.001849 -Y 2.825261"/> 
 		
 	</group>
 
