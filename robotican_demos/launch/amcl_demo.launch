@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-	<arg name="armadillo"    default="true" />
+	<arg name="armadillo"    default="false" />
     <arg name="komodo"       default="false"/>
     <arg name="lizi"         default="false"/>
 
