@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="armadillo"    default="true" />
+    <arg name="komodo"       default="false"/>
+    <arg name="lizi"         default="false"/>
+    <arg name="world"        default="$(find robotican_common)/worlds/building.sdf" />
+
+	<arg name="rviz_display" default="$(find robotican_demos)/config/hector_slam.rviz" />
+	<node name="rviz_node" pkg="rviz" type="rviz" args="-d $(arg rviz_display)"/>
+    
+
+
+
+    <group if="$(arg armadillo)" >
+        <group if="$(arg gazebo)">
+            <include file="$(find robotican_armadillo)/launch/armadillo.launch">
+             <arg name="gazebo" value="$(arg gazebo)"/>
+             <arg name="world_name" value="$(arg world)"/> 
+             <arg name="x" value="0.0"/>
+             <arg name="y" value="0.0"/>
+             <arg name="lidar" value="true"/>
+             <arg name="hector_slam" value="true"/>  
+             <arg name="move_base" value="true"/> 
+            </include>
+        </group>
+
+        <group unless="$(arg gazebo)">
+            <include file="$(find robotican_armadillo)/launch/armadillo.launch">
+             <arg name="gazebo" value="$(arg gazebo)"/>
+             <arg name="x" value="0.0"/>
+             <arg name="y" value="0.0"/>
+             <arg name="lidar" value="true"/>
+             <arg name="hector_slam" value="true"/>  
+             <arg name="move_base" value="true"/> 
+            </include>
+        </group>
+    </group>
+
+    <group if="$(arg komodo)" >
+        <group if="$(arg gazebo)">
+            <include file="$(find robotican_komodo)/launch/komodo.launch">
+             <arg name="gazebo" value="$(arg gazebo)"/>
+             <arg name="world_name" value="$(arg world)"/> 
+             <arg name="x" value="0.0"/>
+             <arg name="y" value="0.0"/>
+             <arg name="lidar" value="true"/>
+             <arg name="hector_slam" value="true"/>  
+             <arg name="move_base" value="true"/> 
+            </include>
+        </group>
+
+        <group unless="$(arg gazebo)">
+            <include file="$(find robotican_komodo)/launch/komodo.launch">
+             <arg name="gazebo" value="$(arg gazebo)"/>
+             <arg name="x" value="0.0"/>
+             <arg name="y" value="0.0"/>
+             <arg name="lidar" value="true"/>
+             <arg name="hector_slam" value="true"/>  
+             <arg name="move_base" value="true"/> 
+            </include>
+        </group>
+    </group>
+
+    <group if="$(arg lizi)" >
+        <group if="$(arg gazebo)">
+            <include file="$(find robotican_lizi)/launch/lizi.launch">
+             <arg name="gazebo" value="$(arg gazebo)"/>
+             <arg name="world_name" value="$(arg world)"/> 
+             <arg name="x" value="0.0"/>
+             <arg name="y" value="0.0"/>
+             <arg name="lidar" value="true"/>
+             <arg name="hector_slam" value="true"/>  
+             <arg name="move_base" value="true"/> 
+            </include>
+        </group>
+
+        <group unless="$(arg gazebo)">
+            <include file="$(find robotican_lizi)/launch/lizi.launch">
+             <arg name="gazebo" value="$(arg gazebo)"/>
+             <arg name="x" value="0.0"/>
+             <arg name="y" value="0.0"/>
+             <arg name="lidar" value="true"/>
+             <arg name="hector_slam" value="true"/>  
+             <arg name="move_base" value="true"/> 
+            </include>
+        </group>
+    </group>
+    
+  
+</launch>
+
