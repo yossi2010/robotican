@@ -36,6 +36,7 @@
 	</group>
 
 	<group unless="$(arg gazebo)">
+		<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /base_arm_link 20" />
 		<param name="robot_description" command="$(find xacro)/xacro.py '$(find robotican_manipulator_h)/models/manipulator_h.xacro'" />
 		<rosparam command="load" file="$(find robotican_manipulator_h)/config/gripper.yaml" />
 		<node name="arm_node" pkg="robotican_manipulator_h" type="arm_node" output="screen" >
