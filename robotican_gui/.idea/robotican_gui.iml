@@ -74,9 +74,11 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/gui_manager/GUIManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/gui_manager/GUIManager.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/event_handler/EventSlot.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/event_handler/DriveMode.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/event_handler/EventSignal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/event_handler/EventSlot.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/event_handler/EventSignal.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/event_handler/DriveMode.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/event_handler/EventSlot.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/resources/images/image_resource_file.qrc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/resources/ui/robotican_gui.ui" isTestSource="false" />
