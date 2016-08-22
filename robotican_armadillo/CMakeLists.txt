@@ -138,7 +138,6 @@ include_directories(
 ## Declare a C++ executable
 add_executable(pan_tilt_joy_node src/pan_tilt_joy_node.cpp)
 add_executable(joy_increment_node src/joy_increment_node.cpp)
-add_executable(armadillo_only_arm_node src/robotican_h_manipulator_node.cpp)
 
 
 ## Add cmake target dependencies of the executable
@@ -150,9 +149,6 @@ add_executable(armadillo_only_arm_node src/robotican_h_manipulator_node.cpp)
    ${catkin_LIBRARIES}
  )
  target_link_libraries(joy_increment_node
-   ${catkin_LIBRARIES}
- )
- target_link_libraries(armadillo_only_arm_node
    ${catkin_LIBRARIES}
  )
 

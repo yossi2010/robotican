@@ -248,7 +248,6 @@
 	
 	<group if="$(arg moveit)">
 		<include file="$(find robotican_armadillo_moveit_config)/launch/move_group.launch" >
-			<arg name="moveit_depth" value="$(arg use_depth)"/>
 		</include>
 	</group>
 

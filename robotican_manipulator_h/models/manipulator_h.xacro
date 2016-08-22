@@ -3,6 +3,7 @@
 <robot
   name="robotican_manipulator_h" description="Manipulator H Arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:property name="M_PI" value="3.1415926535897931" />
+
   <link
     name="base_arm_link">
     <inertial>
