@@ -15,8 +15,38 @@ include_directories(${catkin_INCLUDE_DIRS} ${QT_INCLUDES} ${CMAKE_CURRENT_BINARY
 include_directories(src)
 # Use this to define what the package will export (e.g. libs, headers).
 # Since the default here is to produce only a binary, we don't worry about
-# exporting anything. 
-catkin_package()
+# exporting anything.
+
+find_package(catkin REQUIRED COMPONENTS
+        roscpp
+        rospy
+        std_msgs
+        move_base_msgs
+        actionlib
+        moveit_core
+        moveit_ros_planning
+        moveit_ros_planning_interface
+        robotican_common
+        cv_bridge
+        pcl_conversions
+        pcl_ros
+        tf
+        moveit_core
+        moveit_ros_planning
+        moveit_ros_planning_interface
+
+        pr2_controllers_msgs
+        )
+
+## System dependencies are found with CMake's conventions
+find_package(Boost REQUIRED COMPONENTS system)
+find_package(cmake_modules REQUIRED)
+
+catkin_package(CATKIN_DEPENDS roscpp rospy std_msgs moveit_core moveit_ros_planning moveit_ros_planning_interface)
+
+include_directories(
+        ${catkin_INCLUDE_DIRS}
+)
 
 ##############################################################################
 # Qt Environment

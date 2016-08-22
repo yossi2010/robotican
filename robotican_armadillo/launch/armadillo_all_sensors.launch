@@ -37,7 +37,7 @@
 	<arg name="debug" default="false"/> 
 
   <arg name="controllers" default='true'/>
-  <arg name="moveit" default='false'/>
+  <arg name="moveit" default='true'/>
   <arg name="use_depth" default='false'/>
   <arg name="robot_localization" default='false'/>
   <arg name="move_base" default='false'/>
@@ -243,7 +243,6 @@
 	
 	<group if="$(arg moveit)">
 		<include file="$(find robotican_armadillo_moveit_config)/launch/move_group.launch" >
-			<arg name="moveit_depth" value="$(arg use_depth)"/>
 		</include>
 	</group>
 

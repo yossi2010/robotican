@@ -45,7 +45,7 @@ void GUImanager::_connectEvents()
 
     //execute/close launcher
     QObject::connect(_win->launch_btn, SIGNAL(clicked()),
-                     &_eventSlot, SLOT(execLaunch()));
+                     &_eventSlot, SLOT(execDriveMode()));
 }
 
 //**************************************************
