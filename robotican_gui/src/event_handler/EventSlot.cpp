@@ -47,32 +47,31 @@ void EventSlot::closeApp()
  * Goal:procedure will launch the launch file which is associated with it
  * *********************************************************************/
 void EventSlot::execLaunch() {
-    std::string openLauncherCmdA("xterm -e sh -c 'echo \"opening launch file...\"; echo; roslaunch ");
-    std::string openLauncherCmdB("; exec bash;'");
-    std::string launcherFilePath, launcherPkg;
+    //std::string openLauncherCmdA("xterm -e sh -c 'echo \"opening launch file...\"; echo; roslaunch ");
+    //std::string openLauncherCmdB("; exec bash;'");
+    //std::string launcherFilePath, launcherPkg;
 
 
-    _nHandle.param<std::string>("launcher_file_path", launcherFilePath, "armadillo.launch");
-    _nHandle.param<std::string>("launcher_file_pkg", launcherPkg, "robotican_armadillo");
-    std::string launchCmd = openLauncherCmdA + launcherPkg + " " + launcherFilePath + openLauncherCmdB;
+    //_nHandle.param<std::string>("launcher_file_path", launcherFilePath, "armadillo.launch");
+    //_nHandle.param<std::string>("launcher_file_pkg", launcherPkg, "robotican_armadillo");
+    //std::string launchCmd = openLauncherCmdA + launcherPkg + " " + launcherFilePath + openLauncherCmdB;
 
     QIcon icon;
     if (!_launcherOpened)
     {
         _launcherOpened = true;
-        QFuture<std::string> execProc = QtConcurrent::run(this, &EventSlot::execShellCmd, launchCmd.c_str());
-        icon.addFile(QString(":/images/Shutdown.png"), QSize(), QIcon::Normal, QIcon::Off);
+        //QFuture<std::string> execProc = QtConcurrent::run(this, &EventSlot::execShellCmd, launchCmd.c_str());
+        icon.addFile(QString(":/images/turnOn.png"), QSize(), QIcon::Normal, QIcon::Off);
 
     }
     else
     {
-        icon.addFile(QString(":/images/turnOn.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString(":/images/Shutdown.png"), QSize(), QIcon::Normal, QIcon::Off);
 
         _launcherOpened = false;
-       system("killall xterm");
+       //system("killall xterm");
 
     }
-
     _guiHandle->launch_btn->setIcon(icon);
 }
 
