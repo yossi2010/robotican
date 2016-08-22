@@ -4,12 +4,23 @@
 
 #include "DriveMode.h"
 
-DriveMode::DriveMode()
+DriveMode::DriveMode() : _group("arm")
 {
 
 }
 
-void DriveMode::moveArm()
+bool DriveMode::moveArm()
 {
+    //plan
+    _group.setNamedTarget("Driving Mode");
+    bool plan_success = _group.plan(_drivingModePlan);
 
+    //execute
+    if (plan_success)
+    {
+        _group.move();
+        return true;
+    }
+
+    return false;
 }

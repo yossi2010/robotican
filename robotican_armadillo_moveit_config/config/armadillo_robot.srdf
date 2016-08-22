@@ -47,6 +47,14 @@
         <joint name="shoulder3_joint" value="1.57" />
         <joint name="wrist_joint" value="0" />
     </group_state>
+    <group_state name="Driving Mode" group="arm">
+        <joint name="rotation1_joint" value="1.57" />
+        <joint name="rotation2_joint" value="0" />
+        <joint name="shoulder1_joint" value="-1.3129" />
+        <joint name="shoulder2_joint" value="2.0938" />
+        <joint name="shoulder3_joint" value="0" />
+        <joint name="wrist_joint" value="0" />
+    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="eef" parent_link="gripper_link" group="gripper" parent_group="arm" />
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->

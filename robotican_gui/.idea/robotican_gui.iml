@@ -50,12 +50,12 @@
       <sourceFolder url="file://$MODULE_DIR$/src/listeners/Battery.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/listeners/UrfRear.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/listeners/RearCam.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Gps.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/listeners/FrontCam.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/listeners/PanTilt.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/FrontCam.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/listeners/UrfRight.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/listeners/Lidar.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Gps.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/listeners/FrontCam.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/listeners/Gripper.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/listeners/Lidar.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/listeners/Listener.h" isTestSource="false" />

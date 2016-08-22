@@ -15,8 +15,13 @@
 #include <ros/ros.h>
 #include <QThread>
 #include <QFuture>
+#include <boost/thread.hpp>
+#include <boost/chrono.hpp>
 #include <QtConcurrentRun>
 #include "../gui_components/Led.h"
+#include "../event_handler/DriveMode.h"
+#include <QMessageBox>
+
 
 #define TIMEOUT 1.0
 
@@ -30,19 +35,16 @@ public:
     void setBatPwr(int val);
     void setLed(long int val, Led* led);
     void closeApp();
-    void execLaunch();
+    void execDriveMode();
 
 private:
     Ui::MainWindow * _guiHandle;
     QApplication * _app;
     ros::NodeHandle _nHandle;
+    DriveMode _driveMode;
 
-    bool _launcherOpened;
-    std::string execShellCmd(const char* cmd);
     double calcTimeOut(long int startTime, long int endTime);
-
-
-
+    bool runDriveMode();
 };
 
 

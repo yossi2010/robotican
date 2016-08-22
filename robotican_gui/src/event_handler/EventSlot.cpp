@@ -7,7 +7,6 @@
 
 EventSlot::EventSlot()
 {
-    _launcherOpened = false;
 }
 
 void EventSlot::initiate(Ui::MainWindow &guiHandle, QApplication &app)
@@ -39,59 +38,27 @@ void EventSlot::setLed(long int val, Led* led)
 
 void EventSlot::closeApp()
 {
-    system("killall xterm");
     _app->quit();
 }
 
-/************************************************************************
- * Goal:procedure will launch the launch file which is associated with it
- * *********************************************************************/
-void EventSlot::execLaunch() {
-    //std::string openLauncherCmdA("xterm -e sh -c 'echo \"opening launch file...\"; echo; roslaunch ");
-    //std::string openLauncherCmdB("; exec bash;'");
-    //std::string launcherFilePath, launcherPkg;
+void EventSlot::execDriveMode()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(NULL, "Warning", "Are you sure you want to run driving mode?",
+                                  QMessageBox::Yes|QMessageBox::No);
+    
+    if (reply == QMessageBox::Yes) {
 
-
-    //_nHandle.param<std::string>("launcher_file_path", launcherFilePath, "armadillo.launch");
-    //_nHandle.param<std::string>("launcher_file_pkg", launcherPkg, "robotican_armadillo");
-    //std::string launchCmd = openLauncherCmdA + launcherPkg + " " + launcherFilePath + openLauncherCmdB;
-
-    QIcon icon;
-    if (!_launcherOpened)
-    {
-        _launcherOpened = true;
-        //QFuture<std::string> execProc = QtConcurrent::run(this, &EventSlot::execShellCmd, launchCmd.c_str());
-        icon.addFile(QString(":/images/turnOn.png"), QSize(), QIcon::Normal, QIcon::Off);
-
+        boost::thread worker(&EventSlot::runDriveMode, this);
+    } else {
     }
-    else
-    {
-        icon.addFile(QString(":/images/Shutdown.png"), QSize(), QIcon::Normal, QIcon::Off);
 
-        _launcherOpened = false;
-       //system("killall xterm");
 
-    }
-    _guiHandle->launch_btn->setIcon(icon);
 }
 
-/******************************************************
- * Goal: procedure send command to shell and execute it
- * Params: @cmd is the command you wish to execute
- *****************************************************/
-std::string EventSlot::execShellCmd(const char *cmd)
+bool EventSlot::runDriveMode()
 {
-    std::string result = "";
-    FILE* pipe = popen(cmd, "r");
-    if (!pipe) return "ERROR";
-    char buffer[128];
-
-    while (!feof(pipe)) {
-        if (fgets(buffer, 128, pipe) != NULL)
-            result += buffer;
-    }
-    pclose(pipe);
-    return result;
+     _driveMode.moveArm();
 }
 
 /************************************************
