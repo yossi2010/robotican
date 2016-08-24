@@ -91,13 +91,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5090c7e5-85e2-48e5-b18b-c7d9a39d63ef" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../robotican_manipulator_h/src/arm_node.cpp" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../robotican_armadillo/src/robotican_h_manipulator_node.cpp" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_armadillo/CMakeLists.txt" afterPath="$PROJECT_DIR$/../robotican_armadillo/CMakeLists.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_controllers/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../robotican_controllers/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_armadillo/launch/armadillo.launch" afterPath="$PROJECT_DIR$/../robotican_armadillo/launch/armadillo.launch" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_armadillo/launch/armadillo_all_sensors.launch" afterPath="$PROJECT_DIR$/../robotican_armadillo/launch/armadillo_all_sensors.launch" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/robotican_hardware_interface.iml" afterPath="$PROJECT_DIR$/.idea/robotican_hardware_interface.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_manipulator_h/CMakeLists.txt" afterPath="$PROJECT_DIR$/../robotican_manipulator_h/CMakeLists.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_manipulator_h/package.xml" afterPath="$PROJECT_DIR$/../robotican_manipulator_h/package.xml" />
     </list>
     <ignored path="robotican_hardware_interface.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -130,17 +127,17 @@
       <file leaf-file-name="dynamixel_pro_controller.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/dynamixel_pro_controller.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2470">
+            <state relative-caret-position="10800">
               <caret line="600" column="0" selection-start-line="600" selection-start-column="0" selection-end-line="600" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="komodo.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="komodo.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/komodo.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1040">
+            <state relative-caret-position="522">
               <caret line="29" column="36" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="41" />
               <folding />
             </state>
@@ -162,6 +159,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="9612">
               <caret line="534" column="25" selection-start-line="534" selection-start-column="25" selection-end-line="534" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RiCBoardManager.cpp" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="159">
+              <caret line="216" column="45" selection-start-line="216" selection-start-column="33" selection-end-line="216" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -237,10 +244,10 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="65" />
-    <option name="y" value="-4" />
+    <option name="x" value="1985" />
+    <option name="y" value="24" />
     <option name="width" value="1855" />
-    <option name="height" value="1084" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -344,7 +351,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../robotican_controllers" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../robotican_gui" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -980,11 +987,13 @@
       <workItem from="1471525603949" duration="9000" />
       <workItem from="1471530360871" duration="442000" />
       <workItem from="1471531704840" duration="910000" />
+      <workItem from="1472034523150" duration="189000" />
+      <workItem from="1472034730945" duration="617000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38233000" />
+    <option name="totallyTimeSpent" value="39039000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -996,7 +1005,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <frame x="1985" y="24" width="1855" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22598253" sideWeight="0.4946401" order="0" side_tool="false" content_ui="combo" />
@@ -1352,13 +1361,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="501" column="97" selection-start-line="501" selection-start-column="97" selection-end-line="501" selection-end-column="97" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/robotican_hardware_interface/komodo.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1380,10 +1382,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/dynamixel_pro_driver.cpp">
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9612">
-          <caret line="534" column="25" selection-start-line="534" selection-start-column="25" selection-end-line="534" selection-end-column="25" />
+        <state relative-caret-position="3888">
+          <caret line="216" column="0" selection-start-line="216" selection-start-column="0" selection-end-line="216" selection-end-column="91" />
           <folding />
         </state>
       </provider>
@@ -1396,17 +1398,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3888">
-          <caret line="216" column="0" selection-start-line="216" selection-start-column="0" selection-end-line="216" selection-end-column="91" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/dynamixel_pro_controller.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2470">
+        <state relative-caret-position="10800">
           <caret line="600" column="0" selection-start-line="600" selection-start-column="0" selection-end-line="600" selection-end-column="0" />
           <folding />
         </state>
@@ -1414,8 +1408,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/komodo.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1040">
+        <state relative-caret-position="522">
           <caret line="29" column="36" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/dynamixel_pro_driver.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9612">
+          <caret line="534" column="25" selection-start-line="534" selection-start-column="25" selection-end-line="534" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="216" column="45" selection-start-line="216" selection-start-column="33" selection-end-line="216" selection-end-column="45" />
           <folding />
         </state>
       </provider>

@@ -60,11 +60,7 @@
 		</include>
   </group>
 
-  <group if="$(arg robotican_gui)" >
-		<include file="$(find robotican_gui)/launch/robotican_gui.launch">
-		</include>
-  </group>
-  
+
   <group if="$(arg joystick)" >
 	<rosparam file="$(find robotican_armadillo)/config/joystick_teleop.yaml" command="load"/>
 	<include file="$(find robotican_common)/launch/joystick_teleop.launch">
@@ -118,6 +114,7 @@
 		
 		<param name="have_close_loop_motor" value="true" />
 		<param name="have_open_loop_motor" value="false" />
+		<param name="have_battery" value="true" />
 		<param name="have_close_loop_position_motor" value="true" />
 		<param name="have_ultrasonic" value="$(arg urf)" />
 		<param name="have_gps" value="$(arg gps)" />
@@ -130,7 +127,7 @@
 				<arg name="pixel_format" value="yuyv" /> <!-- mjpeg, yuyv, uyvy  -->
 				<arg name="image_width" value="640" />
 				<arg name="image_height" value="480" />
-				<arg name="node_name" value="front_cam" />
+				<arg name="node_name" value="front_camera" />
 			</include>
 		</group>
 		<group if="$(arg rear_camera)">
@@ -140,7 +137,7 @@
 				<arg name="pixel_format" value="yuyv" /> <!-- mjpeg, yuyv, uyvy  -->
 				<arg name="image_width" value="640" />
 				<arg name="image_height" value="480" />
-				<arg name="node_name" value="rear_cam" />
+				<arg name="node_name" value="rear_camera" />
 			</include>
 		</group>
 		<group if="$(arg lidar)">
@@ -279,6 +276,10 @@
 				<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /odom 20" />
 			</group>
 		</group>
+	</group>
+	 <group if="$(arg robotican_gui)" >
+		<include file="$(find robotican_gui)/launch/robotican_gui.launch">
+		</include>
 	</group>
 </launch>
 
