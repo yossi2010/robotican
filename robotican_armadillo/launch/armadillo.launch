@@ -60,11 +60,7 @@
 		</include>
   </group>
 
-  <group if="$(arg robotican_gui)" >
-		<include file="$(find robotican_gui)/launch/robotican_gui.launch">
-		</include>
-  </group>
-  
+
   <group if="$(arg joystick)" >
 	<rosparam file="$(find robotican_armadillo)/config/joystick_teleop.yaml" command="load"/>
 	<include file="$(find robotican_common)/launch/joystick_teleop.launch">
@@ -280,6 +276,10 @@
 				<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /odom 20" />
 			</group>
 		</group>
+	</group>
+	 <group if="$(arg robotican_gui)" >
+		<include file="$(find robotican_gui)/launch/robotican_gui.launch">
+		</include>
 	</group>
 </launch>
 
