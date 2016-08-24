@@ -15,7 +15,9 @@ Battery::Battery()
 
 void Battery::_chatterCallback(const ric_board::Battery::Ptr& msg)
 {
-    _batPower = ( msg->data / (msg->max - msg->min) ) * 100 ;
+    ROS_INFO("%f %f %f", msg->data, msg->max, msg->min);
+    _batPower = ( (msg->data - msg->min) / (msg->max - msg->min) ) * 100.0f ;
+    ROS_INFO("%d",_batPower);
     _signalTime = clock();
 }
 
@@ -26,7 +28,7 @@ int Battery::getBatteryPwr()
 
 void Battery::subscribe()
 {
-    _nHandle.param<std::string>("battery_monitor",_topicName, "battery_topic");
+    _nHandle.param<std::string>("battery_topic",_topicName, "battery_monitor");
     _sub = _nHandle.subscribe(_topicName, 1000, &Battery::_chatterCallback, this);
 }
 
