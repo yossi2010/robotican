@@ -26,15 +26,15 @@ ultrasonic_size: 3
 
 ultrasonic0_pin: 14
 ultrasonic0_frame_id: 'left_urf_link'
-ultrasonic0_topic_name: 'urf/left'
+ultrasonic0_topic_name: 'URF/left'
 
 ultrasonic1_pin: 15
 ultrasonic1_frame_id: 'right_urf_link'
-ultrasonic1_topic_name: 'urf/right'
+ultrasonic1_topic_name: 'URF/right'
 
 ultrasonic2_pin: 16
 ultrasonic2_frame_id: 'rear_urf_link'
-ultrasonic2_topic_name: 'urf/rear'
+ultrasonic2_topic_name: 'URF/rear'
 
 
 close_motor_size: 2
