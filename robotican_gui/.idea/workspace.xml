@@ -92,7 +92,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9189c781-230f-45d9-99b5-9793f5f474a1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/event_handler/DriveMode.cpp" afterPath="$PROJECT_DIR$/src/event_handler/DriveMode.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/robotican_gui.yaml" afterPath="$PROJECT_DIR$/config/robotican_gui.yaml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/listeners/Battery.cpp" afterPath="$PROJECT_DIR$/src/listeners/Battery.cpp" />
     </list>
     <ignored path="robotican_gui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -112,11 +113,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="DriveMode.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DriveMode.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/event_handler/DriveMode.cpp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="198">
               <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Battery.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/listeners/Battery.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="396">
+              <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="robotican_gui.yaml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/config/robotican_gui.yaml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -201,8 +222,6 @@
         <option value="$PROJECT_DIR$/include/robotican_gui.h" />
         <option value="$PROJECT_DIR$/src/listeners/Kinect2.cpp" />
         <option value="$PROJECT_DIR$/src/listeners/Battery.h" />
-        <option value="$PROJECT_DIR$/src/listeners/Battery.cpp" />
-        <option value="$PROJECT_DIR$/config/robotican_gui.yaml" />
         <option value="$PROJECT_DIR$/src/listeners/PanTilt.cpp" />
         <option value="$PROJECT_DIR$/src/listeners/PanTilt.h" />
         <option value="$PROJECT_DIR$/package.xml" />
@@ -213,6 +232,8 @@
         <option value="$PROJECT_DIR$/src/event_handler/EventSlot.cpp" />
         <option value="$PROJECT_DIR$/src/event_handler/DriveMode.h" />
         <option value="$PROJECT_DIR$/src/event_handler/DriveMode.cpp" />
+        <option value="$PROJECT_DIR$/config/robotican_gui.yaml" />
+        <option value="$PROJECT_DIR$/src/listeners/Battery.cpp" />
       </list>
     </option>
   </component>
@@ -397,28 +418,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="robotican_gui" />
-              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="robotican_gui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="robotican_gui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="images" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1118,15 +1117,16 @@
       <workItem from="1471933497637" duration="3390000" />
       <workItem from="1471940718845" duration="1119000" />
       <workItem from="1472033129669" duration="122000" />
+      <workItem from="1472037174849" duration="156000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35725000" />
+    <option name="totallyTimeSpent" value="35881000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1985" y="-4" width="1855" height="1084" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14501348" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1169,13 +1169,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///usr/include/qt4/QtCore/qthread.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="58" column="39" selection-start-line="58" selection-start-column="39" selection-end-line="58" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/src/gtest/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1386,13 +1379,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/listeners/Battery.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/include/qt4/QtGui/qabstractbutton.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="317">
@@ -1446,13 +1432,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="23" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/robotican_gui.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -1511,7 +1490,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="563">
           <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1525,10 +1503,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/images/battery.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/event_handler/DriveMode.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/listeners/Battery.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/robotican_gui.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
           <folding />
         </state>
       </provider>

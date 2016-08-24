@@ -12,4 +12,5 @@ lidar_topic: scan
 odom_topic: mobile_base_controller/odom
 sr300_topic: sr300/color/image_raw
 kinect2_topic: kinect2/hd/image_color
+battery_topic: battery_monitor
 

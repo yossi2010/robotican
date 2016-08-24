@@ -26,7 +26,7 @@ int Battery::getBatteryPwr()
 
 void Battery::subscribe()
 {
-    _nHandle.param<std::string>("battery_topic",_topicName, "batteryTopic");
+    _nHandle.param<std::string>("battery_monitor",_topicName, "battery_topic");
     _sub = _nHandle.subscribe(_topicName, 1000, &Battery::_chatterCallback, this);
 }
 
