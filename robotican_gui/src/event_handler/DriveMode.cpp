@@ -8,6 +8,7 @@ DriveMode::DriveMode() : _group("arm") {
     _group.setPlannerId("SBLkConfigDefault");
     _group.setPlanningTime(5.0);
     _group.setNumPlanningAttempts(2);
+    _group.setMaxVelocityScalingFactor(0.1);
 }
 
 bool DriveMode::moveArm()
