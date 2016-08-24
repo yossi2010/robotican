@@ -118,6 +118,7 @@
 		
 		<param name="have_close_loop_motor" value="true" />
 		<param name="have_open_loop_motor" value="false" />
+		<param name="have_battery" value="true" />
 		<param name="have_close_loop_position_motor" value="true" />
 		<param name="have_ultrasonic" value="$(arg urf)" />
 		<param name="have_gps" value="$(arg gps)" />
