@@ -1,0 +1,3 @@
+<launch>
+	<node name="arm_joy_node" output="screen" pkg="robotican_common" type="arm_joy_node" />
+</launch>
