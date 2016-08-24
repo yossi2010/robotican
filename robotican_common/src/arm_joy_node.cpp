@@ -44,8 +44,15 @@ private:
     int _bButtonIndex;
     int _upDownAxis;
     int _rightLeftAxis;
+    bool _gripperWorking;
 
     ros::Subscriber _joySub;
+
+    void doneCb(const actionlib::SimpleClientGoalState& state,
+                const control_msgs::GripperCommandResultConstPtr& result)
+    {
+        _gripperWorking = false;
+    }
 
     void joyCallback(const sensor_msgs::Joy::ConstPtr &msg) {
         bool isDeadManActive = msg->buttons[_deadManIndex] == 1;
@@ -91,7 +98,7 @@ private:
 
                 if(msg->buttons[_yButtonIndex] == 1) {
                     _gripperState = 1;
-                } else if(msg->buttons[_aButtonIndex] == -1) {
+                } else if(msg->buttons[_aButtonIndex] == 1) {
                     _gripperState = -1;
                 }
             }
@@ -108,7 +115,7 @@ private:
                || _gripperState == 1 || _gripperState == -1;
     }
 public:
-    ArmJoyNode(): _nodeHandle(),  _spinner(2), _group("arm") , _client("/gripper_controller/gripper_cmd", true) {
+    ArmJoyNode(): _nodeHandle(),  _spinner(2), _group("arm") , _client("gripper_controller/gripper_cmd", true) {
         ROS_INFO("[%s]: Arm joy node is active", ros::this_node::getName().c_str());
         _rotation1State = 0;
         _rotation2State = 0;
@@ -117,24 +124,12 @@ public:
         _shoulder3State = 0;
         _wristState = 0;
         _gripperState = 0;
+        _gripperWorking = false;
         _joySub = _nodeHandle.subscribe<sensor_msgs::Joy>("joy", 10, &ArmJoyNode::joyCallback, this);
         _group.setPlannerId("RRTConnectkConfigDefault");
 
-#ifndef DEBUG_JOY_ARM
-        if(!_nodeHandle.getParam("drive_joy_teleop_deadman_button", _deadManIndex)
-           && !_nodeHandle.getParam("arm_joy_node_hard_profile_index", _hardProfileIndex)
-           && !_nodeHandle.getParam("arm_joy_node_soft_profile_index", _softProfileIndex)
-           && !_nodeHandle.getParam("arm_joy_node_x_button_index", _xButtonIndex)
-           && !_nodeHandle.getParam("arm_joy_node_y_button_index", _yButtonIndex)
-           && !_nodeHandle.getParam("arm_joy_node_a_button_index", _aButtonIndex)
-           && !_nodeHandle.getParam("arm_joy_node_b_button_index", _bButtonIndex)
-           && !_nodeHandle.getParam("arm_joy_node_up_down_index", _upDownAxis)
-           && !_nodeHandle.getParam("arm_joy_node_left_right_index", _rightLeftAxis)) {
-            ROS_ERROR("[%s]: Need all the parameters", ros::this_node::getName().c_str());
-            ros::shutdown();
-        }
-#endif
-#ifdef DEBUG_JOY_ARM
+
+
         ros::param::param<int>("drive_joy_teleop_deadman_button", _deadManIndex, 8);
         ros::param::param<int>("arm_joy_node_hard_profile_index", _hardProfileIndex, 4);
         ros::param::param<int>("arm_joy_node_soft_profile_index", _softProfileIndex, 5);
@@ -152,9 +147,6 @@ public:
         ros::param::param<float>("arm_joy_node_shoulder3", _shoulder3IncreamentValue, 0.05);
         ros::param::param<float>("arm_joy_node_wrist", _wristIncreamentValue, 0.1);
 
-
-
-#endif
         _spinner.start();
     }
 
@@ -164,6 +156,7 @@ public:
         _group.getCurrentState()->copyJointGroupPositions(
                         _group.getCurrentState()->getRobotModel()->getJointModelGroup(_group.getName()),
                         group_variable_values);
+
         while(ros::ok()) {
             if(haveMoveGoal()) {
 
@@ -218,17 +211,29 @@ public:
 
                 if(_gripperState == -1) {
                     _gripperState = 0;
-                    control_msgs::GripperCommandGoal closeGoal;
-                    closeGoal.command.position = 0.0;
-                    closeGoal.command.max_effort = 0.0;
-                    _client.sendGoal(closeGoal);
+                    if(!_gripperWorking) {
+                        _gripperWorking = true;
+                        control_msgs::GripperCommandGoal closeGoal;
+                        closeGoal.command.position = 0.0;
+                        closeGoal.command.max_effort = 0.0;
+                        _client.sendGoal(closeGoal, boost::bind(&ArmJoyNode::doneCb, this, _1, _2),
+                                         GripperClient::SimpleActiveCallback() , GripperClient::SimpleFeedbackCallback());
+                    } else {
+                        ROS_WARN("[%s]: Gripper already have a goal please wait", ros::this_node::getName().c_str());
+                    }
 
                 } else if(_gripperState == 1) {
                     _gripperState = 0;
-                    control_msgs::GripperCommandGoal openGoal;
-                    openGoal.command.position = 0.14;
-                    openGoal.command.max_effort = 0.0;
-                    _client.sendGoal(openGoal);
+                    if (!_gripperWorking) {
+                        _gripperWorking = true;
+                        control_msgs::GripperCommandGoal openGoal;
+                        openGoal.command.position = 0.14;
+                        openGoal.command.max_effort = 0.0;
+                        _client.sendGoal(openGoal, boost::bind(&ArmJoyNode::doneCb, this, _1, _2),
+                                         GripperClient::SimpleActiveCallback() , GripperClient::SimpleFeedbackCallback());
+                    } else {
+                      ROS_WARN("[%s]: Gripper already have a goal please wait", ros::this_node::getName().c_str());
+                    }
 
                 }
 
@@ -249,6 +254,7 @@ public:
             loopRate.sleep();
         }
     }
+
 
 
 };
