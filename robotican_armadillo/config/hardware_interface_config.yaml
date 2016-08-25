@@ -27,17 +27,17 @@ ultrasonic_size: 3
 ultrasonic0_pin: 14
 ultrasonic0_frame_id: 'left_urf_link'
 ultrasonic0_topic_name: 'URF/left'
-ultrasonic0_topic_name:  0.012802419
+ultrasonic0_sonar_name:  'Max_Sonar_LV'
 
 ultrasonic1_pin: 15
 ultrasonic1_frame_id: 'right_urf_link'
 ultrasonic1_topic_name: 'URF/right'
-ultrasonic1_topic_name:  0.012802419
+ultrasonic1_sonar_name:  'Max_Sonar_LV'
 
 ultrasonic2_pin: 16
 ultrasonic2_frame_id: 'rear_urf_link'
 ultrasonic2_topic_name: 'URF/rear'
-ultrasonic2_topic_name:  0.012802419
+ultrasonic2_sonar_name:  'Max_Sonar_LV'
 
 
 close_motor_size: 2

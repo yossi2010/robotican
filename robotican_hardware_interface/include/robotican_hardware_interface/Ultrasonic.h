@@ -35,7 +35,7 @@ namespace robotican_hardware {
 
     public:
         Ultrasonic(byte id, TransportLayer *transportLayer, byte pin, std::string topicName,
-                           std::string frameId, double analog2Range);
+                   std::string frameId, std::string sonarName);
 
         virtual void update(const DeviceMessage *deviceMessage);
 

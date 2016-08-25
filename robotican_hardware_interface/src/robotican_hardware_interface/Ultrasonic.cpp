@@ -4,12 +4,20 @@
 #include <robotican_hardware_interface/Ultrasonic.h>
 
 robotican_hardware::Ultrasonic::Ultrasonic(byte id, TransportLayer *transportLayer, byte pin, std::string topicName,
-                                           std::string frameId, double analog2Range)
+                                           std::string frameId, std::string sonarName)
         : Device(id, transportLayer) {
     _pin = pin;
     _topicName = topicName;
     _frameId = frameId;
-    _analog2Range = analog2Range;
+//    _analog2Range = sonarName;
+    if(sonarName == "Max_Sonar_LV") {
+        _analog2Range = 127.0f / 9920.0f;
+    } else if(sonarName == "Max_Sonar_HRLV") {
+        _analog2Range = 128.0f / 25575.0f;
+    }
+    else {
+        _analog2Range = 0.0;
+    }
 
 }
 

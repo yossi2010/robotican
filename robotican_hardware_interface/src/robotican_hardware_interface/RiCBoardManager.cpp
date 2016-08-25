@@ -238,14 +238,14 @@ namespace robotican_hardware {
 
         if (haveUltrasonic) {
             for(int i = 0; i < ultrasonicSize; ++i) {
-                std::string ultrasonicIdentifier = "ultrasonic" +  boost::lexical_cast<std::string>(i), frameId, topicName;
+                std::string ultrasonicIdentifier = "ultrasonic" +  boost::lexical_cast<std::string>(i), frameId, topicName ,sonarName;
                 int pin;
                 ros_utils::rosInfo(ultrasonicIdentifier.c_str());
                 if(_nodeHandle.getParam(ultrasonicIdentifier + "_pin", pin)
                    && _nodeHandle.getParam(ultrasonicIdentifier + "_frame_id", frameId)
                    && _nodeHandle.getParam(ultrasonicIdentifier + "_topic_name", topicName)
-                   && _nodeHandle.getParam(ultrasonicIdentifier + "_analog_to_range", topicName)) {
-                    Device *ultrasonic = new Ultrasonic(_idGen++, &_transportLayer, pin, topicName, frameId, 0);
+                   && _nodeHandle.getParam(ultrasonicIdentifier + "_sonar_name", sonarName)) {
+                    Device *ultrasonic = new Ultrasonic(_idGen++, &_transportLayer, pin, topicName, frameId, sonarName);
                     _devices.push_back(ultrasonic);
                     ultrasonic->buildDevice();
                 }
