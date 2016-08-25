@@ -117,7 +117,7 @@ public:
         while (ros::ok()) {
 
             if (_deadManButtonActive) {
-                positions.points[0].time_from_start = ros::Duration(1.0);
+                positions.points[0].time_from_start = ros::Duration(0.1);
                 positions.points[0].positions[0] = _panPos;
                 positions.points[0].positions[1] = _tiltPos;
 #ifdef DEBUG_JOY
