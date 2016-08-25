@@ -31,6 +31,14 @@
         <joint name="shoulder3_joint" value="0" />
         <joint name="wrist_joint" value="0" />
     </group_state>
+    <group_state name="driving" group="arm">
+        <joint name="rotation1_joint" value="0" />
+        <joint name="rotation2_joint" value="0" />
+        <joint name="shoulder1_joint" value="-1.57" />
+        <joint name="shoulder2_joint" value="2.2446" />
+        <joint name="shoulder3_joint" value="0" />
+        <joint name="wrist_joint" value="0" />
+    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="eef" parent_link="gripper_link" group="gripper" parent_group="arm" />
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
@@ -42,6 +50,7 @@
     <disable_collisions link1="FL_wheel_link" link2="arm_link" reason="Never" />
     <disable_collisions link1="FL_wheel_link" link2="base_arm_link" reason="Never" />
     <disable_collisions link1="FL_wheel_link" link2="base_link" reason="Adjacent" />
+    <disable_collisions link1="FL_wheel_link" link2="laser_link" reason="Never" />
     <disable_collisions link1="FL_wheel_link" link2="rotation1_link" reason="Never" />
     <disable_collisions link1="FL_wheel_link" link2="shoulder1_link" reason="Never" />
     <disable_collisions link1="FR_wheel_link" link2="RL_wheel_link" reason="Never" />
@@ -49,28 +58,33 @@
     <disable_collisions link1="FR_wheel_link" link2="arm_link" reason="Never" />
     <disable_collisions link1="FR_wheel_link" link2="base_arm_link" reason="Never" />
     <disable_collisions link1="FR_wheel_link" link2="base_link" reason="Adjacent" />
+    <disable_collisions link1="FR_wheel_link" link2="laser_link" reason="Never" />
     <disable_collisions link1="FR_wheel_link" link2="rotation1_link" reason="Never" />
     <disable_collisions link1="FR_wheel_link" link2="shoulder1_link" reason="Never" />
     <disable_collisions link1="RL_wheel_link" link2="RR_wheel_link" reason="Never" />
     <disable_collisions link1="RL_wheel_link" link2="arm_link" reason="Never" />
     <disable_collisions link1="RL_wheel_link" link2="base_arm_link" reason="Never" />
     <disable_collisions link1="RL_wheel_link" link2="base_link" reason="Adjacent" />
+    <disable_collisions link1="RL_wheel_link" link2="laser_link" reason="Never" />
     <disable_collisions link1="RL_wheel_link" link2="rotation1_link" reason="Never" />
     <disable_collisions link1="RL_wheel_link" link2="shoulder1_link" reason="Never" />
     <disable_collisions link1="RR_wheel_link" link2="arm_link" reason="Never" />
     <disable_collisions link1="RR_wheel_link" link2="base_arm_link" reason="Never" />
     <disable_collisions link1="RR_wheel_link" link2="base_link" reason="Adjacent" />
+    <disable_collisions link1="RR_wheel_link" link2="laser_link" reason="Never" />
     <disable_collisions link1="RR_wheel_link" link2="rotation1_link" reason="Never" />
     <disable_collisions link1="RR_wheel_link" link2="shoulder1_link" reason="Never" />
     <disable_collisions link1="arm_link" link2="base_arm_link" reason="Adjacent" />
     <disable_collisions link1="arm_link" link2="base_link" reason="Adjacent" />
+    <disable_collisions link1="arm_link" link2="laser_link" reason="Never" />
     <disable_collisions link1="arm_link" link2="rotation1_link" reason="Never" />
     <disable_collisions link1="arm_link" link2="shoulder1_link" reason="Never" />
     <disable_collisions link1="base_arm_link" link2="base_link" reason="Never" />
+    <disable_collisions link1="base_arm_link" link2="laser_link" reason="Never" />
     <disable_collisions link1="base_arm_link" link2="rotation1_link" reason="Adjacent" />
-    <disable_collisions link1="base_arm_link" link2="shoulder1_link" reason="Never" />
+    <disable_collisions link1="base_link" link2="laser_link" reason="Adjacent" />
     <disable_collisions link1="base_link" link2="rotation1_link" reason="Never" />
-    <disable_collisions link1="base_link" link2="shoulder1_link" reason="Never" />
+    <disable_collisions link1="laser_link" link2="rotation1_link" reason="Never" />
     <disable_collisions link1="left_finger_link" link2="rotation2_link" reason="Never" />
     <disable_collisions link1="left_finger_link" link2="shoulder2_link" reason="Never" />
     <disable_collisions link1="left_finger_link" link2="shoulder3_link" reason="Never" />

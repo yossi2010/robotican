@@ -5,4 +5,4 @@ moveit_setup_assistant_config:
   SRDF:
     relative_path: config/komodo_robot.srdf
   CONFIG:
-    generated_timestamp: 1471515809
+    generated_timestamp: 1472110745
