@@ -32,6 +32,7 @@
     <arg name="debug" default="false"/> 
     
   <arg name="controllers" default='true'/>
+  <arg name="depth_camera" default='false'/>
   <arg name="moveit" default='false'/>
   <arg name="use_depth" default='false'/>
   <arg name="robot_localization" default='false'/>
@@ -106,7 +107,7 @@
 		<param name="have_arm" value="$(arg arm)" />
 		
 		<group if="$(arg front_camera)">
-			<include file="$(find robotican_hardware_interface)/launch/usb_cam.launch">
+			<include file="$(find robotican_common)/launch/usb_cam.launch">
 				<arg name="input_dev" value="/dev/video0" />
 				<arg name="camera_frame_id" value="front_cam_link" />
 				<arg name="pixel_format" value="yuyv" /> <!-- mjpeg, yuyv, uyvy  -->
@@ -115,9 +116,13 @@
 				<arg name="node_name" value="front_cam" />
 			</include>
 		</group>
-
+		<group if="$(arg depth_camera)">
+			<include file="$(find robotican_common)/launch/openni_cam.launch">
+				<arg name="camera_name" value="depth_camera" />
+			</include>
+		</group>
 		<group if="$(arg lidar)">
-			<include file="$(find robotican_hardware_interface)/launch/hokuyo_laser.launch">
+			<include file="$(find robotican_common)/launch/hokuyo_laser.launch">
 				<arg name="input_dev" value="/dev/Hokuyo" />
 				<arg name="frame_id" value="laser_link" />
 				<arg name="min_ang" value="-1.5707" />
@@ -144,7 +149,7 @@
                 namespace: dxl_manager
                 serial_ports:
                  gripper_port:
-                  port_name: "/dev/ttyUSB0"
+                  port_name: "/dev/ttyUSB1"
                   baud_rate: 57142
                   min_motor_id: 1
                   max_motor_id: 2

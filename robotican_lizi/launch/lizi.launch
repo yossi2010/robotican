@@ -85,7 +85,7 @@
     
     <group unless="$(arg gazebo)">
 		<group if="$(arg front_camera)">
-			<include file="$(find robotican_hardware_interface)/launch/usb_cam.launch">
+			<include file="$(find robotican_common)/launch/usb_cam.launch">
 				<arg name="input_dev" value="/dev/video0" />
 				<arg name="camera_frame_id" value="front_cam_link" />
 				<arg name="pixel_format" value="yuyv" /> <!-- mjpeg, yuyv, uyvy  -->
@@ -96,7 +96,7 @@
 		</group>
 
 		<group if="$(arg lidar)">
-			<include file="$(find robotican_hardware_interface)/launch/hokuyo_laser.launch">
+			<include file="$(find robotican_common)/launch/hokuyo_laser.launch">
 				<arg name="input_dev" value="/dev/Hokuyo" />
 				<arg name="frame_id" value="laser_link" />
 				<arg name="min_ang" value="-1.57" />
