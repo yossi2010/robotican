@@ -74,6 +74,7 @@
 	   imu:=$(arg imu)
 	   gps:=$(arg gps)
 	   sr300:=$(arg sr300)
+	   depth_camera:=$(arg depth_camera)
 	   " /> 
 	  
 
