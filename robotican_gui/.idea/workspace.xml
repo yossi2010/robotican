@@ -91,10 +91,7 @@
     </ADDITIONAL_GENERATION_ENVIRONMENT>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9189c781-230f-45d9-99b5-9793f5f474a1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/robotican_gui.yaml" afterPath="$PROJECT_DIR$/config/robotican_gui.yaml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/listeners/Battery.cpp" afterPath="$PROJECT_DIR$/src/listeners/Battery.cpp" />
-    </list>
+    <list default="true" id="9189c781-230f-45d9-99b5-9793f5f474a1" name="Default" comment="" />
     <ignored path="robotican_gui.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -126,8 +123,8 @@
       <file leaf-file-name="Battery.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/listeners/Battery.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+            <state relative-caret-position="432">
+              <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -232,8 +229,8 @@
         <option value="$PROJECT_DIR$/src/event_handler/EventSlot.cpp" />
         <option value="$PROJECT_DIR$/src/event_handler/DriveMode.h" />
         <option value="$PROJECT_DIR$/src/event_handler/DriveMode.cpp" />
-        <option value="$PROJECT_DIR$/config/robotican_gui.yaml" />
         <option value="$PROJECT_DIR$/src/listeners/Battery.cpp" />
+        <option value="$PROJECT_DIR$/config/robotican_gui.yaml" />
       </list>
     </option>
   </component>
@@ -246,9 +243,9 @@
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
     <option name="x" value="1985" />
-    <option name="y" value="-4" />
+    <option name="y" value="24" />
     <option name="width" value="1855" />
-    <option name="height" value="1084" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -1118,17 +1115,18 @@
       <workItem from="1471940718845" duration="1119000" />
       <workItem from="1472033129669" duration="122000" />
       <workItem from="1472037174849" duration="156000" />
+      <workItem from="1472102221882" duration="42000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35881000" />
+    <option name="totallyTimeSpent" value="35923000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1985" y="-4" width="1855" height="1084" extended-state="6" />
-    <editor active="true" />
+    <frame x="1985" y="24" width="1855" height="1056" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14501348" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14465065" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3219076" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3092574" sideWeight="0.5018868" order="7" side_tool="true" content_ui="tabs" />
@@ -1518,8 +1516,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/listeners/Battery.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+        <state relative-caret-position="432">
+          <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
           <folding />
         </state>
       </provider>

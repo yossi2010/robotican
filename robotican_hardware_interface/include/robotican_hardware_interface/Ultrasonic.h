@@ -27,13 +27,15 @@ namespace robotican_hardware {
         byte _pin;
         std::string _topicName;
         std::string _frameId;
+        double _analog2Range;
         ros::Publisher _ultrasonicRead;
 
     protected:
         virtual void buildDevice();
 
     public:
-        Ultrasonic(byte id, TransportLayer *transportLayer, byte pin, std::string topicName, std::string frameId);
+        Ultrasonic(byte id, TransportLayer *transportLayer, byte pin, std::string topicName,
+                           std::string frameId, double analog2Range);
 
         virtual void update(const DeviceMessage *deviceMessage);
 

@@ -3,11 +3,13 @@
 //
 #include <robotican_hardware_interface/Ultrasonic.h>
 
-robotican_hardware::Ultrasonic::Ultrasonic(byte id, TransportLayer *transportLayer, byte pin, std::string topicName, std::string frameId)
+robotican_hardware::Ultrasonic::Ultrasonic(byte id, TransportLayer *transportLayer, byte pin, std::string topicName,
+                                           std::string frameId, double analog2Range)
         : Device(id, transportLayer) {
     _pin = pin;
     _topicName = topicName;
     _frameId = frameId;
+    _analog2Range = analog2Range;
 
 }
 
@@ -25,7 +27,8 @@ void robotican_hardware::Ultrasonic::update(const DeviceMessage *deviceMessage) 
         range.field_of_view = FIELD_OF_VIEW_URF_HRLV_MaxSonar;
 
         range.radiation_type = sensor_msgs::Range::ULTRASOUND;
-        range.range = (float) (currentRead * (127.0 / 9920.0));
+//        double _analog2Range = 127.0 / 9920.0;
+        range.range = (float) (currentRead * _analog2Range);
         _ultrasonicRead.publish(range);
     }
 
