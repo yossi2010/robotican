@@ -13,7 +13,7 @@
   <xacro:arg name="gps" default="false"/>	
   <xacro:arg name="lidar" default="false"/>
   <xacro:arg name="sr300" default="false"/>
-  
+  <xacro:arg name="depth_camera" default="false"/>
   
   <xacro:include filename="$(find robotican_manipulator_h)/models/manipulator_h_gazebo_plugins.xacro" />
 
@@ -24,7 +24,9 @@
   
   <!-- TODO: Asus -->
   
-
+  <xacro:if value="$(arg depth_camera)">
+    <xacro:include filename="$(find robotican_common)/gazebo/asus_xtion_pro_live.xacro" />
+  </xacro:if>
   
   
   <!-- Sonars -->
