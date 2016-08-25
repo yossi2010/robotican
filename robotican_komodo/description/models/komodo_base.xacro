@@ -267,7 +267,7 @@
     name="laser_link" >
     <visual>
       <origin
-        xyz="-0.22 0.0 -0.165"
+        xyz="0 0 0.02291"
         rpy="0 0 0" />
       <material
         name="">
@@ -287,7 +287,7 @@
     name="laser_joint"
     type="fixed">
     <origin
-      xyz="0.2205 0 0.16233"
+      xyz="0.2205 0 0.145"
       rpy="0 0 0" />
     <parent
       link="base_link" />

@@ -120,8 +120,8 @@
 			<include file="$(find robotican_hardware_interface)/launch/hokuyo_laser.launch">
 				<arg name="input_dev" value="/dev/Hokuyo" />
 				<arg name="frame_id" value="laser_link" />
-				<arg name="min_ang" value="-1.81" />
-				<arg name="max_ang" value="1.81" />
+				<arg name="min_ang" value="-1.5707" />
+				<arg name="max_ang" value="1.5707" />
 			</include>
 		</group>
 

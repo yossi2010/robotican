@@ -199,7 +199,6 @@
         xyz="0 0 0"
         rpy="0 ${M_PI/2} 0" />
       <geometry>
-  <!--      <mesh filename="package://robotican_armadillo/description/meshes/right_urf_link.STL" /> -->
 	<cylinder  length="0.005" radius="0.008"/> 
       </geometry>
       <material
@@ -213,7 +212,6 @@
         xyz="0 0 0"
          rpy="0 ${M_PI/2} 0" />
       <geometry>
-  <!--      <mesh filename="package://robotican_armadillo/description/meshes/right_urf_link.STL" /> -->
 	<cylinder  length="0.005" radius="0.008"/> 
       </geometry>
     </collision>

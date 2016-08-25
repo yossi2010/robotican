@@ -12,7 +12,9 @@
 	
  <link
     name="arm_link">
-    <inertial>
+    <inertial>  <gazebo reference="base_arm_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
       <origin
         xyz="-0.022197 -1.9122E-07 0.044251"
         rpy="0 0 0" />

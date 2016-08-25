@@ -12,7 +12,7 @@
 	
  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen"/>
  
-    <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /base_link 20" />
+    <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /base_footprint 20" />
 
 </launch>
 

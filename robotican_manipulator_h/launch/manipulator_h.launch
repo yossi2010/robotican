@@ -6,7 +6,7 @@
 	<arg name="gui" default="true"/>
 	<arg name="headless" default="false"/>
 	<arg name="debug" default="false"/> 
-	<arg name="moveit" default="false"/>
+	<arg name="moveit" default="true"/>
 	<arg name="x" default="0.0"/>
 	<arg name="y" default="0.0"/>
 	<arg name="z" default="0.0"/>
@@ -17,7 +17,7 @@
 	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
 	
 	<group if="$(arg gazebo)">
-		<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /world 20" />
+		
 		<env name="GAZEBO_MODEL_PATH" value="$(find robotican_common)/models:$(optenv GAZEBO_MODEL_PATH)"/>
 		<param name="robot_description" command="$(find xacro)/xacro.py '$(find robotican_manipulator_h)/models/manipulator_h_gazebo.xacro'" />
 
@@ -31,7 +31,7 @@
 			<arg name="headless" value="$(arg headless)"/>
     	</include>
 	    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" 
-			args="-urdf -model komodo -param robot_description -x 2.010867 -y -0.689194 -z 0.659883 -R -0.005690 -P -0.001849 -Y 2.825261"/> 
+			args="-urdf -model komodo -param robot_description -x 2.010867 -y -0.689194 -z 0.659883 -R -0.0 -P -0.0 -Y 1.5707"/> 
 		
 	</group>
 
