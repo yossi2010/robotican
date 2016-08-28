@@ -9,14 +9,13 @@ DriveMode::DriveMode() : _group("arm") {
     _group.setPlanningTime(5.0);
     _group.setNumPlanningAttempts(2);
     _group.setMaxVelocityScalingFactor(0.1);
+
 }
 
 bool DriveMode::moveArm()
 {
     //plan
-    _group.setNamedTarget("Driving Mode");
-
-
+    _group.setNamedTarget("driving");
     bool plan_success = _group.plan(_drivingModePlan);
 
     //execute

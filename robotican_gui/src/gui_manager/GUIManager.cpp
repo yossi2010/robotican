@@ -1,7 +1,6 @@
 //
 // Created by sub on 07/04/16.
 //
-
 #include "GUIManager.h"
 
 GUImanager::GUImanager(QMainWindow &widget, Ui::MainWindow &win, QApplication &app)
@@ -46,6 +45,18 @@ void GUImanager::_connectEvents()
     //execute/close launcher
     QObject::connect(_win->launch_btn, SIGNAL(clicked()),
                      &_eventSlot, SLOT(execDriveMode()));
+
+
+    //COMBOBOX////////////////////////////////////////////////////
+    std::vector<std::string> v;
+    v.push_back("test1");
+    v.push_back("test2");
+    v.push_back("test3");
+    v.push_back("test4");
+    v.push_back("test5");
+
+    for(int i=0; i < v.size(); i++)
+        _win->cmbox_preset->addItem(QString::fromStdString(v[i]));
 }
 
 //**************************************************

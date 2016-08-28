@@ -13,12 +13,11 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
+#include <QtGui/QComboBox>
 #include <QtGui/QFrame>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QMainWindow>
-#include <QtGui/QMenu>
-#include <QtGui/QMenuBar>
 #include <QtGui/QProgressBar>
 #include <QtGui/QPushButton>
 #include <QtGui/QStatusBar>
@@ -29,7 +28,7 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    QAction *actionSelect_preset;
+    QAction *preset_menu;
     QWidget *centralwidget;
     QLabel *gripper_lbl;
     QLabel *gps_lbl;
@@ -92,8 +91,7 @@ public:
     QPushButton *preset_btn;
     QProgressBar *move_pbar;
     QLabel *move_status_lbl;
-    QMenuBar *menubar;
-    QMenu *menuPreset;
+    QComboBox *cmbox_preset;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -111,8 +109,8 @@ public:
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/images/robotican_gui_logo.ico"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
-        actionSelect_preset = new QAction(MainWindow);
-        actionSelect_preset->setObjectName(QString::fromUtf8("actionSelect_preset"));
+        preset_menu = new QAction(MainWindow);
+        preset_menu->setObjectName(QString::fromUtf8("preset_menu"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gripper_lbl = new QLabel(centralwidget);
@@ -423,26 +421,20 @@ public:
         preset_btn->setFlat(false);
         move_pbar = new QProgressBar(centralwidget);
         move_pbar->setObjectName(QString::fromUtf8("move_pbar"));
-        move_pbar->setGeometry(QRect(170, 20, 71, 16));
+        move_pbar->setGeometry(QRect(170, 10, 71, 16));
         move_pbar->setMaximum(0);
         move_pbar->setValue(0);
         move_pbar->setTextVisible(false);
         move_status_lbl = new QLabel(centralwidget);
         move_status_lbl->setObjectName(QString::fromUtf8("move_status_lbl"));
-        move_status_lbl->setGeometry(QRect(170, 50, 71, 21));
+        move_status_lbl->setGeometry(QRect(170, 60, 71, 21));
+        cmbox_preset = new QComboBox(centralwidget);
+        cmbox_preset->setObjectName(QString::fromUtf8("cmbox_preset"));
+        cmbox_preset->setGeometry(QRect(170, 30, 71, 27));
         MainWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(MainWindow);
-        menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 333, 25));
-        menuPreset = new QMenu(menubar);
-        menuPreset->setObjectName(QString::fromUtf8("menuPreset"));
-        MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         MainWindow->setStatusBar(statusbar);
-
-        menubar->addAction(menuPreset->menuAction());
-        menuPreset->addAction(actionSelect_preset);
 
         retranslateUi(MainWindow);
 
@@ -452,7 +444,7 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Robotican GUI", 0, QApplication::UnicodeUTF8));
-        actionSelect_preset->setText(QApplication::translate("MainWindow", "select preset", 0, QApplication::UnicodeUTF8));
+        preset_menu->setText(QApplication::translate("MainWindow", "select preset", 0, QApplication::UnicodeUTF8));
         gripper_lbl->setText(QApplication::translate("MainWindow", "GRIPPER", 0, QApplication::UnicodeUTF8));
         gps_lbl->setText(QApplication::translate("MainWindow", "GPS", 0, QApplication::UnicodeUTF8));
         left_urf_lbl->setText(QApplication::translate("MainWindow", "LEFT", 0, QApplication::UnicodeUTF8));
@@ -508,7 +500,6 @@ public:
 #endif // QT_NO_TOOLTIP
         preset_btn->setText(QString());
         move_status_lbl->setText(QString());
-        menuPreset->setTitle(QApplication::translate("MainWindow", "preset", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

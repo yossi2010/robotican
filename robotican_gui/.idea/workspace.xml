@@ -93,10 +93,11 @@
   <component name="ChangeListManager">
     <list default="true" id="9189c781-230f-45d9-99b5-9793f5f474a1" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/ui/robotican_gui.ui" afterPath="$PROJECT_DIR$/resources/ui/robotican_gui.ui" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/robotican_gui.iml" afterPath="$PROJECT_DIR$/.idea/robotican_gui.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/robotican_gui.h" afterPath="$PROJECT_DIR$/include/robotican_gui.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/event_handler/DriveMode.cpp" afterPath="$PROJECT_DIR$/src/event_handler/DriveMode.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gui_manager/GUIManager.cpp" afterPath="$PROJECT_DIR$/src/gui_manager/GUIManager.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gui_manager/GUIManager.h" afterPath="$PROJECT_DIR$/src/gui_manager/GUIManager.h" />
     </list>
     <ignored path="robotican_gui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -116,21 +117,43 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="GUIManager.cpp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GUIManager.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gui_manager/GUIManager.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="663">
-              <caret line="155" column="18" selection-start-line="155" selection-start-column="18" selection-end-line="155" selection-end-column="18" />
+            <state relative-caret-position="360">
+              <caret line="38" column="64" selection-start-line="38" selection-start-column="64" selection-end-line="38" selection-end-column="64" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DriveMode.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GUIManager.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/gui_manager/GUIManager.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="144">
+              <caret line="8" column="16" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="robotican_gui.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/include/robotican_gui.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="414">
+              <caret line="436" column="32" selection-start-line="436" selection-start-column="32" selection-end-line="436" selection-end-column="32" />
+              <folding>
+                <element signature="e#415#441#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DriveMode.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/event_handler/DriveMode.cpp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="198">
-              <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -179,8 +202,6 @@
         <option value="$PROJECT_DIR$/src/listeners/F200.cpp" />
         <option value="$PROJECT_DIR$/src/listeners/F200.h" />
         <option value="$PROJECT_DIR$/src/listeners/sr300.h" />
-        <option value="$PROJECT_DIR$/src/gui_manager/GUIManager.h" />
-        <option value="$PROJECT_DIR$/include/robotican_gui.h" />
         <option value="$PROJECT_DIR$/src/listeners/Kinect2.cpp" />
         <option value="$PROJECT_DIR$/src/listeners/Battery.h" />
         <option value="$PROJECT_DIR$/src/listeners/PanTilt.cpp" />
@@ -191,9 +212,11 @@
         <option value="$PROJECT_DIR$/src/event_handler/EventSlot.h" />
         <option value="$PROJECT_DIR$/src/event_handler/EventSlot.cpp" />
         <option value="$PROJECT_DIR$/src/event_handler/DriveMode.h" />
-        <option value="$PROJECT_DIR$/src/event_handler/DriveMode.cpp" />
         <option value="$PROJECT_DIR$/src/listeners/Battery.cpp" />
         <option value="$PROJECT_DIR$/config/robotican_gui.yaml" />
+        <option value="$PROJECT_DIR$/include/robotican_gui.h" />
+        <option value="$PROJECT_DIR$/src/event_handler/DriveMode.cpp" />
+        <option value="$PROJECT_DIR$/src/gui_manager/GUIManager.h" />
         <option value="$PROJECT_DIR$/src/gui_manager/GUIManager.cpp" />
       </list>
     </option>
@@ -206,10 +229,10 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="65" />
-    <option name="y" value="-4" />
+    <option name="x" value="1985" />
+    <option name="y" value="24" />
     <option name="width" value="1855" />
-    <option name="height" value="1084" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -1093,14 +1116,15 @@
       <workItem from="1472120970051" duration="17000" />
       <workItem from="1472373132538" duration="62000" />
       <workItem from="1472373472607" duration="40000" />
+      <workItem from="1472396162207" duration="5125000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36042000" />
+    <option name="totallyTimeSpent" value="41167000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <frame x="1985" y="24" width="1855" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14447439" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1368,13 +1392,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gui_manager/GUIManager.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="35" column="18" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///opt/ros/indigo/include/control_msgs/JointTrajectoryControllerState.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="497">
@@ -1431,13 +1448,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/robotican_gui.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -1478,26 +1488,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gui_manager/GUIManager.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="155" column="18" selection-start-line="155" selection-start-column="18" selection-end-line="155" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/listeners/Battery.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
           <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/event_handler/DriveMode.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
-          <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/robotican_gui.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="436" column="32" selection-start-line="436" selection-start-column="32" selection-end-line="436" selection-end-column="32" />
+          <folding>
+            <element signature="e#415#441#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gui_manager/GUIManager.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" column="16" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gui_manager/GUIManager.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="38" column="64" selection-start-line="38" selection-start-column="64" selection-end-line="38" selection-end-column="64" />
           <folding />
         </state>
       </provider>
