@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>333</width>
+    <height>507</height>
+   </rect>
+  </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
@@ -1001,7 +1009,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="pan_tilt_lable">
+   <widget class="QLabel" name="pan_tilt_lbl">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -1060,7 +1068,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="f200_lbl">
+   <widget class="QLabel" name="sr300_lbl">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -1080,7 +1088,7 @@
      <string>F200</string>
     </property>
    </widget>
-   <widget class="QLabel" name="f200_led">
+   <widget class="QLabel" name="sr300_led">
     <property name="geometry">
      <rect>
       <x>80</x>

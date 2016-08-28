@@ -150,7 +150,7 @@ void GUImanager::_initiateLbls()
     _win->kinnect2_lbl->setText(QApplication::translate("MainWindow", tempParam.c_str(), 0));
 
     _nh.param<std::string>("sr300_lbl_name",tempParam, "SR300");
-    _win->f200_lbl->setText(QApplication::translate("MainWindow", tempParam.c_str(), 0));
+    _win->sr300_lbl->setText(QApplication::translate("MainWindow", tempParam.c_str(), 0));
 
     _nh.param<std::string>("rear_cam_lbl_name",tempParam, "REAR");
     _win->rear_cam_lbl->setText(QApplication::translate("MainWindow", tempParam.c_str(), 0));
