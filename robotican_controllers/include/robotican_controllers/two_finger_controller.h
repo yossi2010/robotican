@@ -111,8 +111,8 @@ namespace gripper_action_controller
 
         double gap2Pos(double gap) {
             double max_gap=0.15;
-            double rad_when_stright=0.0855; //full_gap=0.04
-            double half_gap_on_zero_rad=0.02;
+            double rad_when_stright=0.0; //full_gap=0.04
+            double half_gap_on_zero_rad=0.021;
             double tip_r=0.09;
 
             if (gap  <0) gap=0;
@@ -126,8 +126,8 @@ namespace gripper_action_controller
         }
 
         double pos2Gap(double pos) {
-            double rad_when_stright=0.0855;
-            double half_gap_on_zero_rad=0.02;
+            double rad_when_stright=0.0;
+            double half_gap_on_zero_rad=0.021;
             double tip_r=0.09;
             return 2 * (half_gap_on_zero_rad + tip_r * sin(pos + rad_when_stright));
         }
