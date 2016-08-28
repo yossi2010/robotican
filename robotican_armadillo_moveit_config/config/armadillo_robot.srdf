@@ -47,12 +47,20 @@
         <joint name="shoulder3_joint" value="1.57" />
         <joint name="wrist_joint" value="0" />
     </group_state>
-    <group_state name="Driving Mode" group="arm">
+    <group_state name="driving" group="arm">
         <joint name="rotation1_joint" value="1.57" />
         <joint name="rotation2_joint" value="0" />
         <joint name="shoulder1_joint" value="-1.3129" />
         <joint name="shoulder2_joint" value="2.0938" />
         <joint name="shoulder3_joint" value="0" />
+        <joint name="wrist_joint" value="0" />
+    </group_state>
+    <group_state name="pre_grasp3" group="arm">
+        <joint name="rotation1_joint" value="0" />
+        <joint name="rotation2_joint" value="0" />
+        <joint name="shoulder1_joint" value="-0.2451" />
+        <joint name="shoulder2_joint" value="2.2661" />
+        <joint name="shoulder3_joint" value="-1.1819" />
         <joint name="wrist_joint" value="0" />
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->

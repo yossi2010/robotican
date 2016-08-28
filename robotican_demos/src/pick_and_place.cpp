@@ -36,7 +36,7 @@ void go(tf::Transform  dest);
 bool gripper_cmd(double gap,double effort);
 bool arm_cmd(geometry_msgs::PoseStamped target_pose1);
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object);
-bool lift_arm();
+bool plan_arm(std::string pose);
 void pick_go_cb(std_msgs::Empty);
 void button_go_cb(std_msgs::Empty);
 void look_down();
@@ -71,8 +71,8 @@ ros::Publisher pub_controller_command;
 
 
 
-bool lift_arm(){
-    group_ptr->setNamedTarget("pre_grasp2");
+bool plan_arm(std::string pose){
+    group_ptr->setNamedTarget(pose);
     moveit::planning_interface::MoveGroup::Plan my_plan;
     return group_ptr->plan(my_plan);
 
@@ -146,12 +146,14 @@ void pick_go_cb(std_msgs::Empty) {
                     attached=true;
                     ros::Duration(8).sleep(); //wait for attach
                     ROS_INFO("Lifting object...");
-                    if (lift_arm()) {
+                    pick_pose.pose.position.z=pick_pose.pose.position.z+0.1;
+                    pick_pose.pose.position.y=pick_pose.pose.position.y+0.15;
+                   if (arm_cmd(pick_pose)) {
                         ROS_INFO("Arm planning is done, moving arm up..");
                         if (group_ptr->move()) {
                             ROS_INFO("Arm is up, placing on table...");
-                            pick_pose.pose.position.z=pick_pose.pose.position.z+0.01;
-                            pick_pose.pose.position.y=pick_pose.pose.position.y+0.1;
+                            pick_pose.pose.position.z=pick_pose.pose.position.z-0.09;
+
                             if (arm_cmd(pick_pose)) {
                                 ROS_INFO("Arm planning is done, moving arm..");
                                 if(group_ptr->move()) {
@@ -160,7 +162,7 @@ void pick_go_cb(std_msgs::Empty) {
                                         ros::Duration(5).sleep(); //wait for deattach
                                         ROS_INFO("Lifting arm up...");
                                           gripper_constraints(false);
-                                        if (lift_arm()) {
+                                        if (plan_arm("pre_grasp2")) {
                                             group_ptr->detachObject("can");
                                             attached=false;
                                             //  std::vector<std::string> rem;
@@ -400,7 +402,7 @@ int main(int argc, char **argv) {
     // group.allowReplanning(true);
     group.setMaxVelocityScalingFactor(MaxVelocityScalingFactor);
     group.setMaxAccelerationScalingFactor(MaxAccelerationScalingFactor);
-    group.setPlanningTime(5.0);
+    group.setPlanningTime(3.0);
     group.setNumPlanningAttempts(30);
     group.setPlannerId("RRTConnectkConfigDefault");
     // group.setPlannerId("RRTstarkConfigDefault");
@@ -490,7 +492,7 @@ int main(int argc, char **argv) {
     ros::Duration(2.0).sleep();
     ROS_INFO("Looking down...");
     look_down();
-    if (lift_arm()) {
+    if (plan_arm("pre_grasp2")) {
         ROS_INFO("Arm planning is done, moving arm up..");
         if (group_ptr->move()) {
             ROS_INFO("Arm is up");
