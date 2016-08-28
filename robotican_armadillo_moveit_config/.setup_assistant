@@ -5,4 +5,4 @@ moveit_setup_assistant_config:
   SRDF:
     relative_path: config/armadillo_robot.srdf
   CONFIG:
-    generated_timestamp: 1471422579
+    generated_timestamp: 1472372467

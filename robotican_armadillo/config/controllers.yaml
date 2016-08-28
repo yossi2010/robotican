@@ -131,6 +131,34 @@ tilt_controller:
     max_torque: 0.1
     motor:
         id: 4
-        init: 1935
+        init: 1975
         min: 1000
         max: 3100
+
+left_finger_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: left_finger_joint
+    joint_speed: 0.2
+    max_torque: 0.1
+    motor:
+        id: 1
+        init: 2048
+        min: 1480
+        max: 2622
+
+right_finger_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: right_finger_joint
+    joint_speed: 0.2
+    max_torque: 0.1
+    motor:
+        id: 2
+        init: 2048
+        min: 1480
+        max: 2622
