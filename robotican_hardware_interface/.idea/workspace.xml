@@ -91,10 +91,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5090c7e5-85e2-48e5-b18b-c7d9a39d63ef" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_armadillo/config/hardware_interface_config.yaml" afterPath="$PROJECT_DIR$/../robotican_armadillo/config/hardware_interface_config.yaml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cfg/RiCBoardPotentiometer.cfg" afterPath="$PROJECT_DIR$/cfg/RiCBoardPotentiometer.cfg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/robotican_hardware_interface/Protocol.h" afterPath="$PROJECT_DIR$/include/robotican_hardware_interface/Protocol.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/robotican_hardware_interface/RiCMotor.h" afterPath="$PROJECT_DIR$/include/robotican_hardware_interface/RiCMotor.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp" afterPath="$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/robotican_hardware_interface/RiCMotor.cpp" afterPath="$PROJECT_DIR$/src/robotican_hardware_interface/RiCMotor.cpp" />
     </list>
     <ignored path="robotican_hardware_interface.iws" />
@@ -118,8 +118,8 @@
       <file leaf-file-name="Protocol.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/robotican_hardware_interface/Protocol.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1179">
-              <caret line="324" column="12" selection-start-line="324" selection-start-column="12" selection-end-line="324" selection-end-column="12" />
+            <state relative-caret-position="605">
+              <caret line="510" column="20" selection-start-line="510" selection-start-column="20" selection-end-line="510" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -135,20 +135,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RiCMotor.cpp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="RiCMotor.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCMotor.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="343" column="0" selection-start-line="343" selection-start-column="0" selection-end-line="343" selection-end-column="0" />
+            <state relative-caret-position="576">
+              <caret line="441" column="51" selection-start-line="441" selection-start-column="51" selection-end-line="441" selection-end-column="51" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RiCBoardManager.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RiCBoardManager.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
+            <state relative-caret-position="-561">
               <caret line="461" column="77" selection-start-line="461" selection-start-column="75" selection-end-line="461" selection-end-column="77" />
               <folding />
             </state>
@@ -204,16 +204,16 @@
         <option value="$PROJECT_DIR$/src/robotican_hardware_interface/armadillo.cpp" />
         <option value="$PROJECT_DIR$/../../caja/caja_nav/src/nav.cpp" />
         <option value="$PROJECT_DIR$/cfg/RiCBoard.cfg" />
-        <option value="$PROJECT_DIR$/cfg/RiCBoardPotentiometer.cfg" />
         <option value="$PROJECT_DIR$/src/robotican_hardware_interface/Gps.cpp" />
         <option value="$PROJECT_DIR$/include/robotican_hardware_interface/dynamixel_pro_controller.h" />
         <option value="$PROJECT_DIR$/src/robotican_hardware_interface/dynamixel_pro_controller.cpp" />
         <option value="$PROJECT_DIR$/include/robotican_hardware_interface/Ultrasonic.h" />
         <option value="$PROJECT_DIR$/src/robotican_hardware_interface/Ultrasonic.cpp" />
-        <option value="$PROJECT_DIR$/include/robotican_hardware_interface/Protocol.h" />
-        <option value="$PROJECT_DIR$/src/robotican_hardware_interface/RiCMotor.cpp" />
         <option value="$PROJECT_DIR$/include/robotican_hardware_interface/RiCMotor.h" />
         <option value="$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp" />
+        <option value="$PROJECT_DIR$/include/robotican_hardware_interface/Protocol.h" />
+        <option value="$PROJECT_DIR$/cfg/RiCBoardPotentiometer.cfg" />
+        <option value="$PROJECT_DIR$/src/robotican_hardware_interface/RiCMotor.cpp" />
       </list>
     </option>
   </component>
@@ -336,6 +336,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="robotican_hardware_interface" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="robotican_hardware_interface" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="robotican_hardware_interface" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="robotican_hardware_interface" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cfg" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -995,12 +1013,12 @@
       <workItem from="1472105250878" duration="2027000" />
       <workItem from="1472120988107" duration="2717000" />
       <workItem from="1472371251758" duration="11000" />
-      <workItem from="1472450604182" duration="2482000" />
+      <workItem from="1472450604182" duration="6598000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46276000" />
+    <option name="totallyTimeSpent" value="50392000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1020,6 +1038,7 @@
       <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14196242" sideWeight="0.49649596" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22651356" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14852493" sideWeight="0.50350404" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32776618" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295099" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24960877" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13555788" sideWeight="0.4978166" order="10" side_tool="false" content_ui="tabs" />
@@ -1030,7 +1049,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30344108" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32846716" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43482795" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1319,13 +1337,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cfg/RiCBoardPotentiometer.cfg">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="18" column="20" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/robotican_hardware_interface/komodo.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1422,26 +1433,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-561">
+          <caret line="461" column="77" selection-start-line="461" selection-start-column="75" selection-end-line="461" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/include/robotican_hardware_interface/Protocol.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1179">
-          <caret line="324" column="12" selection-start-line="324" selection-start-column="12" selection-end-line="324" selection-end-column="12" />
+        <state relative-caret-position="605">
+          <caret line="510" column="20" selection-start-line="510" selection-start-column="20" selection-end-line="510" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cfg/RiCBoardPotentiometer.cfg">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="21" column="76" selection-start-line="21" selection-start-column="76" selection-end-line="21" selection-end-column="76" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCMotor.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="343" column="0" selection-start-line="343" selection-start-column="0" selection-end-line="343" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="461" column="77" selection-start-line="461" selection-start-column="75" selection-end-line="461" selection-end-column="77" />
+        <state relative-caret-position="576">
+          <caret line="441" column="51" selection-start-line="441" selection-start-column="51" selection-end-line="441" selection-end-column="51" />
           <folding />
         </state>
       </provider>
