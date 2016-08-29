@@ -339,6 +339,8 @@ namespace robotican_hardware {
         buildCloseLoopWithPotentiometer.stopLimitMin = _param.stopLimitMin;
         buildCloseLoopWithPotentiometer.LPFHzInput = _param.LPFHzInput;
         buildCloseLoopWithPotentiometer.LPFAlphaInput = _param.LPFAlphaInput;
+        buildCloseLoopWithPotentiometer.k = _param.K;
+        buildCloseLoopWithPotentiometer.toleranceTime = _param.toleranceTime;
 
         uint8_t* rawData = (uint8_t*)&buildCloseLoopWithPotentiometer;
         buildCloseLoopWithPotentiometer.checkSum = _transportLayer->calcChecksum(rawData, buildCloseLoopWithPotentiometer.length);

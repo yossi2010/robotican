@@ -114,6 +114,8 @@ namespace robotican_hardware {
         float maxSetPointPos;
         float minSetPointSpeed;
         float minSetPointPos;
+        float K;
+        uint16_t toleranceTime;
     };
 
     class CloseLoopMotor : public RiCMotor {

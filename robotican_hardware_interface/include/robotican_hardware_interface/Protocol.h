@@ -330,6 +330,8 @@ struct BuildCloseLoopWithPotentiometer : BuildMotorCloseLoop {
         motorType = CloseMotorType::CloseLoopWithPotentiometer;
     }
     byte pin;
+    uint16_t toleranceTime;
+    float k;
     float a;
     float b;
     float tolerance;
@@ -495,6 +497,7 @@ struct SetCloseMotorWithPotentiometer : DeviceMessage {
     uint16_t speedLpfHz;
     uint16_t inputLpfHz;
     uint16_t pidHz;
+    uint16_t tolaranceTime;
     float speedLfpAlpha;
     float inputLfpAlpha;
     float limit;
@@ -505,6 +508,7 @@ struct SetCloseMotorWithPotentiometer : DeviceMessage {
     float a;
     float b;
     float tolerance;
+
 
 }__attribute__((__packed__));
 
