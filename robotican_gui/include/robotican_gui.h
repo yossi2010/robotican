@@ -421,7 +421,7 @@ public:
         preset_btn->setFlat(false);
         move_pbar = new QProgressBar(centralwidget);
         move_pbar->setObjectName(QString::fromUtf8("move_pbar"));
-        move_pbar->setGeometry(QRect(170, 10, 71, 16));
+        move_pbar->setGeometry(QRect(170, 40, 71, 16));
         move_pbar->setMaximum(0);
         move_pbar->setValue(0);
         move_pbar->setTextVisible(false);
@@ -430,7 +430,7 @@ public:
         move_status_lbl->setGeometry(QRect(170, 60, 71, 21));
         cmbox_preset = new QComboBox(centralwidget);
         cmbox_preset->setObjectName(QString::fromUtf8("cmbox_preset"));
-        cmbox_preset->setGeometry(QRect(170, 30, 71, 27));
+        cmbox_preset->setGeometry(QRect(170, 10, 71, 27));
         MainWindow->setCentralWidget(centralwidget);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));

@@ -28,15 +28,15 @@ void EventSlot::setMoveState(int state)
         {
             case 0: //canceled
             {
-                _guiHandle->move_status_lbl->setStyleSheet("QLabel { background-color : yellow; }");
+                _guiHandle->move_status_lbl->setStyleSheet("QLabel { background-color : yellow; color : black }");
                 _guiHandle->move_status_lbl->setText("Canceled");
                 break;
             }
             case 1: //working
             {
                 _guiHandle->move_pbar->setVisible(true);
-                _guiHandle->move_status_lbl->setStyleSheet("QLabel { background-color : yellow; }");
-                _guiHandle->move_status_lbl->setText("Working...");
+                _guiHandle->move_status_lbl->setStyleSheet("QLabel { background-color : yellow; color : black }");
+                _guiHandle->move_status_lbl->setText("Planning...");
                 _guiHandle->launch_btn->setEnabled(false);
                 _guiHandle->preset_btn->setEnabled(false);
                 break;
@@ -44,6 +44,7 @@ void EventSlot::setMoveState(int state)
             case 2: //success
             {
                 _guiHandle->move_pbar->setVisible(false);
+                _guiHandle->move_status_lbl->setStyleSheet("QLabel { background-color : green; color : white }");
                 _guiHandle->move_status_lbl->setText("Success");
                 _guiHandle->launch_btn->setEnabled(true);
                 _guiHandle->preset_btn->setEnabled(true);
@@ -52,6 +53,7 @@ void EventSlot::setMoveState(int state)
             case 3: //fail
             {
                 _guiHandle->move_pbar->setVisible(false);
+                _guiHandle->move_status_lbl->setStyleSheet("QLabel { background-color : red; color : white }");
                 _guiHandle->move_status_lbl->setText("Failed");
                 _guiHandle->launch_btn->setEnabled(true);
                 _guiHandle->preset_btn->setEnabled(true);
@@ -101,7 +103,7 @@ void EventSlot::execDriveMode()
 
 bool EventSlot::runDriveMode()
 {
-     if (_arm.plan())
+     if (_arm.plan("driving"))
      {
          //_isSuccess = 2;
          setMoveState(2);

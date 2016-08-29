@@ -18,12 +18,11 @@ class ArmMove {
 private:
     moveit::planning_interface::MoveGroup::Plan _drivingModePlan;
     moveit::planning_interface::MoveGroup _group;
-    std::string _targetName;
     bool _isSuccess;
 
 public:
     ArmMove();
-    bool plan();
+    bool plan(std::string targetName);
     void move();
     std::string getTargetName();
     void setTargetName(std::string tName);
