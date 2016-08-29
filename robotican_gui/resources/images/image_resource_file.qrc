@@ -1,11 +1,11 @@
 <RCC>
   <qresource prefix="images">
     <file>panTilt.png</file>
-    <file>turnOn.png</file>
     <file>Shutdown.png</file>
     <file>laser.png</file>
     <file>battery.png</file>
     <file>camera.svg</file>
+    <file>preset.png</file>
     <file>eng.png</file>
     <file>exit.png</file>
     <file>gps.png</file>

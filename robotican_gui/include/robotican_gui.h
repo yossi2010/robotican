@@ -13,11 +13,11 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
+#include <QtGui/QComboBox>
 #include <QtGui/QFrame>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QMainWindow>
-#include <QtGui/QMenuBar>
 #include <QtGui/QProgressBar>
 #include <QtGui/QPushButton>
 #include <QtGui/QStatusBar>
@@ -28,6 +28,7 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
+    QAction *preset_menu;
     QWidget *centralwidget;
     QLabel *gripper_lbl;
     QLabel *gps_lbl;
@@ -78,7 +79,6 @@ public:
     QFrame *line_8;
     QFrame *line_9;
     QFrame *line_15;
-    QLabel *label_20;
     QFrame *line_4;
     QLabel *label_25;
     QLabel *pan_tilt_lbl;
@@ -88,7 +88,10 @@ public:
     QLabel *sr300_led;
     QFrame *line_10;
     QLabel *battery_led;
-    QMenuBar *menubar;
+    QPushButton *preset_btn;
+    QProgressBar *move_pbar;
+    QLabel *move_status_lbl;
+    QComboBox *cmbox_preset;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -106,6 +109,8 @@ public:
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/images/robotican_gui_logo.ico"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
+        preset_menu = new QAction(MainWindow);
+        preset_menu->setObjectName(QString::fromUtf8("preset_menu"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gripper_lbl = new QLabel(centralwidget);
@@ -363,11 +368,6 @@ public:
         line_15->setGeometry(QRect(320, 350, 20, 131));
         line_15->setFrameShape(QFrame::VLine);
         line_15->setFrameShadow(QFrame::Sunken);
-        label_20 = new QLabel(centralwidget);
-        label_20->setObjectName(QString::fromUtf8("label_20"));
-        label_20->setGeometry(QRect(90, 30, 151, 21));
-        label_20->setPixmap(QPixmap(QString::fromUtf8(":/images/robotican.png")));
-        label_20->setScaledContents(true);
         line_4 = new QFrame(centralwidget);
         line_4->setObjectName(QString::fromUtf8("line_4"));
         line_4->setGeometry(QRect(210, 90, 20, 131));
@@ -393,7 +393,7 @@ public:
         kinect2_led->setScaledContents(true);
         sr300_lbl = new QLabel(centralwidget);
         sr300_lbl->setObjectName(QString::fromUtf8("sr300_lbl"));
-        sr300_lbl->setGeometry(QRect(80, 450, 31, 21));
+        sr300_lbl->setGeometry(QRect(80, 450, 41, 21));
         sr300_lbl->setFont(font);
         sr300_led = new QLabel(centralwidget);
         sr300_led->setObjectName(QString::fromUtf8("sr300_led"));
@@ -410,11 +410,28 @@ public:
         battery_led->setGeometry(QRect(40, 160, 31, 31));
         battery_led->setPixmap(QPixmap(QString::fromUtf8(":/images/ledOff.png")));
         battery_led->setScaledContents(true);
+        preset_btn = new QPushButton(centralwidget);
+        preset_btn->setObjectName(QString::fromUtf8("preset_btn"));
+        preset_btn->setGeometry(QRect(90, 10, 71, 71));
+        preset_btn->setFont(font2);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/images/preset.png"), QSize(), QIcon::Normal, QIcon::Off);
+        preset_btn->setIcon(icon3);
+        preset_btn->setIconSize(QSize(65, 65));
+        preset_btn->setFlat(false);
+        move_pbar = new QProgressBar(centralwidget);
+        move_pbar->setObjectName(QString::fromUtf8("move_pbar"));
+        move_pbar->setGeometry(QRect(170, 40, 71, 16));
+        move_pbar->setMaximum(0);
+        move_pbar->setValue(0);
+        move_pbar->setTextVisible(false);
+        move_status_lbl = new QLabel(centralwidget);
+        move_status_lbl->setObjectName(QString::fromUtf8("move_status_lbl"));
+        move_status_lbl->setGeometry(QRect(170, 60, 71, 21));
+        cmbox_preset = new QComboBox(centralwidget);
+        cmbox_preset->setObjectName(QString::fromUtf8("cmbox_preset"));
+        cmbox_preset->setGeometry(QRect(170, 10, 71, 27));
         MainWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(MainWindow);
-        menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 333, 25));
-        MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         MainWindow->setStatusBar(statusbar);
@@ -427,6 +444,7 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Robotican GUI", 0, QApplication::UnicodeUTF8));
+        preset_menu->setText(QApplication::translate("MainWindow", "select preset", 0, QApplication::UnicodeUTF8));
         gripper_lbl->setText(QApplication::translate("MainWindow", "GRIPPER", 0, QApplication::UnicodeUTF8));
         gps_lbl->setText(QApplication::translate("MainWindow", "GPS", 0, QApplication::UnicodeUTF8));
         left_urf_lbl->setText(QApplication::translate("MainWindow", "LEFT", 0, QApplication::UnicodeUTF8));
@@ -470,14 +488,18 @@ public:
         label_11->setText(QApplication::translate("MainWindow", "URF", 0, QApplication::UnicodeUTF8));
         label_13->setText(QApplication::translate("MainWindow", "ARM MOVEMENT", 0, QApplication::UnicodeUTF8));
         label_19->setText(QApplication::translate("MainWindow", "CAMMERA", 0, QApplication::UnicodeUTF8));
-        label_20->setText(QString());
         label_25->setText(QString());
         pan_tilt_lbl->setText(QApplication::translate("MainWindow", "PAN-TILT", 0, QApplication::UnicodeUTF8));
         kinnect2_lbl->setText(QApplication::translate("MainWindow", "KINECT2", 0, QApplication::UnicodeUTF8));
         kinect2_led->setText(QString());
-        sr300_lbl->setText(QApplication::translate("MainWindow", "F200", 0, QApplication::UnicodeUTF8));
+        sr300_lbl->setText(QApplication::translate("MainWindow", "SR300", 0, QApplication::UnicodeUTF8));
         sr300_led->setText(QString());
         battery_led->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        preset_btn->setToolTip(QApplication::translate("MainWindow", "Open/close launch file", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        preset_btn->setText(QString());
+        move_status_lbl->setText(QString());
     } // retranslateUi
 
 };

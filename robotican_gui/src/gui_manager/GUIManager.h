@@ -6,6 +6,7 @@
 #define ROBOTICAN_GUI_MANAGER_H
 
 #include <sstream>
+#include <vector>
 #include "../../include/robotican_gui.h"
 #include "event_handler/EventSignal.h"
 #include "event_handler/EventSlot.h"
@@ -86,7 +87,6 @@ public:
     GUImanager(QMainWindow &widget, Ui::MainWindow &win, QApplication &app);
     void startGUI();
     void publishAll();
-
 };
 
 
