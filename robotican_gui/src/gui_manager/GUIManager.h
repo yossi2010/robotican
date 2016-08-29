@@ -7,6 +7,8 @@
 
 #include <sstream>
 #include <vector>
+#include <tinyxml.h>
+#include <ros/package.h>
 #include "../../include/robotican_gui.h"
 #include "event_handler/EventSignal.h"
 #include "event_handler/EventSlot.h"
@@ -81,12 +83,9 @@ private:
     void _initiateLeds();
     void _initiateLbls();
 
-
-
 public:
     GUImanager(QMainWindow &widget, Ui::MainWindow &win, QApplication &app);
     void startGUI();
-    void publishAll();
 };
 
 

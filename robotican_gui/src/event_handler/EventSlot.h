@@ -36,7 +36,9 @@ public:
     void setLed(long int val, Led* led);
     void setMoveState(int state);
     void closeApp();
-    void execDriveMode();
+    void moveArmToDrive();
+    void moveArmToPreset();
+    void moveArm();
 
 
 private:
@@ -44,9 +46,11 @@ private:
     QApplication * _app;
     ros::NodeHandle _nHandle;
     ArmMove _arm;
+    std::string _targetName;
+    std::string _userMsg;
 
     double calcTimeOut(long int startTime, long int endTime);
-    bool runDriveMode();
+    bool execMove();
 
 };
 

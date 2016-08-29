@@ -388,7 +388,7 @@
      <enum>Qt::Vertical</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="launch_btn">
+   <widget class="QPushButton" name="drive_btn">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -405,7 +405,7 @@
      </font>
     </property>
     <property name="toolTip">
-     <string>Open/close launch file</string>
+     <string>Driving Mode</string>
     </property>
     <property name="text">
      <string/>
@@ -441,7 +441,7 @@
      </font>
     </property>
     <property name="toolTip">
-     <string>Exit application</string>
+     <string>Exit</string>
     </property>
     <property name="text">
      <string/>
@@ -1137,7 +1137,7 @@
      </font>
     </property>
     <property name="toolTip">
-     <string>Open/close launch file</string>
+     <string>Preset</string>
     </property>
     <property name="text">
      <string/>
@@ -1196,6 +1196,9 @@
       <width>71</width>
       <height>27</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>Select Preset</string>
     </property>
    </widget>
   </widget>
