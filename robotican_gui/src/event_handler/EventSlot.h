@@ -19,7 +19,7 @@
 #include <boost/chrono.hpp>
 #include <QtConcurrentRun>
 #include "../gui_components/Led.h"
-#include "../event_handler/DriveMode.h"
+#include "ArmMove.h"
 #include <QMessageBox>
 
 
@@ -34,17 +34,20 @@ public:
     public Q_SLOTS:
     void setBatPwr(int val);
     void setLed(long int val, Led* led);
+    void setMoveState(int state);
     void closeApp();
     void execDriveMode();
+
 
 private:
     Ui::MainWindow * _guiHandle;
     QApplication * _app;
     ros::NodeHandle _nHandle;
-    DriveMode _driveMode;
+    ArmMove _arm;
 
     double calcTimeOut(long int startTime, long int endTime);
     bool runDriveMode();
+
 };
 
 

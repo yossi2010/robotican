@@ -14,14 +14,20 @@
 #include <moveit_msgs/AttachedCollisionObject.h>
 #include <moveit_msgs/CollisionObject.h>
 
-class DriveMode {
+class ArmMove {
 private:
     moveit::planning_interface::MoveGroup::Plan _drivingModePlan;
     moveit::planning_interface::MoveGroup _group;
+    std::string _targetName;
+    bool _isSuccess;
 
 public:
-    DriveMode();
-    bool moveArm();
+    ArmMove();
+    bool plan();
+    void move();
+    std::string getTargetName();
+    void setTargetName(std::string tName);
+
 
 };
 

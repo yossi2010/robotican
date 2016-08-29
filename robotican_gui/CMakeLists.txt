@@ -125,7 +125,7 @@ set(PROJ_FILES
         src/listeners/Kinect2.h
         src/listeners/sr300.cpp
         src/listeners/sr300.h
-        src/event_handler/DriveMode.cpp src/event_handler/DriveMode.h)
+        src/event_handler/ArmMove.cpp src/event_handler/ArmMove.h)
 
 add_executable(robotican_gui ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP} ${PROJ_FILES} ${RIC_GUI_RESOURCES_RCC})
 target_link_libraries(robotican_gui ${QT_LIBRARIES} ${catkin_LIBRARIES})

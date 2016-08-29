@@ -87,7 +87,6 @@ public:
     GUImanager(QMainWindow &widget, Ui::MainWindow &win, QApplication &app);
     void startGUI();
     void publishAll();
-
 };
 
 

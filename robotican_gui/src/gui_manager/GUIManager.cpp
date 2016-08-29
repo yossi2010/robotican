@@ -21,6 +21,20 @@ GUImanager::GUImanager(QMainWindow &widget, Ui::MainWindow &win, QApplication &a
     _initiateLeds();
     _connectEvents();
     _subscribeListeners();
+
+    //COMBOBOX////////////////////////////////////////////////////
+    _win->move_pbar->setVisible(false);
+    std::vector<std::string> v;
+    v.push_back("test1");
+    v.push_back("test2");
+    v.push_back("test3");
+    v.push_back("test4");
+    v.push_back("test5");
+
+    for(int i=0; i < v.size(); i++)
+        _win->cmbox_preset->addItem(QString::fromStdString(v[i]));
+
+    //////////////////////////////////////////////////////////////
 }
 
 void GUImanager::startGUI()
@@ -38,6 +52,10 @@ void GUImanager::_connectEvents()
     QObject::connect(&_eventSignal, SIGNAL(ledChanged(long int, Led*)),
                      &_eventSlot, SLOT(setLed(long int, Led*)));
 
+    //move arm state updates
+    QObject::connect(&_eventSignal, SIGNAL(stateChange(int val)),
+                     &_eventSlot, SLOT(setMoveState(int state)));
+
     //exit app button
     QObject::connect(_win->exit_btn, SIGNAL(clicked()),
                      &_eventSlot, SLOT(closeApp()));
@@ -47,16 +65,7 @@ void GUImanager::_connectEvents()
                      &_eventSlot, SLOT(execDriveMode()));
 
 
-    //COMBOBOX////////////////////////////////////////////////////
-    std::vector<std::string> v;
-    v.push_back("test1");
-    v.push_back("test2");
-    v.push_back("test3");
-    v.push_back("test4");
-    v.push_back("test5");
 
-    for(int i=0; i < v.size(); i++)
-        _win->cmbox_preset->addItem(QString::fromStdString(v[i]));
 }
 
 //**************************************************
@@ -67,6 +76,8 @@ void GUImanager::_connectEvents()
 void GUImanager::_loopEvents(const ros::TimerEvent &timerEvent)
 {
     _eventSignal.signalBatVal(_batListener.getBatteryPwr());
+    //ROS_INFO("STATE: %i", _eventSlot.isSuccess());
+    //_eventSignal.signalMoveState(_eventSlot.isSuccess());
     _eventSignal.signalLed(_batListener.getLastSignal(), &_batteryLed);
     _eventSignal.signalLed(_armListener.getLastSignal(), &_armLed);
     _eventSignal.signalLed(_panTiltListenere.getLastSignal(), &_panTiltLed);
@@ -172,5 +183,4 @@ void GUImanager::_initiateLbls()
     _nh.param<std::string>("pan_tilt_name",tempParam, "PAN-TILT");
     _win->pan_tilt_lbl->setText(QApplication::translate("MainWindow", tempParam.c_str(), 0));
 }
-
 
