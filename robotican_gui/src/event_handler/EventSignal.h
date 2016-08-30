@@ -11,6 +11,7 @@
 #include "../gui_components/Led.h"
 
 class EventSignal : public QObject {
+
     Q_OBJECT
 public:
     EventSignal();

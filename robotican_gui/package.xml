@@ -58,6 +58,11 @@
   <build_depend>sensor_msgs</build_depend>
   <build_depend>control_msgs</build_depend>
   <build_depend>trajectory_msgs</build_depend>
+
+  <build_depend>tinyxml</build_depend>
+  <build_depend>cmake_modules</build_depend>
+
+  <run_depend>tinyxml</run_depend>
   
   <run_depend>qt_build</run_depend>
   <run_depend>roscpp</run_depend>

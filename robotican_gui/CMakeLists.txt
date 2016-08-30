@@ -18,6 +18,7 @@ include_directories(src)
 # exporting anything.
 
 find_package(catkin REQUIRED COMPONENTS
+        cmake_modules
         roscpp
         rospy
         std_msgs
@@ -41,12 +42,30 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(cmake_modules REQUIRED)
+find_package(TinyXML REQUIRED)
 
-catkin_package(CATKIN_DEPENDS roscpp rospy std_msgs moveit_core moveit_ros_planning moveit_ros_planning_interface)
+catkin_package(
+        CATKIN_DEPENDS
+        roscpp
+        rospy
+        std_msgs
+        moveit_core
+        moveit_ros_planning
+        moveit_ros_planning_interface
+        LIBRARIES
+        INCLUDE_DIRS
+        include
+        DEPENDS
+        TinyXML
+)
 
 include_directories(
         ${catkin_INCLUDE_DIRS}
+        ${TinyXML_INCLUDE_DIRS}
 )
+
+include_directories(include ${catkin_INCLUDE_DIRS} ${TinyXML_INCLUDE_DIRS})
+#target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${TinyXML_LIBRARIES})
 
 ##############################################################################
 # Qt Environment
@@ -125,7 +144,7 @@ set(PROJ_FILES
         src/listeners/Kinect2.h
         src/listeners/sr300.cpp
         src/listeners/sr300.h
-        src/event_handler/DriveMode.cpp src/event_handler/DriveMode.h)
+        src/event_handler/ArmMove.cpp src/event_handler/ArmMove.h)
 
 add_executable(robotican_gui ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP} ${PROJ_FILES} ${RIC_GUI_RESOURCES_RCC})
 target_link_libraries(robotican_gui ${QT_LIBRARIES} ${catkin_LIBRARIES})

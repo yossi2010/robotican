@@ -11,7 +11,7 @@ right_finger_joint: 'right_finger_joint'
                               
 # RiCBoard                                
 battery_pin: 17
-battery_voltage_divider_ratio: 46.85
+battery_voltage_divider_ratio: 11.0
 battery_max: 24.3
 battery_min: 21.0
  
@@ -46,10 +46,10 @@ motor0_ppr: 2503
 motor0_timeout: 0
 motor0_motor_direction: 1
 motor0_encoder_direction: -1
-motor0_kp: 20.0
+motor0_kp: 47.0
 motor0_ki: 10.0
 motor0_kd: 0.0
-motor0_kff: 20.0
+motor0_kff: 14.0
 motor0_max_set_point_speed: 21.872
 motor0_min_set_point_speed: -21.872
 motor0_max_set_point_position: 0.0
@@ -78,10 +78,10 @@ motor1_pid_hz: 1000
 motor1_ppr: 2503
 motor1_timeout: 0
 motor1_motor_direction: -1
-motor1_kp: 20.0
+motor1_kp: 47.0
 motor1_ki: 10.0
 motor1_kd: 0.0
-motor1_kff: 10.0
+motor1_kff: 14.0
 motor1_max_set_point_speed: 21.872
 motor1_min_set_point_speed: -21.872
 motor1_max_set_point_position: 0.0

@@ -2,9 +2,6 @@
 // Created by sub on 16/04/16.
 //
 
-//
-// Created by sub on 13/04/16.
-//
 #include "Battery.h"
 
 Battery::Battery()

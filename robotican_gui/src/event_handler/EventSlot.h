@@ -19,14 +19,17 @@
 #include <boost/chrono.hpp>
 #include <QtConcurrentRun>
 #include "../gui_components/Led.h"
-#include "../event_handler/DriveMode.h"
+#include "ArmMove.h"
 #include <QMessageBox>
 
 
 #define TIMEOUT 1.0
 
 class EventSlot : public QThread {
-    Q_OBJECT
+
+    enum Status {CANCELED, WORKING, SUCCESS, FAIL};
+
+Q_OBJECT
 public:
     EventSlot();
     void initiate(Ui::MainWindow &guiHandle, QApplication &app);
@@ -34,17 +37,22 @@ public:
     public Q_SLOTS:
     void setBatPwr(int val);
     void setLed(long int val, Led* led);
+    void setMoveState(Status state);
     void closeApp();
-    void execDriveMode();
+    void moveArmToDrive();
+    void moveArmToPreset();
+    void moveArm();
 
 private:
     Ui::MainWindow * _guiHandle;
     QApplication * _app;
     ros::NodeHandle _nHandle;
-    DriveMode _driveMode;
+    ArmMove _arm;
+    std::string _targetName;
+    std::string _userMsg;
 
     double calcTimeOut(long int startTime, long int endTime);
-    bool runDriveMode();
+    bool execMove();
 };
 
 

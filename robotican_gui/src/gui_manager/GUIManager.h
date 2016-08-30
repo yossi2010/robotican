@@ -7,6 +7,8 @@
 
 #include <sstream>
 #include <vector>
+#include <tinyxml.h>
+#include <ros/package.h>
 #include "../../include/robotican_gui.h"
 #include "event_handler/EventSignal.h"
 #include "event_handler/EventSlot.h"
@@ -73,21 +75,15 @@ private:
     Led _sr300Led;
     Led _batteryLed;
 
-    int _tempPublisherCounter; //delete after testing publishers
-
     void _loopEvents(const ros::TimerEvent& timerEvent);
     void _connectEvents();
     void _subscribeListeners();
     void _initiateLeds();
     void _initiateLbls();
 
-
-
 public:
     GUImanager(QMainWindow &widget, Ui::MainWindow &win, QApplication &app);
     void startGUI();
-    void publishAll();
-
 };
 
 
