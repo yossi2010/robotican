@@ -10,7 +10,6 @@ GUImanager::GUImanager(QMainWindow &widget, Ui::MainWindow &win, QApplication &a
     qRegisterMetaType<long int>("long int");
     qRegisterMetaType<Led*>("Led*");
 
-    //hold gui handles
     _widget = &widget;
     _win = &win;
     _app = &app;
@@ -23,44 +22,25 @@ GUImanager::GUImanager(QMainWindow &widget, Ui::MainWindow &win, QApplication &a
     _connectEvents();
     _subscribeListeners();
 
-    //COMBOBOX////////////////////////////////////////////////////
     _win->move_pbar->setVisible(false);
-    //std::vector<std::string> v;
-    TiXmlDocument doc(ros::package::getPath("robotican_armadillo_moveit_config") + "/config/armadillo_robot.srdf");
+
+    //load values to cmbox from srdf file
+    std::string filePath = ros::package::getPath("robotican_armadillo_moveit_config") + "/config/armadillo_robot.srd";
+    TiXmlDocument doc(filePath);
     if (doc.LoadFile())
     {
-//        TiXmlElement* elem = doc.FirstChildElement("group_state");
-//
-//        for (const TiXmlElement* child = elem->FirstChildElement(); child!=0; child=child->NextSiblingElement())
-//        {
-//            elem->Attribute("name");
-//        }
-
         TiXmlElement* root = doc.FirstChildElement("robot");
 
         for(TiXmlElement* e = root->FirstChildElement("group_state"); e != NULL; e = e->NextSiblingElement("group_state"))
-        {
-            //std::string wmName = e->Attribute("name");
-            //v.push_back(e->Attribute("name"));
-            _win->cmbox_preset->addItem(QString::fromStdString(e->Attribute("name"));
-        }
-
-
-//        v.push_back("test1");
-//        v.push_back("test2");
-//        v.push_back("test3");
-//        v.push_back("test4");
-//        v.push_back("test5");
-//
-   // for(int i=0; i < v.size(); i++)
-    //    _win->cmbox_preset->addItem(QString::fromStdString(v[i]));
- //   }
-//    else
-//    {
-//
- //   }
-
-    //////////////////////////////////////////////////////////////
+            _win->cmbox_preset->addItem(QString::fromStdString(e->Attribute("name")));
+    }
+    else
+    {
+        std::string msg = "Can't load file ";
+        msg.append(filePath);
+        msg.append(" . Presets list will be empty. Check that the file exist, and is not corrupted");
+        QMessageBox::warning(_widget, "Can't Load file", QString::fromStdString(msg));
+    }
 }
 
 void GUImanager::startGUI()
