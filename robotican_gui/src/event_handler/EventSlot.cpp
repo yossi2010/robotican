@@ -11,6 +11,19 @@ void EventSlot::initiate(Ui::MainWindow &guiHandle, QApplication &app)
 {
     _guiHandle = &guiHandle;
     _app = &app;
+    try
+    {
+        _arm = new ArmMove();
+    }
+    catch(std::runtime_error &ex)
+    {
+        //ROS_INFO("%s", ex.what());
+        QMessageBox::warning(NULL, "Moveit error", "GUI can't use moveit. Please make sure moveit is up and running, and restart GUI.");
+        _guiHandle->drive_btn->setEnabled(false);
+        _guiHandle->preset_btn->setEnabled(false);
+        _guiHandle->cmbox_preset->setEnabled(false);
+        //exit(1);
+    }
 }
 
 void EventSlot::setBatPwr(int val)
@@ -84,6 +97,7 @@ void EventSlot::closeApp()
 
 void EventSlot::moveArm()
 {
+
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(NULL, "Warning", QString::fromStdString(_userMsg),
                                   QMessageBox::Yes|QMessageBox::No);
@@ -92,7 +106,6 @@ void EventSlot::moveArm()
     {
         setMoveState(WORKING);
         boost::thread worker(&EventSlot::execMove, this);
-
     } else
         setMoveState(CANCELED);
 }
@@ -113,12 +126,13 @@ void EventSlot::moveArmToPreset()
 
 bool EventSlot::execMove()
 {
-     if (_arm.plan(_targetName))
-     {
-         setMoveState(SUCCESS);
-        _arm.move();
-     } else
-         setMoveState(FAIL);
+
+    if (_arm->plan(_targetName))
+    {
+        setMoveState(SUCCESS);
+        _arm->move();
+    } else
+        setMoveState(FAIL);
 }
 
 /************************************************
@@ -135,3 +149,7 @@ double EventSlot::calcTimeOut(long int startTime, long int endTime)
     return timeOut;
 }
 
+EventSlot::~EventSlot()
+{
+    delete _arm;
+}
