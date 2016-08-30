@@ -33,7 +33,7 @@
     
   <arg name="controllers" default='true'/>
   <arg name="depth_camera" default='false'/>
-  <arg name="moveit" default='false'/>
+  <arg name="moveit" default='true'/>
   <arg name="use_depth" default='false'/>
   <arg name="robot_localization" default='false'/>
   <arg name="move_base" default='false'/>
