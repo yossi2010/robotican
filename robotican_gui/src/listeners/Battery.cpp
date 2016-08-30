@@ -12,9 +12,7 @@ Battery::Battery()
 
 void Battery::_chatterCallback(const ric_board::Battery::Ptr& msg)
 {
-    ROS_INFO("%f %f %f", msg->data, msg->max, msg->min);
     _batPower = ( (msg->data - msg->min) / (msg->max - msg->min) ) * 100.0f ;
-    ROS_INFO("%d",_batPower);
     _signalTime = clock();
 }
 
