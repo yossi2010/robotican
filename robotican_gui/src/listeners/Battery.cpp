@@ -12,7 +12,10 @@ Battery::Battery()
 
 void Battery::_chatterCallback(const ric_board::Battery::Ptr& msg)
 {
-    _batPower = ( (msg->data - msg->min) / (msg->max - msg->min) ) * 100.0f ;
+    if (msg->data > msg->max)
+        _batPower = 100;
+    else
+        _batPower = ( (msg->data - msg->min) / (msg->max - msg->min) ) * 100.0f ;
     _signalTime = clock();
 }
 

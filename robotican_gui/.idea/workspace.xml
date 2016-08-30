@@ -92,8 +92,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9189c781-230f-45d9-99b5-9793f5f474a1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_komodo/config/hardware_interface_config.yaml" afterPath="$PROJECT_DIR$/../robotican_komodo/config/hardware_interface_config.yaml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_komodo/launch/komodo.launch" afterPath="$PROJECT_DIR$/../robotican_komodo/launch/komodo.launch" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/listeners/Battery.cpp" afterPath="$PROJECT_DIR$/src/listeners/Battery.cpp" />
     </list>
     <ignored path="robotican_gui.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -126,8 +125,8 @@
       <file leaf-file-name="Battery.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/listeners/Battery.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
+            <state relative-caret-position="360">
+              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -1156,12 +1155,12 @@
       <workItem from="1472460364871" duration="68000" />
       <workItem from="1472461017650" duration="4160000" />
       <workItem from="1472470724925" duration="10349000" />
-      <workItem from="1472540191423" duration="11776000" />
+      <workItem from="1472540191423" duration="12513000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="76386000" />
+    <option name="totallyTimeSpent" value="77123000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1985" y="-4" width="1855" height="1084" extended-state="6" />
@@ -1585,8 +1584,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/listeners/Battery.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
+        <state relative-caret-position="360">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding />
         </state>
       </provider>
