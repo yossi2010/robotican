@@ -18,6 +18,7 @@ include_directories(src)
 # exporting anything.
 
 find_package(catkin REQUIRED COMPONENTS
+        cmake_modules
         roscpp
         rospy
         std_msgs
@@ -41,12 +42,30 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(cmake_modules REQUIRED)
+find_package(TinyXML REQUIRED)
 
-catkin_package(CATKIN_DEPENDS roscpp rospy std_msgs moveit_core moveit_ros_planning moveit_ros_planning_interface)
+catkin_package(
+        CATKIN_DEPENDS
+        roscpp
+        rospy
+        std_msgs
+        moveit_core
+        moveit_ros_planning
+        moveit_ros_planning_interface
+        LIBRARIES
+        INCLUDE_DIRS
+        include
+        DEPENDS
+        TinyXML
+)
 
 include_directories(
         ${catkin_INCLUDE_DIRS}
+        ${TinyXML_INCLUDE_DIRS}
 )
+
+include_directories(include ${catkin_INCLUDE_DIRS} ${TinyXML_INCLUDE_DIRS})
+#target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${TinyXML_LIBRARIES})
 
 ##############################################################################
 # Qt Environment

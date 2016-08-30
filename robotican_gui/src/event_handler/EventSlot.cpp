@@ -5,14 +5,25 @@
 #include "EventSlot.h"
 
 
-EventSlot::EventSlot()
-{
-}
+EventSlot::EventSlot() {}
 
 void EventSlot::initiate(Ui::MainWindow &guiHandle, QApplication &app)
 {
     _guiHandle = &guiHandle;
     _app = &app;
+    try
+    {
+        _arm = new ArmMove();
+    }
+    catch(std::runtime_error &ex)
+    {
+        //ROS_INFO("%s", ex.what());
+        QMessageBox::warning(NULL, "Moveit error", "GUI can't use moveit. Please make sure moveit is up and running, and restart GUI.");
+        _guiHandle->drive_btn->setEnabled(false);
+        _guiHandle->preset_btn->setEnabled(false);
+        _guiHandle->cmbox_preset->setEnabled(false);
+        //exit(1);
+    }
 }
 
 void EventSlot::setBatPwr(int val)
@@ -20,42 +31,43 @@ void EventSlot::setBatPwr(int val)
     _guiHandle->battery_pbar->setValue(val);
 }
 
-void EventSlot::setMoveState(int state)
+void EventSlot::setMoveState(Status state)
 {
-    ROS_INFO("here---- %i", state);
-
     switch (state)
         {
-            case 0: //canceled
+            case CANCELED:
             {
                 _guiHandle->move_status_lbl->setStyleSheet("QLabel { background-color : yellow; color : black }");
                 _guiHandle->move_status_lbl->setText("Canceled");
                 break;
             }
-            case 1: //working
+            case WORKING:
             {
                 _guiHandle->move_pbar->setVisible(true);
+                _guiHandle->cmbox_preset->setEnabled(false);
                 _guiHandle->move_status_lbl->setStyleSheet("QLabel { background-color : yellow; color : black }");
                 _guiHandle->move_status_lbl->setText("Planning...");
-                _guiHandle->launch_btn->setEnabled(false);
+                _guiHandle->drive_btn->setEnabled(false);
                 _guiHandle->preset_btn->setEnabled(false);
                 break;
             }
-            case 2: //success
+            case SUCCESS:
             {
+                _guiHandle->cmbox_preset->setEnabled(true);
                 _guiHandle->move_pbar->setVisible(false);
                 _guiHandle->move_status_lbl->setStyleSheet("QLabel { background-color : green; color : white }");
                 _guiHandle->move_status_lbl->setText("Success");
-                _guiHandle->launch_btn->setEnabled(true);
+                _guiHandle->drive_btn->setEnabled(true);
                 _guiHandle->preset_btn->setEnabled(true);
                 break;
             }
-            case 3: //fail
+            case FAIL:
             {
+                _guiHandle->cmbox_preset->setEnabled(true);
                 _guiHandle->move_pbar->setVisible(false);
                 _guiHandle->move_status_lbl->setStyleSheet("QLabel { background-color : red; color : white }");
                 _guiHandle->move_status_lbl->setText("Failed");
-                _guiHandle->launch_btn->setEnabled(true);
+                _guiHandle->drive_btn->setEnabled(true);
                 _guiHandle->preset_btn->setEnabled(true);
                 break;
             }
@@ -83,36 +95,44 @@ void EventSlot::closeApp()
     _app->quit();
 }
 
-void EventSlot::execDriveMode()
+void EventSlot::moveArm()
 {
+
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(NULL, "Warning", "Are you sure you want to run driving mode?",
+    reply = QMessageBox::question(NULL, "Warning", QString::fromStdString(_userMsg),
                                   QMessageBox::Yes|QMessageBox::No);
-    
+
     if (reply == QMessageBox::Yes)
     {
-        setMoveState(1);
-        boost::thread worker(&EventSlot::runDriveMode, this);
-
+        setMoveState(WORKING);
+        boost::thread worker(&EventSlot::execMove, this);
     } else
-    {
-        setMoveState(0);
-    }
-
+        setMoveState(CANCELED);
+}
+void EventSlot::moveArmToDrive()
+{
+    _targetName = "driving";
+    _userMsg = "Are you sure you want to run driving mode?";
+    moveArm();
 }
 
-bool EventSlot::runDriveMode()
+void EventSlot::moveArmToPreset()
 {
-     if (_arm.plan("driving"))
-     {
-         //_isSuccess = 2;
-         setMoveState(2);
-        _arm.move();
-     } else
-     {
-         //_isSuccess = 3;
-         setMoveState(3);
-     }
+    QString selection = _guiHandle->cmbox_preset->currentText();
+    _targetName = selection.toStdString();
+    _userMsg = "Are you sure you want to move the arm?";
+    moveArm();
+}
+
+bool EventSlot::execMove()
+{
+
+    if (_arm->plan(_targetName))
+    {
+        setMoveState(SUCCESS);
+        _arm->move();
+    } else
+        setMoveState(FAIL);
 }
 
 /************************************************
@@ -125,9 +145,11 @@ double EventSlot::calcTimeOut(long int startTime, long int endTime)
 {
     double timeOut = -1;
     if (endTime > startTime)
-    {
         timeOut = (endTime - startTime) / (double) CLOCKS_PER_SEC;
-    }
     return timeOut;
 }
 
+EventSlot::~EventSlot()
+{
+    delete _arm;
+}

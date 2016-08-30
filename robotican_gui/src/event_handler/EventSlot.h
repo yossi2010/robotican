@@ -26,28 +26,35 @@
 #define TIMEOUT 1.0
 
 class EventSlot : public QThread {
-    Q_OBJECT
+
+    enum Status {CANCELED, WORKING, SUCCESS, FAIL};
+
+Q_OBJECT
 public:
     EventSlot();
+    ~EventSlot();
     void initiate(Ui::MainWindow &guiHandle, QApplication &app);
+    void moveArm();
 
-    public Q_SLOTS:
+public Q_SLOTS:
     void setBatPwr(int val);
     void setLed(long int val, Led* led);
-    void setMoveState(int state);
+    void setMoveState(Status state);
     void closeApp();
-    void execDriveMode();
-
+    void moveArmToDrive();
+    void moveArmToPreset();
 
 private:
     Ui::MainWindow * _guiHandle;
     QApplication * _app;
     ros::NodeHandle _nHandle;
-    ArmMove _arm;
+    //ArmMove _arm;
+    ArmMove* _arm;
+    std::string _targetName;
+    std::string _userMsg;
 
     double calcTimeOut(long int startTime, long int endTime);
-    bool runDriveMode();
-
+    bool execMove();
 };
 
 

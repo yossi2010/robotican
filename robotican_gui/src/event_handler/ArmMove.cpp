@@ -19,16 +19,12 @@ bool ArmMove::plan(std::string targetName)
     _isSuccess = false;
     _group.setNamedTarget(targetName);
     if  (_group.plan(_drivingModePlan))
-    {
         _isSuccess = true;
-    }
     return _isSuccess;
 }
 
 void ArmMove::move()
 {
     if (_isSuccess)
-    {
         _group.move();
-    }
 }

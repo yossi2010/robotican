@@ -49,7 +49,7 @@ public:
     QLabel *urf_rear_led;
     QFrame *line_2;
     QFrame *line_3;
-    QPushButton *launch_btn;
+    QPushButton *drive_btn;
     QPushButton *exit_btn;
     QLabel *batteryLbl;
     QProgressBar *battery_pbar;
@@ -209,19 +209,19 @@ public:
         line_3->setGeometry(QRect(160, 90, 20, 131));
         line_3->setFrameShape(QFrame::VLine);
         line_3->setFrameShadow(QFrame::Sunken);
-        launch_btn = new QPushButton(centralwidget);
-        launch_btn->setObjectName(QString::fromUtf8("launch_btn"));
-        launch_btn->setGeometry(QRect(10, 10, 71, 71));
+        drive_btn = new QPushButton(centralwidget);
+        drive_btn->setObjectName(QString::fromUtf8("drive_btn"));
+        drive_btn->setGeometry(QRect(10, 10, 71, 71));
         QFont font2;
         font2.setPointSize(12);
         font2.setBold(true);
         font2.setWeight(75);
-        launch_btn->setFont(font2);
+        drive_btn->setFont(font2);
         QIcon icon1;
         icon1.addFile(QString::fromUtf8(":/images/Shutdown.png"), QSize(), QIcon::Normal, QIcon::Off);
-        launch_btn->setIcon(icon1);
-        launch_btn->setIconSize(QSize(65, 65));
-        launch_btn->setFlat(false);
+        drive_btn->setIcon(icon1);
+        drive_btn->setIconSize(QSize(65, 65));
+        drive_btn->setFlat(false);
         exit_btn = new QPushButton(centralwidget);
         exit_btn->setObjectName(QString::fromUtf8("exit_btn"));
         exit_btn->setGeometry(QRect(250, 10, 71, 71));
@@ -462,11 +462,11 @@ public:
         urf_left_led->setText(QString());
         urf_rear_led->setText(QString());
 #ifndef QT_NO_TOOLTIP
-        launch_btn->setToolTip(QApplication::translate("MainWindow", "Open/close launch file", 0, QApplication::UnicodeUTF8));
+        drive_btn->setToolTip(QApplication::translate("MainWindow", "Driving Mode", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
-        launch_btn->setText(QString());
+        drive_btn->setText(QString());
 #ifndef QT_NO_TOOLTIP
-        exit_btn->setToolTip(QApplication::translate("MainWindow", "Exit application", 0, QApplication::UnicodeUTF8));
+        exit_btn->setToolTip(QApplication::translate("MainWindow", "Exit", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         exit_btn->setText(QString());
         batteryLbl->setText(QString());
@@ -496,10 +496,13 @@ public:
         sr300_led->setText(QString());
         battery_led->setText(QString());
 #ifndef QT_NO_TOOLTIP
-        preset_btn->setToolTip(QApplication::translate("MainWindow", "Open/close launch file", 0, QApplication::UnicodeUTF8));
+        preset_btn->setToolTip(QApplication::translate("MainWindow", "Preset", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         preset_btn->setText(QString());
         move_status_lbl->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        cmbox_preset->setToolTip(QApplication::translate("MainWindow", "Select Preset", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
     } // retranslateUi
 
 };
