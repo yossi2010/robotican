@@ -32,22 +32,24 @@ class EventSlot : public QThread {
 Q_OBJECT
 public:
     EventSlot();
+    ~EventSlot();
     void initiate(Ui::MainWindow &guiHandle, QApplication &app);
+    void moveArm();
 
-    public Q_SLOTS:
+public Q_SLOTS:
     void setBatPwr(int val);
     void setLed(long int val, Led* led);
     void setMoveState(Status state);
     void closeApp();
     void moveArmToDrive();
     void moveArmToPreset();
-    void moveArm();
 
 private:
     Ui::MainWindow * _guiHandle;
     QApplication * _app;
     ros::NodeHandle _nHandle;
-    ArmMove _arm;
+    //ArmMove _arm;
+    ArmMove* _arm;
     std::string _targetName;
     std::string _userMsg;
 
