@@ -18,17 +18,17 @@ void EventSlot::setBatPwr(int val)
     _guiHandle->battery_pbar->setValue(val);
 }
 
-void EventSlot::setMoveState(int state)
+void EventSlot::setMoveState(Status state)
 {
     switch (state)
         {
-            case 0: //canceled
+            case CANCELED:
             {
                 _guiHandle->move_status_lbl->setStyleSheet("QLabel { background-color : yellow; color : black }");
                 _guiHandle->move_status_lbl->setText("Canceled");
                 break;
             }
-            case 1: //working
+            case WORKING:
             {
                 _guiHandle->move_pbar->setVisible(true);
                 _guiHandle->cmbox_preset->setEnabled(false);
@@ -38,7 +38,7 @@ void EventSlot::setMoveState(int state)
                 _guiHandle->preset_btn->setEnabled(false);
                 break;
             }
-            case 2: //success
+            case SUCCESS:
             {
                 _guiHandle->cmbox_preset->setEnabled(true);
                 _guiHandle->move_pbar->setVisible(false);
@@ -48,7 +48,7 @@ void EventSlot::setMoveState(int state)
                 _guiHandle->preset_btn->setEnabled(true);
                 break;
             }
-            case 3: //fail
+            case FAIL:
             {
                 _guiHandle->cmbox_preset->setEnabled(true);
                 _guiHandle->move_pbar->setVisible(false);
@@ -90,13 +90,11 @@ void EventSlot::moveArm()
 
     if (reply == QMessageBox::Yes)
     {
-        setMoveState(1);
+        setMoveState(WORKING);
         boost::thread worker(&EventSlot::execMove, this);
 
     } else
-    {
-        setMoveState(0);
-    }
+        setMoveState(CANCELED);
 }
 void EventSlot::moveArmToDrive()
 {
@@ -117,12 +115,10 @@ bool EventSlot::execMove()
 {
      if (_arm.plan(_targetName))
      {
-         setMoveState(2);
+         setMoveState(SUCCESS);
         _arm.move();
      } else
-     {
-         setMoveState(3);
-     }
+         setMoveState(FAIL);
 }
 
 /************************************************
@@ -135,9 +131,7 @@ double EventSlot::calcTimeOut(long int startTime, long int endTime)
 {
     double timeOut = -1;
     if (endTime > startTime)
-    {
         timeOut = (endTime - startTime) / (double) CLOCKS_PER_SEC;
-    }
     return timeOut;
 }
 

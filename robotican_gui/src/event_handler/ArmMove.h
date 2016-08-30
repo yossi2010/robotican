@@ -24,10 +24,6 @@ public:
     ArmMove();
     bool plan(std::string targetName);
     void move();
-    std::string getTargetName();
-    void setTargetName(std::string tName);
-
-
 };
 
 

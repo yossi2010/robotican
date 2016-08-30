@@ -25,7 +25,7 @@ GUImanager::GUImanager(QMainWindow &widget, Ui::MainWindow &win, QApplication &a
     _win->move_pbar->setVisible(false);
 
     //load values to cmbox from srdf file
-    std::string filePath = ros::package::getPath("robotican_armadillo_moveit_config") + "/config/armadillo_robot.srd";
+    std::string filePath = ros::package::getPath("robotican_armadillo_moveit_config") + "/config/armadillo_robot.srdf";
     TiXmlDocument doc(filePath);
     if (doc.LoadFile())
     {

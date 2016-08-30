@@ -75,8 +75,6 @@ private:
     Led _sr300Led;
     Led _batteryLed;
 
-    int _tempPublisherCounter; //delete after testing publishers
-
     void _loopEvents(const ros::TimerEvent& timerEvent);
     void _connectEvents();
     void _subscribeListeners();

@@ -26,7 +26,10 @@
 #define TIMEOUT 1.0
 
 class EventSlot : public QThread {
-    Q_OBJECT
+
+    enum Status {CANCELED, WORKING, SUCCESS, FAIL};
+
+Q_OBJECT
 public:
     EventSlot();
     void initiate(Ui::MainWindow &guiHandle, QApplication &app);
@@ -34,12 +37,11 @@ public:
     public Q_SLOTS:
     void setBatPwr(int val);
     void setLed(long int val, Led* led);
-    void setMoveState(int state);
+    void setMoveState(Status state);
     void closeApp();
     void moveArmToDrive();
     void moveArmToPreset();
     void moveArm();
-
 
 private:
     Ui::MainWindow * _guiHandle;
@@ -51,7 +53,6 @@ private:
 
     double calcTimeOut(long int startTime, long int endTime);
     bool execMove();
-
 };
 
 
