@@ -2,13 +2,19 @@
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src/robotican_controllers/two_finger_controller.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_controllers/diff_drive_controller.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_controllers/joint_trajectory_controller.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/robotican_controllers/robot.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_controllers/speed_limiter.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_controllers/two_finger_controller.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_controllers/utils.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/robotican_controllers/hardware_interface_adapter.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/robotican_controllers/joint_trajectory_controller_impl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_controllers/odometry.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_controllers/robot.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/robotican_controllers/speed_limiter.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_controllers/gripper_action_controller_impl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/robotican_controllers/diff_drive_controller.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/robotican_controllers/joint_trajectory_controller_impl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/robotican_controllers/hardware_interface_adapter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/robotican_controllers/odometry.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/package.xml" isTestSource="false" />
     </content>

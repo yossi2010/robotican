@@ -20,7 +20,7 @@ find_package(catkin REQUIRED COMPONENTS
         gripper_action_controller
         joint_trajectory_controller
         xacro
-)
+        )
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system)
@@ -112,10 +112,10 @@ find_package(Boost REQUIRED COMPONENTS system)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES robotican_controllers
-  CATKIN_DEPENDS actionlib cmake_modules gripper_action_controller joint_trajectory_controller control_msgs controller_interface hardware_interface realtime_tools
-  DEPENDS system_lib
+        INCLUDE_DIRS include
+        LIBRARIES robotican_controllers
+        CATKIN_DEPENDS actionlib cmake_modules gripper_action_controller joint_trajectory_controller control_msgs controller_interface hardware_interface realtime_tools
+        DEPENDS system_lib
 )
 
 ###########
@@ -126,19 +126,25 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(include)
 include_directories(
-  ${catkin_INCLUDE_DIRS}
+        ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
- add_library(robotican_controllers
-   src/${PROJECT_NAME}/robot.cpp
-   src/${PROJECT_NAME}/utils.cpp
-   src/${PROJECT_NAME}/two_finger_controller.cpp
-   include/${PROJECT_NAME}/gripper_action_controller_impl.h
-   include/${PROJECT_NAME}/hardware_interface_adapter.h
-   include/${PROJECT_NAME}/joint_trajectory_controller_impl.h
-   src/${PROJECT_NAME}/joint_trajectory_controller.cpp
-   )
+add_library(robotican_controllers
+        src/${PROJECT_NAME}/robot.cpp
+        src/${PROJECT_NAME}/utils.cpp
+        src/${PROJECT_NAME}/two_finger_controller.cpp
+        include/${PROJECT_NAME}/gripper_action_controller_impl.h
+        include/${PROJECT_NAME}/hardware_interface_adapter.h
+        include/${PROJECT_NAME}/joint_trajectory_controller_impl.h
+        src/${PROJECT_NAME}/joint_trajectory_controller.cpp
+        include/${PROJECT_NAME}/diff_drive_controller.h
+        src/${PROJECT_NAME}/diff_drive_controller.cpp
+        include/${PROJECT_NAME}/odometry.h
+        src/${PROJECT_NAME}/odometry.cpp
+        include/${PROJECT_NAME}/speed_limiter.h
+        src/${PROJECT_NAME}/speed_limiter.cpp
+        )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -174,18 +180,18 @@ target_link_libraries(robotican_controllers ${catkin_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
- install(TARGETS robotican_controllers
-   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
- )
+install(TARGETS robotican_controllers
+        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+        )
 
 ## Mark cpp header files for installation
- install(DIRECTORY include/${PROJECT_NAME}/
-   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
- )
+install(DIRECTORY include/${PROJECT_NAME}/
+        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+        #   FILES_MATCHING PATTERN "*.h"
+        #   PATTERN ".svn" EXCLUDE
+        )
 
 install(FILES ros_control_plugins.xml
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}

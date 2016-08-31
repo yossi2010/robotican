@@ -1,6 +1,6 @@
 
 mobile_base_controller:
-  type        : "diff_drive_controller/DiffDriveController"
+  type        : "diff_drive_with_split_controller/DiffDriveController"
   left_wheel: ['FL_wheel_joint','RL_wheel_joint']
   right_wheel: ['FR_wheel_joint','RR_wheel_joint']
   publish_rate: 50.0               # default: 50
@@ -12,6 +12,7 @@ mobile_base_controller:
   # URDF if not specified as a parameter
   wheel_separation : 0.396
   wheel_radius : 0.127
+  slip_factor: 0.627
 
   # Wheel separation and radius multipliers
   wheel_separation_multiplier: 1.0 # default: 1.0
