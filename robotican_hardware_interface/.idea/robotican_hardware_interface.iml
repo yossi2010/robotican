@@ -5,41 +5,41 @@
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/Servo.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/Gps.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/Imu.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/Ultrasonic.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/Device.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/robot_sim_interface.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/Device.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/robot_base.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/dynamixel_pro_controller.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/Relay.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/Battery.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/dynamixel_pro_driver.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/robot_base.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/komodo.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/LiziRobot.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/TransportLayer.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/RiCBoardManager.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/Switch.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/LiziRobot.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/Ultrasonic.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/armadillo.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/RiCMotor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/ros_utils.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/komodo.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/RiCMotor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface/TransportLayer.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/robotican_hardware_interface_node.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/LiziRobot.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/RiCBoardManager.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/Protocol.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/Imu.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/RiCMotor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/TransportLayer.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/dynamixel_pro_driver.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/jointInfo.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/Gps.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/Battery.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/dynamixel_pro_controller.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/Protocol.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/jointInfo.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/Relay.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/Gps.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/Ultrasonic.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/Device.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/Switch.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/Servo.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/komodo.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/robot_sim_interface.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/Imu.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/robotican_hardware_interface/dynamixel_pro_controller.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/package.xml" isTestSource="false" />
     </content>
@@ -57,24 +57,24 @@
           <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
           <root url="file:///usr/include" />
           <root url="file:///usr/local/include" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-a45d20b7/a45d20b7/Release/devel/include" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-a45d20b7/a45d20b7/Debug/devel/include" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-a45d20b7/a45d20b7/RelWithDebInfo/devel/include" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-a45d20b7/a45d20b7/MinSizeRel/devel/include" />
           <root url="file:///opt/ros/indigo/include" />
           <root url="file://$MODULE_DIR$/../../../devel/include" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-ccc7e4e5/ccc7e4e5/Release/devel/include" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-ccc7e4e5/ccc7e4e5/Debug/devel/include" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-ccc7e4e5/ccc7e4e5/RelWithDebInfo/devel/include" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-ccc7e4e5/ccc7e4e5/MinSizeRel/devel/include" />
         </CLASSES>
         <SOURCES>
           <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
           <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
           <root url="file:///usr/include" />
           <root url="file:///usr/local/include" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-a45d20b7/a45d20b7/Release/devel/include" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-a45d20b7/a45d20b7/Debug/devel/include" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-a45d20b7/a45d20b7/RelWithDebInfo/devel/include" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-a45d20b7/a45d20b7/MinSizeRel/devel/include" />
           <root url="file:///opt/ros/indigo/include" />
           <root url="file://$MODULE_DIR$/../../../devel/include" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-ccc7e4e5/ccc7e4e5/Release/devel/include" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-ccc7e4e5/ccc7e4e5/Debug/devel/include" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-ccc7e4e5/ccc7e4e5/RelWithDebInfo/devel/include" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_hardware_interface-ccc7e4e5/ccc7e4e5/MinSizeRel/devel/include" />
         </SOURCES>
       </library>
     </orderEntry>
