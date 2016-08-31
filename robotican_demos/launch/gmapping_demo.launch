@@ -5,6 +5,8 @@
     <arg name="lizi"         default="false"/>
     <arg name="gazebo"       default="true" />
     <arg name="world"        default="$(find robotican_common)/worlds/building.sdf" />
+    <arg name="joystick"     default='false'/>
+    <arg name="joystick_dev" default='/dev/input/js0'/>
 
 	<arg name="rviz_display" default="$(find robotican_demos)/config/hector_slam.rviz" />
 	<node name="rviz_node" pkg="rviz" type="rviz" args="-d $(arg rviz_display)"/>
@@ -21,6 +23,8 @@
              <arg name="lidar" value="true"/>
              <arg name="gmapping" value="true"/>  
              <arg name="move_base" value="true"/> 
+             <arg name="joystick" value="$(arg joystick)"/> 
+             <arg name="joystick_dev" value="$(arg joystick_dev)"/>
             </include>
         </group>
 
@@ -29,7 +33,9 @@
              <arg name="gazebo" value="$(arg gazebo)"/>
              <arg name="lidar" value="true"/>
              <arg name="gmapping" value="true"/>  
-             <arg name="move_base" value="true"/> 
+             <arg name="move_base" value="true"/>
+             <arg name="joystick" value="$(arg joystick)"/> 
+             <arg name="joystick_dev" value="$(arg joystick_dev)"/>
             </include>
         </group>
     </group>
@@ -43,7 +49,9 @@
              <arg name="y" value="0.0"/>
              <arg name="lidar" value="true"/>
              <arg name="gmapping" value="true"/>  
-             <arg name="move_base" value="true"/> 
+             <arg name="move_base" value="true"/>
+             <arg name="joystick" value="$(arg joystick)"/> 
+             <arg name="joystick_dev" value="$(arg joystick_dev)"/> 
             </include>
         </group>
 
@@ -52,7 +60,9 @@
              <arg name="gazebo" value="$(arg gazebo)"/>
              <arg name="lidar" value="true"/>
              <arg name="gmapping" value="true"/>  
-             <arg name="move_base" value="true"/> 
+             <arg name="move_base" value="true"/>
+             <arg name="joystick" value="$(arg joystick)"/> 
+             <arg name="joystick_dev" value="$(arg joystick_dev)"/> 
             </include>
         </group>
     </group>
@@ -66,7 +76,9 @@
              <arg name="y" value="0.0"/>
              <arg name="lidar" value="true"/>
              <arg name="gmapping" value="true"/>  
-             <arg name="move_base" value="true"/> 
+             <arg name="move_base" value="true"/>
+             <arg name="joystick" value="$(arg joystick)"/> 
+             <arg name="joystick_dev" value="$(arg joystick_dev)"/> 
             </include>
         </group>
 
@@ -75,7 +87,9 @@
              <arg name="gazebo" value="$(arg gazebo)"/>
              <arg name="lidar" value="true"/>
              <arg name="gmapping" value="true"/>  
-             <arg name="move_base" value="true"/> 
+             <arg name="move_base" value="true"/>
+             <arg name="joystick" value="$(arg joystick)"/> 
+             <arg name="joystick_dev" value="$(arg joystick_dev)"/> 
             </include>
         </group>
     </group>
