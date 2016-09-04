@@ -12,7 +12,7 @@ sudo modprobe uvcvideo
 make && sudo make install
 echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib" >> ~/.bashrc
 cd ~/catkin_ws/src
-https://github.com/intel-ros/realsense.git
+git clone https://github.com/intel-ros/realsense.git
 cd realsense
 git checkout stable
 rosdep install --skip-keys=librealsense --from-paths -i . 
