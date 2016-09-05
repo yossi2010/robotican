@@ -29,13 +29,13 @@ namespace robotican_hardware {
                                                 + feedback->accelerationZ * _imuLinearAccFix[2][2]) * G2ms;
                 imuMsg.angular_velocity.x = (feedback->velocityX * _imuAngularVelocityFix[0][0]
                                              + feedback->velocityY * _imuAngularVelocityFix[0][1]
-                                             + feedback->velocityZ * _imuAngularVelocityFix[0][2]) * DEGs2RASs;
+                                             + feedback->velocityZ * _imuAngularVelocityFix[0][2]) * DEGs2RADs;
                 imuMsg.angular_velocity.y = (feedback->velocityX * _imuAngularVelocityFix[1][0]
                                              + feedback->velocityY * _imuAngularVelocityFix[1][1]
-                                             + feedback->velocityZ * _imuAngularVelocityFix[1][2]) * DEGs2RASs;
+                                             + feedback->velocityZ * _imuAngularVelocityFix[1][2]) * DEGs2RADs;
                 imuMsg.angular_velocity.z = (feedback->velocityX * _imuAngularVelocityFix[2][0]
                                              + feedback->velocityY * _imuAngularVelocityFix[2][1]
-                                             + feedback->velocityZ * _imuAngularVelocityFix[2][2]) * DEGs2RASs;
+                                             + feedback->velocityZ * _imuAngularVelocityFix[2][2]) * DEGs2RADs;
 
                 sensor_msgs::MagneticField magneticField;
                 magneticField.header.frame_id = _frameId;
@@ -59,18 +59,18 @@ namespace robotican_hardware {
                 double newRoll, newPitch, newYaw;
                 tf::Matrix3x3(quaternion).getRPY(roll, pitch, yaw);
 
-                ROS_INFO("[%s]: roll: %.2f , pitch: %.2f, yaw: %.2f", ros::this_node::getName().c_str(), roll * 180 / M_PI, pitch * 180 / M_PI, yaw * 180 / M_PI);
 
-                newRoll = roll * _imuRotationFix[0][0] + pitch * _imuRotationFix[0][1] + yaw * _imuRotationFix[0][1];
+                newRoll = roll * _imuRotationFix[0][0] + pitch * _imuRotationFix[0][1] + yaw * _imuRotationFix[0][2];
                 newRoll += _imuRotationOffset[0];
 
-                newPitch = roll * _imuRotationFix[1][0] + pitch * _imuRotationFix[1][1] + yaw * _imuRotationFix[1][1];
+                newPitch = roll * _imuRotationFix[1][0] + pitch * _imuRotationFix[1][1] + yaw * _imuRotationFix[1][2];
                 newPitch += _imuRotationOffset[1];
 
-                newYaw = roll * _imuRotationFix[2][0] + pitch * _imuRotationFix[2][1] + yaw * _imuRotationFix[2][1];
+                newYaw = roll * _imuRotationFix[2][0] + pitch * _imuRotationFix[2][1] + yaw * _imuRotationFix[2][2];
                 newYaw += _imuRotationOffset[2];
 
                 quaternion.setRPY(newRoll, newPitch, newYaw);
+                ROS_INFO("[%s]: roll: %.2f , pitch: %.2f, yaw: %.2f", ros::this_node::getName().c_str(), newRoll * 180 / M_PI, newPitch * 180 / M_PI, newYaw * 180 / M_PI);
 
                 tf::quaternionTFToMsg(quaternion, imuMsg.orientation);
 
