@@ -107,7 +107,8 @@
 		<param name="have_ultrasonic" value="$(arg urf)" />
 		<param name="have_gps" value="$(arg gps)" />
 		<param name="have_arm" value="$(arg arm)" />
-		
+		<param name="have_imu" value="$(arg imu)" />
+
 		<group if="$(arg front_camera)">
 			<include file="$(find robotican_common)/launch/usb_cam.launch">
 				<arg name="input_dev" value="/dev/video0" />
