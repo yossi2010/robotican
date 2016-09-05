@@ -5,27 +5,28 @@ project(robotican_hardware_interface)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED dynamic_reconfigure COMPONENTS
-  roscpp
-  control_toolbox
-  hardware_interface
-  transmission_interface
-  pluginlib
-  joint_limits_interface
-  urdf
-  angles
-  roslib
-  std_msgs
-  controller_manager
-  cmake_modules
-  realtime_tools
-  xacro
-  control_msgs
-  gazebo_ros_control
-  sensor_msgs
-  message_generation
-  serial
-  dynamic_reconfigure
-)
+        roscpp
+        control_toolbox
+        hardware_interface
+        transmission_interface
+        pluginlib
+        joint_limits_interface
+        urdf
+        angles
+        roslib
+        std_msgs
+        controller_manager
+        cmake_modules
+        realtime_tools
+        xacro
+        control_msgs
+        gazebo_ros_control
+        sensor_msgs
+        message_generation
+        serial
+        dynamic_reconfigure
+        tf
+        )
 
 
 
@@ -38,7 +39,7 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(yaml-cpp REQUIRED yaml-cpp)
 add_definitions(-DPC_SIDE)
 if(NOT ${yaml-cpp_VERSION} VERSION_LESS "0.5")
-add_definitions(-DHAVE_NEW_YAMLCPP)
+ add_definitions(-DHAVE_NEW_YAMLCPP)
 endif(NOT ${yaml-cpp_VERSION} VERSION_LESS "0.5")
 
 
@@ -73,21 +74,21 @@ endif(NOT ${yaml-cpp_VERSION} VERSION_LESS "0.5")
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
- add_message_files(
-   FILES
-   JointEnable.msg
-   ChainEnable.msg
-   JointLimits.msg
-   ChainLimits.msg
-   imuClib.msg
- )
+add_message_files(
+        FILES
+        JointEnable.msg
+        ChainEnable.msg
+        JointLimits.msg
+        ChainLimits.msg
+        imuClib.msg
+)
 
 ## Generate services in the 'srv' folder
- add_service_files(
-   FILES
-   setImuClib.srv
-#   Service2.srv
- )
+add_service_files(
+        FILES
+        setImuClib.srv
+        #   Service2.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -98,10 +99,10 @@ endif(NOT ${yaml-cpp_VERSION} VERSION_LESS "0.5")
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
-  DEPENDENCIES
-  sensor_msgs
-  std_msgs
-  geometry_msgs
+        DEPENDENCIES
+        sensor_msgs
+        std_msgs
+        geometry_msgs
 )
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -118,11 +119,11 @@ generate_messages(
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
- generate_dynamic_reconfigure_options(
-         cfg/RiCBoard.cfg #MOTOR
-         cfg/RiCBoardServo.cfg
-         cfg/RiCBoardPotentiometer.cfg
- )
+generate_dynamic_reconfigure_options(
+        cfg/RiCBoard.cfg #MOTOR
+        cfg/RiCBoardServo.cfg
+        cfg/RiCBoardPotentiometer.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -134,10 +135,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ${PROJECT_NAME} robotican_hardware_interface_sim
-  CATKIN_DEPENDS cmake_modules realtime_tools control_msgs roscpp controller_manager pluginlib transmission_interface urdf dynamic_reconfigure
-  DEPENDS gazebo system_lib gazebo_ros_control serial dynamixel_motor message_runtime dynamic_reconfigure
+        INCLUDE_DIRS include
+        LIBRARIES ${PROJECT_NAME} robotican_hardware_interface_sim
+        CATKIN_DEPENDS cmake_modules realtime_tools control_msgs roscpp controller_manager pluginlib transmission_interface urdf dynamic_reconfigure tf
+        DEPENDS gazebo system_lib gazebo_ros_control serial dynamixel_motor message_runtime dynamic_reconfigure
 )
 
 
@@ -158,47 +159,47 @@ include_directories(include
         ${catkin_INCLUDE_DIRS}
         ${GAZEBO_INCLUDE_DIRS}
         ${yaml-cpp_INCLUDE_DIRS}
-)
+        )
 
 ## Declare a C++ library
- add_library(robotican_hardware_interface
-         include/${PROJECT_NAME}/dynamixel_pro_driver.h
-         include/${PROJECT_NAME}/dynamixel_pro_controller.h
-         src/${PROJECT_NAME}/dynamixel_pro_driver.cpp
-         src/${PROJECT_NAME}/dynamixel_pro_controller.cpp
-         src/${PROJECT_NAME}/robot_base.cpp
-         src/${PROJECT_NAME}/ros_utils.cpp
-         src/${PROJECT_NAME}/armadillo.cpp
-         src/${PROJECT_NAME}/armadillo.cpp
-         include/${PROJECT_NAME}/LiziRobot.h
-         src/${PROJECT_NAME}/LiziRobot.cpp
-         include/${PROJECT_NAME}/komodo.h
-         src/${PROJECT_NAME}/komodo.cpp
-         include/${PROJECT_NAME}/Protocol.h
-         include/${PROJECT_NAME}/TransportLayer.h
-         src/${PROJECT_NAME}/TransportLayer.cpp
-         include/${PROJECT_NAME}/RiCBoardManager.h
-         src/${PROJECT_NAME}/RiCBoardManager.cpp
-         include/${PROJECT_NAME}/Device.h
-         src/${PROJECT_NAME}/Device.cpp
-         include/${PROJECT_NAME}/Battery.h
-         src/${PROJECT_NAME}/Battery.cpp
-         include/${PROJECT_NAME}/Servo.h
-         src/${PROJECT_NAME}/Servo.cpp
-         include/${PROJECT_NAME}/Ultrasonic.h
-         src/${PROJECT_NAME}/Ultrasonic.cpp
-         include/${PROJECT_NAME}/Gps.h
-         src/${PROJECT_NAME}/Gps.cpp
-         include/${PROJECT_NAME}/Imu.h
-         src/${PROJECT_NAME}/Imu.cpp
-         include/${PROJECT_NAME}/RiCMotor.h
-         src/${PROJECT_NAME}/RiCMotor.cpp
-         include/${PROJECT_NAME}/Switch.h
-         src/${PROJECT_NAME}/Switch.cpp
-         include/${PROJECT_NAME}/Relay.h
-         src/${PROJECT_NAME}/Relay.cpp
-         include/${PROJECT_NAME}/jointInfo.h
-         )
+add_library(robotican_hardware_interface
+        include/${PROJECT_NAME}/dynamixel_pro_driver.h
+        include/${PROJECT_NAME}/dynamixel_pro_controller.h
+        src/${PROJECT_NAME}/dynamixel_pro_driver.cpp
+        src/${PROJECT_NAME}/dynamixel_pro_controller.cpp
+        src/${PROJECT_NAME}/robot_base.cpp
+        src/${PROJECT_NAME}/ros_utils.cpp
+        src/${PROJECT_NAME}/armadillo.cpp
+        src/${PROJECT_NAME}/armadillo.cpp
+        include/${PROJECT_NAME}/LiziRobot.h
+        src/${PROJECT_NAME}/LiziRobot.cpp
+        include/${PROJECT_NAME}/komodo.h
+        src/${PROJECT_NAME}/komodo.cpp
+        include/${PROJECT_NAME}/Protocol.h
+        include/${PROJECT_NAME}/TransportLayer.h
+        src/${PROJECT_NAME}/TransportLayer.cpp
+        include/${PROJECT_NAME}/RiCBoardManager.h
+        src/${PROJECT_NAME}/RiCBoardManager.cpp
+        include/${PROJECT_NAME}/Device.h
+        src/${PROJECT_NAME}/Device.cpp
+        include/${PROJECT_NAME}/Battery.h
+        src/${PROJECT_NAME}/Battery.cpp
+        include/${PROJECT_NAME}/Servo.h
+        src/${PROJECT_NAME}/Servo.cpp
+        include/${PROJECT_NAME}/Ultrasonic.h
+        src/${PROJECT_NAME}/Ultrasonic.cpp
+        include/${PROJECT_NAME}/Gps.h
+        src/${PROJECT_NAME}/Gps.cpp
+        include/${PROJECT_NAME}/Imu.h
+        src/${PROJECT_NAME}/Imu.cpp
+        include/${PROJECT_NAME}/RiCMotor.h
+        src/${PROJECT_NAME}/RiCMotor.cpp
+        include/${PROJECT_NAME}/Switch.h
+        src/${PROJECT_NAME}/Switch.cpp
+        include/${PROJECT_NAME}/Relay.h
+        src/${PROJECT_NAME}/Relay.cpp
+        include/${PROJECT_NAME}/jointInfo.h
+        )
 
 add_library(robotican_hardware_interface_sim
         include/${PROJECT_NAME}/robot_sim_interface.h
@@ -228,8 +229,8 @@ target_link_libraries(robotican_hardware_interface_sim ${catkin_LIBRARIES} ${GAZ
 
 target_link_libraries(robotican_hardware_interface_node
         ${catkin_LIBRARIES}
-         robotican_hardware_interface
-   )
+        robotican_hardware_interface
+        )
 
 
 

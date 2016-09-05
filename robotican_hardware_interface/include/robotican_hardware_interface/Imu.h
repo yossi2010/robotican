@@ -13,6 +13,7 @@
 #include <robotican_hardware_interface/ros_utils.h>
 #include <robotican_hardware_interface/setImuClib.h>
 #include <robotican_hardware_interface/RiCBoardManager.h>
+#include <tf/transform_broadcaster.h>
 
 namespace robotican_hardware {
     class Imu : public Device {
@@ -24,6 +25,7 @@ namespace robotican_hardware {
         ros::Publisher _clibPub;
         ros::Publisher _imuAMQ;
         ros::Publisher _imuM;
+        tf::TransformBroadcaster _broadcaster;
         bool _enableGyro;
         bool _fuseCompass;
         bool _isStopClib;

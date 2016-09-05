@@ -34,6 +34,14 @@ namespace robotican_hardware {
 
                 _imuAMQ.publish(imuMsg);
                 _imuM.publish(magneticField);
+
+                tf::Transform transform;
+                tf::Quaternion quaternion;
+                tf::quaternionMsgToTF(imuMsg.orientation, quaternion);
+                transform.setRotation(quaternion);
+
+                _broadcaster.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "base_link", "imu_link"));
+
             }
             else if(deviceMessage->deviceMessageType == DeviceMessageType::ImuClibFeedback) {
                 if(!_isStopClib) {
