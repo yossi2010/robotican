@@ -21,7 +21,7 @@ imu_enable_fuse_compass: true
 imu_frame_id: 'base_link'
 imu_linear_acc_fix: [0, 1, 0,
                      -1, 0, 0,
-                     0, 0, 1]
+                     0, 0, -1]
 
 imu_angular_velocity_fix: [0, -1, 0,
                            1, 0, 0,
@@ -31,11 +31,11 @@ imu_magnetometer_fix: [1, 0, 0,
                        0, 1, 0,
                        0, 0, 1]
 
-imu_rotation_fix: [1, 0, 0,
-                   0, 1, 0,
+imu_rotation_fix: [0, 1, 0,
+                   1, 0, 0,
                    0, 0, 1]
 
-imu_rotation_offset: [0, 0, 0]
+imu_rotation_offset: [0, -3.141592, 0]
 
 ultrasonic_size: 3
 
