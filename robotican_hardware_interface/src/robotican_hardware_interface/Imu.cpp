@@ -56,18 +56,21 @@ namespace robotican_hardware {
                 transform.setRotation(quaternion);
 
                 double roll, pitch, yaw;
+                double newRoll, newPitch, newYaw;
                 tf::Matrix3x3(quaternion).getRPY(roll, pitch, yaw);
 
-                roll = roll * _imuRotationFix[0][0] + pitch * _imuRotationFix[0][1] + yaw * _imuRotationFix[0][1];
-                roll += _imuRotationOffset[0][0] + _imuRotationOffset[0][1] + _imuRotationOffset[0][2];
+                ROS_INFO("[%s]: roll: %.2f , pitch: %.2f, yaw: %.2f", ros::this_node::getName().c_str(), roll * 180 / M_PI, pitch * 180 / M_PI, yaw * 180 / M_PI);
 
-                pitch = roll * _imuRotationFix[1][0] + pitch * _imuRotationFix[1][1] + yaw * _imuRotationFix[1][1];
-                pitch += _imuRotationOffset[1][0] + _imuRotationOffset[1][1] + _imuRotationOffset[1][2];
+                newRoll = roll * _imuRotationFix[0][0] + pitch * _imuRotationFix[0][1] + yaw * _imuRotationFix[0][1];
+                newRoll += _imuRotationOffset[0];
 
-                yaw = roll * _imuRotationFix[2][0] + pitch * _imuRotationFix[2][1] + yaw * _imuRotationFix[2][1];
-                yaw += _imuRotationOffset[2][0] + _imuRotationOffset[2][1] + _imuRotationOffset[2][2];
+                newPitch = roll * _imuRotationFix[1][0] + pitch * _imuRotationFix[1][1] + yaw * _imuRotationFix[1][1];
+                newPitch += _imuRotationOffset[1];
 
-                quaternion.setRPY(roll, pitch, yaw);
+                newYaw = roll * _imuRotationFix[2][0] + pitch * _imuRotationFix[2][1] + yaw * _imuRotationFix[2][1];
+                newYaw += _imuRotationOffset[2];
+
+                quaternion.setRPY(newRoll, newPitch, newYaw);
 
                 tf::quaternionTFToMsg(quaternion, imuMsg.orientation);
 
@@ -205,15 +208,9 @@ namespace robotican_hardware {
         _imuRotationFix[2][1] = imuRotationFix[7];
         _imuRotationFix[2][2] = imuRotationFix[8];
 
-        _imuRotationOffset[0][0] = imuRotationOffset[0];
-        _imuRotationOffset[0][1] = imuRotationOffset[1];
-        _imuRotationOffset[0][2] = imuRotationOffset[2];
-        _imuRotationOffset[1][0] = imuRotationOffset[3];
-        _imuRotationOffset[1][1] = imuRotationOffset[4];
-        _imuRotationOffset[1][2] = imuRotationOffset[5];
-        _imuRotationOffset[2][0] = imuRotationOffset[6];
-        _imuRotationOffset[2][1] = imuRotationOffset[7];
-        _imuRotationOffset[2][2] = imuRotationOffset[8];
+        _imuRotationOffset[0] = imuRotationOffset[0];
+        _imuRotationOffset[1] = imuRotationOffset[1];
+        _imuRotationOffset[2] = imuRotationOffset[2];
 
 
 
@@ -248,9 +245,7 @@ namespace robotican_hardware {
                 _imuAngularVelocityFix[i][j] = 0.0;
                 _imuMagnetometerFix[i][j] = 0.0;
                 _imuRotationFix[i][j] = 0.0;
-                _imuRotationOffset[i][j] = 0.0;
             }
-
-
+        _imuRotationOffset[0] =  _imuRotationOffset[1] = _imuRotationOffset[2] = 0.0;
     }
 }

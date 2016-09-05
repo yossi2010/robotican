@@ -275,7 +275,7 @@ namespace robotican_hardware {
                    && imuAngularVelocityFix.size() == 9
                    && imuMagnetometerFix.size() == 9
                    && imuRotationFix.size() == 9
-                   && imuRotationOffset.size() == 9) {
+                   && imuRotationOffset.size() == 3) {
                     Device *imu = new Imu(_idGen++, &_transportLayer, (uint16_t) fusionHz, frameId, enableGyro,
                                           fuseCompass, imuLinearAccFix, imuAngularVelocityFix,
                                           imuMagnetometerFix,

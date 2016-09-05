@@ -40,7 +40,7 @@ namespace robotican_hardware {
         double _imuAngularVelocityFix[3][3];
         double _imuMagnetometerFix[3][3];
         double _imuRotationFix[3][3];
-        double _imuRotationOffset[3][3];
+        double _imuRotationOffset[3];
 
         bool _isStateChange;
         bool onSetImuClib(robotican_hardware_interface::setImuClib::Request &request, robotican_hardware_interface::setImuClib::Response &response);
