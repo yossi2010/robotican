@@ -5,7 +5,7 @@
   <arg name="armadillo" default="false"/>
   <arg name="komodo" default="false"/>
   
-  <group if="(arg armadillo)" >
+  <group if="$(arg armadillo)" >
     <group if="$(arg gazebo)">
       
       <include file="$(find robotican_armadillo)/launch/armadillo.launch">
@@ -41,7 +41,7 @@
     </node>
   </group>
 
-    <group if="(arg komodo)" >
+    <group if="$(arg komodo)" >
     <group if="$(arg gazebo)">
       
       <include file="$(find robotican_komodo)/launch/komodo.launch">
