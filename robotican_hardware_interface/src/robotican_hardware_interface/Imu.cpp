@@ -18,28 +18,61 @@ namespace robotican_hardware {
                 imuMsg.orientation.y = feedback->orientationY;
                 imuMsg.orientation.z = feedback->orientationZ;
                 imuMsg.orientation.w = feedback->orientationW;
-                imuMsg.linear_acceleration.x = feedback->accelerationX;
-                imuMsg.linear_acceleration.y = feedback->accelerationY;
-                imuMsg.linear_acceleration.z = feedback->accelerationZ;
-                imuMsg.angular_velocity.x = feedback->velocityX;
-                imuMsg.angular_velocity.y = feedback->velocityY;
-                imuMsg.angular_velocity.z = feedback->velocityZ;
+                imuMsg.linear_acceleration.x = (feedback->accelerationX * _imuLinearAccFix[0][0]
+                                                +  feedback->accelerationY * _imuLinearAccFix[0][1]
+                                                + feedback->accelerationZ * _imuLinearAccFix[0][2]) * G2ms;
+                imuMsg.linear_acceleration.y = (feedback->accelerationX * _imuLinearAccFix[1][0]
+                                               +  feedback->accelerationY * _imuLinearAccFix[1][1]
+                                               + feedback->accelerationZ * _imuLinearAccFix[1][2]) * G2ms;
+                imuMsg.linear_acceleration.z = (feedback->accelerationX * _imuLinearAccFix[2][0]
+                                                +  feedback->accelerationY * _imuLinearAccFix[2][1]
+                                                + feedback->accelerationZ * _imuLinearAccFix[2][2]) * G2ms;
+                imuMsg.angular_velocity.x = (feedback->velocityX * _imuAngularVelocityFix[0][0]
+                                             + feedback->velocityY * _imuAngularVelocityFix[0][1]
+                                             + feedback->velocityZ * _imuAngularVelocityFix[0][2]) * DEGs2RASs;
+                imuMsg.angular_velocity.y = (feedback->velocityX * _imuAngularVelocityFix[1][0]
+                                             + feedback->velocityY * _imuAngularVelocityFix[1][1]
+                                             + feedback->velocityZ * _imuAngularVelocityFix[1][2]) * DEGs2RASs;
+                imuMsg.angular_velocity.z = (feedback->velocityX * _imuAngularVelocityFix[2][0]
+                                             + feedback->velocityY * _imuAngularVelocityFix[2][1]
+                                             + feedback->velocityZ * _imuAngularVelocityFix[2][2]) * DEGs2RASs;
 
                 sensor_msgs::MagneticField magneticField;
                 magneticField.header.frame_id = _frameId;
                 magneticField.header.stamp = ros::Time::now();
-                magneticField.magnetic_field.x = feedback->magnetometerX;
-                magneticField.magnetic_field.y = feedback->magnetometerY;
-                magneticField.magnetic_field.z = feedback->magnetometerZ;
-
-                _imuAMQ.publish(imuMsg);
-                _imuM.publish(magneticField);
+                magneticField.magnetic_field.x = (feedback->magnetometerX * _imuMagnetometerFix[0][0]
+                                                  + feedback->magnetometerY * _imuMagnetometerFix[0][1]
+                                                  + feedback->magnetometerZ * _imuMagnetometerFix[0][2]) * MILLI_GAUSS_2_TESLAS;
+                magneticField.magnetic_field.y = (feedback->magnetometerX * _imuMagnetometerFix[1][0]
+                                                  + feedback->magnetometerY * _imuMagnetometerFix[1][1]
+                                                  + feedback->magnetometerZ * _imuMagnetometerFix[1][2]) * MILLI_GAUSS_2_TESLAS;
+                magneticField.magnetic_field.z = (feedback->magnetometerX * _imuMagnetometerFix[2][0]
+                                                  + feedback->magnetometerY * _imuMagnetometerFix[2][1]
+                                                  + feedback->magnetometerZ * _imuMagnetometerFix[2][2]) * MILLI_GAUSS_2_TESLAS;
 
                 tf::Transform transform;
                 tf::Quaternion quaternion;
                 tf::quaternionMsgToTF(imuMsg.orientation, quaternion);
                 transform.setRotation(quaternion);
 
+                double roll, pitch, yaw;
+                tf::Matrix3x3(quaternion).getRPY(roll, pitch, yaw);
+
+                roll = roll * _imuRotationFix[0][0] + pitch * _imuRotationFix[0][1] + yaw * _imuRotationFix[0][1];
+                roll += _imuRotationOffset[0][0] + _imuRotationOffset[0][1] + _imuRotationOffset[0][2];
+
+                pitch = roll * _imuRotationFix[1][0] + pitch * _imuRotationFix[1][1] + yaw * _imuRotationFix[1][1];
+                pitch += _imuRotationOffset[1][0] + _imuRotationOffset[1][1] + _imuRotationOffset[1][2];
+
+                yaw = roll * _imuRotationFix[2][0] + pitch * _imuRotationFix[2][1] + yaw * _imuRotationFix[2][1];
+                yaw += _imuRotationOffset[2][0] + _imuRotationOffset[2][1] + _imuRotationOffset[2][2];
+
+                quaternion.setRPY(roll, pitch, yaw);
+
+                tf::quaternionTFToMsg(quaternion, imuMsg.orientation);
+
+                _imuAMQ.publish(imuMsg);
+                _imuM.publish(magneticField);
                 _broadcaster.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "base_link", "imu_link"));
 
             }
@@ -118,7 +151,9 @@ namespace robotican_hardware {
     }
 
     Imu::Imu(byte id, TransportLayer *transportLayer, uint16_t fusionHz, std::string frameId, bool enableGyro,
-                 bool fuseCompass)
+                 bool fuseCompass, std::vector<double> imuLinearAccFix, std::vector<double> imuAngularVelocityFix,
+                 std::vector<double> imuMagnetometerFix, std::vector<double> imuRotationFix,
+                 std::vector<double> imuRotationOffset)
             : Device(id, transportLayer) {
         _fusionHz = fusionHz;
         _frameId = frameId;
@@ -128,6 +163,59 @@ namespace robotican_hardware {
         _fuseCompass = fuseCompass;
         _imuState = robotican_hardware_interface::setImuClibRequest::STOP;
         _setImuClibService = _nodeHandle.advertiseService("set_imu_calibration_state", &Imu::onSetImuClib, this);
+        initArrays();
+
+        _imuLinearAccFix[0][0] = imuLinearAccFix[0];
+        _imuLinearAccFix[0][1] = imuLinearAccFix[1];
+        _imuLinearAccFix[0][2] = imuLinearAccFix[2];
+        _imuLinearAccFix[1][0] = imuLinearAccFix[3];
+        _imuLinearAccFix[1][1] = imuLinearAccFix[4];
+        _imuLinearAccFix[1][2] = imuLinearAccFix[5];
+        _imuLinearAccFix[2][0] = imuLinearAccFix[6];
+        _imuLinearAccFix[2][1] = imuLinearAccFix[7];
+        _imuLinearAccFix[2][2] = imuLinearAccFix[8];
+
+        _imuAngularVelocityFix[0][0] = imuAngularVelocityFix[0];
+        _imuAngularVelocityFix[0][1] = imuAngularVelocityFix[1];
+        _imuAngularVelocityFix[0][2] = imuAngularVelocityFix[2];
+        _imuAngularVelocityFix[1][0] = imuAngularVelocityFix[3];
+        _imuAngularVelocityFix[1][1] = imuAngularVelocityFix[4];
+        _imuAngularVelocityFix[1][2] = imuAngularVelocityFix[5];
+        _imuAngularVelocityFix[2][0] = imuAngularVelocityFix[6];
+        _imuAngularVelocityFix[2][1] = imuAngularVelocityFix[7];
+        _imuAngularVelocityFix[2][2] = imuAngularVelocityFix[8];
+
+        _imuMagnetometerFix[0][0] = imuMagnetometerFix[0];
+        _imuMagnetometerFix[0][1] = imuMagnetometerFix[1];
+        _imuMagnetometerFix[0][2] = imuMagnetometerFix[2];
+        _imuMagnetometerFix[1][0] = imuMagnetometerFix[3];
+        _imuMagnetometerFix[1][1] = imuMagnetometerFix[4];
+        _imuMagnetometerFix[1][2] = imuMagnetometerFix[5];
+        _imuMagnetometerFix[2][0] = imuMagnetometerFix[6];
+        _imuMagnetometerFix[2][1] = imuMagnetometerFix[7];
+        _imuMagnetometerFix[2][2] = imuMagnetometerFix[8];
+
+        _imuRotationFix[0][0] = imuRotationFix[0];
+        _imuRotationFix[0][1] = imuRotationFix[1];
+        _imuRotationFix[0][2] = imuRotationFix[2];
+        _imuRotationFix[1][0] = imuRotationFix[3];
+        _imuRotationFix[1][1] = imuRotationFix[4];
+        _imuRotationFix[1][2] = imuRotationFix[5];
+        _imuRotationFix[2][0] = imuRotationFix[6];
+        _imuRotationFix[2][1] = imuRotationFix[7];
+        _imuRotationFix[2][2] = imuRotationFix[8];
+
+        _imuRotationOffset[0][0] = imuRotationOffset[0];
+        _imuRotationOffset[0][1] = imuRotationOffset[1];
+        _imuRotationOffset[0][2] = imuRotationOffset[2];
+        _imuRotationOffset[1][0] = imuRotationOffset[3];
+        _imuRotationOffset[1][1] = imuRotationOffset[4];
+        _imuRotationOffset[1][2] = imuRotationOffset[5];
+        _imuRotationOffset[2][0] = imuRotationOffset[6];
+        _imuRotationOffset[2][1] = imuRotationOffset[7];
+        _imuRotationOffset[2][2] = imuRotationOffset[8];
+
+
 
     }
 
@@ -151,5 +239,18 @@ namespace robotican_hardware {
         }
         response.ack = true;
         return true;
+    }
+
+    void Imu::initArrays() {
+        for(int i = 0; i < 3; ++i)
+            for(int j = 0; j < 3; ++j) {
+                _imuLinearAccFix[i][j] = 0.0;
+                _imuAngularVelocityFix[i][j] = 0.0;
+                _imuMagnetometerFix[i][j] = 0.0;
+                _imuRotationFix[i][j] = 0.0;
+                _imuRotationOffset[i][j] = 0.0;
+            }
+
+
     }
 }
