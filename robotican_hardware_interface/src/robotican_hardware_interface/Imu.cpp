@@ -70,13 +70,16 @@ namespace robotican_hardware {
                 newYaw += _imuRotationOffset[2];
 
                 quaternion.setRPY(newRoll, newPitch, newYaw);
-                ROS_INFO("[%s]: roll: %.2f , pitch: %.2f, yaw: %.2f", ros::this_node::getName().c_str(), newRoll * 180 / M_PI, newPitch * 180 / M_PI, newYaw * 180 / M_PI);
 
                 tf::quaternionTFToMsg(quaternion, imuMsg.orientation);
+
 
                 _imuAMQ.publish(imuMsg);
                 _imuM.publish(magneticField);
                 _broadcaster.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "base_link", "imu_link"));
+
+                tf::Matrix3x3(quaternion).getRPY(newRoll, newPitch, newYaw);
+                ROS_INFO("[%s]: roll: %.2f , pitch: %.2f, yaw: %.2f", ros::this_node::getName().c_str(), newRoll * 180 / M_PI, newPitch * 180 / M_PI, newYaw * 180 / M_PI);
 
             }
             else if(deviceMessage->deviceMessageType == DeviceMessageType::ImuClibFeedback) {
