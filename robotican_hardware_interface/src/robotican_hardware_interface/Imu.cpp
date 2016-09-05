@@ -50,10 +50,8 @@ namespace robotican_hardware {
                                                   + feedback->magnetometerY * _imuMagnetometerFix[2][1]
                                                   + feedback->magnetometerZ * _imuMagnetometerFix[2][2]) * MILLI_GAUSS_2_TESLAS;
 
-                tf::Transform transform;
                 tf::Quaternion quaternion;
                 tf::quaternionMsgToTF(imuMsg.orientation, quaternion);
-                transform.setRotation(quaternion);
 
                 double roll, pitch, yaw;
                 double newRoll, newPitch, newYaw;
@@ -73,6 +71,8 @@ namespace robotican_hardware {
 
                 tf::quaternionTFToMsg(quaternion, imuMsg.orientation);
 
+                tf::Transform transform;
+                transform.setRotation(quaternion);
 
                 _imuAMQ.publish(imuMsg);
                 _imuM.publish(magneticField);
