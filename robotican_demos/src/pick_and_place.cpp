@@ -49,6 +49,8 @@ bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
 
 void addStaticObjects(const moveit::planning_interface::PlanningSceneInterface &planning_scene_interface);
 
+void setStartConstraints(moveit::planning_interface::MoveGroup &group);
+
 moveit::planning_interface::PlanningSceneInterface *planning_scene_interface_ptr;
 planning_scene::PlanningScenePtr *planning_scene_ptr;
 robot_state::RobotStatePtr *robot_state_ptr;
@@ -356,8 +358,8 @@ void gripper_constraints(bool apply) {
         ocm.orientation.y = 0;
         ocm.orientation.z = 0;
         ocm.orientation.w = 1;
-        ocm.absolute_x_axis_tolerance = 10.0*M_PI/180.0;
-        ocm.absolute_y_axis_tolerance = 10.0*M_PI/180.0;
+        ocm.absolute_x_axis_tolerance = 5.0*M_PI/180.0;
+        ocm.absolute_y_axis_tolerance = 5.0*M_PI/180.0;
         ocm.absolute_z_axis_tolerance = M_PI;
         ocm.weight = 1.0;
         moveit_msgs::Constraints constr;
@@ -472,7 +474,7 @@ int main(int argc, char **argv) {
     table_primitive.dimensions.resize(3);
     table_primitive.dimensions[0] = 0.2;
     table_primitive.dimensions[1] = 0.5;
-    table_primitive.dimensions[2] = 0.02;
+    table_primitive.dimensions[2] = 0.04;
     table_collision_object.primitives.push_back(table_primitive);
     table_collision_object.operation = table_collision_object.ADD;
     col_objects.push_back(table_collision_object);
@@ -490,19 +492,22 @@ int main(int argc, char **argv) {
     col_objects.push_back(can_collision_object);
 
     addStaticObjects(planning_scene_interface);
+    //setStartConstraints(group);
 
 
     spinner.start();
 
-    ros::Duration(2.0).sleep();
+
+
     ROS_INFO("Looking down...");
     look_down();
-    if (plan_arm("pre_grasp2")) {
-        ROS_INFO("Arm planning is done, moving arm up..");
-        if (group_ptr->move()) {
-            ROS_INFO("Arm is up");
-        }
-    }
+//    ros::Duration(5.0);
+//    if (plan_arm("pre_grasp2")) {
+//        ROS_INFO("Arm planning is done, moving arm up..");
+//        if (group_ptr->move()) {
+//            ROS_INFO("Arm is up");
+//        }
+//    }
 
 
 
@@ -512,6 +517,32 @@ int main(int argc, char **argv) {
 
     ros::spin();
     return 0;
+}
+
+void setStartConstraints(moveit::planning_interface::MoveGroup &group) {
+    moveit_msgs::Constraints constraints;
+    moveit_msgs::PositionConstraint positionConstraint;
+    positionConstraint.header.frame_id = "base_footprint";
+    positionConstraint.link_name = "gripper_link";
+    positionConstraint.weight = 1.0;
+
+    shape_msgs::SolidPrimitive constraintsPrimitive;
+    constraintsPrimitive.type = shape_msgs::SolidPrimitive::BOX;
+    constraintsPrimitive.dimensions.resize(3);
+    constraintsPrimitive.dimensions[0] = 1.2;
+    constraintsPrimitive.dimensions[1] = 1.2;
+    constraintsPrimitive.dimensions[2] = 1.2;
+    positionConstraint.constraint_region.primitives.push_back(constraintsPrimitive);
+
+    geometry_msgs::Pose primitivePos;
+    primitivePos.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, 0.0);
+    primitivePos.position.x = 0;
+    primitivePos.position.y = 0;
+    primitivePos.position.z = 0.5;
+    positionConstraint.constraint_region.primitive_poses.push_back(primitivePos);
+
+    constraints.position_constraints.push_back(positionConstraint);
+    group.setPathConstraints(constraints);
 }
 
 void addStaticObjects(const moveit::planning_interface::PlanningSceneInterface &planning_scene_interface) {
