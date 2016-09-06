@@ -518,13 +518,22 @@ void addStaticObjects(const moveit::planning_interface::PlanningSceneInterface &
     moveit_msgs::CollisionObject floorObject;
     floorObject.header.frame_id = "base_footprint";
     floorObject.id = "floor";
+
     shape_msgs::SolidPrimitive floorPrimitive;
     floorPrimitive.type = shape_msgs::SolidPrimitive::BOX;
     floorPrimitive.dimensions.resize(3);
-    floorPrimitive.dimensions[0] = 1.0;
-    floorPrimitive.dimensions[1] = 0.2;
+    floorPrimitive.dimensions[0] = 1.5;
+    floorPrimitive.dimensions[1] = 1.5;
     floorPrimitive.dimensions[2] = 0.02;
     floorObject.primitives.push_back(floorPrimitive);
+
+    geometry_msgs::Pose floorPos;
+    floorPos.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
+    floorPos.position.x = 0;
+    floorPos.position.y = 0;
+    floorPos.position.z = -0.015;
+    floorObject.primitive_poses.push_back(floorPos);
+
     floorObject.operation = moveit_msgs::CollisionObject::ADD;
 
     staticObjects.push_back(floorObject);
