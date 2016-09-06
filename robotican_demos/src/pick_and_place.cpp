@@ -407,7 +407,7 @@ int main(int argc, char **argv) {
     group.setMaxVelocityScalingFactor(MaxVelocityScalingFactor);
     group.setMaxAccelerationScalingFactor(MaxAccelerationScalingFactor);
     group.setPlanningTime(3.0);
-    group.setNumPlanningAttempts(30);
+    group.setNumPlanningAttempts(300);
     group.setPlannerId("RRTConnectkConfigDefault");
     // group.setPlannerId("RRTstarkConfigDefault");
     group.setPoseReferenceFrame("base_footprint");
