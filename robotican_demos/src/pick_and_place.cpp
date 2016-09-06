@@ -47,12 +47,14 @@ bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
                                const robot_model::JointModelGroup *joint_model_group,
                                const double *ik_solution);
 
+void addStaticObjects(const moveit::planning_interface::PlanningSceneInterface &planning_scene_interface);
+
 moveit::planning_interface::PlanningSceneInterface *planning_scene_interface_ptr;
 planning_scene::PlanningScenePtr *planning_scene_ptr;
 robot_state::RobotStatePtr *robot_state_ptr;
 tf::TransformListener *listener_ptr;
 tf::MessageFilter<geometry_msgs::PoseStamped> *head_tf_filter_,*arm_tf_filter_;
-std::vector<moveit_msgs::CollisionObject> col_objects;
+std::vector<moveit_msgs::CollisionObject> col_objects, staticObjects;
 geometry_msgs::PoseStamped head_object_pose,arm_object_pose;
 GripperClient *gripperClient_ptr;
 moveit::planning_interface::MoveGroup *group_ptr;
@@ -135,7 +137,7 @@ void pick_go_cb(std_msgs::Empty) {
                 ROS_INFO("Ready to grasp");
                 if(gripper_cmd(0.01,0.4)) {
                     ROS_INFO("Grasping is done");
-                      gripper_constraints(true);
+                    gripper_constraints(true);
                     pub_can=false;
                     std::vector<std::string> touch_links;
                     touch_links.push_back("left_finger_link");
@@ -148,7 +150,7 @@ void pick_go_cb(std_msgs::Empty) {
                     ROS_INFO("Lifting object...");
                     pick_pose.pose.position.z=pick_pose.pose.position.z+0.1;
                     pick_pose.pose.position.y=pick_pose.pose.position.y+0.15;
-                   if (arm_cmd(pick_pose)) {
+                    if (arm_cmd(pick_pose)) {
                         ROS_INFO("Arm planning is done, moving arm up..");
                         if (group_ptr->move()) {
                             ROS_INFO("Arm is up, placing on table...");
@@ -161,7 +163,7 @@ void pick_go_cb(std_msgs::Empty) {
                                     if(gripper_cmd(0.14,0.0)) {
                                         ros::Duration(5).sleep(); //wait for deattach
                                         ROS_INFO("Lifting arm up...");
-                                          gripper_constraints(false);
+                                        gripper_constraints(false);
                                         if (plan_arm("pre_grasp2")) {
                                             group_ptr->detachObject("can");
                                             attached=false;
@@ -343,7 +345,7 @@ void update_collision_objects(geometry_msgs::Pose pose) {
 
 void gripper_constraints(bool apply) {
 
-     moveit_msgs::Constraints c=group_ptr->getPathConstraints();
+    moveit_msgs::Constraints c=group_ptr->getPathConstraints();
 
     if ((apply)&&(c.orientation_constraints.size()==0)) {
 
@@ -389,8 +391,8 @@ int main(int argc, char **argv) {
     std::string arm_topic="/detected_objects/"+object_name_arm_camera;
 
     double MaxAccelerationScalingFactor,MaxVelocityScalingFactor;
- pn.param<double>("MaxAccelerationScalingFactor", MaxAccelerationScalingFactor, 0.01);
- pn.param<double>("MaxVelocityScalingFactor", MaxVelocityScalingFactor, 0.5);
+    pn.param<double>("MaxAccelerationScalingFactor", MaxAccelerationScalingFactor, 0.01);
+    pn.param<double>("MaxVelocityScalingFactor", MaxVelocityScalingFactor, 0.5);
 
     ROS_INFO("Waiting for the moveit action server to come up");
     moveit::planning_interface::MoveGroup group("arm");
@@ -487,6 +489,9 @@ int main(int argc, char **argv) {
     can_collision_object.operation = can_collision_object.ADD;
     col_objects.push_back(can_collision_object);
 
+    addStaticObjects(planning_scene_interface);
+
+
     spinner.start();
 
     ros::Duration(2.0).sleep();
@@ -504,13 +509,26 @@ int main(int argc, char **argv) {
 
     ready=true;
     ROS_INFO("Ready!");
-    while (ros::ok())
-    {
 
-
-
-    }
-
+    ros::spin();
     return 0;
+}
+
+void addStaticObjects(const moveit::planning_interface::PlanningSceneInterface &planning_scene_interface) {
+    moveit_msgs::CollisionObject floorObject;
+    floorObject.header.frame_id = "base_footprint";
+    floorObject.id = "floor";
+    shape_msgs::SolidPrimitive floorPrimitive;
+    floorPrimitive.type = shape_msgs::SolidPrimitive::BOX;
+    floorPrimitive.dimensions.resize(3);
+    floorPrimitive.dimensions[0] = 1.0;
+    floorPrimitive.dimensions[1] = 0.2;
+    floorPrimitive.dimensions[2] = 0.02;
+    floorObject.primitives.push_back(floorPrimitive);
+    floorObject.operation = moveit_msgs::CollisionObject::ADD;
+
+    staticObjects.push_back(floorObject);
+
+    planning_scene_interface.addCollisionObjects(staticObjects);
 }
 
