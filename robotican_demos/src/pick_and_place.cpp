@@ -35,6 +35,7 @@ bool checkIK(geometry_msgs::PoseStamped pose);
 void go(tf::Transform  dest);
 bool gripper_cmd(double gap,double effort);
 bool arm_cmd(geometry_msgs::PoseStamped target_pose1);
+bool arm_plan_and_exec(geometry_msgs::PoseStamped target_pose1);
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object);
 bool plan_arm(std::string pose);
 void pick_go_cb(std_msgs::Empty);
@@ -125,6 +126,8 @@ geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
 
 }
 
+
+
 void pick_go_cb(std_msgs::Empty) {
     bool attached=false;
     if (!moving) moving=true;
@@ -132,57 +135,61 @@ void pick_go_cb(std_msgs::Empty) {
     if(gripper_cmd(0.14,0.0)) {
         ROS_INFO("Gripper is oppend, planning for pre-grasping..");
         ros::Duration(2).sleep();//wait for re-detection
-        geometry_msgs::PoseStamped pick_pose=pre_grasp_pose(head_object_pose);
-        if (arm_cmd(pick_pose)) {
-            ROS_INFO("Arm planning is done, moving arm..");
-            if(group_ptr->move()) {
-                ROS_INFO("Ready to grasp");
-                if(gripper_cmd(0.01,0.4)) {
-                    ROS_INFO("Grasping is done");
-                    gripper_constraints(true);
-                    pub_can=false;
-                    std::vector<std::string> touch_links;
-                    touch_links.push_back("left_finger_link");
-                    touch_links.push_back("right_finger_link");
-                    touch_links.push_back("wrist_link");
-                    touch_links.push_back("gripper_link");
-                    group_ptr->attachObject("can","gripper_link",touch_links);
-                    attached=true;
-                    ros::Duration(8).sleep(); //wait for attach
-                    ROS_INFO("Lifting object...");
-                    pick_pose.pose.position.z=pick_pose.pose.position.z+0.1;
-                    pick_pose.pose.position.y=pick_pose.pose.position.y+0.15;
-                    if (arm_cmd(pick_pose)) {
-                        ROS_INFO("Arm planning is done, moving arm up..");
-                        if (group_ptr->move()) {
-                            ROS_INFO("Arm is up, placing on table...");
-                            pick_pose.pose.position.z=pick_pose.pose.position.z-0.09;
+        geometry_msgs::PoseStamped pick_pose = pre_grasp_pose(head_object_pose);
+        geometry_msgs::PoseStamped prePick = pick_pose;
+        prePick.pose.position.z += 0.1;
+        if (arm_plan_and_exec(prePick)) {
+            if (arm_cmd(pick_pose)) {
+                ROS_INFO("Arm planning is done, moving arm..");
+                if (group_ptr->move()) {
+                    ROS_INFO("Ready to grasp");
+                    if (gripper_cmd(0.01, 0.4)) {
+                        ROS_INFO("Grasping is done");
+                        gripper_constraints(true);
+                        pub_can = false;
+                        std::vector<std::string> touch_links;
+                        touch_links.push_back("left_finger_link");
+                        touch_links.push_back("right_finger_link");
+                        touch_links.push_back("wrist_link");
+                        touch_links.push_back("gripper_link");
+                        group_ptr->attachObject("can", "gripper_link", touch_links);
+                        attached = true;
+                        ros::Duration(8).sleep(); //wait for attach
+                        ROS_INFO("Lifting object...");
+                        pick_pose.pose.position.z = pick_pose.pose.position.z + 0.1;
+                        if (arm_cmd(pick_pose)) {
+                            ROS_INFO("Arm planning is done, moving arm up..");
+                            if (group_ptr->move()) {
+                                ROS_INFO("Arm is up, placing on table...");
+                                pick_pose.pose.position.z = pick_pose.pose.position.z - 0.07;
+                                pick_pose.pose.position.y = pick_pose.pose.position.y + 0.15;
 
-                            if (arm_cmd(pick_pose)) {
-                                ROS_INFO("Arm planning is done, moving arm..");
-                                if(group_ptr->move()) {
-                                    ROS_INFO("Openning gripper...");
-                                    if(gripper_cmd(0.14,0.0)) {
-                                        ros::Duration(5).sleep(); //wait for deattach
-                                        ROS_INFO("Lifting arm up...");
-                                        gripper_constraints(false);
-                                        if (plan_arm("pre_grasp2")) {
-                                            group_ptr->detachObject("can");
-                                            attached=false;
-                                            //  std::vector<std::string> rem;
-                                            //  rem.push_back("can");
-                                            //  planning_scene_interface_ptr->removeCollisionObjects(rem);
+                                if (arm_cmd(pick_pose)) {
+                                    ROS_INFO("Arm planning is done, moving arm..");
+                                    if (group_ptr->move()) {
+                                        ROS_INFO("Openning gripper...");
+                                        if (gripper_cmd(0.14, 0.0)) {
+                                            ros::Duration(5).sleep(); //wait for deattach
+                                            ROS_INFO("Lifting arm up...");
+                                            gripper_constraints(false);
+                                            if (plan_arm("pre_grasp2")) {
+                                                group_ptr->detachObject("can");
+                                                attached = false;
+                                                //  std::vector<std::string> rem;
+                                                //  rem.push_back("can");
+                                                //  planning_scene_interface_ptr->removeCollisionObjects(rem);
 
-                                            ROS_INFO("Arm planning is done, moving arm up..");
-                                            if (group_ptr->move()) {
-                                                ROS_INFO("Arm is up");
-                                                ROS_INFO("Done!");
+                                                ROS_INFO("Arm planning is done, moving arm up..");
+                                                if (group_ptr->move()) {
+                                                    ROS_INFO("Arm is up");
+                                                    ROS_INFO("Done!");
 
+
+                                                }
 
                                             }
 
                                         }
-
                                     }
                                 }
                             }
@@ -197,6 +204,58 @@ void pick_go_cb(std_msgs::Empty) {
     pub_can=true;
 }
 
+bool arm_plan_and_exec(geometry_msgs::PoseStamped target_pose1) {
+
+
+    group_ptr->setStartStateToCurrentState();
+
+    if (!have_goal) have_goal=true;
+
+    moveit::planning_interface::MoveGroup::Plan my_plan;
+    double dz[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+    double dy[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+    double dx[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
+    double dY[]={0};//, 0.04, -0.04 ,0.18, -0.18};
+    double z=target_pose1.pose.position.z;
+    double x=target_pose1.pose.position.x;
+    double y=target_pose1.pose.position.y;
+    tf::Quaternion q( target_pose1.pose.orientation.x,  target_pose1.pose.orientation.y,  target_pose1.pose.orientation.z, target_pose1.pose.orientation.w);
+    double roll, pitch, yaw;
+    tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
+    //ROS_INFO("%f",yaw*180/M_PI);
+
+    for (int n=0;n<sizeof(dx)/sizeof(double);n++) {
+        for (int m=0;m<sizeof(dy)/sizeof(double);m++) {
+
+            for (int i=0;i<sizeof(dz)/sizeof(double);i++) {
+                for (int j=0;j<sizeof(dY)/sizeof(double);j++) {
+                    target_pose1.pose.position.z=z+dz[i];
+                    target_pose1.pose.position.x=x+dx[n];
+                    target_pose1.pose.position.y=y+dy[m];
+
+                    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,yaw+dY[j] );
+
+
+                    if (checkIK(target_pose1)) {
+                        pick_pub.publish(target_pose1);
+
+
+                        group_ptr->setPoseTarget(target_pose1);
+
+                        bool success = group_ptr->plan(my_plan);
+
+                        ROS_INFO("Moveit plan %s",success?"SUCCESS":"FAILED");
+                        if (success && group_ptr->execute(my_plan)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    ROS_INFO("FAILED to find plan");
+    return false;
+}
 
 bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
                                const robot_model::JointModelGroup *joint_model_group_,
