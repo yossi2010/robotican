@@ -27,7 +27,7 @@
 typedef actionlib::SimpleActionClient<control_msgs::GripperCommandAction> GripperClient;
 
 
-
+void apply_floor_constraints();
 void gripper_constraints(bool state);
 void head_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr);
 void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr);
@@ -73,6 +73,7 @@ bool pub_can=true;
 double wrist_distance_from_object;
 geometry_msgs::PoseStamped moveit_goal;
 
+double MaxAccelerationScalingFactor,MaxVelocityScalingFactor;
 
 ros::Publisher pick_pub,head_object_pub,arm_object_pub;
 ros::Publisher pub_controller_command;
@@ -151,49 +152,71 @@ void pick_go_cb(std_msgs::Empty) {
                                                                      0.01,  // eef_step
                                                                      0.0,   // jump_threshold
                                                                      arm2ObjPath);
-        if(fractionArm2ObjPath > 0) {
-            if(cartesianPathExecution(arm2ObjPath)) {
-                if (gripper_cmd(0.01, 0.4)) {
-                    ROS_INFO("Grasping is done");
-                    gripper_constraints(true);
-                    pub_can = false;
-                    std::vector<std::string> touch_links;
-                    touch_links.push_back("left_finger_link");
-                    touch_links.push_back("right_finger_link");
-                    touch_links.push_back("wrist_link");
-                    touch_links.push_back("gripper_link");
-                    group_ptr->attachObject("can", "gripper_link", touch_links);
-                    attached = true;
-                    ros::Duration(8).sleep(); //wait for attach
-                    ROS_INFO("Lifting object...");
 
-                    std::vector<geometry_msgs::Pose> wayPointsForArmLiftPath;
-                    pick_pose.pose.position.z = pick_pose.pose.position.z + 0.10;
-                    pick_pose.pose.position.y = pick_pose.pose.position.y + 0.15;
-                    wayPointsForArmLiftPath.push_back(pick_pose.pose);
-                    pick_pose.pose.position.z = pick_pose.pose.position.z - 0.07;
-                    wayPointsForArmLiftPath.push_back(pick_pose.pose);
-                    moveit_msgs::RobotTrajectory armLiftPath;
-                    double fractionArmLiftPath = group_ptr->computeCartesianPath(wayPointsForArmLiftPath,
-                                                                                 0.01,  // eef_step
-                                                                                 0.0,   // jump_threshold
-                                                                                 armLiftPath);
-                    if(fractionArmLiftPath > 0 && cartesianPathExecution(arm2ObjPath)) {
-                        if(gripper_cmd(0.14, 0.0)) {
-                            ros::Duration(5).sleep(); //wait for deattach
-                            ROS_INFO("Lifting arm up...");
-                            gripper_constraints(false);
-                            if (plan_arm("pre_grasp2")) {
-                                group_ptr->detachObject("can");
-                                attached = false;
-                                ROS_INFO("Arm planning is done, moving arm up..");
-                                if (group_ptr->move()) {
-                                    ROS_INFO("Arm is up");
-                                    ROS_INFO("Done!");
-                                }
+
+        if ((fractionArm2ObjPath > 0.9) && (cartesianPathExecution(arm2ObjPath))) {
+            if (gripper_cmd(0.01, 0.4)) {
+                ROS_INFO("Grasping is done");
+                gripper_constraints(true);
+                pub_can = false;
+                std::vector<std::string> touch_links;
+                touch_links.push_back("left_finger_link");
+                touch_links.push_back("right_finger_link");
+                touch_links.push_back("wrist_link");
+                touch_links.push_back("gripper_link");
+                group_ptr->attachObject("can", "gripper_link", touch_links);
+                attached = true;
+                ros::Duration(8).sleep(); //wait for attach
+                ROS_INFO("Lifting object...");
+
+                std::vector<geometry_msgs::Pose> wayPointsForArmLiftPath;
+                pick_pose.pose.position.z += 0.10;
+                wayPointsForArmLiftPath.push_back(pick_pose.pose);
+                pick_pose.pose.position.y += 0.15;
+                wayPointsForArmLiftPath.push_back(pick_pose.pose);
+                pick_pose.pose.position.z -= 0.07;
+                wayPointsForArmLiftPath.push_back(pick_pose.pose);
+                moveit_msgs::RobotTrajectory armLiftPath;
+                double fractionArmLiftPath = group_ptr->computeCartesianPath(wayPointsForArmLiftPath,
+                                                                             0.01,  // eef_step
+                                                                             0.0,   // jump_threshold
+                                                                             armLiftPath);
+
+
+                if((fractionArmLiftPath > 0.9) && (cartesianPathExecution(armLiftPath))) {
+                    if(gripper_cmd(0.14, 0.0)) {
+                        ros::Duration(5).sleep(); //wait for deattach
+                        ROS_INFO("Lifting arm up...");
+                        gripper_constraints(false);
+
+
+                        group_ptr->detachObject("can");
+                        attached = false;
+
+                        std::vector<geometry_msgs::Pose> wayPointsForArmUp;
+                        pick_pose.pose.position.z += 0.1;
+                        wayPointsForArmUp.push_back(pick_pose.pose);
+
+                        pick_pose.pose.position.y -= 0.15;
+                        wayPointsForArmUp.push_back(pick_pose.pose);
+
+                        moveit_msgs::RobotTrajectory armLiftUp;
+                        double fractionArmUp = group_ptr->computeCartesianPath(wayPointsForArmUp,
+                                                                                     0.01,  // eef_step
+                                                                                     0.0,   // jump_threshold
+                                                                                     armLiftUp);
+
+
+                        if((fractionArmUp > 0.9) && (cartesianPathExecution(armLiftUp))) {
+                            ROS_INFO("Arm planning is done, moving arm up..");
+                            if (group_ptr->move()) {
+                                ROS_INFO("Arm is up");
+                                ROS_INFO("Done!");
                             }
                         }
+
                     }
+
                 }
             }
         }
@@ -206,10 +229,13 @@ void pick_go_cb(std_msgs::Empty) {
 }
 
 bool cartesianPathExecution(moveit_msgs::RobotTrajectory &trajectory) {
+    group_ptr->setStartStateToCurrentState();
+
     robot_trajectory::RobotTrajectory rt(group_ptr->getCurrentState()->getRobotModel(), "arm");
     rt.setRobotTrajectoryMsg(*group_ptr->getCurrentState(), trajectory);
     trajectory_processing::IterativeParabolicTimeParameterization iptp;
-    bool success = iptp.computeTimeStamps(rt);
+
+    bool success = iptp.computeTimeStamps(rt,MaxVelocityScalingFactor,MaxAccelerationScalingFactor);
     ROS_INFO("Computed time stamp %s",success?"SUCCEDED":"FAILED");
     rt.getRobotTrajectoryMsg(trajectory);
 
@@ -446,6 +472,40 @@ void gripper_constraints(bool apply) {
     }
 }
 
+void apply_floor_constraints() {
+
+    moveit_msgs::Constraints c=group_ptr->getPathConstraints();
+    moveit_msgs::PositionConstraint pc;
+
+
+    moveit_msgs::BoundingVolume reg;
+    shape_msgs::SolidPrimitive prim;
+    prim.type = prim.BOX;
+    prim.dimensions.resize(3);
+    prim.dimensions[prim.BOX_X] = 4.0;
+    prim.dimensions[prim.BOX_Y] = 4.0;
+    prim.dimensions[prim.BOX_Z] = 4.0;
+
+    geometry_msgs::Pose pose;
+    pose.position.z=2.05;
+    pose.orientation.w = 1;
+
+    reg.primitives.push_back(prim);
+    reg.primitive_poses.push_back(pose);
+    pc.header.stamp = ros::Time::now();
+
+    pc.constraint_region = reg;
+    pc.link_name = "gripper_link";
+    pc.header.frame_id = "base_footprint";
+    pc.weight = 1.0;
+
+    moveit_msgs::Constraints constr;
+    constr.position_constraints.push_back(pc);
+
+    group_ptr->setPathConstraints(constr);
+    ROS_INFO("Applying floor position constraints");
+
+}
 
 int main(int argc, char **argv) {
 
@@ -465,9 +525,9 @@ int main(int argc, char **argv) {
     pn.param<std::string>("object_name_arm_camera", object_name_arm_camera, "sr300_object");
     std::string arm_topic="/detected_objects/"+object_name_arm_camera;
 
-    double MaxAccelerationScalingFactor,MaxVelocityScalingFactor;
+
     pn.param<double>("MaxAccelerationScalingFactor", MaxAccelerationScalingFactor, 0.01);
-    pn.param<double>("MaxVelocityScalingFactor", MaxVelocityScalingFactor, 0.5);
+    pn.param<double>("MaxVelocityScalingFactor", MaxVelocityScalingFactor, 0.05);
 
     ROS_INFO("Waiting for the moveit action server to come up");
     moveit::planning_interface::MoveGroup group("arm");
@@ -479,10 +539,10 @@ int main(int argc, char **argv) {
     // group.allowReplanning(true);
     group.setMaxVelocityScalingFactor(MaxVelocityScalingFactor);
     group.setMaxAccelerationScalingFactor(MaxAccelerationScalingFactor);
-    group.setPlannerId("PRMkConfigDefault");
-    group.setPlanningTime(20.0);
-    group.setNumPlanningAttempts(20);
-    // group.setPlannerId("RRTstarkConfigDefault");
+    // group.setPlannerId("PRMkConfigDefault");
+    group.setPlanningTime(2.0);
+    group.setNumPlanningAttempts(200);
+    group.setPlannerId("RRTConnectkConfigDefault");
     group.setPoseReferenceFrame("base_footprint");
 
 
@@ -564,23 +624,24 @@ int main(int argc, char **argv) {
     can_collision_object.operation = can_collision_object.ADD;
     col_objects.push_back(can_collision_object);
 
-    addStaticObjects(planning_scene_interface);
+    // addStaticObjects(planning_scene_interface);
     //setStartConstraints(group);
+    group.setWorkspace(0.0,-2.0,0.05,2.0,2.0,2.0);
 
-
+    apply_floor_constraints();
     spinner.start();
 
 
 
     ROS_INFO("Looking down...");
     look_down();
-//    ros::Duration(5.0);
-//    if (plan_arm("pre_grasp2")) {
-//        ROS_INFO("Arm planning is done, moving arm up..");
-//        if (group_ptr->move()) {
-//            ROS_INFO("Arm is up");
-//        }
-//    }
+    //    ros::Duration(5.0);
+    //    if (plan_arm("pre_grasp2")) {
+    //        ROS_INFO("Arm planning is done, moving arm up..");
+    //        if (group_ptr->move()) {
+    //            ROS_INFO("Arm is up");
+    //        }
+    //    }
 
 
 
