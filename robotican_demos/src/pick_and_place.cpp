@@ -38,6 +38,7 @@ bool gripper_cmd(double gap,double effort);
 bool arm_cmd(geometry_msgs::PoseStamped target_pose1);
 bool arm_plan_and_exec(geometry_msgs::PoseStamped target_pose1);
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object);
+geometry_msgs::PoseStamped grasp_pose(geometry_msgs::PoseStamped object);
 bool plan_arm(std::string pose);
 void pick_go_cb(std_msgs::Empty);
 void button_go_cb(std_msgs::Empty);
@@ -80,13 +81,11 @@ ros::Publisher pub_controller_command;
 
 
 double check_CartesianPath(geometry_msgs::PoseStamped object) {
-     geometry_msgs::PoseStamped pick_pose = pre_grasp_pose(object);
-       geometry_msgs::PoseStamped prePick=pick_pose;
-       prePick.pose.position.z += 0.1;
-
+    geometry_msgs::PoseStamped pre_pick_pose= pre_grasp_pose(object);
+     geometry_msgs::PoseStamped pick_pose = grasp_pose(object);
      std::vector<geometry_msgs::Pose> wayPointsForArm2ObjPath;
 
-     wayPointsForArm2ObjPath.push_back(prePick.pose);
+     wayPointsForArm2ObjPath.push_back(pre_pick_pose.pose);
      wayPointsForArm2ObjPath.push_back(pick_pose.pose);
 
      moveit_msgs::RobotTrajectory arm2ObjPath;
@@ -136,6 +135,30 @@ geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
     pick_yaw=atan2(v.y(),v.x());
 
 
+    float away=0.08/sqrt(v.x()*v.x()+v.y()*v.y());
+    tf::Vector3 dest=v*(1-away);
+
+    target_pose.pose.position.x = dest.x();
+    target_pose.pose.position.y = dest.y();
+    target_pose.pose.position.z +=0;
+    target_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw );
+    pick_pub.publish(target_pose);
+
+    return target_pose;
+
+}
+geometry_msgs::PoseStamped grasp_pose(geometry_msgs::PoseStamped object){
+    geometry_msgs::PoseStamped target_pose=object;
+
+
+    tf::Vector3 v;
+    v.setX(object.pose.position.x);
+    v.setY(object.pose.position.y);
+    v.setZ(object.pose.position.z);
+
+    pick_yaw=atan2(v.y(),v.x());
+
+
     float away=wrist_distance_from_object/sqrt(v.x()*v.x()+v.y()*v.y());
     tf::Vector3 dest=v*(1-away);
 
@@ -158,12 +181,12 @@ void pick_go_cb(std_msgs::Empty) {
     if(gripper_cmd(0.14,0.0)) {
         ROS_INFO("Gripper is oppend, planning for pre-grasping..");
         ros::Duration(2).sleep();//wait for re-detection
-        geometry_msgs::PoseStamped pick_pose = pre_grasp_pose(head_object_pose);
-        geometry_msgs::PoseStamped prePick = pick_pose;
-        prePick.pose.position.z += 0.1;
+        geometry_msgs::PoseStamped pre_pick_pose= pre_grasp_pose(head_object_pose);
+         geometry_msgs::PoseStamped pick_pose = grasp_pose(head_object_pose);
+
 
         std::vector<geometry_msgs::Pose> wayPointsForArm2ObjPath;
-        wayPointsForArm2ObjPath.push_back(prePick.pose);
+        wayPointsForArm2ObjPath.push_back(pre_pick_pose.pose);
         wayPointsForArm2ObjPath.push_back(pick_pose.pose);
 
         moveit_msgs::RobotTrajectory arm2ObjPath;
@@ -403,7 +426,7 @@ void head_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>&
 
         update_collision_objects(head_object_pose.pose);
 
-        bool ik=checkIK(pre_grasp_pose(head_object_pose));
+        //bool ik=checkIK(pre_grasp_pose(head_object_pose));
 
         double fractionArm2ObjPath=check_CartesianPath(head_object_pose);
         ROS_WARN("--------------- fraction: %.2f",fractionArm2ObjPath*100);
