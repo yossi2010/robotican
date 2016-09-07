@@ -17,7 +17,7 @@ namespace robotican_hardware {
            !_nodeHandle.getParam("right_finger_topic_pub", rightFingerPubTopic) ||
            !_nodeHandle.getParam("right_finger_topic_sub", rightFingerSubTopic) ||
            !_nodeHandle.getParam("right_finger_joint", rightFingerJointName)) {
-            /* parameters that must be instalize for the robot to work*/
+            /*parameters that must be instalize for the robot to work*/
             ros::shutdown();
         }
         else {

@@ -8,35 +8,36 @@
 #include <ric_board/Motor.h>
 #include <robotican_hardware_interface/robot_base.h>
 #include <hardware_interface/joint_command_interface.h>
+#include <robotican_hardware_interface/dynamixel_pro_controller.h>
+#include <dynamixel_msgs/JointState.h>
 
 namespace robotican_hardware {
+
+    typedef std::pair<std::string, JointInfo_t> joint_pair;
+
     class LiziRobot : public RobotBase {
     private:
-        std::pair<std::string, JointInfo_t> _rearLeftMotorJointInfo;
-        std::pair<std::string, JointInfo_t> _rearRightMotorJointInfo;
-        std::pair<std::string, JointInfo_t> _panInfo;
-        std::pair<std::string, JointInfo_t> _tiltInfo;
+        hardware_interface::PositionJointInterface _posJointInterface;
 
-        ros::Publisher _rearLeftMotorCmd;
-        ros::Publisher _rearRightMotorCmd;
-        ros::Publisher _panCmd;
-        ros::Publisher _tiltCmd;
+        joint_pair _panInfo;
+        joint_pair _tiltInfo;
+        ros::Publisher _panPub;
+        ros::Publisher _tiltPub;
+        ros::Subscriber _panSub;
+        ros::Subscriber _tiltSub;
+        std::string _panSubTopic,
+                    _tiltSubTopic,
+                    _panPubTopic,
+                    _tiltPubTopic;
 
-        ros::Subscriber _rearLeftMotorState;
-        ros::Subscriber _rearRightMotorState;
-        ros::Subscriber _panState;
-        ros::Subscriber _tiltState;
+        bool _havePanTilt;
+        void preparePanTilt();
+        void buildConnections();
 
-        void rearRightMotorStateCallback(const ric_board::Motor::ConstPtr &msg);
-
-        void rearLeftMotorStateCallback(const ric_board::Motor::ConstPtr &msg);
-
-        void panCallback(const std_msgs::Float32::ConstPtr &msg);
-
-        void tiltCallback(const std_msgs::Float32::ConstPtr &msg);
+        void panCallBack(const dynamixel_msgs::JointState::ConstPtr &msg);
+        void tiltCallBack(const dynamixel_msgs::JointState::ConstPtr &msg);
 
     protected:
-        hardware_interface::PositionJointInterface _positionJointInterface;
 
     public:
         LiziRobot();

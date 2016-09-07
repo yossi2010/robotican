@@ -24,6 +24,7 @@
   <arg name="joystick" default='false'/>
   <arg name="joystick_dev" default='/dev/input/js0'/>
   <arg name="twist_mux" default='true'/>
+  <arg name="have_pan_tilt" default='false'/>
   
   
   <arg name="x" default="0.0"/>

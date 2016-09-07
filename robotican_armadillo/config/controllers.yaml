@@ -118,7 +118,7 @@ pan_controller:
     max_torque: 0.1
     motor:
         id: 3
-        init: 2080
+        init: 2075
         min: 1000
         max: 3100
 
