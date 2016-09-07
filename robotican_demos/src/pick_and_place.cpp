@@ -125,7 +125,7 @@ void look_down() {
 
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
     geometry_msgs::PoseStamped target_pose=object;
-    target_pose.pose.z+=0.1;
+    target_pose.pose.position.z+=0.1;
 /*
 
     tf::Vector3 v;
