@@ -57,6 +57,8 @@ bool OpenGripper();
 
 bool CloseGripper();
 
+bool AttachObj2Gripper();
+
 moveit::planning_interface::PlanningSceneInterface *planning_scene_interface_ptr;
 planning_scene::PlanningScenePtr *planning_scene_ptr;
 robot_state::RobotStatePtr *robot_state_ptr;
@@ -176,6 +178,21 @@ geometry_msgs::PoseStamped grasp_pose(geometry_msgs::PoseStamped object){
 }
 
 
+bool DeattactObjAndLiftArm() {
+    bool attached;
+    gripper_constraints(false);
+
+    if (plan_arm("pre_grasp2")) {
+                            group_ptr->detachObject("can");
+                            attached = false;
+                            ROS_INFO("Arm planning is done, moving arm up..");
+                            if (group_ptr->move()) {
+                                ROS_INFO("Arm is up");
+                                ROS_INFO("Done!");
+                            }
+                        }
+    return attached;
+}
 
 void pick_go_cb(std_msgs::Empty) {
     bool attached=false;
@@ -202,15 +219,7 @@ void pick_go_cb(std_msgs::Empty) {
         if ((fractionArm2ObjPath > 0.8) && (cartesianPathExecution(arm2ObjPath))) {
             if (CloseGripper()) {
                 ROS_INFO("Grasping is done");
-                gripper_constraints(true);
-                pub_can = false;
-                std::vector<std::string> touch_links;
-                touch_links.push_back("left_finger_link");
-                touch_links.push_back("right_finger_link");
-                touch_links.push_back("wrist_link");
-                touch_links.push_back("gripper_link");
-                group_ptr->attachObject("can", "gripper_link", touch_links);
-                attached = true;
+                attached = AttachObj2Gripper();
                 ros::Duration(8).sleep(); //wait for attach
                 ROS_INFO("Lifting object...");
 
@@ -229,33 +238,34 @@ void pick_go_cb(std_msgs::Empty) {
 
                 ROS_WARN("--------------- fraction: %.2f",fractionArmLiftPath*100);
                 if((fractionArmLiftPath > 0.8) && (cartesianPathExecution(armLiftPath))) {
-                    if(gripper_cmd(0.14, 0.0)) {
+                    if(OpenGripper()) {
                         ros::Duration(5).sleep(); //wait for deattach
                         ROS_INFO("Lifting arm up...");
-                        gripper_constraints(false);
+                        attached = DeattactObjAndLiftArm();
 
-                        if (plan_arm("pre_grasp2")) {
-                            group_ptr->detachObject("can");
-                            attached = false;
-                            ROS_INFO("Arm planning is done, moving arm up..");
-                            if (group_ptr->move()) {
-                                ROS_INFO("Arm is up");
-                                ROS_INFO("Done!");
-                            }
-                        }
                     }
-
-
-
                 }
             }
         }
-
-
+        
     }
     if (attached) group_ptr->detachObject("can");
     moving=false;
     pub_can=true;
+}
+
+bool AttachObj2Gripper() {
+    bool attached;
+    gripper_constraints(true);
+    pub_can = false;
+    std::vector<std::string> touch_links;
+    touch_links.push_back("left_finger_link");
+    touch_links.push_back("right_finger_link");
+    touch_links.push_back("wrist_link");
+    touch_links.push_back("gripper_link");
+    group_ptr->attachObject("can", "gripper_link", touch_links);
+    attached = true;
+    return attached;
 }
 
 bool CloseGripper() { return gripper_cmd(0.01, 0.4); }
