@@ -26,7 +26,7 @@
 
 typedef actionlib::SimpleActionClient<control_msgs::GripperCommandAction> GripperClient;
 
-
+double check_CartesianPath(geometry_msgs::PoseStamped object);
 void apply_floor_constraints();
 void gripper_constraints(bool state);
 void head_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr);
@@ -79,6 +79,25 @@ ros::Publisher pick_pub,head_object_pub,arm_object_pub;
 ros::Publisher pub_controller_command;
 
 
+double check_CartesianPath(geometry_msgs::PoseStamped object) {
+     geometry_msgs::PoseStamped pick_pose = pre_grasp_pose(object);
+       geometry_msgs::PoseStamped prePick=pick_pose;
+       prePick.pose.position.z += 0.1;
+
+     std::vector<geometry_msgs::Pose> wayPointsForArm2ObjPath;
+
+     wayPointsForArm2ObjPath.push_back(prePick.pose);
+     wayPointsForArm2ObjPath.push_back(pick_pose.pose);
+
+     moveit_msgs::RobotTrajectory arm2ObjPath;
+     double fractionArm2ObjPath = group_ptr->computeCartesianPath(wayPointsForArm2ObjPath,
+                                                                  0.005,  // eef_step
+                                                                  0.0,   // jump_threshold
+                                                                  arm2ObjPath,true);
+
+
+return fractionArm2ObjPath;
+}
 
 bool plan_arm(std::string pose){
     group_ptr->setNamedTarget(pose);
@@ -240,7 +259,7 @@ bool arm_plan_and_exec(geometry_msgs::PoseStamped target_pose1) {
     double dz[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
     double dy[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
     double dx[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-    double dY[]={0};//, 0.04, -0.04 ,0.18, -0.18};
+    double dY[]={0};//, 0.04, -0.04 ,0geometry_msgs::PoseStamped pose.18, -0.18};
     double z=target_pose1.pose.position.z;
     double x=target_pose1.pose.position.x;
     double y=target_pose1.pose.position.y;
@@ -383,7 +402,12 @@ void head_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>&
         head_object_pose.header.stamp=ros::Time::now();
 
         update_collision_objects(head_object_pose.pose);
+
         bool ik=checkIK(pre_grasp_pose(head_object_pose));
+
+        double fractionArm2ObjPath=check_CartesianPath(head_object_pose);
+        ROS_WARN("--------------- fraction: %.2f",fractionArm2ObjPath*100);
+
         head_object_pub.publish(head_object_pose);
     }
     catch (tf::TransformException &ex)

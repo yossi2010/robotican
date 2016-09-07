@@ -33,7 +33,7 @@
 <node name="pick_and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true"> 
   <param name="~object_name_arm_camera" value="sr300_object"/> 
  <param name="~object_name_head_camera" value="kinect2_object"/> 
-    <param name="~wrist_distance_from_object" value="0.07"/>
+    <param name="~wrist_distance_from_object" value="0.06"/>
    <param name="~MaxAccelerationScalingFactor" value="0.1"/>
     <param name="~MaxVelocityScalingFactor" value="0.1"/>
   </node>
