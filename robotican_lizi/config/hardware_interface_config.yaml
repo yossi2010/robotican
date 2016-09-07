@@ -1,151 +1,175 @@
 
 lizi: true
 
-CON_PORT: RiCBoard
-FILE_NAME: lizi_hatal_v2
-Battery/name: battery_monitor
-Battery/pubHz: 10
-Battery/voltageDividerRatio: 6
-URF0/publishHz: 20
-URF0/name: right_urf
-URF0/frameId: right_urf_link
-URF0/type: 10
-URF0/port: 3
-URF1/publishHz: 20
-URF1/name: rear_urf
-URF1/frameId: rear_urf_link
-URF1/type: 10
-URF1/port: 2
-URF2/publishHz: 20
-URF2/name: left_urf
-URF2/frameId: left_urf_link
-URF2/type: 10
-URF2/port: 1
-IMU/publishHz: 20
-IMU/name: imu
-IMU/frameId: RiC_Frame
-IMU/camp: 0
-IMU/orientation: 0
-IMU/fusionHz: 50
-IMU/fuseGyro: 0
-closeLoop0/publishHz: 50
-closeLoop0/name: front_left_motor
-closeLoop0/LPFAlpha: 0.7
-closeLoop0/LPFHz: 50
-closeLoop0/driverAddress: 999
-closeLoop0/channel: 4
-closeLoop0/port: 2
-closeLoop0/PIDHz: 1000
-closeLoop0/kP: 50.0
-closeLoop0/kI: 55.0
-closeLoop0/kD: 0
-closeLoop0/limit: 1.0
-closeLoop0/maxSpeed: 16.0
-closeLoop0/cpr: 4480
-closeLoop0/timeout: 1000
-closeLoop0/motorType: 1
-closeLoop0/encoderType: 1
-closeLoop0/direction: 1
-closeLoop0/directionE: -1
-closeLoop1/publishHz: 50
-closeLoop1/name: front_right_motor
-closeLoop1/LPFAlpha: 0.7
-closeLoop1/LPFHz: 50
-closeLoop1/driverAddress: 999
-closeLoop1/channel: 3
-closeLoop1/port: 1
-closeLoop1/PIDHz: 1000
-closeLoop1/kP: 50.0
-closeLoop1/kI: 55.0
-closeLoop1/kD: 0
-closeLoop1/limit: 1.0
-closeLoop1/maxSpeed: 16.0
-closeLoop1/cpr: 4480
-closeLoop1/timeout: 1000
-closeLoop1/motorType: 1
-closeLoop1/encoderType: 1
-closeLoop1/direction: -1
-closeLoop1/directionE: 1
-closeLoop2/publishHz: 50
-closeLoop2/name: rear_left_motor
-closeLoop2/LPFAlpha: 0.7
-closeLoop2/LPFHz: 50
-closeLoop2/driverAddress: 999
-closeLoop2/channel: 0
-closeLoop2/port: 3
-closeLoop2/PIDHz: 1000
-closeLoop2/kP: 50.0
-closeLoop2/kI: 55.0
-closeLoop2/kD: 0
-closeLoop2/limit: 1.0
-closeLoop2/maxSpeed: 16.0
-closeLoop2/cpr: 4480
-closeLoop2/timeout: 1000
-closeLoop2/motorType: 1
-closeLoop2/encoderType: 1
-closeLoop2/direction: 1
-closeLoop2/directionE: -1
-closeLoop3/publishHz: 50
-closeLoop3/name: rear_right_motor
-closeLoop3/LPFAlpha: 0.7
-closeLoop3/LPFHz: 50
-closeLoop3/driverAddress: 999
-closeLoop3/channel: 1
-closeLoop3/port: 4
-closeLoop3/PIDHz: 1000
-closeLoop3/kP: 50.0
-closeLoop3/kI: 55.0
-closeLoop3/kD: 0
-closeLoop3/limit: 1.0
-closeLoop3/maxSpeed: 16.0
-closeLoop3/cpr: 4480
-closeLoop3/timeout: 1000
-closeLoop3/motorType: 1
-closeLoop3/encoderType: 1
-closeLoop3/direction: -1
-closeLoop3/directionE: 1
-#~ Diff/publishHz: 50
-#~ Diff/name: diff_driver
-#~ Diff/rWheel: 0.065
-#~ Diff/width: 0.255
-#~ Diff/baseLink: base_link
-#~ Diff/odom: odom_link
-#~ Diff/slip: 0.5
-#~ Diff/maxAng: 16.0
-#~ Diff/maxLin: 16.0
-#~ Diff/motorFL: 0
-#~ Diff/motorFR: 1
-#~ Diff/motorBL: 2
-#~ Diff/motorBR: 3
-IMU_INIT: 1
-GPS_INIT: 0
-PPM_INIT: 0
-BAT_INIT: 1
-DIFF_INIT: 0
-DIFF_INIT_OP: 0
-DIFF_CLOSE_FOUR: 0
-closeLoopNum: 4
-switchNum: 0
-servoNum: 0
-relayNum: 0
-URFNum: 3
-openLoopNum: 0
-emergencySwitchNum: 0
+# RiCBoard  
+
+pan_topic_pub: 'pan_controller/command'
+pan_topic_sub: 'pan_controller/state'
+pan_joint: 'head_pan_joint'
+
+tilt_topic_pub: 'tilt_controller/command'
+tilt_topic_sub: 'tilt_controller/state'
+tilt_joint: 'head_tilt_joint'
+                              
+battery_pin: 17
+battery_voltage_divider_ratio: 46.85
+battery_max: 24.3
+battery_min: 21.0
+ 
+ultrasonic_size: 3
+
+ultrasonic0_pin: 14
+ultrasonic0_frame_id: 'left_urf_link'
+ultrasonic0_topic_name: 'URF/left'
+ultrasonic0_sonar_name:  'Max_Sonar_LV'
+
+ultrasonic1_pin: 15
+ultrasonic1_frame_id: 'right_urf_link'
+ultrasonic1_topic_name: 'URF/right'
+ultrasonic1_sonar_name:  'Max_Sonar_LV'
+
+ultrasonic2_pin: 16
+ultrasonic2_frame_id: 'rear_urf_link'
+ultrasonic2_topic_name: 'URF/rear'
+ultrasonic2_sonar_name:  'Max_Sonar_LV'
 
 
-left_motor_pub: 'front_left_motor/command'
-left_motor_sub: 'front_left_motor/feedback'
-right_motor_pub: 'front_right_motor/command'
-right_motor_sub: 'front_right_motor/feedback'
-left_motor_joint_name: 'fl_wheel_joint'
-right_motor_joint_name: 'fr_wheel_joint'
+close_motor_size: 2
 
-rear_left_motor_pub: 'rear_left_motor/command'
-rear_left_motor_sub: 'rear_left_motor/feedback'
-rear_right_motor_pub: 'rear_right_motor/command'
-rear_right_motor_sub: 'rear_right_motor/feedback'
-rear_left_motor_joint_name: 'rl_wheel_joint'
-rear_right_motor_joint_name: 'rr_wheel_joint'
+motor0_motor_type: 0
+motor0_encoder_pin_A: 27
+motor0_encoder_pin_B: 28
+motor0_lpf_hz_speed: 80
+motor0_lpf_hz_input: 1000
+motor0_lpf_alpha_speed: 0.27
+motor0_lpf_alpha_input: 1.0
+motor0_pid_hz: 1000
+motor0_ppr: 1675
+motor0_timeout: 0
+motor0_motor_direction: 1
+motor0_encoder_direction: -1
+motor0_kp: 300.0
+motor0_ki: 10.0
+motor0_kd: 0.0
+motor0_kff: 50.0
+motor0_max_set_point_speed: 9.0
+motor0_min_set_point_speed: -9.0
+motor0_max_set_point_position: 0.0
+motor0_min_set_point_position: 0.0
+motor0_limit: 0.2
+motor0_stop_limit_max: 10.0
+motor0_stop_limit_min: -10.0
+motor0_motor_address: 0
+motor0_motor_emergency_pin: 12
+motor0_motor_emergency_pin_type: 1
+motor0_joint: ['left_wheel_joint']
+motor0_mode: 0
+motor0_bais_min: -1
+motor0_bais_max: 1
 
 
+motor1_motor_type: 0
 
+motor1_encoder_pin_A: 29
+motor1_encoder_pin_B: 30
+motor1_encoder_direction: 1
+motor1_lpf_hz_speed: 80
+motor1_lpf_hz_input: 1000
+motor1_lpf_alpha_speed: 0.27
+motor1_lpf_alpha_input: 1.0
+motor1_pid_hz: 1000
+motor1_ppr: 1675
+motor1_timeout: 0
+motor1_motor_direction: -1
+motor1_kp: 300.0
+motor1_ki: 10.0
+motor1_kd: 0.0
+motor1_kff: 50.0
+motor1_max_set_point_speed: 9.0
+motor1_min_set_point_speed: -9.0
+motor1_max_set_point_position: 0.0
+motor1_min_set_point_position: 0.0
+motor1_limit: 0.2
+motor1_stop_limit_max: 10.0
+motor1_stop_limit_min: -10.0
+motor1_motor_address: 1
+motor1_motor_emergency_pin: 12
+motor1_motor_emergency_pin_type: 1
+motor1_joint: ['right_wheel_joint']
+motor1_mode: 0
+motor1_bais_min: -1
+motor1_bais_max: 1
+
+
+# open_motor_size: 2
+# motor0_motor_address: 0
+# motor0_motor_emergency_pin: 12
+# motor0_motor_emergency_pin_type: 1
+# motor0_encoder_pin_a: 27
+# motor0_encoder_pin_b: 28
+# motor0_lpf_hz_speed: 80
+# motor0_lpf_hz_input: 1000
+# motor0_ppr: 1675
+# motor0_motor_direction: 1
+# motor0_encoder_direction: -1
+# motor0_lpf_alpha_speed: 0.27
+# motor0_lpf_alpha_input: 1.0
+# motor0_max_set_point_speed: 9.0
+# motor0_min_set_point_speed: -9.0
+# motor0_joint: 'left_wheel_joint'
+
+
+# motor1_encoder_pin_a: 29
+# motor1_encoder_pin_b: 30
+# motor1_encoder_direction: 1
+# motor1_lpf_hz_speed: 80
+# motor1_lpf_hz_input: 1000
+# motor1_lpf_alpha_speed: 0.27
+# motor1_lpf_alpha_input: 1.0
+# motor1_ppr: 1675
+# motor1_motor_direction: -1
+# motor1_max_set_point_speed: 8.0
+# motor1_min_set_point_speed: -8.0
+# motor1_motor_address: 1
+# motor1_motor_emergency_pin: 12
+# motor1_motor_emergency_pin_type: 1
+# motor1_joint: 'right_wheel_joint'
+
+
+position_motor_size: 1 
+positionMotor0_motor_type: 1
+positionMotor0_a: 0.00064833
+positionMotor0_b: -0.026
+positionMotor0_lpf_hz_speed: 63
+positionMotor0_lpf_hz_input: 50
+positionMotor0_pid_hz: 1000
+positionMotor0_ppr: 2503
+positionMotor0_timeout: 0
+positionMotor0_motor_direction: -1
+positionMotor0_encoder_direction: 1
+positionMotor0_lpf_alpha_speed: 0.21
+positionMotor0_lpf_alpha_input: 0.05
+positionMotor0_kp: 3000.0
+positionMotor0_ki: 250.0
+positionMotor0_kd: 0.0
+positionMotor0_kff: 0.0
+positionMotor0_max_set_point_speed: 0.06
+positionMotor0_min_set_point_speed: -0.06
+positionMotor0_max_set_point_position: 0.37
+positionMotor0_min_set_point_position: 0.05
+positionMotor0_limit: 0.3
+positionMotor0_motor_address: 20
+positionMotor0_motor_emergency_pin: 12
+positionMotor0_motor_emergency_pin_type: 1
+positionMotor0_joint: 'torso_joint'
+positionMotor0_mode: 1
+positionMotor0_read_pin: 21
+positionMotor0_tolerance: 0.01
+positionMotor0_stop_limit_max: 0.38
+positionMotor0_stop_limit_min: 0.04
+
+gps_baudrate: 9600
+gps_topic_name: 'gps'
+gps_frame_id: 'base_link'
+
+#RiCBoard

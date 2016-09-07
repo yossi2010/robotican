@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 
 
     for (int i=0;i<vals.size();i++) {
-vals[i]=0;
+        vals[i]=0;
     }
 
 
@@ -60,13 +60,13 @@ vals[i]=0;
     goal.goal.trajectory.points.push_back(jtp);
 
     for (int i=0;i<vals.size();i++) {
-vals[i]=-0.2;
+        vals[i]=-0.2;
     }
     jtp.time_from_start = ros::Duration(10.0);
     jtp.positions=vals;
- goal.goal.trajectory.points.push_back(jtp);
+    goal.goal.trajectory.points.push_back(jtp);
 
-     ac.sendGoal(goal.goal);
+    ac.sendGoal(goal.goal);
 
 
 

@@ -18,19 +18,24 @@ namespace robotican_hardware {
     class LiziRobot : public RobotBase {
     private:
         hardware_interface::PositionJointInterface _posJointInterface;
-        hardware_interface::JointStateInterface _jointStateInterface;
-        hardware_interface::VelocityJointInterface _velocityJointInterface;
-        dynamixel_pro_controller::DynamixelProController* _dynamixelProController;
-
-        joint_pair _rearLeftMotorJointInfo;
-        joint_pair _rearRightMotorJointInfo;
-        joint_pair _frontLeftMotorJointInfo;
-        joint_pair _frontRightMotorJointInfo;
 
         joint_pair _panInfo;
         joint_pair _tiltInfo;
+        ros::Publisher _panPub;
+        ros::Publisher _tiltPub;
+        ros::Subscriber _panSub;
+        ros::Subscriber _tiltSub;
+        std::string _panSubTopic,
+                    _tiltSubTopic,
+                    _panPubTopic,
+                    _tiltPubTopic;
 
         bool _havePanTilt;
+        void preparePanTilt();
+        void buildConnections();
+
+        void panCallBack(const dynamixel_msgs::JointState::ConstPtr &msg);
+        void tiltCallBack(const dynamixel_msgs::JointState::ConstPtr &msg);
 
     protected:
 

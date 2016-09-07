@@ -4,14 +4,15 @@ mobile_base_controller:
   left_wheel: 'left_wheel_joint'
   right_wheel: 'right_wheel_joint'
   publish_rate: 50.0               # default: 50
-  pose_covariance_diagonal : [0.01, 0.01, 1000000.0, 1000000.0, 1000000.0, 1000.0]
-  twist_covariance_diagonal: [0.01, 0.01, 1000000.0, 1000000.0, 1000000.0, 1000.0]
+  pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
+  twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
 
   # Wheel separation and diameter. These are both optional.
   # diff_drive_controller will attempt to read either one or both from the
   # URDF if not specified as a parameter
   wheel_separation : 0.3284
   wheel_radius : 0.095
+  slip_factor: 1.0
 
   # Wheel separation and radius multipliers
   wheel_separation_multiplier: 1.0 # default: 1.0
@@ -117,7 +118,7 @@ pan_controller:
     max_torque: 0.1
     motor:
         id: 3
-        init: 2080
+        init: 2075
         min: 1000
         max: 3100
 

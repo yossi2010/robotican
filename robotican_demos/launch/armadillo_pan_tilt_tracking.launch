@@ -4,8 +4,9 @@
    <arg name="gazebo" default="false"/>
   
   
-   <include file="$(find robotican_demos)/launch/armadillo_find_objects.launch"> 
+   <include file="$(find robotican_demos)/launch/find_objects.launch"> 
      <arg name="gazebo" value="$(arg gazebo)"/>
+     <arg name="armadillo" value="true"/>
     </include>
   
   <node name="pan_tilt_object_tracking_node" pkg="robotican_common" type="pan_tilt_object_tracking_node" output="screen"/>

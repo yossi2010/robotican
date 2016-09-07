@@ -257,15 +257,32 @@ namespace robotican_hardware {
         if(haveImu) {
             int fusionHz;
             bool enableGyro, fuseCompass;
+            std::vector<double> imuLinearAccFix, imuAngularVelocityFix,
+                                imuMagnetometerFix, imuRotationFix,
+                                imuRotationOffset;
             std::string frameId;
 
             if(_nodeHandle.getParam("imu_fusion_hz", fusionHz)
                && _nodeHandle.getParam("imu_enable_gyro", enableGyro)
                && _nodeHandle.getParam("imu_enable_fuse_compass", fuseCompass)
-               && _nodeHandle.getParam("imu_frame_id", frameId)) {
-                Device *imu = new Imu(_idGen++, &_transportLayer, (uint16_t) fusionHz, frameId, enableGyro, fuseCompass);
-                _devices.push_back(imu);
-                imu->buildDevice();
+               && _nodeHandle.getParam("imu_frame_id", frameId)
+               && _nodeHandle.getParam("imu_linear_acc_fix", imuLinearAccFix)
+               && _nodeHandle.getParam("imu_angular_velocity_fix", imuAngularVelocityFix)
+               && _nodeHandle.getParam("imu_magnetometer_fix", imuMagnetometerFix)
+               && _nodeHandle.getParam("imu_rotation_fix", imuRotationFix)
+               && _nodeHandle.getParam("imu_rotation_offset", imuRotationOffset)) {
+                if(imuLinearAccFix.size() == 9
+                   && imuAngularVelocityFix.size() == 9
+                   && imuMagnetometerFix.size() == 9
+                   && imuRotationFix.size() == 9
+                   && imuRotationOffset.size() == 3) {
+                    Device *imu = new Imu(_idGen++, &_transportLayer, (uint16_t) fusionHz, frameId, enableGyro,
+                                          fuseCompass, imuLinearAccFix, imuAngularVelocityFix,
+                                          imuMagnetometerFix,
+                                          imuRotationFix, imuRotationOffset);
+                    _devices.push_back(imu);
+                    imu->buildDevice();
+                }
             }
         }
         bool haveGps;
