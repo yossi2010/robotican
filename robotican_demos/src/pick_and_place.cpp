@@ -149,9 +149,9 @@ void pick_go_cb(std_msgs::Empty) {
 
         moveit_msgs::RobotTrajectory arm2ObjPath;
         double fractionArm2ObjPath = group_ptr->computeCartesianPath(wayPointsForArm2ObjPath,
-                                                                     0.02,  // eef_step
+                                                                     0.005,  // eef_step
                                                                      0.0,   // jump_threshold
-                                                                     arm2ObjPath);
+                                                                     arm2ObjPath,true);
 
 ROS_WARN("--------------- fraction: %.2f",fractionArm2ObjPath*100);
         if ((fractionArm2ObjPath > 0.8) && (cartesianPathExecution(arm2ObjPath))) {
@@ -178,9 +178,9 @@ ROS_WARN("--------------- fraction: %.2f",fractionArm2ObjPath*100);
                 wayPointsForArmLiftPath.push_back(pick_pose.pose);
                 moveit_msgs::RobotTrajectory armLiftPath;
                 double fractionArmLiftPath = group_ptr->computeCartesianPath(wayPointsForArmLiftPath,
-                                                                             0.02,  // eef_step
+                                                                             0.005,  // eef_step
                                                                              0.0,   // jump_threshold
-                                                                             armLiftPath);
+                                                                             armLiftPath,true);
 
 ROS_WARN("--------------- fraction: %.2f",fractionArmLiftPath*100);
                 if((fractionArmLiftPath > 0.8) && (cartesianPathExecution(armLiftPath))) {
