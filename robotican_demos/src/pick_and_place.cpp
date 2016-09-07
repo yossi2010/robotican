@@ -125,7 +125,8 @@ void look_down() {
 
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
     geometry_msgs::PoseStamped target_pose=object;
-
+    target_pose.z+=0.1;
+/*
 
     tf::Vector3 v;
     v.setX(object.pose.position.x);
@@ -143,7 +144,7 @@ geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
     target_pose.pose.position.z +=0;
     target_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw );
     pick_pub.publish(target_pose);
-
+*/
     return target_pose;
 
 }
