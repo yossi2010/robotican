@@ -447,8 +447,8 @@ void gripper_constraints(bool apply) {
         ocm.orientation.y = 0;
         ocm.orientation.z = 0;
         ocm.orientation.w = 1;
-        ocm.absolute_x_axis_tolerance = 5.0*M_PI/180.0;
-        ocm.absolute_y_axis_tolerance = 5.0*M_PI/180.0;
+        ocm.absolute_x_axis_tolerance = 10.0*M_PI/180.0;
+        ocm.absolute_y_axis_tolerance = 10.0*M_PI/180.0;
         ocm.absolute_z_axis_tolerance = M_PI;
         ocm.weight = 1.0;
         moveit_msgs::Constraints constr;
