@@ -511,8 +511,8 @@ int main(int argc, char **argv) {
     std::string arm_topic="/detected_objects/"+object_name_arm_camera;
 
 
-    pn.param<double>("MaxAccelerationScalingFactor", MaxAccelerationScalingFactor, 0.01);
-    pn.param<double>("MaxVelocityScalingFactor", MaxVelocityScalingFactor, 0.05);
+    pn.param<double>("MaxAccelerationScalingFactor", MaxAccelerationScalingFactor, 0.1);
+    pn.param<double>("MaxVelocityScalingFactor", MaxVelocityScalingFactor, 0.1);
 
     ROS_INFO("Waiting for the moveit action server to come up");
     moveit::planning_interface::MoveGroup group("arm");
