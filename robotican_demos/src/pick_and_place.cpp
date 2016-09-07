@@ -36,7 +36,7 @@ bool checkIK(geometry_msgs::PoseStamped pose);
 void go(tf::Transform  dest);
 bool gripper_cmd(double gap,double effort);
 bool arm_cmd(geometry_msgs::PoseStamped target_pose1);
-bool arm_plan_and_exec(geometry_msgs::PoseStamped target_pose1);
+
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object);
 geometry_msgs::PoseStamped grasp_pose(geometry_msgs::PoseStamped object);
 bool plan_arm(std::string pose);
@@ -50,11 +50,12 @@ bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
                                const robot_model::JointModelGroup *joint_model_group,
                                const double *ik_solution);
 
-void addStaticObjects(const moveit::planning_interface::PlanningSceneInterface &planning_scene_interface);
-
-void setStartConstraints(moveit::planning_interface::MoveGroup &group);
 
 bool cartesianPathExecution(moveit_msgs::RobotTrajectory &trajectory);
+
+bool OpenGripper();
+
+bool CloseGripper();
 
 moveit::planning_interface::PlanningSceneInterface *planning_scene_interface_ptr;
 planning_scene::PlanningScenePtr *planning_scene_ptr;
@@ -82,20 +83,20 @@ ros::Publisher pub_controller_command;
 
 double check_CartesianPath(geometry_msgs::PoseStamped object) {
     geometry_msgs::PoseStamped pre_pick_pose= pre_grasp_pose(object);
-     geometry_msgs::PoseStamped pick_pose = grasp_pose(object);
-     std::vector<geometry_msgs::Pose> wayPointsForArm2ObjPath;
+    geometry_msgs::PoseStamped pick_pose = grasp_pose(object);
+    std::vector<geometry_msgs::Pose> wayPointsForArm2ObjPath;
 
-     wayPointsForArm2ObjPath.push_back(pre_pick_pose.pose);
-     wayPointsForArm2ObjPath.push_back(pick_pose.pose);
+    wayPointsForArm2ObjPath.push_back(pre_pick_pose.pose);
+    wayPointsForArm2ObjPath.push_back(pick_pose.pose);
 
-     moveit_msgs::RobotTrajectory arm2ObjPath;
-     double fractionArm2ObjPath = group_ptr->computeCartesianPath(wayPointsForArm2ObjPath,
-                                                                  0.005,  // eef_step
-                                                                  0.0,   // jump_threshold
-                                                                  arm2ObjPath,true);
+    moveit_msgs::RobotTrajectory arm2ObjPath;
+    double fractionArm2ObjPath = group_ptr->computeCartesianPath(wayPointsForArm2ObjPath,
+                                                                 0.005,  // eef_step
+                                                                 0.0,   // jump_threshold
+                                                                 arm2ObjPath,true);
 
 
-return fractionArm2ObjPath;
+    return fractionArm2ObjPath;
 }
 
 bool plan_arm(std::string pose){
@@ -180,11 +181,11 @@ void pick_go_cb(std_msgs::Empty) {
     bool attached=false;
     if (!moving) moving=true;
     ROS_INFO("Openning gripper...");
-    if(gripper_cmd(0.14,0.0)) {
+    if(OpenGripper()) {
         ROS_INFO("Gripper is oppend, planning for pre-grasping..");
         ros::Duration(2).sleep();//wait for re-detection
         geometry_msgs::PoseStamped pre_pick_pose= pre_grasp_pose(head_object_pose);
-         geometry_msgs::PoseStamped pick_pose = grasp_pose(head_object_pose);
+        geometry_msgs::PoseStamped pick_pose = grasp_pose(head_object_pose);
 
 
         std::vector<geometry_msgs::Pose> wayPointsForArm2ObjPath;
@@ -197,9 +198,9 @@ void pick_go_cb(std_msgs::Empty) {
                                                                      0.0,   // jump_threshold
                                                                      arm2ObjPath,true);
 
-ROS_WARN("--------------- fraction: %.2f",fractionArm2ObjPath*100);
+        ROS_WARN("--------------- fraction: %.2f",fractionArm2ObjPath*100);
         if ((fractionArm2ObjPath > 0.8) && (cartesianPathExecution(arm2ObjPath))) {
-            if (gripper_cmd(0.01, 0.4)) {
+            if (CloseGripper()) {
                 ROS_INFO("Grasping is done");
                 gripper_constraints(true);
                 pub_can = false;
@@ -226,7 +227,7 @@ ROS_WARN("--------------- fraction: %.2f",fractionArm2ObjPath*100);
                                                                              0.0,   // jump_threshold
                                                                              armLiftPath,true);
 
-ROS_WARN("--------------- fraction: %.2f",fractionArmLiftPath*100);
+                ROS_WARN("--------------- fraction: %.2f",fractionArmLiftPath*100);
                 if((fractionArmLiftPath > 0.8) && (cartesianPathExecution(armLiftPath))) {
                     if(gripper_cmd(0.14, 0.0)) {
                         ros::Duration(5).sleep(); //wait for deattach
@@ -257,6 +258,10 @@ ROS_WARN("--------------- fraction: %.2f",fractionArmLiftPath*100);
     pub_can=true;
 }
 
+bool CloseGripper() { return gripper_cmd(0.01, 0.4); }
+
+bool OpenGripper() { return gripper_cmd(0.14, 0.0); }
+
 bool cartesianPathExecution(moveit_msgs::RobotTrajectory &trajectory) {
     group_ptr->setStartStateToCurrentState();
 
@@ -271,59 +276,6 @@ bool cartesianPathExecution(moveit_msgs::RobotTrajectory &trajectory) {
     moveit::planning_interface::MoveGroup::Plan cartesianPathPlan;
     cartesianPathPlan.trajectory_ = trajectory;
     return group_ptr->execute(cartesianPathPlan);
-}
-
-bool arm_plan_and_exec(geometry_msgs::PoseStamped target_pose1) {
-
-
-    group_ptr->setStartStateToCurrentState();
-
-    if (!have_goal) have_goal=true;
-
-    moveit::planning_interface::MoveGroup::Plan my_plan;
-    double dz[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-    double dy[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-    double dx[]={0};//{0, 0.01, -0.01 ,0.02, -0.02,0.03, -0.03};
-    double dY[]={0};//, 0.04, -0.04 ,0geometry_msgs::PoseStamped pose.18, -0.18};
-    double z=target_pose1.pose.position.z;
-    double x=target_pose1.pose.position.x;
-    double y=target_pose1.pose.position.y;
-    tf::Quaternion q( target_pose1.pose.orientation.x,  target_pose1.pose.orientation.y,  target_pose1.pose.orientation.z, target_pose1.pose.orientation.w);
-    double roll, pitch, yaw;
-    tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
-    //ROS_INFO("%f",yaw*180/M_PI);
-
-    for (int n=0;n<sizeof(dx)/sizeof(double);n++) {
-        for (int m=0;m<sizeof(dy)/sizeof(double);m++) {
-
-            for (int i=0;i<sizeof(dz)/sizeof(double);i++) {
-                for (int j=0;j<sizeof(dY)/sizeof(double);j++) {
-                    target_pose1.pose.position.z=z+dz[i];
-                    target_pose1.pose.position.x=x+dx[n];
-                    target_pose1.pose.position.y=y+dy[m];
-
-                    target_pose1.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,yaw+dY[j] );
-
-
-                    if (checkIK(target_pose1)) {
-                        pick_pub.publish(target_pose1);
-
-
-                        group_ptr->setPoseTarget(target_pose1);
-
-                        bool success = group_ptr->plan(my_plan);
-
-                        ROS_INFO("Moveit plan %s",success?"SUCCESS":"FAILED");
-                        if (success && group_ptr->execute(my_plan)) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    ROS_INFO("FAILED to find plan");
-    return false;
 }
 
 bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
@@ -658,8 +610,6 @@ int main(int argc, char **argv) {
     can_collision_object.operation = can_collision_object.ADD;
     col_objects.push_back(can_collision_object);
 
-    // addStaticObjects(planning_scene_interface);
-    //setStartConstraints(group);
     group.setWorkspace(0.0,-2.0,0.05,2.0,2.0,2.0);
 
     apply_floor_constraints();
@@ -669,17 +619,6 @@ int main(int argc, char **argv) {
 
     ROS_INFO("Looking down...");
     look_down();
-    //    ros::Duration(5.0);
-    //    if (plan_arm("pre_grasp2")) {
-    //        ROS_INFO("Arm planning is done, moving arm up..");
-    //        if (group_ptr->move()) {
-    //            ROS_INFO("Arm is up");
-    //        }
-    //    }
-
-
-
-
     ready=true;
     ROS_INFO("Ready!");
 
@@ -687,56 +626,4 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-void setStartConstraints(moveit::planning_interface::MoveGroup &group) {
-    moveit_msgs::Constraints constraints;
-    moveit_msgs::PositionConstraint positionConstraint;
-    positionConstraint.header.frame_id = "base_footprint";
-    positionConstraint.link_name = "gripper_link";
-    positionConstraint.weight = 1.0;
-
-    shape_msgs::SolidPrimitive constraintsPrimitive;
-    constraintsPrimitive.type = shape_msgs::SolidPrimitive::BOX;
-    constraintsPrimitive.dimensions.resize(3);
-    constraintsPrimitive.dimensions[0] = 1.2;
-    constraintsPrimitive.dimensions[1] = 1.2;
-    constraintsPrimitive.dimensions[2] = 1.2;
-    positionConstraint.constraint_region.primitives.push_back(constraintsPrimitive);
-
-    geometry_msgs::Pose primitivePos;
-    primitivePos.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, 0.0);
-    primitivePos.position.x = 0;
-    primitivePos.position.y = 0;
-    primitivePos.position.z = 0.5;
-    positionConstraint.constraint_region.primitive_poses.push_back(primitivePos);
-
-    constraints.position_constraints.push_back(positionConstraint);
-    group.setPathConstraints(constraints);
-}
-
-void addStaticObjects(const moveit::planning_interface::PlanningSceneInterface &planning_scene_interface) {
-    moveit_msgs::CollisionObject floorObject;
-    floorObject.header.frame_id = "base_footprint";
-    floorObject.id = "floor";
-
-    shape_msgs::SolidPrimitive floorPrimitive;
-    floorPrimitive.type = shape_msgs::SolidPrimitive::BOX;
-    floorPrimitive.dimensions.resize(3);
-    floorPrimitive.dimensions[0] = 1.5;
-    floorPrimitive.dimensions[1] = 1.5;
-    floorPrimitive.dimensions[2] = 0.02;
-    floorObject.primitives.push_back(floorPrimitive);
-
-    geometry_msgs::Pose floorPos;
-    floorPos.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
-    floorPos.position.x = 0;
-    floorPos.position.y = 0;
-    floorPos.position.z = -0.015;
-    floorObject.primitive_poses.push_back(floorPos);
-
-    floorObject.operation = moveit_msgs::CollisionObject::ADD;
-
-    staticObjects.push_back(floorObject);
-
-    planning_scene_interface.addCollisionObjects(staticObjects);
-}
 
