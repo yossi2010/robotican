@@ -174,7 +174,7 @@ void pick_go_cb(std_msgs::Empty) {
                 wayPointsForArmLiftPath.push_back(pick_pose.pose);
                 pick_pose.pose.position.y += 0.15;
                 wayPointsForArmLiftPath.push_back(pick_pose.pose);
-                pick_pose.pose.position.z -= 0.07;
+                pick_pose.pose.position.z -= 0.09;
                 wayPointsForArmLiftPath.push_back(pick_pose.pose);
                 moveit_msgs::RobotTrajectory armLiftPath;
                 double fractionArmLiftPath = group_ptr->computeCartesianPath(wayPointsForArmLiftPath,
@@ -188,11 +188,6 @@ void pick_go_cb(std_msgs::Empty) {
                         ros::Duration(5).sleep(); //wait for deattach
                         ROS_INFO("Lifting arm up...");
                         gripper_constraints(false);
-
-
-                        group_ptr->detachObject("can");
-                        attached = false;
-
 
                         if (plan_arm("pre_grasp2")) {
                             group_ptr->detachObject("can");
@@ -530,8 +525,8 @@ int main(int argc, char **argv) {
     group.setMaxVelocityScalingFactor(MaxVelocityScalingFactor);
     group.setMaxAccelerationScalingFactor(MaxAccelerationScalingFactor);
     // group.setPlannerId("PRMkConfigDefault");
-    group.setPlanningTime(2.0);
-    group.setNumPlanningAttempts(200);
+    group.setPlanningTime(5.0);
+    group.setNumPlanningAttempts(300);
     group.setPlannerId("RRTConnectkConfigDefault");
     group.setPoseReferenceFrame("base_footprint");
 
