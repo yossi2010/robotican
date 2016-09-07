@@ -135,7 +135,7 @@ geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
     pick_yaw=atan2(v.y(),v.x());
 
 
-    float away=0.08/sqrt(v.x()*v.x()+v.y()*v.y());
+    float away=0.15/sqrt(v.x()*v.x()+v.y()*v.y());
     tf::Vector3 dest=v*(1-away);
 
     target_pose.pose.position.x = dest.x();
