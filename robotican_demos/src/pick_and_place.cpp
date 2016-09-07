@@ -168,10 +168,10 @@ void pick_go_cb(std_msgs::Empty) {
                     ROS_INFO("Lifting object...");
 
                     std::vector<geometry_msgs::Pose> wayPointsForArmLiftPath;
-                    pick_pose.pose.position.z = pick_pose.pose.position.z + 0.001;
+                    pick_pose.pose.position.z = pick_pose.pose.position.z + 0.10;
+                    pick_pose.pose.position.y = pick_pose.pose.position.y + 0.15;
                     wayPointsForArmLiftPath.push_back(pick_pose.pose);
                     pick_pose.pose.position.z = pick_pose.pose.position.z - 0.07;
-                    pick_pose.pose.position.y = pick_pose.pose.position.y + 0.15;
                     wayPointsForArmLiftPath.push_back(pick_pose.pose);
                     moveit_msgs::RobotTrajectory armLiftPath;
                     double fractionArmLiftPath = group_ptr->computeCartesianPath(wayPointsForArmLiftPath,
