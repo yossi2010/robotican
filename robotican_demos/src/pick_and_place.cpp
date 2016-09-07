@@ -154,7 +154,7 @@ void pick_go_cb(std_msgs::Empty) {
                                                                      arm2ObjPath);
 
 
-        if ((fractionArm2ObjPath > 0.9) && (cartesianPathExecution(arm2ObjPath))) {
+        if ((fractionArm2ObjPath > 0.8) && (cartesianPathExecution(arm2ObjPath))) {
             if (gripper_cmd(0.01, 0.4)) {
                 ROS_INFO("Grasping is done");
                 gripper_constraints(true);
@@ -183,7 +183,7 @@ void pick_go_cb(std_msgs::Empty) {
                                                                              armLiftPath);
 
 
-                if((fractionArmLiftPath > 0.9) && (cartesianPathExecution(armLiftPath))) {
+                if((fractionArmLiftPath > 0.8) && (cartesianPathExecution(armLiftPath))) {
                     if(gripper_cmd(0.14, 0.0)) {
                         ros::Duration(5).sleep(); //wait for deattach
                         ROS_INFO("Lifting arm up...");
@@ -193,29 +193,19 @@ void pick_go_cb(std_msgs::Empty) {
                         group_ptr->detachObject("can");
                         attached = false;
 
-                        std::vector<geometry_msgs::Pose> wayPointsForArmUp;
-                        pick_pose.pose.position.z += 0.1;
-                        wayPointsForArmUp.push_back(pick_pose.pose);
 
-                        pick_pose.pose.position.y -= 0.15;
-                        wayPointsForArmUp.push_back(pick_pose.pose);
-
-                        moveit_msgs::RobotTrajectory armLiftUp;
-                        double fractionArmUp = group_ptr->computeCartesianPath(wayPointsForArmUp,
-                                                                                     0.01,  // eef_step
-                                                                                     0.0,   // jump_threshold
-                                                                                     armLiftUp);
-
-
-                        if((fractionArmUp > 0.9) && (cartesianPathExecution(armLiftUp))) {
+                        if (plan_arm("pre_grasp2")) {
+                            group_ptr->detachObject("can");
+                            attached = false;
                             ROS_INFO("Arm planning is done, moving arm up..");
                             if (group_ptr->move()) {
                                 ROS_INFO("Arm is up");
                                 ROS_INFO("Done!");
                             }
                         }
-
                     }
+
+
 
                 }
             }
