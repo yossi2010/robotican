@@ -16,7 +16,7 @@ namespace robotican_hardware {
             preparePanTilt();
             buildConnections();
         }
-    }
+    } //de
 
     LiziRobot::~LiziRobot() {
 
