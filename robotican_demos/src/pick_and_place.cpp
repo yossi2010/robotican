@@ -247,7 +247,7 @@ void pick_go_cb(std_msgs::Empty) {
                 }
             }
         }
-        
+
     }
     if (attached) group_ptr->detachObject("can");
     moving=false;
