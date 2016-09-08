@@ -23,6 +23,7 @@ using namespace cv;
 
 bool debug_vision=false;
 
+void update_cb(const std_msgs::BoolConstPtr& input);
 bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud,Point3d *obj,std::string frame);
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input);
 void dynamicParamCallback(robotican_common::FindObjectDynParamConfig &config, uint32_t level);
@@ -60,7 +61,7 @@ int morph_size=0;
 
 int inv_H=1;
 
-void updtae_cb(const std_msgs::BoolConstPtr& input) {
+void update_cb(const std_msgs::BoolConstPtr& input) {
     update=input->data;
 }
 
