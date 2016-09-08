@@ -639,7 +639,7 @@ namespace robotican_hardware {
                                     jointStateInterface->registerHandle(jointStateHandle);
 
                                     hardware_interface::JointHandle JointHandle(jointStateInterface->getHandle((*jointName)),
-                                                                                &jointInfo->cmd);
+                                                                                    &jointInfo->cmd);
                                     jointVelocityInterface->registerHandle(JointHandle);
                                 }
 
