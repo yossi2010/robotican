@@ -3,6 +3,7 @@
 
 #include <ros/ros.h>
 #include <std_msgs/String.h>
+#include <std_msgs/Bool.h>
 #include <image_transport/image_transport.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
@@ -14,7 +15,6 @@
 #include <dynamic_reconfigure/server.h>
 #include <moveit_msgs/CollisionObject.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
-#include <moveit/move_group_interface/move_group.h>
 #include <tf/transform_listener.h>
 #include "tf/message_filter.h"
 #include "message_filters/subscriber.h"
@@ -34,6 +34,7 @@ moveit::planning_interface::PlanningSceneInterface *planning_scene_interface_ptr
 tf::TransformListener *listener_ptr;
 
 bool timeout=true;
+bool update=true;
 
 std::string object_name;
 double object_r,object_h;
@@ -58,6 +59,10 @@ int gaussian_sigma=0;
 int morph_size=0;
 
 int inv_H=1;
+
+void updtae_cb(const std_msgs::BoolConstPtr& input) {
+    update=input->data;
+}
 
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
@@ -132,7 +137,9 @@ detect_t=ros::Time::now();
          col_objects[0].primitive_poses[0]=base_object_pose.pose;
      }
        col_objects[0].operation = col_objects[0].ADD;
-      planning_scene_interface_ptr->addCollisionObjects(col_objects);
+
+       if (update) planning_scene_interface_ptr->addCollisionObjects(col_objects);
+
        if (timeout) {
            ROS_INFO("Found object");
            timeout=false;
@@ -294,6 +301,8 @@ int main(int argc, char **argv) {
     object_image_pub = it_.advertise("hsv_filterd", 1);
     bw_image_pub = it_.advertise("bw", 1);
 
+ros::Subscriber update_sub = n.subscribe("update_colision", 1, update_cb);
+
     ros::Subscriber pcl_sub = n.subscribe(depth_topic, 1, cloud_cb);
 string topic="/detected_objects/"+object_name;
     object_pub=n.advertise<geometry_msgs::PoseStamped>(topic, 2, true);
@@ -307,12 +316,6 @@ string topic="/detected_objects/"+object_name;
     tf::MessageFilter<geometry_msgs::PoseStamped> tf_filter(point_sub_, listener, "base_footprint", 10);
     tf_filter.registerCallback( boost::bind(arm_msgCallback, _1) );
 
-/*
-    moveit::planning_interface::MoveGroup group("arm");
-    robot_model::RobotModelConstPtr robot_model = group.getRobotModel();// robot_model_loader.getModel();
-    planning_scene::PlanningScenePtr planning_scene(new planning_scene::PlanningScene(robot_model));
-    planning_scene_ptr=&planning_scene;
-*/
     moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
     planning_scene_interface_ptr=&planning_scene_interface;
 
@@ -354,8 +357,10 @@ while (ros::ok()) {
         if ((dt>2.0)&&(!timeout)) {
             timeout=true;
             ROS_WARN("Object detection timeout");
-            col_objects[0].operation = col_objects[0].REMOVE;
+            if (update) {
+           col_objects[0].operation = col_objects[0].REMOVE;
             planning_scene_interface_ptr->addCollisionObjects(col_objects);
+            }
         }
         r.sleep();
 ros::spinOnce();
