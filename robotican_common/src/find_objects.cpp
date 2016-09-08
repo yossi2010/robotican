@@ -35,7 +35,7 @@ moveit::planning_interface::PlanningSceneInterface *planning_scene_interface_ptr
 tf::TransformListener *listener_ptr;
 
 bool timeout=true;
-bool update=true;
+bool update=false;
 
 std::string object_name;
 double object_r,object_h;

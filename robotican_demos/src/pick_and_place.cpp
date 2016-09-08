@@ -3,6 +3,7 @@
 
 #include <ros/ros.h>
 #include <std_msgs/String.h>
+#include <robotican_hardware_interface/pickAndPlace.h>
 #include <geometry_msgs/PointStamped.h>
 #include <trajectory_msgs/JointTrajectory.h>
 #include <std_msgs/Empty.h>
@@ -18,7 +19,6 @@
 #include <moveit/kinematics_metrics/kinematics_metrics.h>
 #include <moveit/planning_scene/planning_scene.h>
 #include <moveit_msgs/WorkspaceParameters.h>
-#include <moveit/planning_scene/planning_scene.h>
 #include <moveit_msgs/CollisionObject.h>
 #include <moveit/trajectory_processing/iterative_time_parameterization.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
@@ -60,6 +60,7 @@ bool CloseGripper();
 bool AttachObj2Gripper();
 
 moveit::planning_interface::PlanningSceneInterface *planning_scene_interface_ptr;
+std::string startPositionName;
 planning_scene::PlanningScenePtr *planning_scene_ptr;
 robot_state::RobotStatePtr *robot_state_ptr;
 tf::TransformListener *listener_ptr;
@@ -68,6 +69,7 @@ std::vector<moveit_msgs::CollisionObject> col_objects, staticObjects;
 geometry_msgs::PoseStamped head_object_pose,arm_object_pose;
 GripperClient *gripperClient_ptr;
 moveit::planning_interface::MoveGroup *group_ptr;
+ros::ServiceServer pickAndPlaceObjService;
 
 double pick_yaw=0;
 bool have_goal=false;
@@ -123,13 +125,12 @@ void look_down() {
     traj.points[0].velocities.push_back(0);
     traj.points[0].velocities.push_back(0);
     pub_controller_command.publish(traj);
-
 }
 
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
     geometry_msgs::PoseStamped target_pose=grasp_pose(object);
 
-   target_pose.pose.position.z+=0.1;
+    target_pose.pose.position.z+=0.1;
 
 /*
     tf::Vector3 v;
@@ -184,22 +185,22 @@ bool DeattactObjAndLiftArm() {
     bool attached;
     gripper_constraints(false);
 
-    if (plan_arm("pre_grasp2")) {
-                            group_ptr->detachObject("can");
-                            attached = false;
-                            ROS_INFO("Arm planning is done, moving arm up..");
-                            if (group_ptr->move()) {
-                                ROS_INFO("Arm is up");
-                                ROS_INFO("Done!");
-                            }
-                        }
+    if (plan_arm(startPositionName)) {
+        group_ptr->detachObject("can");
+        attached = false;
+        ROS_INFO("Arm planning is done, moving arm up..");
+        if (group_ptr->move()) {
+            ROS_INFO("Arm is up");
+            ROS_INFO("Done!");
+        }
+    }
     return attached;
 }
 
-void pick_go_cb(std_msgs::Empty) {
+bool pick_go_cb(robotican_hardware_interface::pickAndPlace::Request &request, robotican_hardware_interface::pickAndPlace::Response& response) {
     bool attached=false;
     if (!moving) moving=true;
-
+    response.done = (unsigned char) false;
 
     ROS_INFO("Openning gripper...");
     if(OpenGripper()) {
@@ -207,7 +208,6 @@ void pick_go_cb(std_msgs::Empty) {
         ros::Duration(2).sleep();//wait for re-detection
         geometry_msgs::PoseStamped pre_pick_pose= pre_grasp_pose(arm_object_pose);
         geometry_msgs::PoseStamped pick_pose = grasp_pose(arm_object_pose);
-
 
         std::vector<geometry_msgs::Pose> wayPointsForArm2ObjPath;
         wayPointsForArm2ObjPath.push_back(pre_pick_pose.pose);
@@ -253,6 +253,7 @@ void pick_go_cb(std_msgs::Empty) {
                         ROS_INFO("Lifting arm up...");
                         attached = DeattactObjAndLiftArm();
 
+                        response.done = (unsigned char) true;
                     }
 
                 }
@@ -263,6 +264,7 @@ void pick_go_cb(std_msgs::Empty) {
     if (attached) group_ptr->detachObject("can");
     moving=false;
     pub_can=true;
+    return true;
 
 }
 
@@ -403,7 +405,7 @@ void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& 
         arm_object_pose.header.stamp=ros::Time::now();
 
         //
-       // bool ik=checkIK(pre_grasp_pose(arm_object_pose));
+        // bool ik=checkIK(pre_grasp_pose(arm_object_pose));
         double frac=check_CartesianPath(arm_object_pose);
         ROS_WARN("--------------- fraction: %.2f",frac*100);
 
@@ -511,6 +513,7 @@ int main(int argc, char **argv) {
     std::string object_name_arm_camera;
 
     pn.param<std::string>("object_name_arm_camera", object_name_arm_camera, "sr300_object");
+    pn.param<std::string>("start_position_name", startPositionName, "pre_grasp2");
     std::string arm_topic="/detected_objects/"+object_name_arm_camera;
 
 
@@ -534,10 +537,11 @@ int main(int argc, char **argv) {
     group.setPoseReferenceFrame("base_footprint");
 
 
-    ros::Subscriber pick_sub = n.subscribe("pick_go", 1, pick_go_cb);
+    ros::ServiceServer pickAndPlaceObjService = n.advertiseService("pick_go", &pick_go_cb);
 
 
     pick_pub=n.advertise<geometry_msgs::PoseStamped>("pick_moveit_goal", 10);
+
     arm_object_pub=n.advertise<geometry_msgs::PoseStamped>("arm_objects_in_base_frame", 10);
     pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("/pan_tilt_trajectory_controller/command", 2);
 
@@ -616,7 +620,7 @@ int main(int argc, char **argv) {
 
     ROS_INFO("Looking down...");
     look_down();
-    if (plan_arm("pre_grasp2")) {
+    if (plan_arm(startPositionName)) {
         ROS_INFO("Arm planning is done, moving arm up..");
         if (group_ptr->move()) {
             ROS_INFO("Arm is up");
