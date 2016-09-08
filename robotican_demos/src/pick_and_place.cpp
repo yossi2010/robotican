@@ -79,7 +79,7 @@ geometry_msgs::PoseStamped moveit_goal;
 
 double MaxAccelerationScalingFactor,MaxVelocityScalingFactor;
 
-ros::Publisher pick_pub,head_object_pub,arm_object_pub;
+ros::Publisher pick_pub,arm_object_pub;
 ros::Publisher pub_controller_command;
 
 
@@ -129,9 +129,9 @@ void look_down() {
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
     geometry_msgs::PoseStamped target_pose=grasp_pose(object);
 
-    target_pose.pose.position.z+=0.1;
-/*
+   target_pose.pose.position.z+=0.1;
 
+/*
     tf::Vector3 v;
     v.setX(object.pose.position.x);
     v.setY(object.pose.position.y);
@@ -140,13 +140,14 @@ geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object){
     pick_yaw=atan2(v.y(),v.x());
 
 
-    float away=0.1/sqrt(v.x()*v.x()+v.y()*v.y());
+    float away=0.2/sqrt(v.x()*v.x()+v.y()*v.y());
     tf::Vector3 dest=v*(1-away);
-
+    target_pose.header.frame_id = "map";
+    target_pose.header.stamp = ros::Time::now();
     target_pose.pose.position.x = dest.x();
     target_pose.pose.position.y = dest.y();
-    target_pose.pose.position.z +=0;
-    target_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,0,pick_yaw );
+    target_pose.pose.position.z +=0.15;
+    target_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0,45.0*M_PI/180.0,pick_yaw );
     pick_pub.publish(target_pose);
 */
     return target_pose;
@@ -166,7 +167,8 @@ geometry_msgs::PoseStamped grasp_pose(geometry_msgs::PoseStamped object){
 
     float away=wrist_distance_from_object/sqrt(v.x()*v.x()+v.y()*v.y());
     tf::Vector3 dest=v*(1-away);
-
+    target_pose.header.frame_id = "map";
+    target_pose.header.stamp = ros::Time::now();
     target_pose.pose.position.x = dest.x();
     target_pose.pose.position.y = dest.y();
     target_pose.pose.position.z +=0;
@@ -197,12 +199,14 @@ bool DeattactObjAndLiftArm() {
 void pick_go_cb(std_msgs::Empty) {
     bool attached=false;
     if (!moving) moving=true;
+
+
     ROS_INFO("Openning gripper...");
     if(OpenGripper()) {
         ROS_INFO("Gripper is oppend, planning for pre-grasping..");
         ros::Duration(2).sleep();//wait for re-detection
-        geometry_msgs::PoseStamped pre_pick_pose= pre_grasp_pose(head_object_pose);
-        geometry_msgs::PoseStamped pick_pose = grasp_pose(head_object_pose);
+        geometry_msgs::PoseStamped pre_pick_pose= pre_grasp_pose(arm_object_pose);
+        geometry_msgs::PoseStamped pick_pose = grasp_pose(arm_object_pose);
 
 
         std::vector<geometry_msgs::Pose> wayPointsForArm2ObjPath;
@@ -217,6 +221,12 @@ void pick_go_cb(std_msgs::Empty) {
 
         ROS_WARN("--------------- fraction: %.2f",fractionArm2ObjPath*100);
         if ((fractionArm2ObjPath > 0.8) && (cartesianPathExecution(arm2ObjPath))) {
+
+
+
+            ROS_INFO("Grasping object...");
+
+
             if (CloseGripper()) {
                 ROS_INFO("Grasping is done");
                 attached = AttachObj2Gripper();
@@ -226,7 +236,7 @@ void pick_go_cb(std_msgs::Empty) {
                 std::vector<geometry_msgs::Pose> wayPointsForArmLiftPath;
                 pick_pose.pose.position.z += 0.10;
                 wayPointsForArmLiftPath.push_back(pick_pose.pose);
-                pick_pose.pose.position.y += 0.15;
+                pick_pose.pose.position.y += 0.10;
                 wayPointsForArmLiftPath.push_back(pick_pose.pose);
                 pick_pose.pose.position.z -= 0.09;
                 wayPointsForArmLiftPath.push_back(pick_pose.pose);
@@ -238,12 +248,13 @@ void pick_go_cb(std_msgs::Empty) {
 
                 ROS_WARN("--------------- fraction: %.2f",fractionArmLiftPath*100);
                 if((fractionArmLiftPath > 0.8) && (cartesianPathExecution(armLiftPath))) {
-                    if(OpenGripper()) {
+                    if (OpenGripper()) {
                         ros::Duration(5).sleep(); //wait for deattach
                         ROS_INFO("Lifting arm up...");
                         attached = DeattactObjAndLiftArm();
 
                     }
+
                 }
             }
         }
@@ -252,6 +263,7 @@ void pick_go_cb(std_msgs::Empty) {
     if (attached) group_ptr->detachObject("can");
     moving=false;
     pub_can=true;
+
 }
 
 bool AttachObj2Gripper() {
@@ -377,31 +389,7 @@ bool gripper_cmd(double gap,double effort) {
     return false;
 }
 
-//  Callback to register with tf::MessageFilter to be called when transforms are available
-void head_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr)
-{
-    if ((!ready)||(moving)) return;
-    try
-    {
-        listener_ptr->transformPose("base_footprint", *point_ptr, head_object_pose);
-        head_object_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
-        head_object_pose.header.frame_id="base_footprint";
-        head_object_pose.header.stamp=ros::Time::now();
 
-        update_collision_objects(head_object_pose.pose);
-
-        //bool ik=checkIK(pre_grasp_pose(head_object_pose));
-
-        double fractionArm2ObjPath=check_CartesianPath(head_object_pose);
-        ROS_WARN("--------------- fraction: %.2f",fractionArm2ObjPath*100);
-
-        head_object_pub.publish(head_object_pose);
-    }
-    catch (tf::TransformException &ex)
-    {
-        printf ("Failure %s\n", ex.what()); //Print exception which was caught
-    }
-}
 
 //  Callback to register with tf::MessageFilter to be called when transforms are available
 void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr)
@@ -414,9 +402,14 @@ void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& 
         arm_object_pose.header.frame_id="base_footprint";
         arm_object_pose.header.stamp=ros::Time::now();
 
-        // update_collision_objects(arm_object_pose.pose);
-        //bool ik=checkIK(pre_grasp_pose(arm_object_pose));
-        arm_object_pub.publish(head_object_pose);
+        //
+       // bool ik=checkIK(pre_grasp_pose(arm_object_pose));
+        double frac=check_CartesianPath(arm_object_pose);
+        ROS_WARN("--------------- fraction: %.2f",frac*100);
+
+        update_collision_objects(arm_object_pose.pose);
+
+        arm_object_pub.publish(arm_object_pose);
     }
     catch (tf::TransformException &ex)
     {
@@ -515,9 +508,8 @@ int main(int argc, char **argv) {
     ROS_INFO("Hello");
 
     pn.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.03);
-    std::string object_name_head_camera,object_name_arm_camera;
-    pn.param<std::string>("object_name_head_camera", object_name_head_camera, "kinect2_object");
-    std::string head_topic="/detected_objects/"+object_name_head_camera;
+    std::string object_name_arm_camera;
+
     pn.param<std::string>("object_name_arm_camera", object_name_arm_camera, "sr300_object");
     std::string arm_topic="/detected_objects/"+object_name_arm_camera;
 
@@ -546,7 +538,6 @@ int main(int argc, char **argv) {
 
 
     pick_pub=n.advertise<geometry_msgs::PoseStamped>("pick_moveit_goal", 10);
-    head_object_pub=n.advertise<geometry_msgs::PoseStamped>("head_objects_in_base_frame", 10);
     arm_object_pub=n.advertise<geometry_msgs::PoseStamped>("arm_objects_in_base_frame", 10);
     pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("/pan_tilt_trajectory_controller/command", 2);
 
@@ -554,10 +545,6 @@ int main(int argc, char **argv) {
     tf::TransformListener listener;
     listener_ptr=&listener;
 
-    message_filters::Subscriber<geometry_msgs::PoseStamped> head_point_sub_;
-    head_point_sub_.subscribe(n, head_topic, 10);
-    head_tf_filter_ = new tf::MessageFilter<geometry_msgs::PoseStamped>(head_point_sub_, listener, "base_footprint", 10);
-    head_tf_filter_->registerCallback( boost::bind(head_msgCallback, _1) );
 
     message_filters::Subscriber<geometry_msgs::PoseStamped> arm_point_sub_;
     arm_point_sub_.subscribe(n, arm_topic, 10);
@@ -629,6 +616,12 @@ int main(int argc, char **argv) {
 
     ROS_INFO("Looking down...");
     look_down();
+    if (plan_arm("pre_grasp2")) {
+        ROS_INFO("Arm planning is done, moving arm up..");
+        if (group_ptr->move()) {
+            ROS_INFO("Arm is up");
+        }
+    }
     ready=true;
     ROS_INFO("Ready!");
 

@@ -54,7 +54,7 @@
     </include>
     <include>
       <uri>model://coke_can_slim</uri>
-      <pose>1.4 -0.3 0.79 0 0 0</pose>
+      <pose>1.490347 -0.299878 0.735000 0 0 0</pose>
     </include>
     <include>
       <uri>model://bifrutas_tropical_can</uri>
