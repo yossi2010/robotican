@@ -1,5 +1,7 @@
-<robot
-  name="robotican_lizi">
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="lizi_robot" description="lizi Robot">
+<xacro:property name="M_PI" value="3.1415926535897931"/>
+
   <link
     name="base_link">
     <inertial>
@@ -133,9 +135,9 @@
           filename="package://robotican_lizi/description/meshes/sr300_link.STL" />
       </geometry>
       <material
-        name="">
+        name="black">
         <color
-          rgba="0.29804 0.29804 0.29804 1" />
+          rgba="0.0 0.0 0.0 1" />
       </material>
     </visual>
     <collision>
@@ -228,7 +230,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotican_lizi/description/meshes/FL_wheel_link.STL" />
+          filename="package://robotican_lizi/description/meshes/wheel_link.STL" />
       </geometry>
       <material
         name="">
@@ -239,10 +241,11 @@
     <collision>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="${M_PI/2} 0 0" />
       <geometry>
-        <mesh
-          filename="package://robotican_lizi/description/meshes/FL_wheel_link.STL" />
+       
+       <!--    <mesh filename="package://robotican_lizi/description/meshes/wheel_link.STL" /> -->
+  <cylinder  length="0.02" radius="0.0762"/> 
       </geometry>
     </collision>
   </link>
@@ -281,7 +284,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotican_lizi/description/meshes/RL_wheel_link.STL" />
+          filename="package://robotican_lizi/description/meshes/wheel_link.STL" />
       </geometry>
       <material
         name="">
@@ -292,10 +295,10 @@
     <collision>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+         rpy="${M_PI/2} 0 0" />
       <geometry>
-        <mesh
-          filename="package://robotican_lizi/description/meshes/RL_wheel_link.STL" />
+       <!--    <mesh filename="package://robotican_lizi/description/meshes/wheel_link.STL" /> -->
+  <cylinder  length="0.02" radius="0.0762"/> 
       </geometry>
     </collision>
   </link>
@@ -334,7 +337,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotican_lizi/description/meshes/FR_wheel_link.STL" />
+          filename="package://robotican_lizi/description/meshes/wheel_link.STL" />
       </geometry>
       <material
         name="">
@@ -345,15 +348,15 @@
     <collision>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+     rpy="${M_PI/2} 0 0" />
       <geometry>
-        <mesh
-          filename="package://robotican_lizi/description/meshes/FR_wheel_link.STL" />
+       <!--    <mesh filename="package://robotican_lizi/description/meshes/wheel_link.STL" /> -->
+  <cylinder  length="0.02" radius="0.0762"/> 
       </geometry>
     </collision>
   </link>
   <joint
-    name="FR_wheell_joint"
+    name="FR_wheel_joint"
     type="continuous">
     <origin
       xyz="0.13 -0.13321 0"
@@ -387,7 +390,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotican_lizi/description/meshes/RR_wheel_link.STL" />
+          filename="package://robotican_lizi/description/meshes/wheel_link.STL" />
       </geometry>
       <material
         name="">
@@ -398,10 +401,10 @@
     <collision>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="${M_PI/2} 0 0" />
       <geometry>
-        <mesh
-          filename="package://robotican_lizi/description/meshes/RR_wheel_link.STL" />
+       <!--    <mesh filename="package://robotican_lizi/description/meshes/wheel_link.STL" /> -->
+  <cylinder  length="0.02" radius="0.0762"/> 
       </geometry>
     </collision>
   </link>
