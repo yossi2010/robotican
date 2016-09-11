@@ -171,6 +171,10 @@ target_link_libraries(reach_event ${catkin_LIBRARIES})
 add_executable(pan_tilt_object_tracking_node src/pan_tilt_object_tracking.cpp)
 target_link_libraries(pan_tilt_object_tracking_node ${catkin_LIBRARIES})
 
+add_executable(drive2object_node src/drive2object.cpp)
+target_link_libraries(drive2object_node ${catkin_LIBRARIES})
+
+
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(robotican_common_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
