@@ -8,7 +8,7 @@
   <arg name="robot_localization" default='true'/>
   <arg name="move_base" default='false'/>
   <arg name="hector_slam" default='false'/>
-  <arg name="gmapping_slam" default='false'/>
+  <arg name="gmapping" default='false'/>
   <arg name="amcl" default='false'/>
   <arg name="have_map_file" default='false'/>
   <arg name="map_file" default="$(find robotican_common)/maps/UPlat.yaml"/>
@@ -132,7 +132,7 @@
 			<arg name="Y" value="$(arg Y)" />
 		</include>
 	</group>
-	<group if="$(arg gmapping_slam)">
+	<group if="$(arg gmapping)">
 		<include file="$(find robotican_common)/launch/gmapping_slam.launch"/>
 	</group>
       
