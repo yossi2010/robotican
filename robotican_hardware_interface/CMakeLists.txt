@@ -87,7 +87,6 @@ add_message_files(
 add_service_files(
         FILES
         setImuClib.srv
-	pickAndPlace.srv
         #   Service2.srv
 )
 

@@ -3,7 +3,7 @@
 
 #include <ros/ros.h>
 #include <std_msgs/String.h>
-#include <robotican_hardware_interface/pickAndPlace.h>
+#include <std_srvs/Trigger.h>
 #include <geometry_msgs/PointStamped.h>
 #include <trajectory_msgs/JointTrajectory.h>
 #include <std_msgs/Empty.h>
@@ -197,10 +197,10 @@ bool DeattactObjAndLiftArm() {
     return attached;
 }
 
-bool pick_go_cb(robotican_hardware_interface::pickAndPlace::Request &request, robotican_hardware_interface::pickAndPlace::Response& response) {
+bool pick_go_cb(std_srvs::Trigger::Request &request, std_srvs::Trigger::Response& response) {
     bool attached=false;
     if (!moving) moving=true;
-    response.done = (unsigned char) false;
+    response.success = (unsigned char) false;
 
     ROS_INFO("Openning gripper...");
     if(OpenGripper()) {
@@ -253,7 +253,8 @@ bool pick_go_cb(robotican_hardware_interface::pickAndPlace::Request &request, ro
                         ROS_INFO("Lifting arm up...");
                         attached = DeattactObjAndLiftArm();
 
-                        response.done = (unsigned char) true;
+                        response.success = (unsigned char) true;
+                        response.message = "Done pick and place";
                     }
 
                 }
