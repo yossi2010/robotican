@@ -20,10 +20,12 @@
   <arg name="gps" default='false'/>
   <arg name="urf" default='false'/>
   <arg name="imu" default='false'/>
+  <arg name="pan_tilt" default='false'/>
   <arg name="sr300" default='true'/>
   <arg name="joystick" default='false'/>
   <arg name="joystick_dev" default='/dev/input/js0'/>
   <arg name="twist_mux" default='true'/>
+  <arg name="have_pan_tilt" default='false'/>
 
    <arg name="paused" default="false"/>
 	<arg name="use_sim_time" default="true"/>
@@ -33,7 +35,7 @@
   
   <arg name="x" default="0.0"/>
   <arg name="y" default="0.0"/>
-  <arg name="z" default="0.0"/>
+  <arg name="z" default="0.039"/>
   <arg name="R" default="0.0" />
   <arg name="P" default="0.0" />
   <arg name="Y" default="0.0" />
@@ -152,6 +154,11 @@
 		robot_state_controller
 		mobile_base_controller
 	  " />
+		<group if="$(arg pan_tilt)">
+			<node name="controller_spawner_pan_tilt" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="
+			pan_tilt_controller
+			" />
+		</group>
 	</group>
     
   
