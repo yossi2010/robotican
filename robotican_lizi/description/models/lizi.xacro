@@ -9,7 +9,7 @@
         xyz="0.0041783 0.0052424 0.04047"
         rpy="0 0 0" />
       <mass
-        value="0.47025" />
+        value="20.47025" />
       <inertia
         ixx="0.004176"
         ixy="0.00013487"
@@ -84,7 +84,7 @@
       <material
         name="">
         <color
-          rgba="0.75294 0.75294 0.75294 1" />
+          rgba="0.0 0.0 0.0 1" />
       </material>
     </visual>
     <collision>
@@ -235,7 +235,7 @@
       <material
         name="">
         <color
-          rgba="0.79216 0.81961 0.93333 1" />
+          rgba="0.0 0.0 0.0 1" />
       </material>
     </visual>
     <collision>
@@ -289,7 +289,7 @@
       <material
         name="">
         <color
-          rgba="0.79216 0.81961 0.93333 1" />
+          rgba="0.0 0.0 0.0 1" />
       </material>
     </visual>
     <collision>
@@ -342,7 +342,7 @@
       <material
         name="">
         <color
-          rgba="0.79216 0.81961 0.93333 1" />
+          rgba="0.0 0.0 0.0 1" />
       </material>
     </visual>
     <collision>
@@ -395,7 +395,7 @@
       <material
         name="">
         <color
-          rgba="0.79216 0.81961 0.93333 1" />
+          rgba="0.0 0.0 0.0 1" />
       </material>
     </visual>
     <collision>
