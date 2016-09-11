@@ -555,7 +555,7 @@ int main(int argc, char **argv) {
     group.setMaxAccelerationScalingFactor(MaxAccelerationScalingFactor);
     // group.setPlannerId("PRMkConfigDefault");
     group.setPlanningTime(5.0);
-    group.setNumPlanningAttempts(100);
+    group.setNumPlanningAttempts(10);
     group.setPlannerId("RRTConnectkConfigDefault");
     group.setPoseReferenceFrame("base_footprint");
 
