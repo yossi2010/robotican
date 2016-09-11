@@ -22,10 +22,11 @@
 #include <moveit_msgs/CollisionObject.h>
 #include <moveit/trajectory_processing/iterative_time_parameterization.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
-
+#include <std_srvs/SetBool.h>
 
 typedef actionlib::SimpleActionClient<control_msgs::GripperCommandAction> GripperClient;
 
+bool set_collision_update(bool state);
 double check_CartesianPath(geometry_msgs::PoseStamped object);
 void apply_floor_constraints();
 void gripper_constraints(bool state);
@@ -70,12 +71,13 @@ geometry_msgs::PoseStamped head_object_pose,arm_object_pose;
 GripperClient *gripperClient_ptr;
 moveit::planning_interface::MoveGroup *group_ptr;
 ros::ServiceServer pickAndPlaceObjService;
+ros::ServiceClient *uc_client_ptr;
 
 double pick_yaw=0;
 bool have_goal=false;
 bool moving=false;
 bool ready=false;
-bool pub_can=true;
+bool update_table=true;
 double wrist_distance_from_object;
 geometry_msgs::PoseStamped moveit_goal;
 
@@ -220,6 +222,7 @@ bool pick_go_cb(std_srvs::Trigger::Request &request, std_srvs::Trigger::Response
                                                                      arm2ObjPath,true);
 
         ROS_WARN("--------------- fraction: %.2f",fractionArm2ObjPath*100);
+         set_collision_update(false);
         if ((fractionArm2ObjPath > 0.8) && (cartesianPathExecution(arm2ObjPath))) {
 
 
@@ -264,7 +267,7 @@ bool pick_go_cb(std_srvs::Trigger::Request &request, std_srvs::Trigger::Response
     }
     if (attached) group_ptr->detachObject("can");
     moving=false;
-    pub_can=true;
+    set_collision_update(true);
     return true;
 
 }
@@ -272,7 +275,8 @@ bool pick_go_cb(std_srvs::Trigger::Request &request, std_srvs::Trigger::Response
 bool AttachObj2Gripper() {
     bool attached;
     gripper_constraints(true);
-    pub_can = false;
+  //  pub_can = false;
+
     std::vector<std::string> touch_links;
     touch_links.push_back("left_finger_link");
     touch_links.push_back("right_finger_link");
@@ -408,9 +412,9 @@ void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& 
         //
         // bool ik=checkIK(pre_grasp_pose(arm_object_pose));
         double frac=check_CartesianPath(arm_object_pose);
-        ROS_WARN("--------------- fraction: %.2f",frac*100);
+        //ROS_WARN("--------------- fraction: %.2f",frac*100);
 
-        update_collision_objects(arm_object_pose.pose);
+        if (update_table) update_collision_objects(arm_object_pose.pose);
 
         arm_object_pub.publish(arm_object_pose);
     }
@@ -427,8 +431,8 @@ void update_collision_objects(geometry_msgs::Pose pose) {
     col_objects[0].primitive_poses.clear();
     col_objects[0].primitive_poses.push_back(table);
 
-    col_objects[1].primitive_poses.clear();
-    if(pub_can) col_objects[1].primitive_poses.push_back(pose);
+   // col_objects[1].primitive_poses.clear();
+   // if(pub_can) col_objects[1].primitive_poses.push_back(pose);
 
     planning_scene_interface_ptr->addCollisionObjects(col_objects);
 
@@ -499,6 +503,23 @@ void apply_floor_constraints() {
 
 }
 
+bool set_collision_update(bool state){
+    std_srvs::SetBool srv;
+    srv.request.data=state;
+    if (uc_client_ptr->call(srv))
+      {
+        ROS_INFO("update_colision response: %s", srv.response.message.c_str());
+        update_table=state;
+        return true;
+      }
+      else
+      {
+        ROS_ERROR("Failed to call service /find_objects_node/update_colision");
+        return false;
+      }
+
+}
+
 int main(int argc, char **argv) {
 
     ros::init(argc, argv, "pick_and_plce_node");
@@ -511,11 +532,11 @@ int main(int argc, char **argv) {
     ROS_INFO("Hello");
 
     pn.param<double>("wrist_distance_from_object", wrist_distance_from_object, 0.03);
-    std::string object_name_arm_camera;
+    std::string object_name;
 
-    pn.param<std::string>("object_name_arm_camera", object_name_arm_camera, "sr300_object");
+    pn.param<std::string>("object_name", object_name, "sr300_object");
     pn.param<std::string>("start_position_name", startPositionName, "pre_grasp2");
-    std::string arm_topic="/detected_objects/"+object_name_arm_camera;
+    std::string arm_topic="/detected_objects/"+object_name;
 
 
     pn.param<double>("MaxAccelerationScalingFactor", MaxAccelerationScalingFactor, 0.1);
@@ -532,8 +553,8 @@ int main(int argc, char **argv) {
     group.setMaxVelocityScalingFactor(MaxVelocityScalingFactor);
     group.setMaxAccelerationScalingFactor(MaxAccelerationScalingFactor);
     // group.setPlannerId("PRMkConfigDefault");
-    group.setPlanningTime(5.0);
-    group.setNumPlanningAttempts(300);
+    group.setPlanningTime(6.0);
+    group.setNumPlanningAttempts(10);
     group.setPlannerId("RRTConnectkConfigDefault");
     group.setPoseReferenceFrame("base_footprint");
 
@@ -587,6 +608,7 @@ int main(int argc, char **argv) {
     planning_scene_ptr=&planning_scene;
 
 
+
     moveit_msgs::CollisionObject table_collision_object;
     table_collision_object.header.frame_id = "base_footprint";
     table_collision_object.id = "table";
@@ -599,7 +621,7 @@ int main(int argc, char **argv) {
     table_collision_object.primitives.push_back(table_primitive);
     table_collision_object.operation = table_collision_object.ADD;
     col_objects.push_back(table_collision_object);
-
+/*
     moveit_msgs::CollisionObject can_collision_object;
     can_collision_object.header.frame_id = "base_footprint";
     can_collision_object.id = "can";
@@ -607,18 +629,21 @@ int main(int argc, char **argv) {
     object_primitive.type = object_primitive.CYLINDER;
     object_primitive.dimensions.resize(2);
     object_primitive.dimensions[0] = 0.15;
-    object_primitive.dimensions[1] = 0.02;
+    object_primitive.dimensions[1] = 0.025;
     can_collision_object.primitives.push_back(object_primitive);
     can_collision_object.operation = can_collision_object.ADD;
     col_objects.push_back(can_collision_object);
-
+*/
     group.setWorkspace(0.0,-2.0,0.05,2.0,2.0,2.0);
 
     apply_floor_constraints();
     spinner.start();
-
-
-
+std::string uc="/update_collision/"+object_name;
+    ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>(uc);
+    ROS_INFO("Waiting for update_collision service...");
+    uc_client.waitForExistence();
+    uc_client_ptr = &uc_client;
+  set_collision_update(true);
     ROS_INFO("Looking down...");
     look_down();
     if (plan_arm(startPositionName)) {

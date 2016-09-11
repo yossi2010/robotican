@@ -8,7 +8,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
 #include <geometry_msgs/PointStamped.h>
-#include <std_msgs/Empty.h>
+#include <std_srvs/SetBool.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <tf/transform_listener.h>
 #include <robotican_common/FindObjectDynParamConfig.h>
@@ -23,7 +23,7 @@ using namespace cv;
 
 bool debug_vision=false;
 
-void update_cb(const std_msgs::BoolConstPtr& input);
+bool update_cb(std_srvs::SetBool::Request  &req,std_srvs::SetBool::Response &res);
 bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud,Point3d *obj,std::string frame);
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input);
 void dynamicParamCallback(robotican_common::FindObjectDynParamConfig &config, uint32_t level);
@@ -61,8 +61,14 @@ int morph_size=0;
 
 int inv_H=1;
 
-void update_cb(const std_msgs::BoolConstPtr& input) {
-    update=input->data;
+bool update_cb(std_srvs::SetBool::Request  &req,
+                 std_srvs::SetBool::Response &res) {
+
+    update=req.data;
+    res.success=true;
+    if (update)  res.message="update collision is ON";
+    else res.message="update collision is OFF";
+    return true;
 }
 
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
@@ -142,7 +148,7 @@ detect_t=ros::Time::now();
        if (update) planning_scene_interface_ptr->addCollisionObjects(col_objects);
 
        if (timeout) {
-           ROS_INFO("Found object");
+           ROS_DEBUG("Found object");
            timeout=false;
        }
     }
@@ -302,7 +308,8 @@ int main(int argc, char **argv) {
     object_image_pub = it_.advertise("hsv_filterd", 1);
     bw_image_pub = it_.advertise("bw", 1);
 
-ros::Subscriber update_sub = n.subscribe("update_colision", 1, update_cb);
+string uc="/update_collision/"+object_name;
+ros::ServiceServer service = n.advertiseService(uc, update_cb);
 
     ros::Subscriber pcl_sub = n.subscribe(depth_topic, 1, cloud_cb);
 string topic="/detected_objects/"+object_name;
@@ -328,6 +335,7 @@ string topic="/detected_objects/"+object_name;
     object_primitive.dimensions.resize(2);
     object_primitive.dimensions[0] = object_h;
     object_primitive.dimensions[1] = object_r;
+
     can_collision_object.primitives.push_back(object_primitive);
     col_objects.push_back(can_collision_object);
 
@@ -355,13 +363,12 @@ ros::Rate r(10);
 while (ros::ok()) {
 
         double dt=(ros::Time::now()-detect_t).toSec();
-        if ((dt>2.0)&&(!timeout)) {
+        if ((dt>2.0)&&(!timeout)&&(update)) {
             timeout=true;
-            ROS_WARN("Object detection timeout");
-            if (update) {
+            ROS_DEBUG("Object detection timeout");
            col_objects[0].operation = col_objects[0].REMOVE;
             planning_scene_interface_ptr->addCollisionObjects(col_objects);
-            }
+
         }
         r.sleep();
 ros::spinOnce();

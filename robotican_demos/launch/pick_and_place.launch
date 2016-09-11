@@ -1,45 +1,29 @@
 <?xml version="1.0"?>
 <launch>
 
-  <arg name="gazebo" default="false"/>
-  <arg name="armadillo" default="false" />
-  <arg name="komodo" default="false" />
-
-  <group if="$(arg armadillo)">
-    <group if="$(arg gazebo)">
-      <include file="$(find robotican_armadillo)/launch/armadillo.launch">
-        <arg name="gazebo" value="true"/> 
-        <arg name="world_name" value="$(find robotican_common)/worlds/objects_on_table.world"/> 
-        <arg name="x" value="0.8"/>
-        <arg name="y" value="-0.35"/>
-        <arg name="Y" value="0"/>
-
-        <arg name="sr300" value="true"/>      
-        <arg name="moveit" value="true"/>
-      </include>
-    </group>
-
-    <group unless="$(arg gazebo)">
-
-      <include file="$(find robotican_armadillo)/launch/armadillo.launch">
-        <arg name="sr300" value="true"/> 
-        <arg name="moveit" value="true"/>
-      </include>
-    </group>
+  <!-- roslaunch robotican_armadillo armadillo.launch moveit:=true sr300:=true x:=0.8 y:=-0.35 world_name:="`rospack find robotican_common`/worlds/objects_on_table.world" gazebo:=true -->
+ 
 
 
     <node name="pick_and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true"> 
-      <param name="~object_name_arm_camera" value="sr300_object"/> 
+      <param name="~object_name" value="sr300_object"/> 
       <param name="~wrist_distance_from_object" value="0.05"/>
       <param name="~MaxAccelerationScalingFactor" value="0.1"/>
       <param name="~MaxVelocityScalingFactor" value="0.1"/>
+      <param name="~start_position_name" value="pre_grasp2"/>
     </node>
-
 
 
     <node name="find_object_node_sr300" pkg="robotican_common" type="find_objects_node" output="screen">
       <param name="~object_name" value="sr300_object"/>
-      <param name="~depth_topic" value="/sr300/depth/points"/>
+    <param name="~object_r" value="0.025"/>
+    <param name="~object_h" value="0.15"/>
+    <param name="~object_id" value="can"/>
+    <!-- <param name="~depth_topic" value="/kinect2/qhd/points"/> -->
+     <param name="~depth_topic" value="/sr300/depth/points"/> 
+    <!--  <param name="~depth_topic" value="/depth_camera/depth_registered/points"/> -->
+    <rosparam file="$(find robotican_demos)/config/red_object.yaml" command="load"/>
+
     </node>
     
 
@@ -47,46 +31,6 @@
       <remap from="image" to="find_object_node_sr300/result" />
     </node>
     
-  </group>
-
-
-  <group if="$(arg komodo)">
-    <group if="$(arg gazebo)">
-      <include file="$(find robotican_komodo)/launch/komodo.launch">
-        <arg name="gazebo" value="true"/> 
-        <arg name="world_name" value="$(find robotican_common)/worlds/objects_on_table.world"/> 
-        <arg name="x" value="0.8"/>
-        <arg name="y" value="-0.35"/>
-        <arg name="Y" value="0"/>
-
-        <arg name="sr300" value="true"/> 
-        <arg name="depth_camera" value="false"/>      
-      </include>
-    </group>
-
-    <group unless="$(arg gazebo)">
-
-      <include file="$(find robotican_komodo)/launch/komodo.launch">
-        <arg name="sr300" value="true"/>
-        <arg name="depth_camera" value="false"/>       
-      </include>
-    </group>
-
-
-    <node name="pick_and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true"> 
-      <param name="~object_name_arm_camera" value="sr300_object"/> 
-      <param name="~wrist_distance_from_object" value="0.04"/>
-      <param name="~MaxAccelerationScalingFactor" value="0.1"/>
-      <param name="~MaxVelocityScalingFactor" value="0.1"/>
-    </node>
-
-    <node name="find_object_node_sr300" pkg="robotican_common" type="find_objects_node" output="screen">
-      <param name="~object_name" value="sr300_object"/>
-      <param name="~depth_topic" value="/sr300/depth/points"/>
-    </node>
-
-
-  </group>
 
 
   
