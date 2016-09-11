@@ -19,8 +19,8 @@
     <param name="~object_r" value="0.025"/>
     <param name="~object_h" value="0.15"/>
     <param name="~object_id" value="can"/>
-    <!-- <param name="~depth_topic" value="/kinect2/qhd/points"/> -->
-     <param name="~depth_topic" value="/sr300/depth/points"/> 
+    <!--<param name="~depth_topic" value="/kinect2/qhd/points"/>  -->
+     <param name="~depth_topic" value="/sr300/depth/points"/>  
     <!--  <param name="~depth_topic" value="/depth_camera/depth_registered/points"/> -->
     <rosparam file="$(find robotican_demos)/config/red_object.yaml" command="load"/>
 

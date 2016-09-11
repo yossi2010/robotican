@@ -40,8 +40,9 @@ bool arm_cmd(geometry_msgs::PoseStamped target_pose1);
 
 geometry_msgs::PoseStamped pre_grasp_pose(geometry_msgs::PoseStamped object);
 geometry_msgs::PoseStamped grasp_pose(geometry_msgs::PoseStamped object);
-bool plan_arm(std::string pose);
-void pick_go_cb(std_msgs::Empty);
+bool plan_arm(std::string pose,moveit::planning_interface::MoveGroup::Plan &plan);
+
+bool pick_go_cb(std_srvs::Trigger::Request &request, std_srvs::Trigger::Response& response);
 void button_go_cb(std_msgs::Empty);
 void look_down();
 
@@ -105,9 +106,9 @@ double check_CartesianPath(geometry_msgs::PoseStamped object) {
     return fractionArm2ObjPath;
 }
 
-bool plan_arm(std::string pose){
+bool plan_arm(std::string pose,moveit::planning_interface::MoveGroup::Plan &my_plan){
+    group_ptr->setStartStateToCurrentState();
     group_ptr->setNamedTarget(pose);
-    moveit::planning_interface::MoveGroup::Plan my_plan;
     return group_ptr->plan(my_plan);
 
 }
@@ -186,12 +187,12 @@ geometry_msgs::PoseStamped grasp_pose(geometry_msgs::PoseStamped object){
 bool DeattactObjAndLiftArm() {
     bool attached;
     gripper_constraints(false);
-
-    if (plan_arm(startPositionName)) {
+moveit::planning_interface::MoveGroup::Plan plan;
+    if (plan_arm(startPositionName,plan)) {
         group_ptr->detachObject("can");
         attached = false;
         ROS_INFO("Arm planning is done, moving arm up..");
-        if (group_ptr->move()) {
+        if (group_ptr->execute(plan)) {
             ROS_INFO("Arm is up");
             ROS_INFO("Done!");
         }
@@ -553,8 +554,8 @@ int main(int argc, char **argv) {
     group.setMaxVelocityScalingFactor(MaxVelocityScalingFactor);
     group.setMaxAccelerationScalingFactor(MaxAccelerationScalingFactor);
     // group.setPlannerId("PRMkConfigDefault");
-    group.setPlanningTime(6.0);
-    group.setNumPlanningAttempts(10);
+    group.setPlanningTime(5.0);
+    group.setNumPlanningAttempts(100);
     group.setPlannerId("RRTConnectkConfigDefault");
     group.setPoseReferenceFrame("base_footprint");
 
@@ -646,9 +647,10 @@ std::string uc="/update_collision/"+object_name;
   set_collision_update(true);
     ROS_INFO("Looking down...");
     look_down();
-    if (plan_arm(startPositionName)) {
+    moveit::planning_interface::MoveGroup::Plan plan;
+    if (plan_arm(startPositionName,plan)) {
         ROS_INFO("Arm planning is done, moving arm up..");
-        if (group_ptr->move()) {
+        if (group_ptr->execute(plan)) {
             ROS_INFO("Arm is up");
         }
     }
