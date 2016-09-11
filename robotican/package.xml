@@ -22,6 +22,10 @@
 <run_depend>robotican_gui</run_depend>
 <run_depend>robotican_manipulator_h</run_depend>
 
+<run_depend>robotican_armadillo_moveit_config</run_depend>
+<run_depend>robotican_komodo_moveit_config</run_depend>
+<run_depend>robotican_manipulator_h_moveit_config</run_depend>
+
 
   <export>
   	<metapackage/>
