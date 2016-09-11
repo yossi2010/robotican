@@ -637,7 +637,8 @@ int main(int argc, char **argv) {
 */
     group.setWorkspace(0.0,-2.0,0.05,2.0,2.0,2.0);
 
-    apply_floor_constraints();
+
+
     spinner.start();
 std::string uc="/update_collision/"+object_name;
     ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>(uc);
@@ -655,6 +656,7 @@ std::string uc="/update_collision/"+object_name;
         }
     }
     ready=true;
+    apply_floor_constraints();
     ROS_INFO("Ready!");
 
     ros::spin();
