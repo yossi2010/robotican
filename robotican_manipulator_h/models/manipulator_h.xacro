@@ -572,31 +572,5 @@
     <axis
       xyz="0 0 0" />
   </joint>
-  		<link name="sr300_rgb_frame" />
-		<joint name="sr300_rgb_joint" type="fixed">
-		  <origin xyz="0 0 0" rpy="0 0 0" />
-		  <parent link="sr300_link" />
-		  <child link="sr300_rgb_frame" />
-		</joint>
-		
-		 <link name="sr300_rgb_optical_frame" />
-		<joint name="sr300_rgb_optical_joint" type="fixed">
-		  <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
-		  <parent link="sr300_rgb_frame" />
-		  <child link="sr300_rgb_optical_frame" />
-		</joint>
-		
-		<link name="sr300_depth_frame" />
-		<joint name="sr300_depth_joint" type="fixed">
-		  <origin xyz="0 -0.0235 0" rpy="0 0 0" />
-		  <parent link="sr300_link" />
-		  <child link="sr300_depth_frame" />
-		</joint>
-		
-		<link name="sr300_depth_optical_frame" />
-		<joint name="sr300_depth_optical_joint" type="fixed">
-		  <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
-		  <parent link="sr300_depth_frame" />
-		  <child link="sr300_depth_optical_frame" />
-		</joint>
+  		
 </robot>
