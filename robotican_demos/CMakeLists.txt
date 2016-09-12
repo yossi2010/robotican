@@ -150,20 +150,17 @@ target_link_libraries(gripper_api ${catkin_LIBRARIES})
 add_executable(pick_and_place src/pick_and_place.cpp)
 target_link_libraries(pick_and_place ${catkin_LIBRARIES})
 
-add_executable(demo_pick_node src/demo_pick_node.cpp)
-target_link_libraries(demo_pick_node ${catkin_LIBRARIES})
+add_executable(drive_and_pick src/drive_and_pick.cpp)
+target_link_libraries(drive_and_pick ${catkin_LIBRARIES})
 
 add_executable(point_head src/point_head.cpp)
 target_link_libraries(point_head ${catkin_LIBRARIES})
 
-add_executable(simple_grasps src/simple_grasps.cpp)
-target_link_libraries(simple_grasps ${catkin_LIBRARIES})
-
-add_executable(add_collision_object src/add_collision_object.cpp)
-target_link_libraries(add_collision_object ${catkin_LIBRARIES})
-
 add_executable(arm_jta_client src/arm_jta_client.cpp)
 target_link_libraries(arm_jta_client ${catkin_LIBRARIES})
+
+add_executable(test_pick src/test_pick.cpp)
+target_link_libraries(test_pick ${catkin_LIBRARIES})
 
 
 

@@ -223,7 +223,7 @@
 	  " />
      </group>
     <group if="$(arg arm)">
-		<node name="arm_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="arm_trajectory_controller gripper_controller" />
+		<node name="arm_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="arm_trajectory_controller gripper_jta_controller" />
 	</group>
 	<group if="$(arg move_base)">
 		<rosparam file="$(find robotican_armadillo)/navigation/config/move_base_params.yaml" command="load" ns="move_base"/>
