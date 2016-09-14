@@ -62,7 +62,7 @@ int morph_size=0;
 int inv_H=1;
 
 bool update_cb(std_srvs::SetBool::Request  &req,
-                 std_srvs::SetBool::Response &res) {
+               std_srvs::SetBool::Response &res) {
 
     update=req.data;
     res.success=true;
@@ -79,19 +79,19 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
     pcl::fromROSMsg (*input, cloud);
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloudp (new pcl::PointCloud<pcl::PointXYZRGBA> (cloud));
 
-     if (cloudp->empty()) {
+    if (cloudp->empty()) {
 
-         ROS_WARN("empty cloud");
-         return;
-     }
+        ROS_WARN("empty cloud");
+        return;
+    }
 
     sensor_msgs::ImagePtr image_msg(new sensor_msgs::Image);
     pcl::toROSMsg (*input, *image_msg);
     image_msg->header.stamp = input->header.stamp;
     image_msg->header.frame_id = input->header.frame_id;
 
-cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(image_msg, sensor_msgs::image_encodings::BGR8);
- Mat result=cv_ptr->image;
+    cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(image_msg, sensor_msgs::image_encodings::BGR8);
+    Mat result=cv_ptr->image;
 
     Point3d obj;
     have_object= find_object(result,cloudp,&obj,input->header.frame_id);
@@ -109,8 +109,8 @@ cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(image_msg, sensor_msgs::image
         target_pose2.pose.position.x =obj.x;
         target_pose2.pose.position.y = obj.y;
         target_pose2.pose.position.z = obj.z+object_r;
-       //  std::printf("---------> OBJECT: [%f , %f , %f]\n",target_pose2.pose.position.x,target_pose2.pose.position.y,target_pose2.pose.position.z);
-       target_pose2.pose.orientation.w=1;
+        //  std::printf("---------> OBJECT: [%f , %f , %f]\n",target_pose2.pose.position.x,target_pose2.pose.position.y,target_pose2.pose.position.z);
+        target_pose2.pose.orientation.w=1;
         object_pub.publish(target_pose2);
 
 
@@ -126,31 +126,34 @@ void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& 
 
     try
     {
-           geometry_msgs::PoseStamped base_object_pose;
+        geometry_msgs::PoseStamped base_object_pose,base_table_pose;
         listener_ptr->transformPose("base_footprint", *point_ptr, base_object_pose);
         base_object_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
-       // base_object_pose.header.frame_id="base_footprint";
-      //  base_object_pose.header.stamp=ros::Time::now();
+        // base_object_pose.header.frame_id="base_footprint";
+        //  base_object_pose.header.stamp=ros::Time::now();
 
-detect_t=ros::Time::now();
+        detect_t=ros::Time::now();
 
-     // col_objects[0].header.stamp=ros::Time::now();
-    //  col_objects[0].primitive_poses.clear();
-     if(col_objects[0].primitive_poses.size()==0) {
-         col_objects[0].primitive_poses.push_back(base_object_pose.pose);
-     }
+        // col_objects[0].header.stamp=ros::Time::now();
+        //  col_objects[0].primitive_poses.clear();
+        base_table_pose=base_object_pose;
+        base_table_pose.pose.position.z-=(object_h/2.0+0.02);
 
-     else  {
-         col_objects[0].primitive_poses[0]=base_object_pose.pose;
-     }
-       col_objects[0].operation = col_objects[0].ADD;
+        col_objects[0].primitive_poses.clear();
+        col_objects[1].primitive_poses.clear();
+        col_objects[0].primitive_poses.push_back(base_object_pose.pose);
+        col_objects[1].primitive_poses.push_back(base_table_pose.pose);
 
-       if (update) planning_scene_interface_ptr->addCollisionObjects(col_objects);
 
-       if (timeout) {
-           ROS_DEBUG("Found object");
-           timeout=false;
-       }
+        col_objects[0].operation = col_objects[0].ADD;
+        col_objects[1].operation = col_objects[1].ADD;
+
+        if (update) planning_scene_interface_ptr->addCollisionObjects(col_objects);
+
+        if (timeout) {
+            ROS_DEBUG("Found object");
+            timeout=false;
+        }
     }
     catch (tf::TransformException &ex)
     {
@@ -308,11 +311,11 @@ int main(int argc, char **argv) {
     object_image_pub = it_.advertise("hsv_filterd", 1);
     bw_image_pub = it_.advertise("bw", 1);
 
-string uc="/update_collision/"+object_name;
-ros::ServiceServer service = n.advertiseService(uc, update_cb);
+    string uc="/update_collision/"+object_name;
+    ros::ServiceServer service = n.advertiseService(uc, update_cb);
 
     ros::Subscriber pcl_sub = n.subscribe(depth_topic, 1, cloud_cb);
-string topic="/detected_objects/"+object_name;
+    string topic="/detected_objects/"+object_name;
     object_pub=n.advertise<geometry_msgs::PoseStamped>(topic, 2, true);
 
     tf::TransformListener listener;
@@ -335,9 +338,21 @@ string topic="/detected_objects/"+object_name;
     object_primitive.dimensions.resize(2);
     object_primitive.dimensions[0] = object_h;
     object_primitive.dimensions[1] = object_r;
-
     can_collision_object.primitives.push_back(object_primitive);
     col_objects.push_back(can_collision_object);
+
+    moveit_msgs::CollisionObject table_collision_object;
+    table_collision_object.header.frame_id = "base_footprint";
+    table_collision_object.id = "table";
+    shape_msgs::SolidPrimitive table_primitive;
+    table_primitive.type = table_primitive.BOX;
+    table_primitive.dimensions.resize(3);
+    table_primitive.dimensions[0] = 0.2;
+    table_primitive.dimensions[1] = 0.5;
+    table_primitive.dimensions[2] = 0.04;
+    table_collision_object.primitives.push_back(table_primitive);
+    col_objects.push_back(table_collision_object);
+
 
 
     if (debug_vision) {
@@ -358,21 +373,22 @@ string topic="/detected_objects/"+object_name;
 
 
     ROS_INFO("Ready to find objects!");
-ros::Rate r(10);
+    ros::Rate r(10);
 
-while (ros::ok()) {
+    while (ros::ok()) {
 
         double dt=(ros::Time::now()-detect_t).toSec();
         if ((dt>2.0)&&(!timeout)&&(update)) {
             timeout=true;
             ROS_DEBUG("Object detection timeout");
-           col_objects[0].operation = col_objects[0].REMOVE;
+            col_objects[0].operation = col_objects[0].REMOVE;
+            col_objects[1].operation = col_objects[1].REMOVE;
             planning_scene_interface_ptr->addCollisionObjects(col_objects);
 
         }
         r.sleep();
-ros::spinOnce();
-}
+        ros::spinOnce();
+    }
 
     return 0;
 }
