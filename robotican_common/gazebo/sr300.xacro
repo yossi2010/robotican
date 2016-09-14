@@ -58,13 +58,14 @@
 				<depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
 				<pointCloudTopicName>depth/points</pointCloudTopicName>
 				<frameName>sr300_depth_optical_frame</frameName>
-				<pointCloudCutoff>0.2</pointCloudCutoff>
-				<pointCloudCutoffMax>1.2</pointCloudCutoffMax>
+				<pointCloudCutoff>0.05</pointCloudCutoff>
+				<pointCloudCutoffMax>1.5</pointCloudCutoffMax>
 				<distortionK1>0.0</distortionK1>
 				<distortionK2>0.0</distortionK2>
 				<distortionK3>0.0</distortionK3>
 				<distortionT1>0.0</distortionT1>
 				<distortionT2>0.0</distortionT2>
+				<baseline>0.11</baseline>
 				<!-- <Cx>320</Cx>
 				<Cy>240</Cy>
 				<focalLength>463.888592</focalLength> -->

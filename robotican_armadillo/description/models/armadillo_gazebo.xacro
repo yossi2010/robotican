@@ -25,7 +25,7 @@
     <gripper name="gripper">
       <grasp_check>
 	<attach_steps>1</attach_steps>	          
-	<detach_steps>2</detach_steps>
+	<detach_steps>1</detach_steps>
 	<min_contact_count>1</min_contact_count>
       </grasp_check>
       <gripper_link>left_finger_link</gripper_link>

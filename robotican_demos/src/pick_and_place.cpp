@@ -16,8 +16,10 @@
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <std_srvs/SetBool.h>
 #include <moveit_msgs/PickupAction.h>
+#include <moveit_msgs/PlaceAction.h>
 
 typedef actionlib::SimpleActionClient<moveit_msgs::PickupAction> PickClient;
+typedef actionlib::SimpleActionClient<moveit_msgs::PlaceAction> PlaceClient;
 
 void look_down();
 bool set_collision_update(bool state);
@@ -26,23 +28,6 @@ moveit_msgs::PickupGoal BuildPickGoal(const std::string &objectName);
 
 ros::ServiceClient *uc_client_ptr;
 ros::Publisher pub_controller_command;
-
-void look_down() {
-
-    trajectory_msgs::JointTrajectory traj;
-    traj.header.stamp = ros::Time::now();
-    traj.joint_names.push_back("head_pan_joint");
-    traj.joint_names.push_back("head_tilt_joint");
-    traj.points.resize(1);
-    traj.points[0].time_from_start = ros::Duration(1.0);
-    std::vector<double> q_goal(2);
-    q_goal[0]=0.0;
-    q_goal[1]=0.6;
-    traj.points[0].positions=q_goal;
-    traj.points[0].velocities.push_back(0);
-    traj.points[0].velocities.push_back(0);
-    pub_controller_command.publish(traj);
-}
 
 int main(int argc, char **argv) {
 
@@ -55,7 +40,7 @@ int main(int argc, char **argv) {
     std::string startPositionName;
     std::string object_name;
     pn.param<std::string>("start_position_name", startPositionName, "pre_grasp2");
-pn.param<std::string>("object_name", object_name, "object");
+    pn.param<std::string>("object_name", object_name, "object");
 
     ROS_INFO("Hello");
     moveit::planning_interface::MoveGroup group("arm");
@@ -84,6 +69,12 @@ pn.param<std::string>("object_name", object_name, "object");
         ros::Duration(5.0).sleep();
         look_down();
         ros::Duration(5.0).sleep();
+        char c = 'q';
+        do {
+            std::cout << "Type g to continue: ";
+            std::cin >> c;
+        } while (c != 'g');
+
         set_collision_update(false);
         ROS_INFO("Looking down...");
         ROS_INFO("Ready!");
@@ -91,8 +82,46 @@ pn.param<std::string>("object_name", object_name, "object");
         PickClient pickClient("pickup", true);
         pickClient.waitForServer();
         std::string objectName = "can";
-        moveit_msgs::PickupGoal goal = BuildPickGoal(objectName);
-        pickClient.sendGoalAndWait(goal);
+        moveit_msgs::PickupGoal pickGoal = BuildPickGoal(objectName);
+        pickClient.sendGoalAndWait(pickGoal);
+
+        PlaceClient placeClient("place", true);
+        placeClient.waitForServer();
+
+        moveit_msgs::PlaceGoal placeGoal;
+        placeGoal.group_name = "arm";
+        placeGoal.attached_object_name = "can";
+        placeGoal.place_eef = false;
+        placeGoal.support_surface_name = "table";
+        placeGoal.planner_id = "RRTConnectkConfigDefault";
+        placeGoal.allowed_planning_time = 5.0;
+        placeGoal.planning_options.replan = true;
+        placeGoal.planning_options.replan_attempts = 5;
+        placeGoal.planning_options.replan_delay = 2.0;
+        placeGoal.planning_options.planning_scene_diff.is_diff = true;
+        placeGoal.planning_options.planning_scene_diff.robot_state.is_diff = true;
+        std::vector<moveit_msgs::PlaceLocation> locations;
+        moveit_msgs::PlaceLocation location;
+        location.pre_place_approach.direction.header.frame_id = "/base_footprint";
+        location.pre_place_approach.direction.vector.z = -1.0;
+        location.pre_place_approach.min_distance = 0.1;
+        location.pre_place_approach.desired_distance = 0.2;
+
+        location.post_place_retreat.direction.header.frame_id = "/gripper_link";
+        location.post_place_retreat.direction.vector.x = -1.0;
+        location.post_place_retreat.min_distance = 0.0;
+        location.post_place_retreat.desired_distance = 0.2;
+
+        location.place_pose.header.frame_id = placeGoal.support_surface_name;
+        location.place_pose.pose.position.x = 0;
+        location.place_pose.pose.position.y = 0.05;
+        location.place_pose.pose.position.z = 0.1;
+        location.place_pose.pose.orientation.w = 1.0;
+
+        locations.push_back(location);
+        placeGoal.place_locations = locations;
+        placeClient.sendGoalAndWait(placeGoal);
+
     }
     else {
         ROS_ERROR("Error");
@@ -126,12 +155,12 @@ moveit_msgs::PickupGoal BuildPickGoal(const std::string &objectName) {
     g.grasp_pose.pose.orientation.z = 0.0;
     g.grasp_pose.pose.orientation.w = 1.0;
 
-    g.pre_grasp_approach.direction.header.frame_id = "/base_footprint";
+    g.pre_grasp_approach.direction.header.frame_id = "/base_footprint"; //gripper_link
     g.pre_grasp_approach.direction.vector.x = 1.0;
     g.pre_grasp_approach.min_distance = 0.1;
     g.pre_grasp_approach.desired_distance = 0.2;
 
-    g.post_grasp_retreat.direction.header.frame_id = "/base_footprint";
+    g.post_grasp_retreat.direction.header.frame_id = "/base_footprint"; //gripper_link
     g.post_grasp_retreat.direction.vector.z = 1.0;
     g.post_grasp_retreat.min_distance = 0.1;
     g.post_grasp_retreat.desired_distance = 0.2;
@@ -155,6 +184,23 @@ moveit_msgs::PickupGoal BuildPickGoal(const std::string &objectName) {
     g.grasp_posture.points[0].time_from_start = ros::Duration(25.0);
     goal.possible_grasps.push_back(g);
     return goal;
+}
+
+void look_down() {
+
+    trajectory_msgs::JointTrajectory traj;
+    traj.header.stamp = ros::Time::now();
+    traj.joint_names.push_back("head_pan_joint");
+    traj.joint_names.push_back("head_tilt_joint");
+    traj.points.resize(1);
+    traj.points[0].time_from_start = ros::Duration(1.0);
+    std::vector<double> q_goal(2);
+    q_goal[0]=0.0;
+    q_goal[1]=0.6;
+    traj.points[0].positions=q_goal;
+    traj.points[0].velocities.push_back(0);
+    traj.points[0].velocities.push_back(0);
+    pub_controller_command.publish(traj);
 }
 
 bool set_collision_update(bool state){
