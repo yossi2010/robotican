@@ -26,6 +26,10 @@ bool set_collision_update(bool state);
 
 moveit_msgs::PickupGoal BuildPickGoal(const std::string &objectName);
 
+moveit_msgs::PlaceGoal buildPlaceGoal(const std::string &objectName);
+
+void waitForGo();
+
 ros::ServiceClient *uc_client_ptr;
 ros::Publisher pub_controller_command;
 
@@ -68,15 +72,10 @@ int main(int argc, char **argv) {
         set_collision_update(true);
         ros::Duration(5.0).sleep();
         look_down();
-        ros::Duration(5.0).sleep();
-        char c = 'q';
-        do {
-            std::cout << "Type g to continue: ";
-            std::cin >> c;
-        } while (c != 'g');
+        ROS_INFO("Looking down...");
+        waitForGo();
 
         set_collision_update(false);
-        ROS_INFO("Looking down...");
         ROS_INFO("Ready!");
 
         PickClient pickClient("pickup", true);
@@ -88,38 +87,8 @@ int main(int argc, char **argv) {
         PlaceClient placeClient("place", true);
         placeClient.waitForServer();
 
-        moveit_msgs::PlaceGoal placeGoal;
-        placeGoal.group_name = "arm";
-        placeGoal.attached_object_name = "can";
-        placeGoal.place_eef = false;
-        placeGoal.support_surface_name = "table";
-        placeGoal.planner_id = "RRTConnectkConfigDefault";
-        placeGoal.allowed_planning_time = 5.0;
-        placeGoal.planning_options.replan = true;
-        placeGoal.planning_options.replan_attempts = 5;
-        placeGoal.planning_options.replan_delay = 2.0;
-        placeGoal.planning_options.planning_scene_diff.is_diff = true;
-        placeGoal.planning_options.planning_scene_diff.robot_state.is_diff = true;
-        std::vector<moveit_msgs::PlaceLocation> locations;
-        moveit_msgs::PlaceLocation location;
-        location.pre_place_approach.direction.header.frame_id = "/base_footprint";
-        location.pre_place_approach.direction.vector.z = -1.0;
-        location.pre_place_approach.min_distance = 0.1;
-        location.pre_place_approach.desired_distance = 0.2;
+        moveit_msgs::PlaceGoal placeGoal = buildPlaceGoal(objectName);
 
-        location.post_place_retreat.direction.header.frame_id = "/gripper_link";
-        location.post_place_retreat.direction.vector.x = -1.0;
-        location.post_place_retreat.min_distance = 0.0;
-        location.post_place_retreat.desired_distance = 0.2;
-
-        location.place_pose.header.frame_id = placeGoal.support_surface_name;
-        location.place_pose.pose.position.x = 0;
-        location.place_pose.pose.position.y = 0.05;
-        location.place_pose.pose.position.z = 0.1;
-        location.place_pose.pose.orientation.w = 1.0;
-
-        locations.push_back(location);
-        placeGoal.place_locations = locations;
         placeClient.sendGoalAndWait(placeGoal);
 
     }
@@ -128,6 +97,50 @@ int main(int argc, char **argv) {
     }
     ros::waitForShutdown();
     return 0;
+}
+
+void waitForGo() {
+    char c = 'q';
+    do {
+            std::cout << "Type g to continue: ";
+            std::cin >> c;
+        } while (c != 'g');
+}
+
+moveit_msgs::PlaceGoal buildPlaceGoal(const std::string &objectName) {
+    moveit_msgs::PlaceGoal placeGoal;
+    placeGoal.group_name = "arm";
+    placeGoal.attached_object_name = objectName;
+    placeGoal.place_eef = false;
+    placeGoal.support_surface_name = "table";
+    placeGoal.planner_id = "RRTConnectkConfigDefault";
+    placeGoal.allowed_planning_time = 5.0;
+    placeGoal.planning_options.replan = true;
+    placeGoal.planning_options.replan_attempts = 5;
+    placeGoal.planning_options.replan_delay = 2.0;
+    placeGoal.planning_options.planning_scene_diff.is_diff = true;
+    placeGoal.planning_options.planning_scene_diff.robot_state.is_diff = true;
+    std::vector<moveit_msgs::PlaceLocation> locations;
+    moveit_msgs::PlaceLocation location;
+    location.pre_place_approach.direction.header.frame_id = "/base_footprint";
+    location.pre_place_approach.direction.vector.z = -1.0;
+    location.pre_place_approach.min_distance = 0.1;
+    location.pre_place_approach.desired_distance = 0.2;
+
+    location.post_place_retreat.direction.header.frame_id = "/gripper_link";
+    location.post_place_retreat.direction.vector.x = -1.0;
+    location.post_place_retreat.min_distance = 0.0;
+    location.post_place_retreat.desired_distance = 0.2;
+
+    location.place_pose.header.frame_id = placeGoal.support_surface_name;
+    location.place_pose.pose.position.x = 0;
+    location.place_pose.pose.position.y = 0.05;
+    location.place_pose.pose.position.z = 0.1;
+    location.place_pose.pose.orientation.w = 1.0;
+
+    locations.push_back(location);
+    placeGoal.place_locations = locations;
+    return placeGoal;
 }
 
 moveit_msgs::PickupGoal BuildPickGoal(const std::string &objectName) {
