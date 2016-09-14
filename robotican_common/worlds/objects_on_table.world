@@ -41,7 +41,7 @@
     <include>
       <uri>model://kitchen_table</uri>
       <name>table1</name>
-      <pose>1.35 -0.8 0 0 0 0</pose>
+      <pose>1.35 -0.8 -0.34 0 0 0</pose>
     </include>
     <!-- Objects on the table -->
   <include>

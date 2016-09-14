@@ -1,15 +1,11 @@
 <?xml version="1.0"?>
 <launch>
 
-  <!-- roslaunch robotican_armadillo armadillo.launch moveit:=true sr300:=true x:=0.8 y:=-0.35 world_name:="`rospack find robotican_common`/worlds/objects_on_table.world" gazebo:=true -->
+  <!-- roslaunch robotican_armadillo armadillo.launch gazebo:=true kinect2:=true sr300:=true world_name:="`rospack find robotican_common`/worlds/objects_on_table.world" x:=0.8 y:=-0.35 -->
  
 
 
     <node name="pick_and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true"> 
-      <param name="~object_name" value="sr300_object"/> 
-      <param name="~wrist_distance_from_object" value="0.05"/>
-      <param name="~MaxAccelerationScalingFactor" value="0.5"/>
-      <param name="~MaxVelocityScalingFactor" value="0.1"/>
       <param name="~start_position_name" value="pre_grasp2"/>
     </node>
 
