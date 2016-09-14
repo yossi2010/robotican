@@ -114,13 +114,6 @@ int main(int argc, char **argv) {
     pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("/pan_tilt_trajectory_controller/command", 2);
 
     ROS_INFO("Waiting for the moveit action server to come up");
-//    moveit::planning_interface::MoveGroup group("arm");
-//    group.setMaxVelocityScalingFactor(0.01);
-//    group.setMaxAccelerationScalingFactor(0.5);
-//    group.setPlanningTime(5.0);
-//    group.setNumPlanningAttempts(10);
-//    group.setPlannerId("RRTConnectkConfigDefault");
-//    group.setPoseReferenceFrame("base_footprint");
 
 
     spinner.start();
@@ -144,10 +137,13 @@ int main(int argc, char **argv) {
     goal.planning_options.replan_delay = 2.0;
     goal.planning_options.planning_scene_diff.is_diff = true;
     goal.planning_options.planning_scene_diff.robot_state.is_diff = true;
+    goal.planning_options.replan=true;
+    goal.planning_options.replan_attempts=5;
     goal.planner_id = "RRTConnectkConfigDefault";
 
     goal.minimize_object_distance = true;
     moveit_msgs::Grasp g;
+    g.max_contact_force = 0.01;
     g.grasp_pose.header.frame_id = goal.target_name;
     g.grasp_pose.pose.position.x = -0.2;
     g.grasp_pose.pose.position.y = 0.0;
@@ -157,12 +153,12 @@ int main(int argc, char **argv) {
     g.grasp_pose.pose.orientation.z = 0.0;
     g.grasp_pose.pose.orientation.w = 1.0;
 
-    g.pre_grasp_approach.direction.header.frame_id = "/map";
+    g.pre_grasp_approach.direction.header.frame_id = "/base_footprint";
     g.pre_grasp_approach.direction.vector.x = 1.0;
     g.pre_grasp_approach.min_distance = 0.1;
     g.pre_grasp_approach.desired_distance = 0.2;
 
-    g.post_grasp_retreat.direction.header.frame_id = "/map";
+    g.post_grasp_retreat.direction.header.frame_id = "/base_footprint";
     g.post_grasp_retreat.direction.vector.z = 1.0;
     g.post_grasp_retreat.min_distance = 0.1;
     g.post_grasp_retreat.desired_distance = 0.2;
@@ -170,21 +166,25 @@ int main(int argc, char **argv) {
     g.pre_grasp_posture.joint_names.push_back("left_finger_joint");
     g.pre_grasp_posture.joint_names.push_back("right_finger_joint");
     g.pre_grasp_posture.points.resize(1);
-    g.pre_grasp_posture.points[0].positions.resize(g.pre_grasp_posture.joint_names.size(), 0.56);
+    g.pre_grasp_posture.points[0].positions.resize(g.pre_grasp_posture.joint_names.size());
+    g.pre_grasp_posture.points[0].positions[0] = -0.56;
+    g.pre_grasp_posture.points[0].positions[1] = 0.56;
     g.pre_grasp_posture.points[0].time_from_start = ros::Duration(1.0);
 
     g.grasp_posture.joint_names = g.pre_grasp_posture.joint_names;
     g.grasp_posture.points.resize(1);
-    g.grasp_posture.points[0].positions.resize(g.grasp_posture.joint_names.size(), -0.3);
-    g.grasp_posture.points[0].time_from_start = ros::Duration(1.0);
+    g.grasp_posture.points[0].positions.resize(g.grasp_posture.joint_names.size());
+    g.grasp_posture.points[0].positions[0] = 0.25;
+    g.grasp_posture.points[0].positions[1] = -0.25;
+    g.grasp_posture.points[0].effort.resize(g.grasp_posture.joint_names.size());
+    g.grasp_posture.points[0].effort[0] = 0.02;
+    g.grasp_posture.points[0].effort[1] = 0.02;
+    g.grasp_posture.points[0].time_from_start = ros::Duration(25.0);
     goal.possible_grasps.push_back(g);
 
 
     pickClient.sendGoalAndWait(goal);
 
-//    demoPick(group);
-
-    //ros::spin();
     ros::waitForShutdown();
     return 0;
 }

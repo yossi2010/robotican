@@ -113,6 +113,12 @@ gripper_jta_controller:
   joints:
      - left_finger_joint
      - right_finger_joint
+  constraints:
+    goal_time: 100.0                   # Override default
+    stopped_velocity_tolerance: 100.0 # Override default
+    left_finger_joint: {trajectory: 100.2, goal: 100.2}
+    right_finger_joint: {trajectory: 100.2, goal: 100.2}
+
 
 
 pan_controller:

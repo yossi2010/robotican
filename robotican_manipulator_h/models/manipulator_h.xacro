@@ -452,10 +452,10 @@
     <child
       link="left_finger_link" />
     <axis
-      xyz="-1 0 0" />
+      xyz="1 0 0" />
     <limit
       effort="3.1"
-      lower="-0.3600"
+      lower="-1.57"
       upper="1.57"
       velocity="2.0" /> <!--7.016223585-->
       <dynamics friction ="1000" damping="100"/>
@@ -514,7 +514,7 @@
       xyz="1 0 0" />
     <limit
       effort="3.1"
-      lower="-0.3600"
+      lower="-1.57"
       upper="1.57"
       velocity="2.0" /> <!--7.016223585-->
       <dynamics friction ="1000" damping="100"/>
