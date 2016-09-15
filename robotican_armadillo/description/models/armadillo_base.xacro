@@ -40,7 +40,17 @@
           rgba="0.79216 0.81961 0.93333 1" />
       </material>
     </visual>
-   
+
+     <collision name='base_collision'>
+       <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robotican_armadillo/description/meshes/base_link.STL" />
+      </geometry>
+          </collision>
+
       <collision name='caster_collision'>
       <origin
         xyz="-0.30 0 -0.0475"
