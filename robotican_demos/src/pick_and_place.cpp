@@ -42,6 +42,7 @@ int main(int argc, char **argv) {
     ros::NodeHandle n;
     ros::NodeHandle pn("~");
     std::string object_id;
+    std::string startPositionName ;
 
     pn.param<std::string>("start_position_name", startPositionName, "pre_grasp2");
 
