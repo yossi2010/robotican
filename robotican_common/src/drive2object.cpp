@@ -134,10 +134,10 @@ int main(int argc, char **argv) {
     ros::NodeHandle n;
     ros::NodeHandle pn("~");
 
-    std::string object_name;
+    std::string object_id;
     pn.param<double>("base_distance_from_object", base_distance_from_object, 0.55);
-    pn.param<std::string>("object_name", object_name, "object");
-    std::string obj_topic="/detected_objects/"+object_name;
+    pn.param<std::string>("object_id", object_id, "can");
+    std::string obj_topic="/detected_objects/"+object_id;
 
 
     MoveBaseClient moveBaseClient("move_base", true);

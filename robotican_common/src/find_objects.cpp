@@ -37,7 +37,6 @@ tf::TransformListener *listener_ptr;
 bool timeout=true;
 bool update=false;
 
-std::string object_name;
 double object_r,object_h;
 ros::Time detect_t;
 
@@ -296,7 +295,6 @@ int main(int argc, char **argv) {
     n.param<double>("object_r", object_r, 0.025);
     n.param<double>("object_h", object_h, 0.15);
     n.param<std::string>("object_id", object_id, "can");
-    n.param<std::string>("object_name", object_name, "object");
     n.param<std::string>("depth_topic", depth_topic, "/kinect2/qhd/points");
 
     dynamic_reconfigure::Server<robotican_common::FindObjectDynParamConfig> dynamicServer;
@@ -311,11 +309,11 @@ int main(int argc, char **argv) {
     object_image_pub = it_.advertise("hsv_filterd", 1);
     bw_image_pub = it_.advertise("bw", 1);
 
-    string uc="/update_collision/"+object_name;
+    string uc="/update_collision/"+object_id;
     ros::ServiceServer service = n.advertiseService(uc, update_cb);
 
     ros::Subscriber pcl_sub = n.subscribe(depth_topic, 1, cloud_cb);
-    string topic="/detected_objects/"+object_name;
+    string topic="/detected_objects/"+object_id;
     object_pub=n.advertise<geometry_msgs::PoseStamped>(topic, 2, true);
 
     tf::TransformListener listener;

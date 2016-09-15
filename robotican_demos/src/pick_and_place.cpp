@@ -41,12 +41,11 @@ int main(int argc, char **argv) {
 
     ros::NodeHandle n;
     ros::NodeHandle pn("~");
-    std::string startPositionName;
-    std::string pickAndPlaceObjName;
-    std::string object_name;
+    std::string object_id;
+
     pn.param<std::string>("start_position_name", startPositionName, "pre_grasp2");
-    pn.param<std::string>("object_name", object_name, "object");
-    pn.param<std::string>("pick_place_object", pickAndPlaceObjName, "can");
+
+    pn.param<std::string>("object_id", object_id, "can");
 
     ROS_INFO("Hello");
     moveit::planning_interface::MoveGroup group("arm");
@@ -66,7 +65,7 @@ int main(int argc, char **argv) {
         pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("/pan_tilt_trajectory_controller/command", 2);
         ROS_INFO("Waiting for the moveit action server to come up");
 
-        std::string uc="/update_collision/" + object_name;
+        std::string uc="/update_collision/" + object_id;
         ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>(uc);
         ROS_INFO("Waiting for update_collision service...");
         uc_client.waitForExistence();
@@ -83,13 +82,13 @@ int main(int argc, char **argv) {
         PickClient pickClient("pickup", true);
         pickClient.waitForServer();
 
-        moveit_msgs::PickupGoal pickGoal = BuildPickGoal(pickAndPlaceObjName);
+        moveit_msgs::PickupGoal pickGoal = BuildPickGoal(object_id);
         pickClient.sendGoalAndWait(pickGoal);
 
         PlaceClient placeClient("place", true);
         placeClient.waitForServer();
 
-        moveit_msgs::PlaceGoal placeGoal = buildPlaceGoal(pickAndPlaceObjName);
+        moveit_msgs::PlaceGoal placeGoal = buildPlaceGoal(object_id);
         placeClient.sendGoalAndWait(placeGoal);
 
     }

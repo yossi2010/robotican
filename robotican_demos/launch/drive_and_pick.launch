@@ -7,7 +7,6 @@
   
   <!-- drive2object-->
   <node name="find_object_node_kinect2" pkg="robotican_common" type="find_objects_node" output="screen">
-    <param name="~object_name" value="kinect2_object"/>
     <param name="~object_r" value="0.025"/>
     <param name="~object_h" value="0.15"/>
     <param name="~object_id" value="can"/>
@@ -17,7 +16,7 @@
   </node>  
   
   <node name="drive2object_node" pkg="robotican_common" type="drive2object_node" output="screen">
-    <param name="~object_name" value="kinect2_object"/>
+    <param name="~object_id" value="can"/>
     <param name="~base_distance_from_object" value="0.65"/>
   </node>  
   
@@ -29,7 +28,7 @@
   
   <!-- pick and place-->
   <node name="pick_and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true"> 
-    <param name="~object_name" value="sr300_object"/> 
+    <param name="~object_id" value="can"/> 
     <param name="~wrist_distance_from_object" value="0.05"/>
     <param name="~MaxAccelerationScalingFactor" value="0.5"/>
     <param name="~MaxVelocityScalingFactor" value="0.1"/>
@@ -37,7 +36,7 @@
   </node>
   
   <node name="find_object_node_sr300" pkg="robotican_common" type="find_objects_node" output="screen">
-    <param name="~object_name" value="sr300_object"/>
+    <param name="~object_id" value="can"/>
     <param name="~object_r" value="0.025"/>
     <param name="~object_h" value="0.15"/>
     <param name="~object_id" value="can"/>

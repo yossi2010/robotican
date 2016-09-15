@@ -6,7 +6,6 @@
   
   
   <node name="find_object_node" pkg="robotican_common" type="find_objects_node" output="screen">
-    <param name="~object_name" value="kinect2_object"/>
         <param name="~object_r" value="0.025"/>
     <param name="~object_h" value="0.15"/>
     <param name="~object_id" value="can"/>
@@ -16,7 +15,7 @@
   </node>  
   
   <node name="drive2object_node" pkg="robotican_common" type="drive2object_node" output="screen">
-    <param name="~object_name" value="kinect2_object"/>
+    <param name="~object_id" value="can"/>
  <param name="~base_distance_from_object" value="0.55"/>
   </node>  
   
