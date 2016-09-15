@@ -114,6 +114,8 @@ namespace robotican_hardware {
         float maxSetPointPos;
         float minSetPointSpeed;
         float minSetPointPos;
+        float K;
+        uint16_t toleranceTime;
     };
 
     class CloseLoopMotor : public RiCMotor {
@@ -194,9 +196,9 @@ namespace robotican_hardware {
         virtual void setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha,
                                float inputLpfAlpha, float KP, float KI, float KD, float KFF, float limit);
 
-        virtual void setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz,
-                                       float speedLpfAlpha, float inputLpfAlpha, float KP, float KI, float KD,
-                                       float KFF, float a, float b, float tolerance, float limit);
+        virtual void setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha, float inputLpfAlpha, float KP,
+                                       float KI, float KD, float KFF, float K, float a, float b, float tolerance, uint16_t toleranceTime,
+                                       float limit);
 
         virtual void buildDevice();
 

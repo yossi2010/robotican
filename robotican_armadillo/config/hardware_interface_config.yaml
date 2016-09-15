@@ -179,6 +179,7 @@ positionMotor0_kp: 3000.0
 positionMotor0_ki: 250.0
 positionMotor0_kd: 0.0
 positionMotor0_kff: 0.0
+positionMotor0_k: -30.0 # Exp!!
 positionMotor0_max_set_point_speed: 0.06
 positionMotor0_min_set_point_speed: -0.06
 positionMotor0_max_set_point_position: 0.37
@@ -191,6 +192,7 @@ positionMotor0_joint: 'torso_joint'
 positionMotor0_mode: 1
 positionMotor0_read_pin: 21
 positionMotor0_tolerance: 0.01
+positionMotor0_tolerance_time: 1000 # millis
 positionMotor0_stop_limit_max: 0.38
 positionMotor0_stop_limit_min: 0.04
 

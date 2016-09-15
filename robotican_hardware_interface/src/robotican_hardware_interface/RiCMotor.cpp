@@ -339,6 +339,8 @@ namespace robotican_hardware {
         buildCloseLoopWithPotentiometer.stopLimitMin = _param.stopLimitMin;
         buildCloseLoopWithPotentiometer.LPFHzInput = _param.LPFHzInput;
         buildCloseLoopWithPotentiometer.LPFAlphaInput = _param.LPFAlphaInput;
+        buildCloseLoopWithPotentiometer.k = _param.K;
+        buildCloseLoopWithPotentiometer.toleranceTime = _param.toleranceTime;
 
         uint8_t* rawData = (uint8_t*)&buildCloseLoopWithPotentiometer;
         buildCloseLoopWithPotentiometer.checkSum = _transportLayer->calcChecksum(rawData, buildCloseLoopWithPotentiometer.length);
@@ -368,11 +370,12 @@ namespace robotican_hardware {
         config.motor_ki = motorParam.KI;
         config.motor_kd = motorParam.KD;
         config.motor_kff = motorParam.KFF;
+        config.motor_k = motorParam.K;
         config.motor_a = motorParam.a;
         config.motor_b = motorParam.b;
         config.motor_limit = motorParam.limit;
         config.motor_tolerance = motorParam.tolerance;
-
+        config.motor_tolerance_time = motorParam.toleranceTime;
         _server.updateConfig(config);
 
 
@@ -381,9 +384,9 @@ namespace robotican_hardware {
         _firstTime = true;
     }
 
-    void CloseLoopMotorWithPotentiometer::setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz,
-                                                        float speedLpfAlpha, float inputLpfAlpha, float KP, float KI, float KD,
-                                                        float KFF, float a, float b, float tolerance, float limit) {
+    void CloseLoopMotorWithPotentiometer::setParams(uint16_t speedLpfHz, uint16_t inputLpfHz, uint16_t pidHz, float speedLpfAlpha, float inputLpfAlpha, float KP,
+                                                        float KI, float KD, float KFF, float K, float a, float b, float tolerance, uint16_t toleranceTime,
+                                                        float limit) {
         _param.LPFHzSpeed = speedLpfHz;
         _param.LPFHzInput = inputLpfHz;
         _param.PIDHz = pidHz;
@@ -393,9 +396,11 @@ namespace robotican_hardware {
         _param.KI = KI;
         _param.KD = KD;
         _param.KFF = KFF;
+        _param.K = K;
         _param.a = a;
         _param.b = b;
         _param.tolerance = tolerance;
+        _param.toleranceTime = toleranceTime;
         _param.limit = limit;
         _isParamChange = true;
 
@@ -405,8 +410,8 @@ namespace robotican_hardware {
         setParams((uint16_t) config.motor_speed_lpf_hz, (uint16_t) config.motor_input_lpf_hz,
                   (uint16_t) config.motor_pid_hz, (float) config.motor_speed_lpf_alpha,
                   (float) config.motor_input_lpf_alpha, (float) config.motor_kp, (float) config.motor_ki,
-                  (float) config.motor_kd, (float) config.motor_kff, (float) config.motor_a, (float) config.motor_b,
-                  (float) config.motor_tolerance, (float) config.motor_limit);
+                  (float) config.motor_kd, (float) config.motor_kff, (float) config.motor_k, (float) config.motor_a, (float) config.motor_b,
+                  (float) config.motor_tolerance, (uint16_t) config.motor_tolerance_time, (float) config.motor_limit);
     }
 
 
@@ -429,9 +434,13 @@ namespace robotican_hardware {
             setCloseMotorWithPotentiometer.KP = _param.KP;
             setCloseMotorWithPotentiometer.KI = _param.KI;
             setCloseMotorWithPotentiometer.KD = _param.KD;
+            setCloseMotorWithPotentiometer.KFF = _param.KFF;
+            setCloseMotorWithPotentiometer.K = _param.K;
             setCloseMotorWithPotentiometer.a = _param.a;
             setCloseMotorWithPotentiometer.b = _param.b;
+            setCloseMotorWithPotentiometer.limit = _param.limit;
             setCloseMotorWithPotentiometer.tolerance = _param.tolerance;
+            setCloseMotorWithPotentiometer.toleranceTime = _param.toleranceTime;
 
             uint8_t *rawData = (uint8_t*)&setCloseMotorWithPotentiometer;
 
