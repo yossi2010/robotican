@@ -11,6 +11,12 @@
         <description>
         </description>
     </class>
+    <class name="position_with_effort_controllers/JointTrajectoryController"
+           type="position_with_effort_controllers::JointTrajectoryController"
+           base_class_type="controller_interface::ControllerBase">
+        <description>
+        </description>
+    </class>
 
     <class name="diff_drive_with_split_controller/DiffDriveController" type="diff_drive_controller::DiffDriveController" base_class_type="controller_interface::ControllerBase">
         <description>

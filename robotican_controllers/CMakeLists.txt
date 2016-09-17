@@ -137,7 +137,9 @@ add_library(robotican_controllers
         include/${PROJECT_NAME}/gripper_action_controller_impl.h
         include/${PROJECT_NAME}/hardware_interface_adapter.h
         include/${PROJECT_NAME}/joint_trajectory_controller_impl.h
+        include/${PROJECT_NAME}/joint_with_effort_trajectory_controller_impl.h
         src/${PROJECT_NAME}/joint_trajectory_controller.cpp
+        src/${PROJECT_NAME}/joint_with_effort_trajectory_controller.cpp
         include/${PROJECT_NAME}/diff_drive_controller.h
         src/${PROJECT_NAME}/diff_drive_controller.cpp
         include/${PROJECT_NAME}/odometry.h
