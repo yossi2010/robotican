@@ -159,6 +159,7 @@ namespace joint_with_effort_trajectory_controller
     {
         const RealtimeGoalHandlePtr rt_segment_goal = segment.getGoalHandle();
         const SegmentTolerances<Scalar>& tolerances = segment.getTolerances();
+        ROS_INFO("CUR: %f, Goal: %f", _currentEffort, _goalEffort);
         if(_goalEffort != 0 && _currentEffort > _goalEffort) {
             ROS_INFO("MAX effort");
             rt_segment_goal->preallocated_result_->error_code = control_msgs::FollowJointTrajectoryResult::SUCCESSFUL;
@@ -548,7 +549,7 @@ namespace joint_with_effort_trajectory_controller
             rt_active_goal_ = rt_goal;
             size_t  size = rt_goal->gh_.getGoal()->trajectory.points.size();
             if(!rt_goal->gh_.getGoal()->trajectory.points.empty() && !rt_goal->gh_.getGoal()->trajectory.points[size - 1].effort.empty()) {
-                ROS_INFO_STREAM(rt_goal->gh_.getGoal()->trajectory);
+
                 _goalEffort = rt_goal->gh_.getGoal()->trajectory.points[size - 1].effort[0];
                 ROS_INFO("goal effort is: %f", _goalEffort);
             } else {

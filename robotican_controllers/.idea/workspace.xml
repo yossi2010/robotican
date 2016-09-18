@@ -61,7 +61,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_armadillo/config/controllers.yaml" afterPath="$PROJECT_DIR$/../robotican_armadillo/config/controllers.yaml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h" afterPath="$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_demos/src/pick_and_place.cpp" afterPath="$PROJECT_DIR$/../robotican_demos/src/pick_and_place.cpp" />
     </list>
     <ignored path="robotican_controllers.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -94,8 +93,8 @@
       <file leaf-file-name="joint_with_effort_trajectory_controller_impl.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="165" column="36" selection-start-line="165" selection-start-column="36" selection-end-line="165" selection-end-column="36" />
+            <state relative-caret-position="25">
+              <caret line="164" column="0" selection-start-line="164" selection-start-column="0" selection-end-line="166" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -802,12 +801,13 @@
       <workItem from="1474176264341" duration="920000" />
       <workItem from="1474177343125" duration="173000" />
       <workItem from="1474177561824" duration="321000" />
-      <workItem from="1474177907428" duration="360000" />
+      <workItem from="1474177907428" duration="916000" />
+      <workItem from="1474179185131" duration="867000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19240000" />
+    <option name="totallyTimeSpent" value="20663000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1985" y="24" width="1855" height="1056" extended-state="6" />
@@ -1231,8 +1231,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="165" column="36" selection-start-line="165" selection-start-column="36" selection-end-line="165" selection-end-column="36" />
+        <state relative-caret-position="25">
+          <caret line="164" column="0" selection-start-line="164" selection-start-column="0" selection-end-line="166" selection-end-column="36" />
           <folding />
         </state>
       </provider>

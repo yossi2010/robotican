@@ -115,9 +115,9 @@ gripper_jta_controller:
      - right_finger_joint
   constraints:
     goal_time: 100.0                   # Override default
-    stopped_velocity_tolerance: 100.0 # Override default
-    left_finger_joint: {trajectory: 100.2, goal: 100.2}
-    right_finger_joint: {trajectory: 100.2, goal: 100.2}
+    stopped_velocity_tolerance: 0.5  # Override default
+    left_finger_joint: {trajectory: 0.2, goal: 0.2}
+    right_finger_joint: {trajectory: 0.2, goal: 0.2}
 
 
 
