@@ -3,6 +3,8 @@
   
   
   <!-- roslaunch robotican_armadillo armadillo.launch lidar:=true kinect2:=true gmapping:=true move_base:=true world_name:="`rospack find robotican_common`/worlds/objects_on_table.world" gazebo:=true -->
+
+<!-- roslaunch robotican_armadillo armadillo.launch lidar:=true kinect2:=true gmapping:=true move_base:=true -->
   
   
   <node name="find_object_node" pkg="robotican_common" type="find_objects_node" output="screen">

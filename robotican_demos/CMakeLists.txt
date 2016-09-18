@@ -159,8 +159,7 @@ target_link_libraries(point_head ${catkin_LIBRARIES})
 add_executable(arm_jta_client src/arm_jta_client.cpp)
 target_link_libraries(arm_jta_client ${catkin_LIBRARIES})
 
-add_executable(test_pick src/test_pick.cpp)
-target_link_libraries(test_pick ${catkin_LIBRARIES})
+
 
 
 
