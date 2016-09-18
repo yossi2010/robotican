@@ -58,7 +58,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa292360-ec6f-4dad-9f1d-dd6fdca041d3" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_armadillo/config/controllers.yaml" afterPath="$PROJECT_DIR$/../robotican_armadillo/config/controllers.yaml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h" afterPath="$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_demos/src/pick_and_place.cpp" afterPath="$PROJECT_DIR$/../robotican_demos/src/pick_and_place.cpp" />
     </list>
     <ignored path="robotican_controllers.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -91,22 +94,9 @@
       <file leaf-file-name="joint_with_effort_trajectory_controller_impl.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="313">
-              <caret line="384" column="18" selection-start-line="384" selection-start-column="18" selection-end-line="384" selection-end-column="18" />
-              <folding>
-                <element signature="e#293#324#0" expanded="true" />
-                <element signature="e#4098#4142#0" expanded="true" />
-                <element signature="e#4720#4764#0" expanded="true" />
-                <element signature="e#4936#4980#0" expanded="true" />
-                <element signature="e#5275#5319#0" expanded="true" />
-                <element signature="e#5752#5796#0" expanded="true" />
-                <element signature="e#6849#6893#0" expanded="true" />
-                <element signature="e#8652#8696#0" expanded="true" />
-                <element signature="e#8928#8972#0" expanded="true" />
-                <element signature="e#15464#15508#0" expanded="true" />
-                <element signature="e#19647#19691#0" expanded="true" />
-                <element signature="e#22286#22330#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="421">
+              <caret line="165" column="36" selection-start-line="165" selection-start-column="36" selection-end-line="165" selection-end-column="36" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -126,11 +116,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="3510">
               <caret line="195" column="27" selection-start-line="195" selection-start-column="27" selection-end-line="195" selection-end-column="27" />
-              <folding>
-                <element signature="e#722#762#0" expanded="true" />
-                <element signature="e#1097#1151#0" expanded="true" />
-                <element signature="e#3106#3150#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -140,9 +126,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1674">
               <caret line="93" column="93" selection-start-line="93" selection-start-column="72" selection-end-line="93" selection-end-column="93" />
-              <folding>
-                <element signature="e#2939#2954#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -152,10 +136,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="126">
               <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="46" selection-end-column="62" />
-              <folding>
-                <element signature="e#676#716#0" expanded="true" />
-                <element signature="e#1051#1105#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -818,17 +799,21 @@
       <workItem from="1474147895497" duration="4634000" />
       <workItem from="1474174692342" duration="96000" />
       <workItem from="1474174813735" duration="12000" />
+      <workItem from="1474176264341" duration="920000" />
+      <workItem from="1474177343125" duration="173000" />
+      <workItem from="1474177561824" duration="321000" />
+      <workItem from="1474177907428" duration="360000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17466000" />
+    <option name="totallyTimeSpent" value="19240000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1985" y="24" width="1855" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13755459" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13755459" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295099" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.123173274" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -1208,17 +1193,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
           <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="46" selection-end-column="62" />
-          <folding>
-            <element signature="e#676#716#0" expanded="true" />
-            <element signature="e#1051#1105#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_trajectory_controller_impl.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9612">
-          <caret line="534" column="35" selection-start-line="534" selection-start-column="14" selection-end-line="534" selection-end-column="35" />
           <folding />
         </state>
       </provider>
@@ -1227,9 +1201,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1674">
           <caret line="93" column="93" selection-start-line="93" selection-start-column="72" selection-end-line="93" selection-end-column="93" />
-          <folding>
-            <element signature="e#2939#2954#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1237,11 +1209,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3510">
           <caret line="195" column="27" selection-start-line="195" selection-start-column="27" selection-end-line="195" selection-end-column="27" />
-          <folding>
-            <element signature="e#722#762#0" expanded="true" />
-            <element signature="e#1097#1151#0" expanded="true" />
-            <element signature="e#3106#3150#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1253,24 +1221,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_trajectory_controller_impl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9612">
+          <caret line="534" column="35" selection-start-line="534" selection-start-column="14" selection-end-line="534" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="384" column="18" selection-start-line="384" selection-start-column="18" selection-end-line="384" selection-end-column="18" />
-          <folding>
-            <element signature="e#293#324#0" expanded="true" />
-            <element signature="e#4098#4142#0" expanded="true" />
-            <element signature="e#4720#4764#0" expanded="true" />
-            <element signature="e#4936#4980#0" expanded="true" />
-            <element signature="e#5275#5319#0" expanded="true" />
-            <element signature="e#5752#5796#0" expanded="true" />
-            <element signature="e#6849#6893#0" expanded="true" />
-            <element signature="e#8652#8696#0" expanded="true" />
-            <element signature="e#8928#8972#0" expanded="true" />
-            <element signature="e#15464#15508#0" expanded="true" />
-            <element signature="e#19647#19691#0" expanded="true" />
-            <element signature="e#22286#22330#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="421">
+          <caret line="165" column="36" selection-start-line="165" selection-start-column="36" selection-end-line="165" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
