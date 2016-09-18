@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-	<!-- roslaunch robotican_armadillo armadillo.launch gmapping:=true move_base:=true lidar:=true world_name:="`rospack find robotican_common`/worlds/building.world" gazebo:=true 
+	<!-- roslaunch robotican_armadillo armadillo.launch gmapping:=true move_base:=true lidar:=true world_name:="`rospack find robotican_common`/worlds/building.sdf" gazebo:=true 
 -->
 <!--
     <arg name="joystick"     default='false'/>
