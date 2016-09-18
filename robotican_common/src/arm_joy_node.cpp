@@ -18,7 +18,6 @@ private:
     ros::NodeHandle _nodeHandle;
     ros::AsyncSpinner _spinner;
     moveit::planning_interface::MoveGroup _group;
-    GripperClient _client;
     float _rotation1IncreamentValue;
     float _rotation2IncreamentValue;
     float _shoulder1IncreamentValue;
@@ -115,7 +114,7 @@ private:
                || _gripperState == 1 || _gripperState == -1;
     }
 public:
-    ArmJoyNode(): _nodeHandle(),  _spinner(2), _group("arm") , _client("gripper_controller/gripper_cmd", true) {
+    ArmJoyNode(): _nodeHandle(),  _spinner(2), _group("arm")  {
         ROS_INFO("[%s]: Arm joy node is active", ros::this_node::getName().c_str());
         _rotation1State = 0;
         _rotation2State = 0;
@@ -212,12 +211,7 @@ public:
                 if(_gripperState == -1) {
                     _gripperState = 0;
                     if(!_gripperWorking) {
-                        _gripperWorking = true;
-                        control_msgs::GripperCommandGoal closeGoal;
-                        closeGoal.command.position = 0.0;
-                        closeGoal.command.max_effort = 0.0;
-                        _client.sendGoal(closeGoal, boost::bind(&ArmJoyNode::doneCb, this, _1, _2),
-                                         GripperClient::SimpleActiveCallback() , GripperClient::SimpleFeedbackCallback());
+          
                     } else {
                         ROS_WARN("[%s]: Gripper already have a goal please wait", ros::this_node::getName().c_str());
                     }
@@ -225,12 +219,7 @@ public:
                 } else if(_gripperState == 1) {
                     _gripperState = 0;
                     if (!_gripperWorking) {
-                        _gripperWorking = true;
-                        control_msgs::GripperCommandGoal openGoal;
-                        openGoal.command.position = 0.14;
-                        openGoal.command.max_effort = 0.0;
-                        _client.sendGoal(openGoal, boost::bind(&ArmJoyNode::doneCb, this, _1, _2),
-                                         GripperClient::SimpleActiveCallback() , GripperClient::SimpleFeedbackCallback());
+
                     } else {
                       ROS_WARN("[%s]: Gripper already have a goal please wait", ros::this_node::getName().c_str());
                     }
