@@ -42,7 +42,6 @@
   <arg name="robot_localization" default='false'/>
   <arg name="move_base" default='false'/>
   <arg name="hector_slam" default='false'/>
-  <arg name="gmapping_slam" default='false'/>
   <arg name="amcl" default='false'/>
   <arg name="have_map_file" default='false'/>
   <arg name="map_file" default="$(find robotican_common)/maps/UPlat.yaml"/>
