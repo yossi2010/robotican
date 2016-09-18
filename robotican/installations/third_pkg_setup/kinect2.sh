@@ -17,6 +17,7 @@ mkdir build && cd build
 cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/freenect2 -DENABLE_CXX11=ON
 make
 make install
+sudo cp ~/libfreenect/tree/master/platform/linux/udev/51-kinect.rules /etc/udev/rules.d
 
 cd ~/catkin_ws/src/
 git clone https://github.com/code-iai/iai_kinect2.git
@@ -25,6 +26,7 @@ cd iai_kinect2
 rosdep install -r --from-paths .
 cd ~/catkin_ws
 catkin_make -DCMAKE_BUILD_TYPE="Release"
+
 
 echo -e "\e[34mInstalltion completed...\e[0m"
 echo -en "\e[39m"

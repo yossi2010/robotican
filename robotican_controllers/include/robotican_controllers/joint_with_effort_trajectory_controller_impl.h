@@ -159,7 +159,8 @@ namespace joint_with_effort_trajectory_controller
     {
         const RealtimeGoalHandlePtr rt_segment_goal = segment.getGoalHandle();
         const SegmentTolerances<Scalar>& tolerances = segment.getTolerances();
-        if(_currentEffort > _goalEffort) {
+        if(_goalEffort != 0 && _currentEffort > _goalEffort) {
+            ROS_INFO("MAX effort");
             rt_segment_goal->preallocated_result_->error_code = control_msgs::FollowJointTrajectoryResult::SUCCESSFUL;
             rt_segment_goal->setSucceeded(rt_segment_goal->preallocated_result_);
             rt_active_goal_.reset();
@@ -186,11 +187,14 @@ namespace joint_with_effort_trajectory_controller
         const SegmentTolerances<Scalar>& tolerances = segment.getTolerances();
         const bool inside_goal_tolerances = checkStateTolerance(state_error, tolerances.goal_state_tolerance);
 
-        if (inside_goal_tolerances || _currentEffort >= _goalEffort)
+        if (inside_goal_tolerances || (_goalEffort != 0 && _currentEffort >= _goalEffort))
         {
             rt_segment_goal->preallocated_result_->error_code = control_msgs::FollowJointTrajectoryResult::SUCCESSFUL;
             rt_segment_goal->setSucceeded(rt_segment_goal->preallocated_result_);
             rt_active_goal_.reset();
+            if(_goalEffort != 0 && _currentEffort >= _goalEffort) {
+                ROS_INFO("MAX effort");
+            }
         }
         else if (uptime.toSec() < segment.endTime() + tolerances.goal_time_tolerance)
         {
@@ -542,11 +546,13 @@ namespace joint_with_effort_trajectory_controller
             preemptActiveGoal();
             gh.setAccepted();
             rt_active_goal_ = rt_goal;
-            if(!rt_goal->gh_.getGoal()->trajectory.points.empty()
-               && !rt_goal->gh_.getGoal()->trajectory.points.end()->effort.empty()) {
-                _goalEffort = rt_goal->gh_.getGoal()->trajectory.points.end()->effort[0];
+            size_t  size = rt_goal->gh_.getGoal()->trajectory.points.size();
+            if(!rt_goal->gh_.getGoal()->trajectory.points.empty() && !rt_goal->gh_.getGoal()->trajectory.points[size - 1].effort.empty()) {
+                ROS_INFO_STREAM(rt_goal->gh_.getGoal()->trajectory);
+                _goalEffort = rt_goal->gh_.getGoal()->trajectory.points[size - 1].effort[0];
+                ROS_INFO("goal effort is: %f", _goalEffort);
             } else {
-                _goalEffort = 0.5;
+                _goalEffort = 0.0;
             }
             // Setup goal status checking timer
             goal_handle_timer_ = controller_nh_.createTimer(action_monitor_period_,

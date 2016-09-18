@@ -109,7 +109,7 @@ gripper_controller:
  stall_timeout: 5.0
 
 gripper_jta_controller:
-  type: position_controllers/JointTrajectoryController
+  type: position_with_effort_controllers/JointTrajectoryController
   joints:
      - left_finger_joint
      - right_finger_joint
