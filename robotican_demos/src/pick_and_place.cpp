@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
     pn.param<std::string>("start_position_name", startPositionName, "pre_grasp2");
     pn.param<std::string>("object_id", object_id, "can");
 
-    ros::ServiceServer pickAndPlace = n.advertiseService("pick_and_place_service", &pickAndPlaceCallBack);
+    ros::ServiceServer pickAndPlace = n.advertiseService("pick_go", &pickAndPlaceCallBack);
     ROS_INFO("Hello");
     moveit::planning_interface::MoveGroup group("arm");
     //Config move group
