@@ -23,7 +23,9 @@ find_package(catkin REQUIRED COMPONENTS
         pr2_controllers_msgs
         tf_conversions
         trajectory_msgs
+        gazebo_ros
         )
+find_package(gazebo REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -101,10 +103,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
- generate_dynamic_reconfigure_options(
-         cfg/FindObjectDynParam.cfg
-#   cfg/DynReconf2.cfg
- )
+generate_dynamic_reconfigure_options(
+        cfg/FindObjectDynParam.cfg
+        #   cfg/DynReconf2.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -122,8 +124,9 @@ catkin_package(
         moveit_core
         moveit_ros_planning
         moveit_ros_planning_interface
+        gazebo_ros
         #message_generation
-        #  DEPENDS system_lib
+        DEPENDS gazebo
 )
 
 ###########
@@ -134,7 +137,14 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
+        include
         ${catkin_INCLUDE_DIRS}
+        ${GAZEBO_INCLUDE_DIRS}
+)
+
+link_directories(
+        ${GAZEBO_LIBRARY_DIRS}
+        ${catkin_LIBRARY_DIRS}
 )
 
 ## Declare a C++ library
@@ -146,6 +156,9 @@ include_directories(
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
 # add_dependencies(robotican_common ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_library(gazebo_grasp_fix SHARED src/GazeboGraspFix.cpp src/GazeboGraspGripper.cpp)
+add_dependencies(gazebo_grasp_fix ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 add_executable(joy_teleop_node src/joy_teleop_node.cpp)
@@ -174,6 +187,26 @@ target_link_libraries(pan_tilt_object_tracking_node ${catkin_LIBRARIES})
 add_executable(drive2object_node src/drive2object.cpp)
 target_link_libraries(drive2object_node ${catkin_LIBRARIES})
 
+target_link_libraries(gazebo_grasp_fix
+        ${GAZEBO_LIBRARIES}
+        ${Boost_LIBRARIES}
+        )
+
+
+install(TARGETS gazebo_grasp_fix
+        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+        )
+
+install(DIRECTORY include/${PROJECT_NAME}/
+        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+        FILES_MATCHING PATTERN "*.h"
+        )
+install(DIRECTORY launch
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+        FILES_MATCHING PATTERN "*.launch"
+        )
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

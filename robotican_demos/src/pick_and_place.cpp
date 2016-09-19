@@ -21,10 +21,10 @@
 typedef actionlib::SimpleActionClient<moveit_msgs::PickupAction> PickClient;
 typedef actionlib::SimpleActionClient<moveit_msgs::PlaceAction> PlaceClient;
 
-void look_down();
-bool set_collision_update(bool state);
 
-bool exec = false;
+void look_down();
+
+bool set_collision_update(bool state);
 
 moveit_msgs::PickupGoal BuildPickGoal(const std::string &objectName);
 
@@ -32,8 +32,7 @@ moveit_msgs::PlaceGoal buildPlaceGoal(const std::string &objectName);
 
 bool pickAndPlaceCallBack(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
 
-void waitForGo();
-
+bool exec = false;
 ros::ServiceClient *uc_client_ptr;
 ros::Publisher pub_controller_command;
 
@@ -79,25 +78,13 @@ int main(int argc, char **argv) {
         ros::Duration(10.0).sleep();
         look_down();
         ROS_INFO("Looking down...");
-        //waitForGo();
-        ros::Rate loopRate(50);
-        while(!exec && ros::ok) { loopRate.sleep(); }
-        set_collision_update(false);
-        ROS_INFO("Pick and place executing");
+        ROS_INFO("Ready!");
     }
     else {
         ROS_ERROR("Error");
     }
     ros::waitForShutdown();
     return 0;
-}
-
-void waitForGo() {
-    char c = 'q';
-    do {
-            std::cout << "Type g to continue: ";
-            std::cin >> c;
-        } while (c != 'g');
 }
 
 moveit_msgs::PlaceGoal buildPlaceGoal(const std::string &objectName) {
@@ -153,7 +140,7 @@ moveit_msgs::PickupGoal BuildPickGoal(const std::string &objectName) {
     moveit_msgs::Grasp g;
     g.max_contact_force = 0.01;
     g.grasp_pose.header.frame_id = goal.target_name;
-    g.grasp_pose.pose.position.x = -0.2;
+    g.grasp_pose.pose.position.x = -0.04;
     g.grasp_pose.pose.position.y = 0.0;
     g.grasp_pose.pose.position.z = 0.0;
     g.grasp_pose.pose.orientation.x = 0.0;
@@ -222,12 +209,19 @@ bool set_collision_update(bool state){
 
 bool pickAndPlaceCallBack(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res) {
     ros::NodeHandle pn("~");
+    ros::NodeHandle n;
     std::string object_id;
-    exec = true;
 
     pn.param<std::string>("object_id", object_id, "can");
 
-    ROS_INFO("Ready!");
+    std::string uc="/update_collision/" + object_id;
+    ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>(uc);
+    std_srvs::SetBool disableColl;
+    disableColl.request.data = false;
+
+    if(uc_client.call(disableColl)) {
+        ROS_INFO("update_colision response: OFF ");
+    }
 
     PickClient pickClient("pickup", true);
     pickClient.waitForServer();
@@ -237,16 +231,23 @@ bool pickAndPlaceCallBack(std_srvs::Trigger::Request &req, std_srvs::Trigger::Re
     if(pickStatus != actionlib::SimpleClientGoalState::SUCCEEDED) {
         res.success = (unsigned char) false;
         res.message = pickStatus.getText();
-        return true;
+    }
+    else {
+        PlaceClient placeClient("place", true);
+        placeClient.waitForServer();
+
+        moveit_msgs::PlaceGoal placeGoal = buildPlaceGoal(object_id);
+        actionlib::SimpleClientGoalState placeStatus = placeClient.sendGoalAndWait(placeGoal);
+        res.success = (unsigned char) ((placeStatus == actionlib::SimpleClientGoalState::SUCCEEDED) ? true : false);
+        res.message = placeStatus.getText();
     }
 
-    PlaceClient placeClient("place", true);
-    placeClient.waitForServer();
+    std_srvs::SetBool enableColl;
+    enableColl.request.data = true;
+    if(uc_client.call(enableColl)) {
+        ROS_INFO("update_colision response: ON ");
+    }
 
-    moveit_msgs::PlaceGoal placeGoal = buildPlaceGoal(object_id);
-    actionlib::SimpleClientGoalState placeStatus = placeClient.sendGoalAndWait(placeGoal);
-    res.success = (unsigned char) ((placeStatus == actionlib::SimpleClientGoalState::SUCCEEDED) ? true : false);
-    res.message = placeStatus.getText();
     return true;
 
 
