@@ -307,12 +307,9 @@ namespace gripper_action_controller
     void GripperActionControllerTwo<HardwareInterface>::
     setHoldPosition(const ros::Time& time)
     {
-        //  command_struct_.position_ = gap2Pos(rightjoint_.getPosition());
         command_struct_.position_ = pos2Gap(rightjoint_.getPosition());
-        //command_struct_.max_effort_ = default_max_effort_;
         command_.writeFromNonRT(command_struct_);
-//left_hw_iface_adapter_.updateCommand(time, ros::Duration(0.01),leftjoint_.getPosition(),0.0,0.0,0.0,0.0);
-//right_hw_iface_adapter_.updateCommand(time, ros::Duration(0.01),rightjoint_.getPosition(),0.0,0.0,0.0,0.0);
+
     }
 
     template <class HardwareInterface>
@@ -328,12 +325,12 @@ namespace gripper_action_controller
 
         if(fabs(error_position) < goal_tolerance_)
         {
-            ROS_DEBUG("GRIPPER: Reached Goal");
             pre_alloc_result_->effort = computed_command_;
             pre_alloc_result_->position = current_position;
             pre_alloc_result_->reached_goal = true;
             pre_alloc_result_->stalled = false;
             rt_active_goal_->setSucceeded(pre_alloc_result_);
+            ROS_DEBUG("GRIPPER: Reached Goal");
         }
         else
         {

@@ -2,12 +2,12 @@
 <launch>
 
   <!-- roslaunch robotican_armadillo armadillo.launch gazebo:=true kinect2:=true sr300:=true world_name:="`rospack find robotican_common`/worlds/objects_on_table.world" x:=0.8 y:=-0.35 -->
- 
- <!-- roslaunch robotican_armadillo armadillo.launch kinect2:=true sr300:=true -->
- 
 
-    <node name="pick_and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true"> 
-      <param name="~start_position_name" value="pre_grasp3"/>
+ <!-- roslaunch robotican_armadillo armadillo.launch kinect2:=true sr300:=true -->
+
+    <arg name="start_position" default="pre_grasp3" /> <!-- argument that the user can determinant the start position (this pre position is constructed is the moveit congi)-->
+    <node name="pick_and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true">
+      <param name="~start_position_name" value="$(arg start_position)"/>
       <param name="~object_id" value="can"/>
     </node>
 
@@ -16,19 +16,18 @@
     <param name="~object_r" value="0.025"/>
     <param name="~object_h" value="0.15"/>
     <param name="~object_id" value="can"/>
-  <!--  <param name="~depth_topic" value="/kinect2/qhd/points"/>  --> 
-     <param name="~depth_topic" value="/sr300/depth/points"/> 
+  <!--  <param name="~depth_topic" value="/kinect2/qhd/points"/>  -->
+     <param name="~depth_topic" value="/sr300/depth/points"/>
     <!--  <param name="~depth_topic" value="/depth_camera/depth_registered/points"/> -->
     <rosparam file="$(find robotican_demos)/config/red_object.yaml" command="load"/>
 
     </node>
-    
+
     <node name="object_view" pkg="rqt_image_view" type="rqt_image_view" >
       <remap from="image" to="find_object_node/result" />
     </node>
-    
 
 
-  
+
+
 </launch>
-

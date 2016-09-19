@@ -58,9 +58,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa292360-ec6f-4dad-9f1d-dd6fdca041d3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_armadillo/config/controllers.yaml" afterPath="$PROJECT_DIR$/../robotican_armadillo/config/controllers.yaml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_armadillo/navigation/config/move_base_params.yaml" afterPath="$PROJECT_DIR$/../robotican_armadillo/navigation/config/move_base_params.yaml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h" afterPath="$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h" afterPath="$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_demos/launch/pick_and_place.launch" afterPath="$PROJECT_DIR$/../robotican_demos/launch/pick_and_place.launch" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_demos/src/pick_and_place.cpp" afterPath="$PROJECT_DIR$/../robotican_demos/src/pick_and_place.cpp" />
     </list>
     <ignored path="robotican_controllers.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -90,11 +92,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="joint_with_effort_trajectory_controller_impl.h" pinned="false" current-in-tab="true">
+      <file leaf-file-name="joint_with_effort_trajectory_controller_impl.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="25">
-              <caret line="164" column="0" selection-start-line="164" selection-start-column="0" selection-end-line="166" selection-end-column="36" />
+            <state relative-caret-position="18">
+              <caret line="166" column="36" selection-start-line="166" selection-start-column="36" selection-end-line="166" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="gripper_action_controller_impl.h" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="504">
+              <caret line="332" column="47" selection-start-line="332" selection-start-column="47" selection-end-line="332" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="time.h" pinned="false" current-in-tab="false">
+        <entry file="file:///opt/ros/indigo/include/ros/time.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="414">
+              <caret line="184" column="7" selection-start-line="184" selection-start-column="7" selection-end-line="184" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="two_finger_controller.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/include/robotican_controllers/two_finger_controller.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1332">
+              <caret line="32" column="32" selection-start-line="32" selection-start-column="32" selection-end-line="32" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -150,16 +182,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2502">
-              <caret line="139" column="72" selection-start-line="139" selection-start-column="72" selection-end-line="139" selection-end-column="72" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="Git.Settings">
@@ -179,7 +201,6 @@
         <option value="$PROJECT_DIR$/src/run_controller.cpp" />
         <option value="$PROJECT_DIR$/include/robotican_controllers/hardware_interface_adapter.h" />
         <option value="$PROJECT_DIR$/src/robotican_controllers/joint_trajectory_controller.cpp" />
-        <option value="$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h" />
         <option value="$PROJECT_DIR$/include/robotican_controllers/joint_trajectory_controller.h" />
         <option value="$PROJECT_DIR$/include/robotican_controllers/two_finger_controller.h" />
         <option value="$PROJECT_DIR$/include/robotican_controllers/diff_drive_controller.h" />
@@ -195,6 +216,7 @@
         <option value="$PROJECT_DIR$/src/robotican_controllers/joint_with_effort_trajectory_controller.cpp" />
         <option value="$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller.h" />
         <option value="$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h" />
+        <option value="$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h" />
       </list>
     </option>
   </component>
@@ -207,9 +229,9 @@
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
     <option name="x" value="1985" />
-    <option name="y" value="24" />
+    <option name="y" value="-4" />
     <option name="width" value="1855" />
-    <option name="height" value="1056" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -803,20 +825,26 @@
       <workItem from="1474177561824" duration="321000" />
       <workItem from="1474177907428" duration="916000" />
       <workItem from="1474179185131" duration="867000" />
+      <workItem from="1474262848528" duration="38000" />
+      <workItem from="1474264009764" duration="18000" />
+      <workItem from="1474264659653" duration="17000" />
+      <workItem from="1474265701673" duration="19000" />
+      <workItem from="1474266952171" duration="29000" />
+      <workItem from="1474267350204" duration="2265000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20663000" />
+    <option name="totallyTimeSpent" value="23049000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1985" y="24" width="1855" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="1985" y="-4" width="1855" height="1084" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13755459" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295099" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.123173274" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.123173274" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -871,13 +899,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/robotican_controllers/robot.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="11" column="48" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///opt/ros/indigo/include/hardware_interface/internal/resource_manager.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1088,20 +1109,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/two_finger_controller.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-18">
-          <caret line="32" column="32" selection-start-line="32" selection-start-column="32" selection-end-line="32" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="30" column="20" selection-start-line="30" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/robotican_controllers/two_finger_controller.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
@@ -1231,8 +1238,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="164" column="0" selection-start-line="164" selection-start-column="0" selection-end-line="166" selection-end-column="36" />
+        <state relative-caret-position="18">
+          <caret line="166" column="36" selection-start-line="166" selection-start-column="36" selection-end-line="166" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/two_finger_controller.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1332">
+          <caret line="32" column="32" selection-start-line="32" selection-start-column="32" selection-end-line="32" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/ros/indigo/include/ros/time.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="184" column="7" selection-start-line="184" selection-start-column="7" selection-end-line="184" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="332" column="47" selection-start-line="332" selection-start-column="47" selection-end-line="332" selection-end-column="47" />
           <folding />
         </state>
       </provider>

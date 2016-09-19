@@ -175,19 +175,14 @@ moveit_msgs::PickupGoal BuildPickGoal(const std::string &objectName) {
     g.pre_grasp_posture.joint_names.push_back("right_finger_joint");
     g.pre_grasp_posture.points.resize(1);
     g.pre_grasp_posture.points[0].positions.resize(g.pre_grasp_posture.joint_names.size());
-    g.pre_grasp_posture.points[0].positions[0] = -0.56;
-    g.pre_grasp_posture.points[0].positions[1] = 0.56;
-    g.pre_grasp_posture.points[0].time_from_start = ros::Duration(1.0);
+    g.pre_grasp_posture.points[0].positions[0] = 0.14;
 
     g.grasp_posture.joint_names = g.pre_grasp_posture.joint_names;
     g.grasp_posture.points.resize(1);
     g.grasp_posture.points[0].positions.resize(g.grasp_posture.joint_names.size());
-    g.grasp_posture.points[0].positions[0] = 0.25;
-    g.grasp_posture.points[0].positions[1] = -0.25;
+    g.grasp_posture.points[0].positions[0] = 0.01;
     g.grasp_posture.points[0].effort.resize(g.grasp_posture.joint_names.size());
-    g.grasp_posture.points[0].effort[0] = 0.3;
-    g.grasp_posture.points[0].effort[1] = 0.3;
-    g.grasp_posture.points[0].time_from_start = ros::Duration(25.0);
+    g.grasp_posture.points[0].effort[0] = 1.0;
     goal.possible_grasps.push_back(g);
     return goal;
 }
@@ -238,15 +233,20 @@ bool pickAndPlaceCallBack(std_srvs::Trigger::Request &req, std_srvs::Trigger::Re
     pickClient.waitForServer();
 
     moveit_msgs::PickupGoal pickGoal = BuildPickGoal(object_id);
-    pickClient.sendGoalAndWait(pickGoal);
+    actionlib::SimpleClientGoalState pickStatus = pickClient.sendGoalAndWait(pickGoal);
+    if(pickStatus != actionlib::SimpleClientGoalState::SUCCEEDED) {
+        res.success = (unsigned char) false;
+        res.message = pickStatus.getText();
+        return true;
+    }
 
     PlaceClient placeClient("place", true);
     placeClient.waitForServer();
 
     moveit_msgs::PlaceGoal placeGoal = buildPlaceGoal(object_id);
-    actionlib::SimpleClientGoalState status = placeClient.sendGoalAndWait(placeGoal);
-    res.success = (unsigned char) ((status == actionlib::SimpleClientGoalState::SUCCEEDED) ? true : false);
-    res.message = status.getText();
+    actionlib::SimpleClientGoalState placeStatus = placeClient.sendGoalAndWait(placeGoal);
+    res.success = (unsigned char) ((placeStatus == actionlib::SimpleClientGoalState::SUCCEEDED) ? true : false);
+    res.message = placeStatus.getText();
     return true;
 
 

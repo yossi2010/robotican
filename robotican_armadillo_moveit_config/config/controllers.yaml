@@ -3,7 +3,7 @@ controller_list:
       default: true
       type: FollowJointTrajectory
       action_ns: follow_joint_trajectory
-      joints: 
+      joints:
         - rotation1_joint
         - shoulder1_joint
         - shoulder2_joint
@@ -11,18 +11,18 @@ controller_list:
         - shoulder3_joint
         - wrist_joint
 
-#    - name: gripper_controller
-#      default: false
-#      type: GripperCommand
-#      action_ns: gripper_cmd
-#      joints: 
-#        - left_finger_joint
-#        - right_finger_joint
-
-    - name: gripper_jta_controller
-      default: true
-      type: FollowJointTrajectory
-      action_ns: follow_joint_trajectory
-      joints: 
+    - name: gripper_controller
+      default: false
+      type: GripperCommand
+      action_ns: gripper_cmd
+      joints:
         - left_finger_joint
         - right_finger_joint
+
+    # - name: gripper_jta_controller
+    #   default: true
+    #   type: FollowJointTrajectory
+    #   action_ns: follow_joint_trajectory
+    #   joints:
+    #     - left_finger_joint
+    #     - right_finger_joint
