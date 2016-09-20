@@ -31,7 +31,7 @@
 
 
 #define MAX_BUFF_SIZE 255
-#define PC_VERSION 101
+#define PC_VERSION 100
 #define RIC_BOARD_DEBUG
 
 namespace robotican_hardware {

@@ -187,6 +187,11 @@ target_link_libraries(pan_tilt_object_tracking_node ${catkin_LIBRARIES})
 add_executable(drive2object_node src/drive2object.cpp)
 target_link_libraries(drive2object_node ${catkin_LIBRARIES})
 
+add_executable(pick_and_place_tcp_server src/pick_and_place_tcp_server.cpp)
+target_link_libraries(pick_and_place_tcp_server ${catkin_LIBRARIES})
+add_executable(pick_and_place_tcp_client src/pick_and_place_tcp_client.cpp)
+target_link_libraries(pick_and_place_tcp_client ${catkin_LIBRARIES})
+
 target_link_libraries(gazebo_grasp_fix
         ${GAZEBO_LIBRARIES}
         ${Boost_LIBRARIES}
