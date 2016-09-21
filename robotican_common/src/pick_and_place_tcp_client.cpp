@@ -20,8 +20,12 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "pick_and_place_client");
 
     ros::NodeHandle nodeHandle;
+    ros::NodeHandle nodeHandlePrivate("~");
     ros::ServiceClient pickAndPlaceClient = nodeHandle.serviceClient<std_srvs::Trigger>("pick_go");
     pickAndPlaceClient.waitForExistence();
+
+    std::string ip;
+    nodeHandlePrivate.param<std::string>("server_ip", ip, "localhost");
 
     boost::asio::io_service io_service;
     tcp::resolver resolver(io_service);

@@ -1,0 +1,6 @@
+<launch>
+	<arg name="server_ip" default="localhost" />
+	<node name="pick_and_place_client" pkg="robotican_common" type="pick_and_place_tcp_client" output="screen">
+		<param name="~server_ip" value="$(arg server_ip)" />
+	</node>
+</launch>
