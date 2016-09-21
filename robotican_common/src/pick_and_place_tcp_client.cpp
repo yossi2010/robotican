@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
 
     boost::asio::io_service io_service;
     tcp::resolver resolver(io_service);
-    tcp::resolver::query query(tcp::v4(), "localhost", "5001");
+    tcp::resolver::query query(tcp::v4(), ip.c_str() , "5001");
     tcp::resolver::iterator iterator = resolver.resolve(query);
     tcp::socket connection(io_service);
     connection.connect(*iterator);
