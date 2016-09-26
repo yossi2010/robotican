@@ -105,17 +105,20 @@ void changeColor(std::string colorName, ros::NodeHandle &nodeHandle) {
     if(colorName == "red") {
 
         FILE *process = popen((baseCmd + "red_object.yaml").c_str(), "r");
+        ros::Duration(2.0).sleep();
         if(process != 0) {
             ROS_INFO("[%s]: Change to red", ros::this_node::getName().c_str());
         }
     }
     else if(colorName == "green") {
         FILE *process = popen((baseCmd + "green_object.yaml").c_str(), "r");
+        ros::Duration(2.0).sleep();
         if(process != 0) {
             ROS_INFO("[%s]: Change to green", ros::this_node::getName().c_str());
         }
     } else if(colorName == "blue") {
         FILE *process = popen((baseCmd + "blue_object.yaml").c_str(), "r");
+        ros::Duration(2.0).sleep();
         if(process != 0) {
             ROS_INFO("[%s]: Change to blue", ros::this_node::getName().c_str());
         }
