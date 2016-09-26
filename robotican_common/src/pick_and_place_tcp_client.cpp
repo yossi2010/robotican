@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
             if (pickAndPlace(pickAndPlaceClient).success) {
                 if(colorName == "red") colorName = "blue";
                 else colorName = "red";
-                changeColor(colorName);
+                changeColor("blue");
                 boost::asio::write(connection, boost::asio::buffer("go\n", 3));
             } else {
                 recover(pickAndPlaceClient, connection);
