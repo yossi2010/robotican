@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
     } else {
         recover(pickAndPlaceClient, client);
     }
-    std::string colorName = "red";
+    std::string colorName = "blue";
     while(ros::ok()) {
         char data[MAX_LEN] = {'\0'};
 

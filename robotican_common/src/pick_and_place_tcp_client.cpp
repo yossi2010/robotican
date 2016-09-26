@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
     connection.connect(*iterator);
 
     ROS_INFO("[%s]: Connected to server", ros::this_node::getName().c_str());
-    std::string colorName = "red";
+    std::string colorName = "blue";
     while(ros::ok()) {
         char data[MAX_LEN] = {'\0'};
         boost::asio::read(connection, boost::asio::buffer(data, 3));
