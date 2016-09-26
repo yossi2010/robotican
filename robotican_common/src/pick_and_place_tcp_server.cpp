@@ -23,6 +23,8 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "pick_and_place_server");
 
     ros::NodeHandle nodeHandle;
+    ros::AsyncSpinner spinner(1);
+    spinner.start();
     ros::ServiceClient pickAndPlaceClient = nodeHandle.serviceClient<std_srvs::Trigger>("pick_go");
     pickAndPlaceClient.waitForExistence();
 
@@ -112,6 +114,7 @@ void changeColor(std::string colorName, ros::NodeHandle &nodeHandle) {
         nodeHandle.setParam("/find_object_node/gaussian_sigma", 0);
         nodeHandle.setParam("/find_object_node/morph_size", 0);
         nodeHandle.setParam("/find_object_node/invert_Hue", true);
+        ROS_INFO("[%s]: Change to red", ros::this_node::getName().c_str());
     }
     else if(colorName == "green") {
         nodeHandle.setParam("/find_object_node/H_min", 37);
@@ -126,6 +129,7 @@ void changeColor(std::string colorName, ros::NodeHandle &nodeHandle) {
         nodeHandle.setParam("/find_object_node/gaussian_sigma", 0);
         nodeHandle.setParam("/find_object_node/morph_size", 0);
         nodeHandle.setParam("/find_object_node/invert_Hue", false);
+        ROS_INFO("[%s]: Change to green", ros::this_node::getName().c_str());
     }    else if(colorName == "blue") {
         nodeHandle.setParam("/find_object_node/H_min", 96);
         nodeHandle.setParam("/find_object_node/H_max", 109);
@@ -139,5 +143,6 @@ void changeColor(std::string colorName, ros::NodeHandle &nodeHandle) {
         nodeHandle.setParam("/find_object_node/gaussian_sigma", 0);
         nodeHandle.setParam("/find_object_node/morph_size", 0);
         nodeHandle.setParam("/find_object_node/invert_Hue", false);
+        ROS_INFO("[%s]: Change to blue", ros::this_node::getName().c_str());
     }
 }
