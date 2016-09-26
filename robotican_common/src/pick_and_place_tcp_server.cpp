@@ -17,6 +17,8 @@ std_srvs::Trigger::Response pickAndPlace(ros::ServiceClient &pickAndPlaceClient)
 
 void recover(ros::ServiceClient &pickAndPlaceClient, socket_ptr &client);
 
+void changeColor(std::string colorName, ros::NodeHandle &nodeHandle);
+
 int main(int argc, char** argv) {
     ros::init(argc, argv, "pick_and_place_server");
 
@@ -27,6 +29,13 @@ int main(int argc, char** argv) {
     boost::asio::io_service io_service;
     tcp::acceptor server(io_service, tcp::endpoint(tcp::v4(), 5001));
     socket_ptr client(new tcp::socket(io_service));
+    ros::Duration(10.0).sleep();
+    changeColor("green", nodeHandle);
+    ros::Duration(10.0).sleep();
+    changeColor("blue", nodeHandle);
+    ros::Duration(10.0).sleep();
+    changeColor("red", nodeHandle);
+    ros::Duration(10.0).sleep();
 
     ROS_INFO("[%s]: Server up and waiting for client to connect....", ros::this_node::getName().c_str());
 
@@ -86,4 +95,49 @@ std_srvs::Trigger::Response pickAndPlace(ros::ServiceClient &pickAndPlaceClient)
         ROS_INFO_STREAM(pickAndPlaceRes);
     }
     return pickAndPlaceRes;
+}
+
+
+void changeColor(std::string colorName, ros::NodeHandle &nodeHandle) {
+    if(colorName == "red") {
+        nodeHandle.setParam("/find_object_node/H_min", 3);
+        nodeHandle.setParam("/find_object_node/H_max", 160);
+        nodeHandle.setParam("/find_object_node/S_min", 70);
+        nodeHandle.setParam("/find_object_node/S_max", 255);
+        nodeHandle.setParam("/find_object_node/V_min", 10);
+        nodeHandle.setParam("/find_object_node/V_max", 255);
+        nodeHandle.setParam("/find_object_node/A_min", 0);
+        nodeHandle.setParam("/find_object_node/A_max", 50000);
+        nodeHandle.setParam("/find_object_node/gaussian_ksize", 0);
+        nodeHandle.setParam("/find_object_node/gaussian_sigma", 0);
+        nodeHandle.setParam("/find_object_node/morph_size", 0);
+        nodeHandle.setParam("/find_object_node/invert_Hue", true);
+    }
+    else if(colorName == "green") {
+        nodeHandle.setParam("/find_object_node/H_min", 37);
+        nodeHandle.setParam("/find_object_node/H_max", 79);
+        nodeHandle.setParam("/find_object_node/S_min", 40);
+        nodeHandle.setParam("/find_object_node/S_max", 219);
+        nodeHandle.setParam("/find_object_node/V_min", 5);
+        nodeHandle.setParam("/find_object_node/V_max", 91);
+        nodeHandle.setParam("/find_object_node/A_min", 0);
+        nodeHandle.setParam("/find_object_node/A_max", 50000);
+        nodeHandle.setParam("/find_object_node/gaussian_ksize", 0);
+        nodeHandle.setParam("/find_object_node/gaussian_sigma", 0);
+        nodeHandle.setParam("/find_object_node/morph_size", 0);
+        nodeHandle.setParam("/find_object_node/invert_Hue", false);
+    }    else if(colorName == "blue") {
+        nodeHandle.setParam("/find_object_node/H_min", 96);
+        nodeHandle.setParam("/find_object_node/H_max", 109);
+        nodeHandle.setParam("/find_object_node/S_min", 151);
+        nodeHandle.setParam("/find_object_node/S_max", 255);
+        nodeHandle.setParam("/find_object_node/V_min", 85);
+        nodeHandle.setParam("/find_object_node/V_max", 152);
+        nodeHandle.setParam("/find_object_node/A_min", 0);
+        nodeHandle.setParam("/find_object_node/A_max", 50000);
+        nodeHandle.setParam("/find_object_node/gaussian_ksize", 0);
+        nodeHandle.setParam("/find_object_node/gaussian_sigma", 0);
+        nodeHandle.setParam("/find_object_node/morph_size", 0);
+        nodeHandle.setParam("/find_object_node/invert_Hue", false);
+    }
 }
