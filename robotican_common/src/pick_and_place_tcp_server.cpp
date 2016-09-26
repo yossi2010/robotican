@@ -17,7 +17,7 @@ std_srvs::Trigger::Response pickAndPlace(ros::ServiceClient &pickAndPlaceClient)
 
 void recover(ros::ServiceClient &pickAndPlaceClient, socket_ptr &client);
 
-void changeColor(std::string colorName, ros::NodeHandle &nodeHandle);
+void changeColor(std::string colorName);
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "pick_and_place_server");
@@ -31,13 +31,13 @@ int main(int argc, char** argv) {
     boost::asio::io_service io_service;
     tcp::acceptor server(io_service, tcp::endpoint(tcp::v4(), 5001));
     socket_ptr client(new tcp::socket(io_service));
-    ros::Duration(5.0).sleep();
-    changeColor("green", nodeHandle);
-    ros::Duration(5.0).sleep();
-    changeColor("blue", nodeHandle);
-    ros::Duration(5.0).sleep();
-    changeColor("red", nodeHandle);
-    ros::Duration(5.0).sleep();
+//    ros::Duration(5.0).sleep();
+//    changeColor("green", nodeHandle);
+//    ros::Duration(5.0).sleep();
+//    changeColor, nodeHandle);
+//    ros::Duration(5.0).sleep();
+//    changeColor("red", nodeHandle);
+//    ros::Duration(5.0).sleep();
 
     ROS_INFO("[%s]: Server up and waiting for client to connect....", ros::this_node::getName().c_str());
 
@@ -50,13 +50,16 @@ int main(int argc, char** argv) {
     } else {
         recover(pickAndPlaceClient, client);
     }
-
+    std::string colorName = "red";
     while(ros::ok()) {
         char data[MAX_LEN] = {'\0'};
 
         boost::asio::read(*client, boost::asio::buffer(data, 3));
         if (std::strcmp(data, "go\n") == 0) {
             if (pickAndPlace(pickAndPlaceClient).success) {
+                changeColor(colorName);
+                if(colorName == "red") colorName = "blue";
+                else colorName = "red";
                 boost::asio::write(*client, boost::asio::buffer("go\n", 3));
             } else {
                 recover(pickAndPlaceClient, client);
@@ -100,7 +103,7 @@ std_srvs::Trigger::Response pickAndPlace(ros::ServiceClient &pickAndPlaceClient)
 }
 
 
-void changeColor(std::string colorName, ros::NodeHandle &nodeHandle) {
+void changeColor(std::string colorName) {
     std::string baseCmd = "rosrun dynamic_reconfigure dynparam load /find_object_node `rospack find robotican_demos`/config/";
     if(colorName == "red") {
 

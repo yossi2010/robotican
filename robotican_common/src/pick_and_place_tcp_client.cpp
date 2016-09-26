@@ -16,6 +16,7 @@ typedef boost::shared_ptr<tcp::socket> socket_ptr;
 
 std_srvs::Trigger::Response pickAndPlace(ros::ServiceClient &pickAndPlaceClient);
 void recover(ros::ServiceClient &pickAndPlaceClient, tcp::socket &client);
+void changeColor(std::string colorName);
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "pick_and_place_client");
@@ -35,12 +36,15 @@ int main(int argc, char** argv) {
     connection.connect(*iterator);
 
     ROS_INFO("[%s]: Connected to server", ros::this_node::getName().c_str());
-
+    std::string colorName = "red";
     while(ros::ok()) {
         char data[MAX_LEN] = {'\0'};
         boost::asio::read(connection, boost::asio::buffer(data, 3));
         if (std::strcmp(data, "go\n") == 0) {
             if (pickAndPlace(pickAndPlaceClient).success) {
+                changeColor(colorName);
+                if(colorName == "red") colorName = "blue";
+                else colorName = "red";
                 boost::asio::write(connection, boost::asio::buffer("go\n", 3));
             } else {
                 recover(pickAndPlaceClient, connection);
@@ -82,3 +86,27 @@ void recover(ros::ServiceClient &pickAndPlaceClient, tcp::socket &client) {
     } while(ros::ok());
 }
 
+void changeColor(std::string colorName) {
+    std::string baseCmd = "rosrun dynamic_reconfigure dynparam load /find_object_node `rospack find robotican_demos`/config/";
+    if(colorName == "red") {
+
+        FILE *process = popen((baseCmd + "red_object.yaml").c_str(), "r");
+        ros::Duration(1.5).sleep();
+        if(process != 0) {
+            ROS_INFO("[%s]: Change to red", ros::this_node::getName().c_str());
+        }
+    }
+    else if(colorName == "green") {
+        FILE *process = popen((baseCmd + "green_object.yaml").c_str(), "r");
+        ros::Duration(1.5).sleep();
+        if(process != 0) {
+            ROS_INFO("[%s]: Change to green", ros::this_node::getName().c_str());
+        }
+    } else if(colorName == "blue") {
+        FILE *process = popen((baseCmd + "blue_object.yaml").c_str(), "r");
+        ros::Duration(1.5).sleep();
+        if(process != 0) {
+            ROS_INFO("[%s]: Change to blue", ros::this_node::getName().c_str());
+        }
+    }
+}
