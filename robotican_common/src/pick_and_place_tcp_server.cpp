@@ -15,6 +15,8 @@ typedef boost::shared_ptr<tcp::socket> socket_ptr;
 
 std_srvs::Trigger::Response pickAndPlace(ros::ServiceClient &pickAndPlaceClient);
 
+void recover(ros::ServiceClient &pickAndPlaceClient, socket_ptr &client);
+
 int main(int argc, char** argv) {
     ros::init(argc, argv, "pick_and_place_server");
 
@@ -35,7 +37,7 @@ int main(int argc, char** argv) {
     if (pickAndPlaceRes.success) {
         boost::asio::write(*client, boost::asio::buffer("go\n", 3));
     } else {
-        ros::shutdown();
+        recover(pickAndPlaceClient, client);
     }
 
     while(ros::ok()) {
@@ -46,7 +48,7 @@ int main(int argc, char** argv) {
             if (pickAndPlace(pickAndPlaceClient).success) {
                 boost::asio::write(*client, boost::asio::buffer("go\n", 3));
             } else {
-                ros::shutdown();
+                recover(pickAndPlaceClient, client);
             }
         } else {
             ROS_WARN("[%s]: Unknown syntax: %s", ros::this_node::getName().c_str(), data);
@@ -57,6 +59,24 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+
+void recover(ros::ServiceClient &pickAndPlaceClient, socket_ptr &client) {
+    ROS_WARN("[%s]: plan failed type 'r' to re-plan or 'q' to quit", ros::this_node::getName().c_str());
+    char choice;
+    do {
+        std::cin >> choice;
+        if(choice == 'r') {
+            if (pickAndPlace(pickAndPlaceClient).success) {
+                write(*client, boost::asio::buffer("go\n", 3));
+                break;
+            }
+        } else if(choice == 'q') {
+            ros::shutdown();
+            break;
+        }
+    } while(ros::ok());
+}
+
 
 std_srvs::Trigger::Response pickAndPlace(ros::ServiceClient &pickAndPlaceClient) {
     std_srvs::Trigger::Request pickAndPlaceReq;
