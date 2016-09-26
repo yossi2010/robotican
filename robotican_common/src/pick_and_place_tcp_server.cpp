@@ -101,48 +101,23 @@ std_srvs::Trigger::Response pickAndPlace(ros::ServiceClient &pickAndPlaceClient)
 
 
 void changeColor(std::string colorName, ros::NodeHandle &nodeHandle) {
+    std::string baseCmd = "rosrun dynamic_reconfigure dynparam load /find_object_node `rospack find robotican_demos`/config/";
     if(colorName == "red") {
-        nodeHandle.setParam("/find_object_node/H_min", 3);
-        nodeHandle.setParam("/find_object_node/H_max", 160);
-        nodeHandle.setParam("/find_object_node/S_min", 70);
-        nodeHandle.setParam("/find_object_node/S_max", 255);
-        nodeHandle.setParam("/find_object_node/V_min", 10);
-        nodeHandle.setParam("/find_object_node/V_max", 255);
-        nodeHandle.setParam("/find_object_node/A_min", 0);
-        nodeHandle.setParam("/find_object_node/A_max", 50000);
-        nodeHandle.setParam("/find_object_node/gaussian_ksize", 0);
-        nodeHandle.setParam("/find_object_node/gaussian_sigma", 0);
-        nodeHandle.setParam("/find_object_node/morph_size", 0);
-        nodeHandle.setParam("/find_object_node/invert_Hue", true);
-        ROS_INFO("[%s]: Change to red", ros::this_node::getName().c_str());
+
+        FILE *process = popen((baseCmd + "red_object.yaml").c_str(), "r");
+        if(process != 0) {
+            ROS_INFO("[%s]: Change to red", ros::this_node::getName().c_str());
+        }
     }
     else if(colorName == "green") {
-        nodeHandle.setParam("/find_object_node/H_min", 37);
-        nodeHandle.setParam("/find_object_node/H_max", 79);
-        nodeHandle.setParam("/find_object_node/S_min", 40);
-        nodeHandle.setParam("/find_object_node/S_max", 219);
-        nodeHandle.setParam("/find_object_node/V_min", 5);
-        nodeHandle.setParam("/find_object_node/V_max", 91);
-        nodeHandle.setParam("/find_object_node/A_min", 0);
-        nodeHandle.setParam("/find_object_node/A_max", 50000);
-        nodeHandle.setParam("/find_object_node/gaussian_ksize", 0);
-        nodeHandle.setParam("/find_object_node/gaussian_sigma", 0);
-        nodeHandle.setParam("/find_object_node/morph_size", 0);
-        nodeHandle.setParam("/find_object_node/invert_Hue", false);
-        ROS_INFO("[%s]: Change to green", ros::this_node::getName().c_str());
-    }    else if(colorName == "blue") {
-        nodeHandle.setParam("/find_object_node/H_min", 96);
-        nodeHandle.setParam("/find_object_node/H_max", 109);
-        nodeHandle.setParam("/find_object_node/S_min", 151);
-        nodeHandle.setParam("/find_object_node/S_max", 255);
-        nodeHandle.setParam("/find_object_node/V_min", 85);
-        nodeHandle.setParam("/find_object_node/V_max", 152);
-        nodeHandle.setParam("/find_object_node/A_min", 0);
-        nodeHandle.setParam("/find_object_node/A_max", 50000);
-        nodeHandle.setParam("/find_object_node/gaussian_ksize", 0);
-        nodeHandle.setParam("/find_object_node/gaussian_sigma", 0);
-        nodeHandle.setParam("/find_object_node/morph_size", 0);
-        nodeHandle.setParam("/find_object_node/invert_Hue", false);
-        ROS_INFO("[%s]: Change to blue", ros::this_node::getName().c_str());
+        FILE *process = popen((baseCmd + "green_object.yaml").c_str(), "r");
+        if(process != 0) {
+            ROS_INFO("[%s]: Change to green", ros::this_node::getName().c_str());
+        }
+    } else if(colorName == "blue") {
+        FILE *process = popen((baseCmd + "blue_object.yaml").c_str(), "r");
+        if(process != 0) {
+            ROS_INFO("[%s]: Change to blue", ros::this_node::getName().c_str());
+        }
     }
 }
