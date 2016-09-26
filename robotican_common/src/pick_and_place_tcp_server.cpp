@@ -31,13 +31,13 @@ int main(int argc, char** argv) {
     boost::asio::io_service io_service;
     tcp::acceptor server(io_service, tcp::endpoint(tcp::v4(), 5001));
     socket_ptr client(new tcp::socket(io_service));
-    ros::Duration(10.0).sleep();
+    ros::Duration(5.0).sleep();
     changeColor("green", nodeHandle);
-    ros::Duration(10.0).sleep();
+    ros::Duration(5.0).sleep();
     changeColor("blue", nodeHandle);
-    ros::Duration(10.0).sleep();
+    ros::Duration(5.0).sleep();
     changeColor("red", nodeHandle);
-    ros::Duration(10.0).sleep();
+    ros::Duration(5.0).sleep();
 
     ROS_INFO("[%s]: Server up and waiting for client to connect....", ros::this_node::getName().c_str());
 
@@ -105,20 +105,20 @@ void changeColor(std::string colorName, ros::NodeHandle &nodeHandle) {
     if(colorName == "red") {
 
         FILE *process = popen((baseCmd + "red_object.yaml").c_str(), "r");
-        ros::Duration(2.0).sleep();
+        ros::Duration(1.5).sleep();
         if(process != 0) {
             ROS_INFO("[%s]: Change to red", ros::this_node::getName().c_str());
         }
     }
     else if(colorName == "green") {
         FILE *process = popen((baseCmd + "green_object.yaml").c_str(), "r");
-        ros::Duration(2.0).sleep();
+        ros::Duration(1.5).sleep();
         if(process != 0) {
             ROS_INFO("[%s]: Change to green", ros::this_node::getName().c_str());
         }
     } else if(colorName == "blue") {
         FILE *process = popen((baseCmd + "blue_object.yaml").c_str(), "r");
-        ros::Duration(2.0).sleep();
+        ros::Duration(1.5).sleep();
         if(process != 0) {
             ROS_INFO("[%s]: Change to blue", ros::this_node::getName().c_str());
         }

@@ -28,7 +28,7 @@ bool set_collision_update(bool state);
 
 moveit_msgs::PickupGoal BuildPickGoal(const std::string &objectName);
 
-moveit_msgs::PlaceGoal buildPlaceGoal(const std::string &objectName);
+moveit_msgs::PlaceGoal buildPlaceGoal(const std::string &objectName, float moveTo);
 
 bool pickAndPlaceCallBack(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
 
@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-moveit_msgs::PlaceGoal buildPlaceGoal(const std::string &objectName) {
+moveit_msgs::PlaceGoal buildPlaceGoal(const std::string &objectName, float moveTo) {
     moveit_msgs::PlaceGoal placeGoal;
     placeGoal.group_name = "arm";
     placeGoal.attached_object_name = objectName;
@@ -114,7 +114,7 @@ moveit_msgs::PlaceGoal buildPlaceGoal(const std::string &objectName) {
 
     location.place_pose.header.frame_id = placeGoal.support_surface_name;
     location.place_pose.pose.position.x = 0;
-    location.place_pose.pose.position.y = 0.05;
+    location.place_pose.pose.position.y = moveTo;
     location.place_pose.pose.position.z = 0.1;
     location.place_pose.pose.orientation.w = 1.0;
 
@@ -235,11 +235,26 @@ bool pickAndPlaceCallBack(std_srvs::Trigger::Request &req, std_srvs::Trigger::Re
     else {
         PlaceClient placeClient("place", true);
         placeClient.waitForServer();
+        bool found = false;
+        float moveTo = 0.05;
+        do {
+            moveit_msgs::PlaceGoal placeGoal = buildPlaceGoal(object_id, moveTo);
+            actionlib::SimpleClientGoalState placeStatus = placeClient.sendGoalAndWait(placeGoal);
+            if (placeStatus == actionlib::SimpleClientGoalState::SUCCEEDED) {
+                found = true;
+                res.success = (unsigned char) (found);
+                res.message = placeStatus.getText();
+            }
+            else if((moveTo - 0.01) >= 0 ){
+                moveTo -= 0.01;
+            }
+            else {
+                res.success = (unsigned char) false;
+                res.message = placeStatus.getText();
+                break;
+            }
 
-        moveit_msgs::PlaceGoal placeGoal = buildPlaceGoal(object_id);
-        actionlib::SimpleClientGoalState placeStatus = placeClient.sendGoalAndWait(placeGoal);
-        res.success = (unsigned char) ((placeStatus == actionlib::SimpleClientGoalState::SUCCEEDED) ? true : false);
-        res.message = placeStatus.getText();
+        }while(!found);
     }
 
     std_srvs::SetBool enableColl;
