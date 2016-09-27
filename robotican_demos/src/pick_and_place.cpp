@@ -18,7 +18,7 @@
 #include <moveit_msgs/PickupAction.h>
 #include <moveit_msgs/PlaceAction.h>
 
-#define MAX_BOARD_PLACE 0.2
+#define MAX_BOARD_PLACE 0.1
 typedef actionlib::SimpleActionClient<moveit_msgs::PickupAction> PickClient;
 typedef actionlib::SimpleActionClient<moveit_msgs::PlaceAction> PlaceClient;
 
@@ -260,6 +260,7 @@ bool pickAndPlaceCallBack(std_srvs::Trigger::Request &req, std_srvs::Trigger::Re
     if(pickStatus != actionlib::SimpleClientGoalState::SUCCEEDED) {
         res.success = (unsigned char) false;
         res.message = pickStatus.getText();
+        point.x = point.y = 0;
     }
     else {
         PlaceClient placeClient("place", true);
