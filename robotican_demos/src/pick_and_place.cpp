@@ -18,7 +18,7 @@
 #include <moveit_msgs/PickupAction.h>
 #include <moveit_msgs/PlaceAction.h>
 
-#define MAX_BOARD_PLACE 0.1
+#define MAX_BOARD_PLACE 0.05
 typedef actionlib::SimpleActionClient<moveit_msgs::PickupAction> PickClient;
 typedef actionlib::SimpleActionClient<moveit_msgs::PlaceAction> PlaceClient;
 
