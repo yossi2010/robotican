@@ -17,16 +17,20 @@
 ///////////////////LISTENER HEADER///////////////////
 class Listener
 {
+protected:
+    long int _signalTime;
+
 public:
+    Listener(){_signalTime = 0;}
     virtual void subscribe() = 0;
+    long int getLastSignal() {return _signalTime;}
 };
 
 ///////////////////ARM///////////////////
 class Arm : public Listener
 {
 public:
-    Arm() {_signalTime = 0;}
-    long int getLastSignal() {return _signalTime;}
+    Arm(){};
     void subscribe()
     {
         _nHandle.param<std::string>("arm_topic",_topicName, "arm_trajectory_controller/state");
@@ -34,11 +38,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const control_msgs::JointTrajectoryControllerState::ConstPtr& msg) {_signalTime = clock();}
 };
@@ -51,7 +53,6 @@ public:
     Battery()
     {
         _batPower = 0;
-        _signalTime = 0;
     };
     int getBatteryPwr() {return _batPower;}
     void subscribe()
@@ -59,15 +60,12 @@ public:
         _nHandle.param<std::string>("battery_topic",_topicName, "battery_monitor");
         _sub = _nHandle.subscribe(_topicName, 1000, &Battery::_chatterCallback, this);
     }
-    long int getLastSignal() {return _signalTime;}
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
     int _batPower;
-    long int _signalTime;
     void _chatterCallback(const ric_board::Battery::Ptr& msg)
     {
         if (msg->data > msg->max)
@@ -82,8 +80,7 @@ private:
 class FrontCam : public Listener
 {
 public:
-    FrontCam(){_signalTime = 0;}
-    long int getLastSignal() {return _signalTime;}
+    FrontCam(){};
     void subscribe()
     {
         _nHandle.param<std::string>("front_cam_topic",_topicName, "front_camera/image_raw");
@@ -91,11 +88,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const sensor_msgs::Image::ConstPtr& msg) {_signalTime = clock();}
 };
@@ -104,8 +99,7 @@ private:
 class Gps : public Listener
 {
 public:
-    Gps() {_signalTime = 0;}
-    long int getLastSignal() {return _signalTime;}
+    Gps(){};
     void subscribe()
     {
         _nHandle.param<std::string>("gps_topic",_topicName, "GPS/fix");
@@ -113,11 +107,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const sensor_msgs::NavSatFix::ConstPtr& msg) {_signalTime = clock();}
 };
@@ -126,8 +118,7 @@ private:
 class Gripper : public Listener
 {
 public:
-    Gripper(){_signalTime = 0;}
-    long int getLastSignal() {return _signalTime;}
+    Gripper(){};
     void subscribe()
     {
         _nHandle.param<std::string>("gripper_topic",_topicName, "gripper_controller/gripper_cmd/status");
@@ -135,11 +126,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const actionlib_msgs::GoalStatusArray& msg) {_signalTime = clock();}
 };
@@ -148,8 +137,7 @@ private:
 class Imu : public Listener
 {
 public:
-    Imu() {_signalTime = 0;}
-    long int getLastSignal() {return _signalTime;}
+    Imu(){};
     void subscribe()
     {
         _nHandle.param<std::string>("imu_topic",_topicName, "IMU/data");
@@ -157,11 +145,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const sensor_msgs::Imu::ConstPtr& msg) {_signalTime = clock();}
 };
@@ -170,8 +156,7 @@ private:
 class Kinect2 : public Listener
 {
 public:
-    Kinect2() {_signalTime = 0;}
-    long int getLastSignal(){return _signalTime;}
+    Kinect2(){};
     void subscribe()
     {
         _nHandle.param<std::string>("kinect2_topic",_topicName, "kinect2/hd/image_depth_rect");
@@ -179,11 +164,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const sensor_msgs::Image::ConstPtr& msg) {_signalTime = clock();}
 };
@@ -192,8 +175,7 @@ private:
 class Lidar : public Listener
 {
 public:
-    Lidar() {_signalTime = 0;}
-    long int getLastSignal() {return _signalTime;}
+    Lidar(){};
     void subscribe()
     {
         _nHandle.param<std::string>("lidar_topic",_topicName, "scan");
@@ -201,11 +183,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const sensor_msgs::LaserScan::ConstPtr& msg) { _signalTime = clock();}
 };
@@ -214,8 +194,7 @@ private:
 class Odom : public Listener
 {
 public:
-    Odom() {_signalTime = 0;}
-    long int getLastSignal() { return _signalTime;}
+    Odom(){};
     void subscribe()
     {
         _nHandle.param<std::string>("odom_topic",_topicName, "mobile_base_controller/odom");
@@ -223,11 +202,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const nav_msgs::Odometry::ConstPtr& msg) {_signalTime = clock();}
 };
@@ -237,8 +214,7 @@ private:
 class PanTilt : public Listener
 {
 public:
-    PanTilt() {_signalTime = 0;}
-    long int getLastSignal() {return _signalTime;}
+    PanTilt(){};
     void subscribe()
     {
         _nHandle.param<std::string>("pan_tilt_topic",_topicName, "pan_tilt_trajectory_controller/state");
@@ -246,11 +222,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const control_msgs::JointTrajectoryControllerState::ConstPtr &msg) {_signalTime = clock();}
 };
@@ -260,8 +234,7 @@ private:
 class RearCam : public Listener
 {
 public:
-    RearCam() { _signalTime = 0;}
-    long int getLastSignal() {return _signalTime;}
+    RearCam(){};
     void subscribe()
     {
         _nHandle.param<std::string>("rear_cam_topic",_topicName, "rear_camera/image_raw");
@@ -269,11 +242,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const sensor_msgs::Image::ConstPtr& msg) {_signalTime = clock();}
 };
@@ -282,8 +253,7 @@ private:
 class SR300 : public Listener
 {
 public:
-    SR300() {_signalTime = 0;}
-    long int getLastSignal() {return _signalTime;}
+    SR300(){};
     void subscribe()
     {
         _nHandle.param<std::string>("sr300_topic",_topicName, "sr300/color/image_raw");
@@ -291,11 +261,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const sensor_msgs::Image::ConstPtr& msg) { _signalTime = clock();}
 };
@@ -304,8 +272,7 @@ private:
 class UrfLeft : public Listener
 {
 public:
-    UrfLeft() {_signalTime = 0;}
-    long int getLastSignal() {return _signalTime;}
+    UrfLeft(){};
     void subscribe()
     {
         _nHandle.param<std::string>("urf_left_topic",_topicName, "URF/left");
@@ -313,11 +280,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const sensor_msgs::Range::ConstPtr& msg) {_signalTime = clock();}
 };
@@ -326,8 +291,7 @@ private:
 class UrfRear : public Listener
 {
 public:
-    UrfRear() {_signalTime = 0;}
-    long int getLastSignal() {return _signalTime;}
+    UrfRear(){};
     void subscribe()
     {
         _nHandle.param<std::string>("urf_rear_topic",_topicName, "URF/rear");
@@ -339,7 +303,6 @@ private:
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const sensor_msgs::Range::ConstPtr& msg) { _signalTime = clock();}
 };
@@ -348,8 +311,7 @@ private:
 class UrfRight : public Listener
 {
 public:
-    UrfRight() {_signalTime = 0;}
-    long int getLastSignal() {return _signalTime;}
+    UrfRight(){};
     void subscribe()
     {
         _nHandle.param<std::string>("urf_right_topic",_topicName, "URF/right");
@@ -357,11 +319,9 @@ public:
     }
 
 private:
-
     ros::NodeHandle _nHandle;
     ros::Subscriber _sub;
     std::string _topicName;
-    long int _signalTime;
 
     void _chatterCallback(const sensor_msgs::Range::ConstPtr& msg) {_signalTime = clock();}
 };
