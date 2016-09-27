@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
     connection.connect(*iterator);
 
     ROS_INFO("[%s]: Connected to server", ros::this_node::getName().c_str());
-    std::string colorName = "blue";
+    std::string colorName = "red";
     while(ros::ok()) {
         char data[MAX_LEN] = {'\0'};
         boost::asio::read(connection, boost::asio::buffer(data, 3));
@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
             if (pickAndPlace(pickAndPlaceClient).success) {
                 if(colorName == "red") colorName = "blue";
                 else colorName = "red";
-                changeColor("blue");
+                changeColor(colorName);
                 boost::asio::write(connection, boost::asio::buffer("go\n", 3));
             } else {
                 recover(pickAndPlaceClient, connection);

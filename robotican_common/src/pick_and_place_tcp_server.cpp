@@ -45,12 +45,15 @@ int main(int argc, char** argv) {
     ROS_INFO("[%s]: Got new connection", ros::this_node::getName().c_str());
     std_srvs::Trigger::Response pickAndPlaceRes = pickAndPlace(pickAndPlaceClient);
 
+    std::string colorName = "red";
     if (pickAndPlaceRes.success) {
         boost::asio::write(*client, boost::asio::buffer("go\n", 3));
+        if(colorName == "red") colorName = "blue";
+        else colorName = "red";
+        changeColor(colorName);
     } else {
         recover(pickAndPlaceClient, client);
     }
-    std::string colorName = "blue";
     while(ros::ok()) {
         char data[MAX_LEN] = {'\0'};
 
@@ -59,7 +62,7 @@ int main(int argc, char** argv) {
             if (pickAndPlace(pickAndPlaceClient).success) {
                 if(colorName == "red") colorName = "blue";
                 else colorName = "red";
-                changeColor("blue");
+                changeColor(colorName);
                 boost::asio::write(*client, boost::asio::buffer("go\n", 3));
             } else {
                 recover(pickAndPlaceClient, client);
