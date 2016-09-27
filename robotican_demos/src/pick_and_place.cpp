@@ -116,7 +116,7 @@ moveit_msgs::PlaceGoal buildPlaceGoal(const std::string &objectName) {
 
     location.place_pose.header.frame_id = placeGoal.support_surface_name;
     location.place_pose.pose.position.x = randBetweenTwoNum(10, -10);
-    location.place_pose.pose.position.y = randBetweenTwoNum(50, -50);
+    location.place_pose.pose.position.y = randBetweenTwoNum(5, -5);
     location.place_pose.pose.position.z = 0.1;
     location.place_pose.pose.orientation.w = 1.0;
 
