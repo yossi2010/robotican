@@ -42,9 +42,6 @@ int main(int argc, char** argv) {
         boost::asio::read(connection, boost::asio::buffer(data, 3));
         if (std::strcmp(data, "go\n") == 0) {
             if (pickAndPlace(pickAndPlaceClient).success) {
-                if(colorName == "red") colorName = "blue";
-                else colorName = "red";
-                changeColor(colorName);
                 boost::asio::write(connection, boost::asio::buffer("go\n", 3));
             } else {
                 recover(pickAndPlaceClient, connection);

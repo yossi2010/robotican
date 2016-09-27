@@ -31,13 +31,7 @@ int main(int argc, char** argv) {
     boost::asio::io_service io_service;
     tcp::acceptor server(io_service, tcp::endpoint(tcp::v4(), 5001));
     socket_ptr client(new tcp::socket(io_service));
-//    ros::Duration(5.0).sleep();
-//    changeColor("green", nodeHandle);
-//    ros::Duration(5.0).sleep();
-//    changeColor, nodeHandle);
-//    ros::Duration(5.0).sleep();
-//    changeColor("red", nodeHandle);
-//    ros::Duration(5.0).sleep();
+
 
     ROS_INFO("[%s]: Server up and waiting for client to connect....", ros::this_node::getName().c_str());
 
@@ -45,12 +39,9 @@ int main(int argc, char** argv) {
     ROS_INFO("[%s]: Got new connection", ros::this_node::getName().c_str());
     std_srvs::Trigger::Response pickAndPlaceRes = pickAndPlace(pickAndPlaceClient);
 
-    std::string colorName = "red";
+
     if (pickAndPlaceRes.success) {
         boost::asio::write(*client, boost::asio::buffer("go\n", 3));
-        if(colorName == "red") colorName = "blue";
-        else colorName = "red";
-        changeColor(colorName);
     } else {
         recover(pickAndPlaceClient, client);
     }
@@ -60,9 +51,6 @@ int main(int argc, char** argv) {
         boost::asio::read(*client, boost::asio::buffer(data, 3));
         if (std::strcmp(data, "go\n") == 0) {
             if (pickAndPlace(pickAndPlaceClient).success) {
-                if(colorName == "red") colorName = "blue";
-                else colorName = "red";
-                changeColor(colorName);
                 boost::asio::write(*client, boost::asio::buffer("go\n", 3));
             } else {
                 recover(pickAndPlaceClient, client);
