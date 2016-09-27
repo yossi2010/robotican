@@ -24,6 +24,7 @@ find_package(catkin REQUIRED COMPONENTS
         tf_conversions
         trajectory_msgs
         gazebo_ros
+        ar_track_alvar
         )
 find_package(gazebo REQUIRED)
 
@@ -189,8 +190,13 @@ target_link_libraries(drive2object_node ${catkin_LIBRARIES})
 
 add_executable(pick_and_place_tcp_server src/pick_and_place_tcp_server.cpp)
 target_link_libraries(pick_and_place_tcp_server ${catkin_LIBRARIES})
+
 add_executable(pick_and_place_tcp_client src/pick_and_place_tcp_client.cpp)
 target_link_libraries(pick_and_place_tcp_client ${catkin_LIBRARIES})
+
+add_executable(ar_tags_tf2pose src/ar_tags_tf2pose.cpp)
+target_link_libraries(ar_tags_tf2pose ${catkin_LIBRARIES})
+
 
 target_link_libraries(gazebo_grasp_fix
         ${GAZEBO_LIBRARIES}
