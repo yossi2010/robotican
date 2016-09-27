@@ -18,9 +18,19 @@
 #include <moveit_msgs/PickupAction.h>
 #include <moveit_msgs/PlaceAction.h>
 
+#define MAX_BOARD_PLACE 0.2
 typedef actionlib::SimpleActionClient<moveit_msgs::PickupAction> PickClient;
 typedef actionlib::SimpleActionClient<moveit_msgs::PlaceAction> PlaceClient;
 
+struct Point_t {
+    float x;
+    float y;
+
+    Point_t() {
+        x = y = 0.0;
+    }
+
+};
 
 void look_down();
 
@@ -37,6 +47,8 @@ double randBetweenTwoNum(int max, int min);
 bool exec = false;
 ros::ServiceClient *uc_client_ptr;
 ros::Publisher pub_controller_command;
+Point_t point;
+
 
 int main(int argc, char **argv) {
 
@@ -115,8 +127,23 @@ moveit_msgs::PlaceGoal buildPlaceGoal(const std::string &objectName) {
     location.post_place_retreat.desired_distance = 0.2;
 
     location.place_pose.header.frame_id = placeGoal.support_surface_name;
-    location.place_pose.pose.position.x = randBetweenTwoNum(10, -10);
-    location.place_pose.pose.position.y = randBetweenTwoNum(5, -5);
+    bool inTheBoard;
+    do {
+        inTheBoard = true;
+        location.place_pose.pose.position.x = randBetweenTwoNum(10, -10);
+        if(fabs(point.x + location.place_pose.pose.position.x) >= MAX_BOARD_PLACE) {
+            inTheBoard = false;
+        }
+    } while (!inTheBoard);
+
+    do {
+        inTheBoard = true;
+        location.place_pose.pose.position.y = randBetweenTwoNum(5, -5);
+        if(fabs(point.y + location.place_pose.pose.position.y) >= MAX_BOARD_PLACE) {
+            inTheBoard = false;
+        }
+    } while (!inTheBoard);
+
     location.place_pose.pose.position.z = 0.1;
     location.place_pose.pose.orientation.w = 1.0;
 
@@ -245,6 +272,8 @@ bool pickAndPlaceCallBack(std_srvs::Trigger::Request &req, std_srvs::Trigger::Re
                 found = true;
                 res.success = (unsigned char) (found);
                 res.message = placeStatus.getText();
+                point.x += placeGoal.place_locations[0].place_pose.pose.position.x;
+                point.y += placeGoal.place_locations[0].place_pose.pose.position.y;
             }
         } while(!found);
     }
