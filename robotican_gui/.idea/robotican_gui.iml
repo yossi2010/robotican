@@ -2,89 +2,59 @@
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/RearCam.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/sr300.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/UrfRear.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Arm.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/UrfRight.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Battery.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/UrfLeft.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Imu.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Gps.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Battery.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/UrfRear.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/RearCam.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Gps.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/FrontCam.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/PanTilt.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/UrfRight.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Lidar.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/FrontCam.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Gripper.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Lidar.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Listener.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Gripper.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Arm.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Kinect2.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/PanTilt.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/UrfLeft.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/sr300.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Odom.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Odom.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Imu.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/listeners/Kinect2.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/gui_components/Led.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/gui_components/Led.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/event_slot.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/led.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/gui_manager.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/arm_move.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/gui_manager/GUIManager.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/gui_manager/GUIManager.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/event_handler/EventSignal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/event_handler/ArmMove.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/event_handler/EventSlot.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/event_handler/EventSignal.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/event_handler/EventSlot.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/event_handler/ArmMove.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/event_signal.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/resources/images/image_resource_file.qrc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/resources/ui/robotican_gui.ui" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/event_slot.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/gui_manager.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/event_signal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/arm_move.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/listeners.hpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/led.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/robotican_gui.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/package.xml" isTestSource="false" />
     </content>
+    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/include/moc_event_signal.cxx">
+      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/include/moc_event_signal.cxx" isTestSource="false" />
+    </content>
+    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/include/moc_event_slot.cxx">
+      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/include/moc_event_slot.cxx" isTestSource="false" />
+    </content>
     <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/qrc_image_resource_file.cxx">
       <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/qrc_image_resource_file.cxx" isTestSource="false" />
     </content>
-    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/src/event_handler/moc_EventSignal.cxx">
-      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/src/event_handler/moc_EventSignal.cxx" isTestSource="false" />
+    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/include/moc_event_signal.cxx">
+      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/include/moc_event_signal.cxx" isTestSource="false" />
     </content>
-    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/src/event_handler/moc_EventSlot.cxx">
-      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/src/event_handler/moc_EventSlot.cxx" isTestSource="false" />
+    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/include/moc_event_slot.cxx">
+      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/include/moc_event_slot.cxx" isTestSource="false" />
     </content>
     <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/qrc_image_resource_file.cxx">
       <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/qrc_image_resource_file.cxx" isTestSource="false" />
     </content>
-    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/src/event_handler/moc_EventSignal.cxx">
-      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/src/event_handler/moc_EventSignal.cxx" isTestSource="false" />
+    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/include/moc_event_signal.cxx">
+      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/include/moc_event_signal.cxx" isTestSource="false" />
     </content>
-    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/src/event_handler/moc_EventSlot.cxx">
-      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/src/event_handler/moc_EventSlot.cxx" isTestSource="false" />
+    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/include/moc_event_slot.cxx">
+      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/include/moc_event_slot.cxx" isTestSource="false" />
     </content>
     <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/qrc_image_resource_file.cxx">
       <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/qrc_image_resource_file.cxx" isTestSource="false" />
     </content>
-    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/src/event_handler/moc_EventSignal.cxx">
-      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/src/event_handler/moc_EventSignal.cxx" isTestSource="false" />
+    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/include/moc_event_signal.cxx">
+      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/include/moc_event_signal.cxx" isTestSource="false" />
     </content>
-    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/src/event_handler/moc_EventSlot.cxx">
-      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/src/event_handler/moc_EventSlot.cxx" isTestSource="false" />
+    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/include/moc_event_slot.cxx">
+      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/include/moc_event_slot.cxx" isTestSource="false" />
     </content>
     <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/qrc_image_resource_file.cxx">
       <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/qrc_image_resource_file.cxx" isTestSource="false" />
-    </content>
-    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/src/event_handler/moc_EventSignal.cxx">
-      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/src/event_handler/moc_EventSignal.cxx" isTestSource="false" />
-    </content>
-    <content url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/src/event_handler/moc_EventSlot.cxx">
-      <sourceFolder url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/src/event_handler/moc_EventSlot.cxx" isTestSource="false" />
     </content>
     <content url="file:///usr/src/gtest">
       <sourceFolder url="file:///usr/src/gtest/src/gtest_main.cc" isTestSource="false" />
@@ -120,17 +90,17 @@
           <root url="file://$MODULE_DIR$/../../../devel/include" />
         </SOURCES>
         <excluded>
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/src/event_handler/moc_EventSlot.cxx" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/src/event_handler/moc_EventSignal.cxx" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/include/moc_event_slot.cxx" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/include/moc_event_signal.cxx" />
           <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Release/qrc_image_resource_file.cxx" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/src/event_handler/moc_EventSlot.cxx" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/src/event_handler/moc_EventSignal.cxx" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/include/moc_event_signal.cxx" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/include/moc_event_slot.cxx" />
           <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/Debug/qrc_image_resource_file.cxx" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/src/event_handler/moc_EventSlot.cxx" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/src/event_handler/moc_EventSignal.cxx" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/include/moc_event_slot.cxx" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/include/moc_event_signal.cxx" />
           <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/RelWithDebInfo/qrc_image_resource_file.cxx" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/src/event_handler/moc_EventSlot.cxx" />
-          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/src/event_handler/moc_EventSignal.cxx" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/include/moc_event_slot.cxx" />
+          <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/include/moc_event_signal.cxx" />
           <root url="file://$USER_HOME$/.CLion2016.2/system/cmake/generated/robotican_gui-dd4794c6/dd4794c6/MinSizeRel/qrc_image_resource_file.cxx" />
         </excluded>
       </library>

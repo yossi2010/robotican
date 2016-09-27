@@ -86,7 +86,7 @@ file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS in
 
 set(CMAKE_AUTORCC ON)
 QT4_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})
-QT4_WRAP_CPP(QT_MOC_HPP ${QT_MOC} src/event_handler/EventSignal.h src/event_handler/EventSlot.h)
+QT4_WRAP_CPP(QT_MOC_HPP ${QT_MOC} include/event_signal.h include/event_slot.h)
 QT4_ADD_RESOURCES(RIC_GUI_RESOURCES_RCC resources/images/image_resource_file.qrc)
 ##############################################################################
 # Sources
@@ -99,52 +99,18 @@ file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINK
 ##############################################################################
 set(PROJ_FILES
         src/main.cpp
-        src/gui_manager/GUIManager.cpp
-        src/gui_manager/GUIManager.h
-        src/event_handler/EventSlot.cpp
-        src/event_handler/EventSlot.h
-        src/event_handler/EventSignal.cpp
-        src/event_handler/EventSignal.h
-        src/gui_components/Led.cpp
-        src/gui_components/Led.h
+        src/gui_manager.cpp
+        include/gui_manager.h
+        src/event_slot.cpp
+        include/event_slot.h
+        src/event_signal.cpp
+        include/event_signal.h
+        src/led.cpp
+        include/led.h
         include/robotican_gui.h
-        src/listeners/Listener.h
-
-
-
-
-        #listeners
-        src/listeners/Battery.cpp
-        src/listeners/Battery.h
-        src/listeners/Arm.cpp
-        src/listeners/Arm.h
-        src/listeners/PanTilt.cpp
-        src/listeners/PanTilt.h
-        src/listeners/Odom.cpp
-        src/listeners/Odom.h
-        src/listeners/Gripper.cpp
-        src/listeners/Gripper.h
-        src/listeners/Imu.cpp
-        src/listeners/Imu.h
-        src/listeners/Lidar.cpp
-        src/listeners/Lidar.h
-        src/listeners/Gps.cpp
-        src/listeners/Gps.h
-        src/listeners/FrontCam.cpp
-        src/listeners/FrontCam.h
-        src/listeners/RearCam.cpp
-        src/listeners/RearCam.h
-        src/listeners/UrfLeft.cpp
-        src/listeners/UrfLeft.h
-        src/listeners/UrfRear.cpp
-        src/listeners/UrfRear.h
-        src/listeners/UrfRight.cpp
-        src/listeners/UrfRight.h
-        src/listeners/Kinect2.cpp
-        src/listeners/Kinect2.h
-        src/listeners/sr300.cpp
-        src/listeners/sr300.h
-        src/event_handler/ArmMove.cpp src/event_handler/ArmMove.h)
+        src/arm_move.cpp
+        include/arm_move.h
+        include/listeners.hpp)
 
 add_executable(robotican_gui ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP} ${PROJ_FILES} ${RIC_GUI_RESOURCES_RCC})
 target_link_libraries(robotican_gui ${QT_LIBRARIES} ${catkin_LIBRARIES})
