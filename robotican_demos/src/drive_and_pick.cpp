@@ -4,7 +4,7 @@
 #include <ros/ros.h>
 #include <std_srvs/Trigger.h>
 #include <std_srvs/SetBool.h>
-
+#include <robotican_common/switch_topic.h>
 
 
 int main(int argc, char **argv) {
@@ -14,10 +14,19 @@ int main(int argc, char **argv) {
 
     ros::ServiceClient drive_client = n.serviceClient<std_srvs::Trigger>("drive2object_go");
     ros::ServiceClient pick_client = n.serviceClient<std_srvs::Trigger>("pick_go");
+    ros::ServiceClient sw_client = n.serviceClient<robotican_common::switch_topic>("switch_pcl_topic");
+   // ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>("update_collision_objects");
 
      ROS_INFO("Waiting for services...");
     drive_client.waitForExistence();
     pick_client.waitForExistence();
+    sw_client.waitForExistence();
+  //  uc_client.waitForExistence();
+
+    robotican_common::switch_topic sw_srv;
+    sw_srv.request.num=1;
+    sw_client.call(sw_srv);
+
     ros::Duration(5).sleep();
      ROS_INFO("Ready!");
     std_srvs::Trigger drive_srv;
@@ -25,12 +34,15 @@ int main(int argc, char **argv) {
     {
         ROS_INFO("drive2object response: %s", drive_srv.response.message.c_str());
         if (drive_srv.response.success) {
-            ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>("update_collision_objects");
-            std_srvs::SetBool srv;
-            srv.request.data=true;
-            uc_client.call(srv);
+
+
+            sw_srv.request.num=2;
+            sw_client.call(sw_srv);
+
+
 
             ros::Duration(5).sleep();
+
             std_srvs::Trigger pick_srv;
             if (pick_client.call(pick_srv)) {
                 ROS_INFO("pick response: %s", pick_srv.response.message.c_str());

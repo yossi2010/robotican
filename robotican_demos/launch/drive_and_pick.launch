@@ -6,9 +6,10 @@
   <!-- roslaunch robotican_armadillo armadillo.launch lidar:=true kinect2:=true sr300:=true moveit:=true gmapping:=true move_base:=true  -->
   
   <!-- drive2object-->
-  <node name="find_object_node_kinect2" pkg="robotican_common" type="find_objects_node" output="screen">
+  <node name="find_object_node" pkg="robotican_common" type="find_objects_node" output="screen">
     <param name="~object_id" value="1"/>
-    <param name="~depth_topic" value="/kinect2/qhd/points"/>
+    <param name="~depth_topic1" value="/kinect2/qhd/points"/>
+     <param name="~depth_topic2" value="/sr300/depth/points"/>  
     <!-- <param name="~depth_topic" value="/depth_camera/depth_registered/points"/> -->
     <rosparam file="$(find robotican_demos)/config/red_object.yaml" command="load"/>
   </node>  
@@ -19,10 +20,9 @@
   </node>  
   
   <node name="object_view" pkg="rqt_image_view" type="rqt_image_view" >
-    <remap from="image" to="find_object_node_kinect2/result" />
+    <remap from="image" to="find_object_node/result" />
   </node>
-  
-  
+   
   
   <!-- pick and place-->
   <node name="pick_and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true"> 
@@ -32,22 +32,12 @@
     <param name="~start_position_name" value="pre_grasp2"/>
   </node>
   
-  <node name="find_object_node_sr300" pkg="robotican_common" type="find_objects_node" output="screen">
-    <param name="~object_id" value="1"/>
-    <!--<param name="~depth_topic" value="/kinect2/qhd/points"/>  -->
-    <param name="~depth_topic" value="/sr300/depth/points"/>  
-    <!--  <param name="~depth_topic" value="/depth_camera/depth_registered/points"/> -->
-    <rosparam file="$(find robotican_demos)/config/red_object.yaml" command="load"/>
-  </node>
-  
+
     
     <node name="objects_handler" pkg="robotican_common" type="objects_handler" output="screen">
        <param name="~db_path" value=""/>
    </node> 
   
-  <node name="object_view_sr300" pkg="rqt_image_view" type="rqt_image_view" >
-    <remap from="image" to="find_object_node_sr300/result" />
-  </node>
   
     <node name="drive_and_pick" pkg="robotican_demos" type="drive_and_pick" output="screen" required="true"/> 
   

@@ -18,6 +18,7 @@
 #include "tf/message_filter.h"
 #include "message_filters/subscriber.h"
 #include <ar_track_alvar_msgs/AlvarMarkers.h>
+#include <robotican_common/switch_topic.h>
 
 using namespace cv;
 
@@ -40,7 +41,7 @@ int object_id;
 
 //ros::Time detect_t;
 
-std::string depth_topic;
+std::string depth_topic1,depth_topic2,depth_topic;
 bool have_object=false;
 
 ros::Publisher object_pub;
@@ -270,6 +271,14 @@ void dynamicParamCallback(robotican_common::FindObjectDynParamConfig &config, ui
 
 void on_trackbar( int, void* ){}
 
+bool switch_pcl_topic(robotican_common::switch_topic::Request &req, robotican_common::switch_topic::Response &res) {
+
+    if (req.num==1) depth_topic=depth_topic1;
+    else if (req.num==2) depth_topic=depth_topic2;
+    res.success=true;
+return true;
+
+}
 
 int main(int argc, char **argv) {
 
@@ -285,7 +294,9 @@ int main(int argc, char **argv) {
 
     pn.param<int>("object_id", object_id, 1);
 
-    n.param<std::string>("depth_topic", depth_topic, "/kinect2/qhd/points");
+    n.param<std::string>("depth_topic1", depth_topic1, "/kinect2/qhd/points");
+    n.param<std::string>("depth_topic2", depth_topic2, "/sr300/depth/points");
+    depth_topic=depth_topic1;
 
     dynamic_reconfigure::Server<robotican_common::FindObjectDynParamConfig> dynamicServer;
     dynamic_reconfigure::Server<robotican_common::FindObjectDynParamConfig>::CallbackType callbackFunction;
@@ -299,6 +310,7 @@ int main(int argc, char **argv) {
     object_image_pub = it_.advertise("hsv_filterd", 1);
     bw_image_pub = it_.advertise("bw", 1);
     ros::Subscriber pcl_sub = n.subscribe(depth_topic, 1, cloud_cb);
+
 
     object_pub=n.advertise<ar_track_alvar_msgs::AlvarMarkers>("detected_objects", 2, true);
 
@@ -315,10 +327,18 @@ int main(int argc, char **argv) {
     tf_filter.registerCallback( boost::bind(obj_msgCallback, _1) );
 
 
+ros::ServiceServer switch_sub = n.advertiseService("switch_pcl_topic", &switch_pcl_topic);
 
-
+ros::Rate r(10);
     ROS_INFO("Ready to find objects!");
-     ros::spin();
+    while (ros::ok()) {
+    if (pcl_sub.getTopic()!=depth_topic) {
+        pcl_sub = n.subscribe(depth_topic, 1, cloud_cb);
+         ROS_INFO("switching pcl topic");
+    }
+     ros::spinOnce();
+     r.sleep();
+    }
 
     return 0;
 }

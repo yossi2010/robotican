@@ -16,7 +16,7 @@ bool update_cb(std_srvs::SetBool::Request  &req,std_srvs::SetBool::Response &res
 void handle_objects(const ar_track_alvar_msgs::AlvarMarkers::ConstPtr& markers);
 std::string get_obj_id(int id);
 shape_msgs::SolidPrimitive get_obj_shape(int id);
-geometry_msgs::Pose get_obj_position(geometry_msgs::Pose  pose);
+geometry_msgs::Pose get_obj_position(int id,geometry_msgs::Pose  pose);
 
 bool update=false;
 
@@ -79,16 +79,16 @@ object_primitive.dimensions[1] = 0.03;
 else {
    object_primitive.type = object_primitive.BOX;
    object_primitive.dimensions.resize(3);
-   object_primitive.dimensions[0] = 0.2;
-   object_primitive.dimensions[1] = 0.2;
+   object_primitive.dimensions[0] = 0.3;
+   object_primitive.dimensions[1] = 0.3;
      object_primitive.dimensions[2] = 0.01;
 }
     return object_primitive;
 }
 
-geometry_msgs::Pose get_obj_position(geometry_msgs::Pose  pose){ //TODO: FROM DB
+geometry_msgs::Pose get_obj_position(int id,geometry_msgs::Pose  pose){ //TODO: FROM DB
 
-    pose.position.x+=0.015;
+    if (id==1) pose.position.x+=0.015;
     return pose;
  }
 
@@ -105,7 +105,7 @@ void handle_objects(const ar_track_alvar_msgs::AlvarMarkers::ConstPtr& markers)
         obj.id = get_obj_id(m.id);
         obj.primitives.push_back(get_obj_shape(m.id));
 
-        obj.primitive_poses.push_back(get_obj_position(m.pose.pose));
+        obj.primitive_poses.push_back(get_obj_position(m.id,m.pose.pose));
         obj.operation=obj.ADD;
 
         col_objects.push_back(obj);

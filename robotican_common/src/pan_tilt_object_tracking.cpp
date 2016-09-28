@@ -61,9 +61,6 @@ int main(int argc, char **argv) {
     std::string object_name;
     pn.param<std::string>("object_name", object_name, "can");
 
-    //std::string obj_topic="/detected_objects/"+object_id;
-    //ros::Subscriber obj_sub = nh.subscribe(obj_topic, 1, callback);
-
 
     moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
 

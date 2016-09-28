@@ -82,6 +82,11 @@ bool drive_go_cb(std_srvs::Trigger::Request  &req,
                  std_srvs::Trigger::Response &res)
 {
 
+
+    ros::NodeHandle n;
+    ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>("update_collision_objects");
+    std_srvs::SetBool srv;
+
     std::vector<std::string> ids;
     ids.push_back(object_name);
     std::map<std::string, moveit_msgs::CollisionObject> poses=planning_scene_interface_ptr->getObjects(ids);
@@ -96,9 +101,8 @@ bool drive_go_cb(std_srvs::Trigger::Request  &req,
 
         move_base_msgs::MoveBaseGoal goal=get_pre_pick_pose(obj.primitive_poses[0].position);
 
-        ros::NodeHandle n;
-        ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>("update_collision_objects");
-        std_srvs::SetBool srv;
+
+
         srv.request.data=false;
         uc_client.call(srv);
 
@@ -113,12 +117,16 @@ bool drive_go_cb(std_srvs::Trigger::Request  &req,
             res.success=false;
         }
         moving=false;
+        srv.request.data=true;
+        uc_client.call(srv);
         return true;
     }
     else {
         ROS_ERROR("No object found");
         res.message="No object found";
         res.success=false;
+        srv.request.data=true;
+        uc_client.call(srv);
         return true;
     }
 
