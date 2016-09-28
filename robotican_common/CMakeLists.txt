@@ -194,8 +194,8 @@ target_link_libraries(pick_and_place_tcp_server ${catkin_LIBRARIES})
 add_executable(pick_and_place_tcp_client src/pick_and_place_tcp_client.cpp)
 target_link_libraries(pick_and_place_tcp_client ${catkin_LIBRARIES})
 
-add_executable(ar_tags_tf2pose src/ar_tags_tf2pose.cpp)
-target_link_libraries(ar_tags_tf2pose ${catkin_LIBRARIES})
+add_executable(ar_tags_bridge src/ar_tags_bridge.cpp)
+target_link_libraries(ar_tags_bridge ${catkin_LIBRARIES})
 
 
 target_link_libraries(gazebo_grasp_fix
