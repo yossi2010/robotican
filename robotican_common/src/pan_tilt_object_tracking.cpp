@@ -6,6 +6,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <actionlib/client/simple_action_client.h>
 #include <pr2_controllers_msgs/PointHeadAction.h>
+#include <moveit/planning_scene_interface/planning_scene_interface.h>
 
 // Our Action interface type, provided as a typedef for convenience
 typedef actionlib::SimpleActionClient<pr2_controllers_msgs::PointHeadAction> PointHeadClient;
@@ -58,9 +59,12 @@ ros::NodeHandle pn("~");
 
 std::string object_id;
 pn.param<std::string>("object_id", object_id, "can");
+
 std::string obj_topic="/detected_objects/"+object_id;
 ros::Subscriber obj_sub = nh.subscribe(obj_topic, 1, callback);
 
+
+  moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
 
 //Initialize the client for the Action interface to the head controller
 point_head_client = new PointHeadClient("/pan_tilt_trajectory_controller/point_head_action", true);
@@ -71,9 +75,24 @@ while(!point_head_client->waitForServer(ros::Duration(5.0))){
 }
 
     ROS_INFO("Ready to track!");
+ros::Rate r(10);
 
+while (ros::ok()) {
 
-        ros::spin();
+    std::vector<std::string> ids;
+    ids.push_back(object_id);
+     std::map<std::string, geometry_msgs::Pose> poses=planning_scene_interface.getObjectPoses(ids);
+std::map<std::string, geometry_msgs::Pose>::iterator it;
+
+it = poses.find(object_id);
+
+if (it != poses.end()) {
+geometry_msgs::Pose pose=it->second;
+}
+
+        ros::spinOnce();
+    r.sleep();
+}
 
 
     return 0;

@@ -82,9 +82,7 @@ int main(int argc, char **argv) {
         group.execute(startPosPlan);
         pub_controller_command = n.advertise<trajectory_msgs::JointTrajectory>("/pan_tilt_trajectory_controller/command", 2);
         ROS_INFO("Waiting for the moveit action server to come up");
-
-        std::string uc="/update_collision/" + object_id;
-        ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>(uc);
+        ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>("update_collision_objects");
         ROS_INFO("Waiting for update_collision service...");
         uc_client.waitForExistence();
         uc_client_ptr = &uc_client;
@@ -243,8 +241,7 @@ bool pickAndPlaceCallBack(std_srvs::Trigger::Request &req, std_srvs::Trigger::Re
 
     pn.param<std::string>("object_id", object_id, "can");
 
-    std::string uc="/update_collision/" + object_id;
-    ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>(uc);
+    ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>("update_collision_objects");
     std_srvs::SetBool disableColl;
     disableColl.request.data = false;
 

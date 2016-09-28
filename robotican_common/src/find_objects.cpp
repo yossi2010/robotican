@@ -8,37 +8,37 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
 #include <geometry_msgs/PointStamped.h>
-#include <std_srvs/SetBool.h>
+
 #include <pcl_conversions/pcl_conversions.h>
 #include <tf/transform_listener.h>
 #include <robotican_common/FindObjectDynParamConfig.h>
 #include <dynamic_reconfigure/server.h>
-#include <moveit_msgs/CollisionObject.h>
-#include <moveit/planning_scene_interface/planning_scene_interface.h>
-#include <tf/transform_listener.h>
+
+#include <tf/transform_broadcaster.h>
 #include "tf/message_filter.h"
 #include "message_filters/subscriber.h"
+#include <ar_track_alvar_msgs/AlvarMarkers.h>
 
 using namespace cv;
 
 bool debug_vision=false;
 
-bool update_cb(std_srvs::SetBool::Request  &req,std_srvs::SetBool::Response &res);
+
 bool find_object(Mat input, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud,Point3d *obj,std::string frame);
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input);
 void dynamicParamCallback(robotican_common::FindObjectDynParamConfig &config, uint32_t level);
 void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr);
 
 
-std::vector<moveit_msgs::CollisionObject> col_objects;
-moveit::planning_interface::PlanningSceneInterface *planning_scene_interface_ptr;
+
+
 tf::TransformListener *listener_ptr;
 
-bool timeout=true;
-bool update=false;
+//bool timeout=true;
 
-double object_r,object_h;
-ros::Time detect_t;
+int object_id;
+
+//ros::Time detect_t;
 
 std::string depth_topic;
 bool have_object=false;
@@ -47,7 +47,7 @@ ros::Publisher object_pub;
 image_transport::Publisher result_image_pub;
 image_transport::Publisher object_image_pub;
 image_transport::Publisher bw_image_pub;
-
+ros::Publisher pose_pub;
 //red
 int minH=3,maxH=160;
 int minS=70,maxS=255;
@@ -60,15 +60,8 @@ int morph_size=0;
 
 int inv_H=1;
 
-bool update_cb(std_srvs::SetBool::Request  &req,
-               std_srvs::SetBool::Response &res) {
 
-    update=req.data;
-    res.success=true;
-    if (update)  res.message="update collision is ON";
-    else res.message="update collision is OFF";
-    return true;
-}
+
 
 void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
@@ -102,16 +95,14 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
     if (have_object) {
 
 
-        geometry_msgs::PoseStamped target_pose2;
-        target_pose2.header.frame_id=input->header.frame_id;
-        target_pose2.header.stamp=ros::Time::now();
-        target_pose2.pose.position.x =obj.x;
-        target_pose2.pose.position.y = obj.y;
-        target_pose2.pose.position.z = obj.z+object_r;
-        //  std::printf("---------> OBJECT: [%f , %f , %f]\n",target_pose2.pose.position.x,target_pose2.pose.position.y,target_pose2.pose.position.z);
-        target_pose2.pose.orientation.w=1;
-        object_pub.publish(target_pose2);
-
+        geometry_msgs::PoseStamped target_pose;
+        target_pose.header.frame_id=input->header.frame_id;
+        target_pose.header.stamp=ros::Time::now();
+        target_pose.pose.position.x =obj.x;
+        target_pose.pose.position.y = obj.y;
+        target_pose.pose.position.z = obj.z;
+        target_pose.pose.orientation.w=1;
+         pose_pub.publish(target_pose);
 
 
 
@@ -120,39 +111,30 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input) {
 
 }
 
-void arm_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr)
+void obj_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& point_ptr)
 {
 
     try
     {
-        geometry_msgs::PoseStamped base_object_pose,base_table_pose;
+        geometry_msgs::PoseStamped base_object_pose;
         listener_ptr->transformPose("base_footprint", *point_ptr, base_object_pose);
         base_object_pose.pose.orientation= tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,0.0);
-        // base_object_pose.header.frame_id="base_footprint";
-        //  base_object_pose.header.stamp=ros::Time::now();
-
-        detect_t=ros::Time::now();
-
-        // col_objects[0].header.stamp=ros::Time::now();
-        //  col_objects[0].primitive_poses.clear();
-        base_table_pose=base_object_pose;
-        base_table_pose.pose.position.z-=(object_h/2.0+0.02);
-
-        col_objects[0].primitive_poses.clear();
-        col_objects[1].primitive_poses.clear();
-        col_objects[0].primitive_poses.push_back(base_object_pose.pose);
-        col_objects[1].primitive_poses.push_back(base_table_pose.pose);
 
 
-        col_objects[0].operation = col_objects[0].ADD;
-        col_objects[1].operation = col_objects[1].ADD;
+        ar_track_alvar_msgs::AlvarMarkers msg;
+        msg.header.stamp=base_object_pose.header.stamp;
+        msg.header.frame_id="base_footprint";
 
-        if (update) planning_scene_interface_ptr->addCollisionObjects(col_objects);
+        ar_track_alvar_msgs::AlvarMarker m;
+        m.id=object_id;
+        m.header.stamp=base_object_pose.header.stamp;
+        m.header.frame_id="base_footprint";
+      m.pose=base_object_pose;
+        msg.markers.push_back(m);
 
-        if (timeout) {
-            ROS_DEBUG("Found object");
-            timeout=false;
-        }
+        object_pub.publish(msg);
+
+
     }
     catch (tf::TransformException &ex)
     {
@@ -288,13 +270,17 @@ void on_trackbar( int, void* ){}
 int main(int argc, char **argv) {
 
     ros::init(argc, argv, "find_objects_node");
-    ros::NodeHandle n("~");
+    ros::NodeHandle n;
+     ros::NodeHandle pn("~");
     ROS_INFO("Hello");
 
-    std::string object_id;
-    n.param<double>("object_r", object_r, 0.025);
-    n.param<double>("object_h", object_h, 0.15);
-    n.param<std::string>("object_id", object_id, "can");
+   // std::string object_id;
+  //  pn.param<double>("object_r", object_r, 0.025);
+  //  pn.param<double>("object_h", object_h, 0.15);
+   // pn.param<std::string>("object_id", object_id, "can");
+
+    pn.param<int>("object_id", object_id, 1);
+
     n.param<std::string>("depth_topic", depth_topic, "/kinect2/qhd/points");
 
     dynamic_reconfigure::Server<robotican_common::FindObjectDynParamConfig> dynamicServer;
@@ -303,90 +289,32 @@ int main(int argc, char **argv) {
     callbackFunction = boost::bind(&dynamicParamCallback, _1, _2);
     dynamicServer.setCallback(callbackFunction);
 
-    image_transport::ImageTransport it_(n);
+    image_transport::ImageTransport it_(pn);
 
     result_image_pub = it_.advertise("result", 1);
     object_image_pub = it_.advertise("hsv_filterd", 1);
     bw_image_pub = it_.advertise("bw", 1);
-
-    string uc="/update_collision/"+object_id;
-    ros::ServiceServer service = n.advertiseService(uc, update_cb);
-
     ros::Subscriber pcl_sub = n.subscribe(depth_topic, 1, cloud_cb);
-    string topic="/detected_objects/"+object_id;
-    object_pub=n.advertise<geometry_msgs::PoseStamped>(topic, 2, true);
+
+    object_pub=n.advertise<ar_track_alvar_msgs::AlvarMarkers>("detected_objects", 2, true);
+
+    pose_pub=pn.advertise<geometry_msgs::PoseStamped>("object_pose",10);
+
 
     tf::TransformListener listener;
     listener_ptr=&listener;
 
     message_filters::Subscriber<geometry_msgs::PoseStamped> point_sub_;
-    point_sub_.subscribe(n, topic, 10);
+    point_sub_.subscribe(pn, "object_pose", 10);
 
     tf::MessageFilter<geometry_msgs::PoseStamped> tf_filter(point_sub_, listener, "base_footprint", 10);
-    tf_filter.registerCallback( boost::bind(arm_msgCallback, _1) );
-
-    moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
-    planning_scene_interface_ptr=&planning_scene_interface;
-
-    moveit_msgs::CollisionObject can_collision_object;
-    can_collision_object.header.frame_id = "base_footprint";
-    can_collision_object.id = object_id;
-    shape_msgs::SolidPrimitive object_primitive;
-    object_primitive.type = object_primitive.CYLINDER;
-    object_primitive.dimensions.resize(2);
-    object_primitive.dimensions[0] = object_h;
-    object_primitive.dimensions[1] = object_r;
-    can_collision_object.primitives.push_back(object_primitive);
-    col_objects.push_back(can_collision_object);
-
-    moveit_msgs::CollisionObject table_collision_object;
-    table_collision_object.header.frame_id = "base_footprint";
-    table_collision_object.id = "table";
-    shape_msgs::SolidPrimitive table_primitive;
-    table_primitive.type = table_primitive.BOX;
-    table_primitive.dimensions.resize(3);
-    table_primitive.dimensions[0] = 0.2;
-    table_primitive.dimensions[1] = 0.5;
-    table_primitive.dimensions[2] = 0.04;
-    table_collision_object.primitives.push_back(table_primitive);
-    col_objects.push_back(table_collision_object);
+    tf_filter.registerCallback( boost::bind(obj_msgCallback, _1) );
 
 
-
-    if (debug_vision) {
-        namedWindow("Trackbars",CV_WINDOW_AUTOSIZE);              // trackbars window
-        createTrackbar( "H min", "Trackbars", &minH, 180, on_trackbar );
-        createTrackbar( "H max", "Trackbars", &maxH, 180, on_trackbar );
-        createTrackbar( "S min", "Trackbars", &minS, 255, on_trackbar );
-        createTrackbar( "S max", "Trackbars", &maxS, 255, on_trackbar );
-        createTrackbar( "V min", "Trackbars", &minV, 255, on_trackbar );
-        createTrackbar( "V max", "Trackbars", &maxV, 255, on_trackbar );
-        createTrackbar( "gaussian_ksize", "Trackbars", &gaussian_ksize, 255, on_trackbar );
-        createTrackbar( "gaussian_sigma", "Trackbars", &gaussian_sigma, 255, on_trackbar );
-        createTrackbar( "A min", "Trackbars", &minA, 50000, on_trackbar );
-        createTrackbar( "A max", "Trackbars", &maxA, 50000, on_trackbar );
-        createTrackbar( "morph_size", "Trackbars", &morph_size, 50, on_trackbar );
-        createTrackbar( "invert_Hue", "Trackbars", &inv_H, 1, on_trackbar );
-    }
 
 
     ROS_INFO("Ready to find objects!");
-    ros::Rate r(10);
-
-    while (ros::ok()) {
-
-        double dt=(ros::Time::now()-detect_t).toSec();
-        if ((dt>2.0)&&(!timeout)&&(update)) {
-            timeout=true;
-            ROS_DEBUG("Object detection timeout");
-            col_objects[0].operation = col_objects[0].REMOVE;
-            col_objects[1].operation = col_objects[1].REMOVE;
-            planning_scene_interface_ptr->addCollisionObjects(col_objects);
-
-        }
-        r.sleep();
-        ros::spinOnce();
-    }
+     ros::spin();
 
     return 0;
 }

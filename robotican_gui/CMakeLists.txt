@@ -35,7 +35,7 @@ find_package(catkin REQUIRED COMPONENTS
         moveit_core
         moveit_ros_planning
         moveit_ros_planning_interface
-
+        ric_board
         pr2_controllers_msgs
         )
 
