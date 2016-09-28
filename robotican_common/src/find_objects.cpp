@@ -132,6 +132,10 @@ void obj_msgCallback(const boost::shared_ptr<const geometry_msgs::PoseStamped>& 
       m.pose=base_object_pose;
         msg.markers.push_back(m);
 
+        m.pose.pose.position.z-=0.1;
+        m.id=2;
+         msg.markers.push_back(m);
+
         object_pub.publish(msg);
 
 

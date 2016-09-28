@@ -3,7 +3,7 @@
 
 #include <ros/ros.h>
 #include <std_srvs/Trigger.h>
-
+#include <std_srvs/SetBool.h>
 
 
 
@@ -25,7 +25,12 @@ int main(int argc, char **argv) {
     {
         ROS_INFO("drive2object response: %s", drive_srv.response.message.c_str());
         if (drive_srv.response.success) {
-            ros::Duration(3).sleep();
+            ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>("update_collision_objects");
+            std_srvs::SetBool srv;
+            srv.request.data=true;
+            uc_client.call(srv);
+
+            ros::Duration(5).sleep();
             std_srvs::Trigger pick_srv;
             if (pick_client.call(pick_srv)) {
                 ROS_INFO("pick response: %s", pick_srv.response.message.c_str());

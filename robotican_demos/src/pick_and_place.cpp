@@ -58,11 +58,12 @@ int main(int argc, char **argv) {
     srand((unsigned int) time(NULL));
     ros::NodeHandle n;
     ros::NodeHandle pn("~");
-    std::string object_id;
+    std::string object_name,table_name;
     std::string startPositionName ;
 
     pn.param<std::string>("start_position_name", startPositionName, "pre_grasp2");
-    pn.param<std::string>("object_id", object_id, "can");
+    pn.param<std::string>("object_name", object_name, "can");
+    pn.param<std::string>("table_name", table_name, "table");
 
     ros::ServiceServer pickAndPlace = n.advertiseService("pick_go", &pickAndPlaceCallBack);
     ROS_INFO("Hello");
@@ -237,9 +238,9 @@ bool set_collision_update(bool state){
 bool pickAndPlaceCallBack(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res) {
     ros::NodeHandle pn("~");
     ros::NodeHandle n;
-    std::string object_id;
+    std::string object_name;
 
-    pn.param<std::string>("object_id", object_id, "can");
+    pn.param<std::string>("object_name", object_name, "can");
 
     ros::ServiceClient uc_client = n.serviceClient<std_srvs::SetBool>("update_collision_objects");
     std_srvs::SetBool disableColl;
@@ -252,7 +253,7 @@ bool pickAndPlaceCallBack(std_srvs::Trigger::Request &req, std_srvs::Trigger::Re
     PickClient pickClient("pickup", true);
     pickClient.waitForServer();
 
-    moveit_msgs::PickupGoal pickGoal = BuildPickGoal(object_id);
+    moveit_msgs::PickupGoal pickGoal = BuildPickGoal(object_name);
     actionlib::SimpleClientGoalState pickStatus = pickClient.sendGoalAndWait(pickGoal);
     if(pickStatus != actionlib::SimpleClientGoalState::SUCCEEDED) {
         res.success = (unsigned char) false;
@@ -264,7 +265,7 @@ bool pickAndPlaceCallBack(std_srvs::Trigger::Request &req, std_srvs::Trigger::Re
         placeClient.waitForServer();
         bool found = false;
         do {
-            moveit_msgs::PlaceGoal placeGoal = buildPlaceGoal(object_id);
+            moveit_msgs::PlaceGoal placeGoal = buildPlaceGoal(object_name);
             actionlib::SimpleClientGoalState placeStatus = placeClient.sendGoalAndWait(placeGoal);
             if (placeStatus == actionlib::SimpleClientGoalState::SUCCEEDED) {
                 found = true;
