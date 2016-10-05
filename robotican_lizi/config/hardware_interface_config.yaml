@@ -3,13 +3,13 @@ lizi: true
 
 # RiCBoard  
 
-pan_topic_pub: 'pan_controller/command'
-pan_topic_sub: 'pan_controller/state'
-pan_joint: 'head_pan_joint'
-
-tilt_topic_pub: 'tilt_controller/command'
-tilt_topic_sub: 'tilt_controller/state'
-tilt_joint: 'head_tilt_joint'
+#~ pan_topic_pub: 'pan_controller/command'
+#~ pan_topic_sub: 'pan_controller/state'
+#~ pan_joint: 'head_pan_joint'
+#~ 
+#~ tilt_topic_pub: 'tilt_controller/command'
+#~ tilt_topic_sub: 'tilt_controller/state'
+#~ tilt_joint: 'head_tilt_joint'
                               
 battery_pin: 17
 battery_voltage_divider_ratio: 46.85
@@ -34,35 +34,35 @@ ultrasonic2_topic_name: 'URF/rear'
 ultrasonic2_sonar_name:  'Max_Sonar_LV'
 
 
-close_motor_size: 2
+close_motor_size: 4
 
 motor0_motor_type: 0
-motor0_encoder_pin_A: 27
-motor0_encoder_pin_B: 28
+motor0_encoder_pin_A: 29
+motor0_encoder_pin_B: 30
 motor0_lpf_hz_speed: 80
 motor0_lpf_hz_input: 1000
 motor0_lpf_alpha_speed: 0.27
 motor0_lpf_alpha_input: 1.0
 motor0_pid_hz: 1000
-motor0_ppr: 1675
+motor0_ppr: 4480
 motor0_timeout: 0
-motor0_motor_direction: 1
+motor0_motor_direction: -1
 motor0_encoder_direction: -1
-motor0_kp: 300.0
-motor0_ki: 10.0
+motor0_kp: 85.0
+motor0_ki: 1.0
 motor0_kd: 0.0
-motor0_kff: 50.0
-motor0_max_set_point_speed: 9.0
-motor0_min_set_point_speed: -9.0
+motor0_kff: 24.0
+motor0_max_set_point_speed: 14.0
+motor0_min_set_point_speed: -14.0
 motor0_max_set_point_position: 0.0
 motor0_min_set_point_position: 0.0
 motor0_limit: 0.2
-motor0_stop_limit_max: 10.0
-motor0_stop_limit_min: -10.0
+motor0_stop_limit_max: 15.0
+motor0_stop_limit_min: -15.0
 motor0_motor_address: 0
 motor0_motor_emergency_pin: 12
-motor0_motor_emergency_pin_type: 1
-motor0_joint: ['FL_wheel_joint', 'RL_wheel_joint']
+motor0_motor_emergency_pin_type: 0
+motor0_joint: ['RL_wheel_joint']
 motor0_mode: 0
 motor0_bais_min: -1
 motor0_bais_max: 1
@@ -70,36 +70,98 @@ motor0_bais_max: 1
 
 motor1_motor_type: 0
 
-motor1_encoder_pin_A: 29
-motor1_encoder_pin_B: 30
+motor1_encoder_pin_A: 22
+motor1_encoder_pin_B: 23
 motor1_encoder_direction: 1
 motor1_lpf_hz_speed: 80
 motor1_lpf_hz_input: 1000
 motor1_lpf_alpha_speed: 0.27
 motor1_lpf_alpha_input: 1.0
 motor1_pid_hz: 1000
-motor1_ppr: 1675
+motor1_ppr: 4480
 motor1_timeout: 0
-motor1_motor_direction: -1
-motor1_kp: 300.0
-motor1_ki: 10.0
+motor1_motor_direction: 1
+motor1_kp: 85.0
+motor1_ki: 1.0
 motor1_kd: 0.0
-motor1_kff: 50.0
-motor1_max_set_point_speed: 9.0
-motor1_min_set_point_speed: -9.0
+motor1_kff: 24.0
+motor1_max_set_point_speed: 14.0
+motor1_min_set_point_speed: -14.0
 motor1_max_set_point_position: 0.0
 motor1_min_set_point_position: 0.0
 motor1_limit: 0.2
-motor1_stop_limit_max: 10.0
-motor1_stop_limit_min: -10.0
+motor1_stop_limit_max: 15.0
+motor1_stop_limit_min: -15.0
 motor1_motor_address: 1
 motor1_motor_emergency_pin: 12
-motor1_motor_emergency_pin_type: 1
-motor1_joint: ['FR_wheel_joint', 'RR_wheel_joint']
+motor1_motor_emergency_pin_type: 0
+motor1_joint: [ 'RR_wheel_joint']
 motor1_mode: 0
 motor1_bais_min: -1
 motor1_bais_max: 1
 
+
+motor2_motor_type: 0
+motor2_encoder_pin_A: 27
+motor2_encoder_pin_B: 28
+motor2_lpf_hz_speed: 80
+motor2_lpf_hz_input: 1000
+motor2_lpf_alpha_speed: 0.27
+motor2_lpf_alpha_input: 1.0
+motor2_pid_hz: 1000
+motor2_ppr: 4480
+motor2_timeout: 0
+motor2_motor_direction: -1
+motor2_encoder_direction: -1
+motor2_kp: 85.0
+motor2_ki: 1.0
+motor2_kd: 0.0
+motor2_kff: 24.0
+motor2_max_set_point_speed: 14.0
+motor2_min_set_point_speed: -14.0
+motor2_max_set_point_position: 0.0
+motor2_min_set_point_position: 0.0
+motor2_limit: 0.2
+motor2_stop_limit_max: 15.0
+motor2_stop_limit_min: -15.0
+motor2_motor_address: 4
+motor2_motor_emergency_pin: 12
+motor2_motor_emergency_pin_type: 0
+motor2_joint: ['FL_wheel_joint']
+motor2_mode: 0
+motor2_bais_min: -1
+motor2_bais_max: 1
+
+motor3_motor_type: 0
+motor3_encoder_pin_A: 20
+motor3_encoder_pin_B: 21
+motor3_lpf_hz_speed: 80
+motor3_lpf_hz_input: 1000
+motor3_lpf_alpha_speed: 0.27
+motor3_lpf_alpha_input: 1.0
+motor3_pid_hz: 1000
+motor3_ppr: 4480
+motor3_timeout: 0
+motor3_motor_direction: 1
+motor3_encoder_direction: 1
+motor3_kp: 85.0
+motor3_ki: 1.0
+motor3_kd: 0.0
+motor3_kff: 24.0
+motor3_max_set_point_speed: 14.0
+motor3_min_set_point_speed: -14.0
+motor3_max_set_point_position: 0.0
+motor3_min_set_point_position: 0.0
+motor3_limit: 0.2
+motor3_stop_limit_max: 15.0
+motor3_stop_limit_min: -15.0
+motor3_motor_address: 3
+motor3_motor_emergency_pin: 12
+motor3_motor_emergency_pin_type: 0
+motor3_joint: ['FR_wheel_joint']
+motor3_mode: 0
+motor3_bais_min: -1
+motor3_bais_max: 1
 
 # open_motor_size: 2
 # motor0_motor_address: 0
