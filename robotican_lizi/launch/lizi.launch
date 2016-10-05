@@ -97,6 +97,10 @@
 				<arg name="node_name" value="front_cam" />
 			</include>
 		</group>
+		
+		<group if="$(arg sr300)">
+			<include file="$(find robotican_common)/launch/sr300.launch"/> 
+		</group>
 
 		<group if="$(arg lidar)">
 			<include file="$(find robotican_common)/launch/hokuyo_laser.launch">
