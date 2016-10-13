@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 cd ~
 git clone https://github.com/IntelRealSense/librealsense.git
 sudo apt-get update && sudo apt-get upgrade
