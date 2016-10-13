@@ -5,7 +5,8 @@ project(robotican_demos)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
+robotican_common  
+roscpp
   rospy
   std_msgs
   move_base_msgs
@@ -13,7 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_core
   moveit_ros_planning
   moveit_ros_planning_interface
-  robotican_common
+  
 cv_bridge
  pcl_conversions
    pcl_ros
