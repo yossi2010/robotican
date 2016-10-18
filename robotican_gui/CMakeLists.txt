@@ -18,6 +18,7 @@ include_directories(src)
 # exporting anything.
 
 find_package(catkin REQUIRED COMPONENTS
+ric_board
         cmake_modules
         roscpp
         rospy
@@ -35,7 +36,7 @@ find_package(catkin REQUIRED COMPONENTS
         moveit_core
         moveit_ros_planning
         moveit_ros_planning_interface
-        ric_board
+        
         pr2_controllers_msgs
         )
 
@@ -113,6 +114,7 @@ set(PROJ_FILES
         include/listeners.hpp)
 
 add_executable(robotican_gui ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP} ${PROJ_FILES} ${RIC_GUI_RESOURCES_RCC})
+add_dependencies(robotican_gui ${ric_board_EXPORTED_TARGETS})
 target_link_libraries(robotican_gui ${QT_LIBRARIES} ${catkin_LIBRARIES})
 install(TARGETS robotican_gui RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
