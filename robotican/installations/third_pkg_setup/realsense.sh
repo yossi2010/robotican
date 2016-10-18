@@ -18,5 +18,5 @@ git checkout stable
 rosdep install --skip-keys=librealsense --from-paths -i . 
 cd ~/catkin_ws
 sudo apt-get -y install ros-indigo-realsense-camera
-catkin_make
+#catkin_make
 

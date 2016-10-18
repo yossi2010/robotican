@@ -36,16 +36,21 @@ if [ $? == 0 ]; then
 	sudo chown -R $(logname):$(logname) ~/catkin_ws
 	
 	echo "Do you want to install kinect2 package [y/n]: "
-	
 	read asfK
 	if [ $asfK == "y" ]; then
 		cd ~/catkin_ws/src/robotican/robotican/installations/third_pkg_setup
 		./kinect2.sh
 	fi
 	
+	echo "Do you want to install softkinetic package [y/n]: "
+	read asfS
+	if [ $asfS == "y" ]; then
+		cd ~/catkin_ws/src/robotican/robotican/installations/third_pkg_setup
+		./softkinetic.sh
+	fi
+
 	echo "Do you want to install f200\r200\sr300 camera package [y/n]: "
 	read asf
-	
 	if [ $asf == "y" ]; then
 		cd ~/catkin_ws/src/robotican/robotican/installations/third_pkg_setup
 		./realsense.sh
@@ -53,6 +58,9 @@ if [ $? == 0 ]; then
 	
 	sudo chown -R $(logname):$(logname) ~/catkin_ws
 	
+	cd ~/catkin_ws
+	catkin_make
+
 	#Do this in the end of the installation.
 	if [ $asf == "y" ]; then
 		echo -e "\e[31mWarning: To complete f200\r200\sr300 installation the PC need to reboot."
