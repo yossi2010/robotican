@@ -87,7 +87,7 @@
     name="laser_joint"
     type="fixed">
     <origin
-      xyz="0.1495 0 0.069005"
+      xyz="0.1495 0 0.079"
       rpy="0 0 0" />
     <parent
       link="base_link" />

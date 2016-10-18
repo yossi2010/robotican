@@ -24,8 +24,8 @@ git clone https://github.com/code-iai/iai_kinect2.git
 sudo chown -R $(logname):$(logname) ~/catkin_ws
 cd iai_kinect2
 rosdep install -r --from-paths .
-cd ~/catkin_ws
-catkin_make -DCMAKE_BUILD_TYPE="Release"
+#cd ~/catkin_ws
+#catkin_make -DCMAKE_BUILD_TYPE="Release"
 
 
 echo -e "\e[34mInstalltion completed...\e[0m"

@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 cd ~
 git clone https://github.com/IntelRealSense/librealsense.git
 sudo apt-get update && sudo apt-get upgrade
@@ -18,5 +18,5 @@ git checkout stable
 rosdep install --skip-keys=librealsense --from-paths -i . 
 cd ~/catkin_ws
 sudo apt-get -y install ros-indigo-realsense-camera
-catkin_make
+#catkin_make
 

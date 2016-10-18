@@ -49,6 +49,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
+Battery.msg
 Rangers.msg
 Named_Data.msg
 Servos.msg
@@ -66,7 +67,7 @@ MonitorDevs.msg
 PPM.msg
 calibField.msg
 imuCalib.msg
-Battery.msg
+
 #IMUClib.msg
 #   Message1.msg
 #   Message2.msg

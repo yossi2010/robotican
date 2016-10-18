@@ -5,7 +5,8 @@ project(robotican_demos)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
+robotican_common  
+roscpp
   rospy
   std_msgs
   move_base_msgs
@@ -13,7 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_core
   moveit_ros_planning
   moveit_ros_planning_interface
-  robotican_common
+  
 cv_bridge
  pcl_conversions
    pcl_ros
@@ -67,7 +68,7 @@ find_package(cmake_modules REQUIRED)
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
+# add_service_files(robotican_common
 #   FILES
 #   Service1.srv
 #   Service2.srv
@@ -107,7 +108,7 @@ find_package(cmake_modules REQUIRED)
 # )
 
 ###################################
-## catkin specific configuration ##
+## catkin specific configrobotican_commonuration ##
 ###################################
 ## The catkin_package macro generates cmake config files for your package
 ## Declare things to be passed to dependent projects
@@ -118,7 +119,7 @@ find_package(cmake_modules REQUIRED)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES robotican_demos
-  CATKIN_DEPENDS roscpp rospy std_msgs moveit_core moveit_ros_planning moveit_ros_planning_interface
+  CATKIN_DEPENDS roscpp rospy robotican_common std_msgs moveit_core moveit_ros_planning moveit_ros_planning_interface
 #  DEPENDS system_lib
 )
 
@@ -151,6 +152,7 @@ add_executable(pick_and_place src/pick_and_place.cpp)
 target_link_libraries(pick_and_place ${catkin_LIBRARIES})
 
 add_executable(drive_and_pick src/drive_and_pick.cpp)
+add_dependencies(drive_and_pick ${robotican_common_EXPORTED_TARGETS})
 target_link_libraries(drive_and_pick ${catkin_LIBRARIES})
 
 add_executable(point_head src/point_head.cpp)
@@ -215,6 +217,7 @@ target_link_libraries(arm_jta_client ${catkin_LIBRARIES})
 #   FILES_MATCHING PATTERN "*.h"
 #   PATTERN ".svn" EXCLUDE
 # )
+
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
