@@ -9,6 +9,7 @@
   <arg name="imu" default='false'/>
   <!-- add asus -->
   <arg name="sr300" default='false'/>
+  <arg name="softkinetic" default='false'/>
   <arg name="joystick" default='false'/>
   <arg name="joystick_dev" default='/dev/input/js0'/>
   <arg name="twist_mux" default='true'/>
@@ -74,6 +75,7 @@
 	   imu:=$(arg imu)
 	   gps:=$(arg gps)
 	   sr300:=$(arg sr300)
+	   softkinetic:=$(arg softkinetic)
 	   depth_camera:=$(arg depth_camera)
 	   " /> 
 	  
@@ -135,14 +137,12 @@
 
 
 		<group if="$(arg sr300)">
-<include file="$(find robotican_common)/launch/sr300.launch"/>
-
-
-
- 
+		  <include file="$(find robotican_common)/launch/sr300.launch"/>
 		</group>
 
-
+		<group if="$(arg softkinetic)">
+		  <include file="$(find robotican_common)/launch/softkinetic_camera_ds325.launch"/>
+		</group>
 			
 <group if="$(arg arm)">
 
