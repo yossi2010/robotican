@@ -6,7 +6,7 @@
 
 namespace robotican_hardware {
 
-    LiziRobot::LiziRobot()
+    LiziRobot::LiziRobot() : RobotBase()
     {
         //_havePanTilt = false;
         //ros::param::param<bool>("have_pan_tilt", _havePanTilt, true);
