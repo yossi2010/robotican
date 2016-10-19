@@ -39,9 +39,10 @@ mobile_base_controller:
   angular:
     z:
       has_velocity_limits    : true
-      max_velocity           : 2.0  # rad/s
+      max_velocity           : 3.0  # rad/s
       has_acceleration_limits: true
       max_acceleration       : 0.5  # rad/s^2
+     
       
 
 robot_state_controller:
@@ -51,7 +52,21 @@ robot_state_controller:
   
 
 
+fl_motor_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: FL_wheel_joint
 
+rl_motor_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: RL_wheel_joint
+
+fr_motor_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: FR_wheel_joint
+
+rr_motor_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: RR_wheel_joint
 
 
 
