@@ -88,7 +88,7 @@ else {
 
 geometry_msgs::Pose get_obj_position(int id,geometry_msgs::Pose  pose){ //TODO: FROM DB
 
-    if (id==1) pose.position.x+=0.015;
+    //if (id==1) pose.position.x+=0.015;
     return pose;
  }
 
