@@ -175,6 +175,5 @@ namespace diff_drive_controller
     void Odometry::setSlipFactor(double slipFactor) {
       _slipFactor = slipFactor;
     }
-
 } // namespace diff_drive_controller
 
