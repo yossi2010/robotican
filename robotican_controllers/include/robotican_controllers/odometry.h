@@ -139,6 +139,8 @@ namespace diff_drive_controller
           return angular_;
         }
 
+	double getSlipFactor() {return _slipFactor;}
+
         /**
          * \brief Sets the wheel parameters: radius and separation
          * \param wheel_separation Seperation between left and right wheels [m]

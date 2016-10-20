@@ -394,7 +394,7 @@ namespace diff_drive_controller{
         return;
       }
 
-      command_struct_.ang   = command.angular.z;
+      command_struct_.ang   = command.angular.z/odometry_.getSlipFactor();
       command_struct_.lin   = command.linear.x;
       command_struct_.stamp = ros::Time::now();
       command_.writeFromNonRT (command_struct_);
