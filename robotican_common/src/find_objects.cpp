@@ -294,8 +294,8 @@ int main(int argc, char **argv) {
 
     pn.param<int>("object_id", object_id, 1);
 
-    n.param<std::string>("depth_topic1", depth_topic1, "/kinect2/qhd/points");
-    n.param<std::string>("depth_topic2", depth_topic2, "/sr300/depth/points");
+    pn.param<std::string>("depth_topic1", depth_topic1, "/kinect2/qhd/points");
+    pn.param<std::string>("depth_topic2", depth_topic2, "/sr300/depth/points");
     depth_topic=depth_topic1;
 
     dynamic_reconfigure::Server<robotican_common::FindObjectDynParamConfig> dynamicServer;
@@ -310,7 +310,7 @@ int main(int argc, char **argv) {
     object_image_pub = it_.advertise("hsv_filterd", 1);
     bw_image_pub = it_.advertise("bw", 1);
     ros::Subscriber pcl_sub = n.subscribe(depth_topic, 1, cloud_cb);
-
+    ROS_INFO_STREAM(depth_topic);
 
     object_pub=n.advertise<ar_track_alvar_msgs::AlvarMarkers>("detected_objects", 2, true);
 

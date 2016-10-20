@@ -12,6 +12,7 @@
   <arg name="amcl" default='false'/>
   <arg name="have_map_file" default='false'/>
   <arg name="map_file" default="$(find robotican_common)/maps/UPlat.yaml"/>
+  <arg name="depth_camera" default="false"/>
 
      
   <arg name="rqt" default='false'/>
@@ -63,7 +64,7 @@
 	   urf:=$(arg urf)
 	   imu:=$(arg imu)
 	   gps:=$(arg gps)
-	   sr300:=$(arg sr300)
+	   depth_camera:=$(arg depth_camera)
 	   " /> 
 	  
 
@@ -102,7 +103,11 @@
 		<group if="$(arg sr300)">
 			<include file="$(find robotican_common)/launch/sr300.launch"/> 
 		</group>
-
+		
+		<group if="$(arg depth_camera)">
+			<include file="$(find robotican_common)/launch/softkinetic_camera_ds325.launch"/> 
+		</group>
+		
 		<group if="$(arg lidar)">
 			<include file="$(find robotican_common)/launch/hokuyo_laser.launch">
 				<arg name="input_dev" value="/dev/Hokuyo" />
@@ -172,7 +177,7 @@
 	</group>
 
 
-  
+
 
 	<group if="$(arg rqt)">
 		<node pkg="rqt_gui" type="rqt_gui" name="rqt_gui" output="screen" respawn="false" />

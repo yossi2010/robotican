@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="lizi" description="lizi robot">
   <xacro:include filename="$(find robotican_lizi)/description/models/lizi.xacro" />
+  <xacro:include filename="$(find robotican_common)/gazebo/softkinetic_camera_ds325.xacro" />
   
   <xacro:arg name="controllers" default="true"/>  
   <xacro:arg name="urf" default="false"/>
@@ -8,7 +9,7 @@
   <xacro:arg name="gps" default="false"/>
   <xacro:arg name="front_camera" default="false"/>
   <xacro:arg name="lidar" default="false"/>
-  <xacro:arg name="sr300" default="false"/>
+  <xacro:arg name="depth_camera" default="false"/>
   <xacro:arg name="asus_hz" default="10.0"/> 
   <xacro:property name="URF_FOV" value="${10.0*M_PI/180}" />
 
@@ -237,6 +238,9 @@
         </plugin>
       </sensor>
     </gazebo>
+  </xacro:if>
+  <xacro:if value="$(arg depth_camera)">  
+	  <xacro:softkinetic_gazebo name="softkinetic_camera_rgb" ros_topic="softkinetic_camera"/> 
   </xacro:if>
 
   <xacro:if value="$(arg controllers)">

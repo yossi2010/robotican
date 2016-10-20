@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="lizi_robot" description="lizi Robot">
 <xacro:property name="M_PI" value="3.1415926535897931"/>
-
+<xacro:include filename="$(find robotican_common)/models/softkinetic_camera_ds325/model.xacro" />
   <link
     name="base_link">
     <inertial>
@@ -96,60 +96,7 @@
     <axis
       xyz="0 0 0" />
   </joint>
-  <link
-    name="sr300_link">
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_lizi/description/meshes/sr300_link.STL" />
-      </geometry>
-      <material
-        name="black">
-        <color
-          rgba="0.0 0.0 0.0 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_lizi/description/meshes/sr300_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="sr300_joint"
-    type="fixed">
-    <origin
-      xyz="0.19382 0 0.10646"
-      rpy="0 0 0" />
-    <parent
-      link="base_link" />
-    <child
-      link="sr300_link" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-  <link
-    name="left_urf_link" />
-  <joint
-    name="left_urf_joint"
-    type="fixed">
-    <origin
-      xyz="0.014542 0.1055 0.0902"
-      rpy="0 0 1.5708" />
-    <parent
-      link="base_link" />
-    <child
-      link="left_urf_link" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
+  
   <link
     name="rear_urf_link" />
   <joint
@@ -408,4 +355,9 @@
     <axis
       xyz="0 0 0" />
   </joint>
+
+  <sensor_senz3d parent="base_link" name="softkinetic_camera">
+    <origin xyz="0.16122 0.0 0.13223" rpy="0.0 0.0 0.0"/>
+  </sensor_senz3d>
+
 </robot>
