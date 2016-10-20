@@ -91,7 +91,8 @@ namespace diff_drive_controller
       const double linear  = (right_wheel_est_vel + left_wheel_est_vel) * 0.5 ;
       const double angular = (right_wheel_est_vel - left_wheel_est_vel) / wheel_separation_;
       /// Integrate odometry:
-      integrate_fun_(linear, (angular * _slipFactor));
+     angular *= _slipFactor;
+      integrate_fun_(linear, (angular));
 
       /// We cannot estimate the speed with very small time intervals:
       const double dt = (time - timestamp_).toSec();
