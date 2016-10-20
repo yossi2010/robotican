@@ -89,9 +89,9 @@ namespace diff_drive_controller
 
       /// Compute linear and angular diff:
       const double linear  = (right_wheel_est_vel + left_wheel_est_vel) * 0.5 ;
-      const double angular = (right_wheel_est_vel - left_wheel_est_vel) / wheel_separation_;
+      const double angular = _slipFactor*((right_wheel_est_vel - left_wheel_est_vel) / wheel_separation_);
       /// Integrate odometry:
-     angular *= _slipFactor;
+
       integrate_fun_(linear, (angular));
 
       /// We cannot estimate the speed with very small time intervals:
