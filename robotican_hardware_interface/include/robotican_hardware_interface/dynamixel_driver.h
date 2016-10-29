@@ -21,6 +21,18 @@
 #define ADDR_MX_MOVING                  46
 #define ADDR_MX_GOAL_ACCELERATION       73
 
+// Control table address FOR Pro
+#define ADDR_PRO_MODEL_NUM               0
+#define ADDR_PRO_TORQUE_ENABLE           562                  // Control table address is different in Dynamixel model
+#define ADDR_PRO_GOAL_POSITION           596
+#define ADDR_PRO_GOAL_SPEED              600
+#define ADDR_PRO_GOAL_ACCELERATION       606
+#define ADDR_PRO_PRESENT_POSITION        611
+#define ADDR_PRO_PRESENT_SPEED           615
+#define ADDR_PRO_PRESENT_CURRENT         621
+#define ADDR_PRO_PRESENT_TEMPERATURE     43
+#define ADDR_PRO_MOVING                  46
+
 // Protocol version
 #define PROTOCOL1_VERSION                1.0                 // See which protocol version is used in the Dynamixel
 #define PROTOCOL2_VERSION                2.0                 // See which protocol version is used in the Dynamixel
@@ -39,7 +51,6 @@ namespace dynamixel_driver {
         COMBINE = 0,
         PROTOCOL1 = 1,
         PROTOCOL2 = 2
-
     };
 
     class DynamixelDriver {
@@ -58,8 +69,27 @@ namespace dynamixel_driver {
 
         bool setMotorPositionProtocol1(uint8_t id, uint16_t ticks);
 
-        bool setMotorPositionProtocol2(uint8_t id, int ticks);
+        bool setMotorPositionProtocol2(uint8_t id, uint32_t ticks);
 
+        bool setMotorSpeedProtocol1(uint8_t id, uint32_t speed);
+
+        bool setMotorSpeedProtocol2(uint8_t id, uint32_t speed);
+
+        bool setMotorAccelerationProtocol1(uint8_t id, uint32_t acceleration);
+
+        bool setMotorAccelerationProtocol2(uint8_t id, uint32_t acceleration);
+
+        bool getMotorPositionProtocol1(uint8_t id, uint32_t &position);
+
+        bool getMotorPositionProtocol2(uint8_t id, uint32_t &position);
+
+        bool getMotorSpeedProtocol1(uint8_t id, uint32_t &speed);
+
+        bool getMotorSpeedProtocol2(uint8_t id, uint32_t &speed);
+
+        bool getMotorLoadProtocol1(uint8_t id, uint16_t &load);
+
+        bool getMotorLoadProtocol2(uint8_t id, uint16_t &load);
 
     public:
         DynamixelDriver(const char *port, unsigned int baudrate, DriverMode mode);
@@ -72,7 +102,17 @@ namespace dynamixel_driver {
 
         bool setMotorTorque(DxlMotorInfo_t motorInfo, uint8_t torque);
 
-        bool setMotorPosition(DxlMotorInfo_t motorInfo, uint16_t ticks);
+        bool setMotorPosition(DxlMotorInfo_t motorInfo, uint32_t ticks);
+
+        bool setMotorSpeed(DxlMotorInfo_t motorInfo, uint32_t speed);
+
+        bool setMotorAcceletarion(DxlMotorInfo_t motorInfo, uint32_t acceleration);
+
+        bool getMotorPosition(DxlMotorInfo_t motorInfo, uint32_t &position);
+
+        bool getMotorSpeed(DxlMotorInfo_t motorInfo, uint32_t &speed);
+
+        bool getMotorLoad(DxlMotorInfo_t motorInfo, uint16_t &load);
     };
 }
 

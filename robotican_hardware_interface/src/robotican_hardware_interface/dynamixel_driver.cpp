@@ -48,6 +48,10 @@ namespace dynamixel_driver {
         _packetHandlerVer1 = _packetHandlerVer2 = NULL;
     }
 
+    bool DynamixelDriver::isPortOpen() {
+        return _portHandler->openPort();
+    }
+
     bool DynamixelDriver::pingMotorProtocol1(uint8_t id) {
         int dxl_comm_result = COMM_TX_FAIL;
         uint8_t dxl_error;
@@ -61,6 +65,14 @@ namespace dynamixel_driver {
     }
 
     bool DynamixelDriver::pingMotorProtocol2(uint8_t id) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer2->ping(_portHandler, id, &dxl_error);
+        if(dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
+        else if(dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
+        else return true;
+
         return false;
     }
 
@@ -85,8 +97,16 @@ namespace dynamixel_driver {
         return false;
     }
 
-    bool DynamixelDriver::isPortOpen() {
-        return _portHandler->openPort();
+    bool DynamixelDriver::setMotorTorqueProtocol2(uint8_t id, uint8_t torque) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer2->write1ByteTxRx(_portHandler, id, ADDR_PRO_TORQUE_ENABLE, torque, &dxl_error);
+        if(dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
+        else if(dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
+        else return true;
+
+        return false;
     }
 
     bool DynamixelDriver::setMotorTorque(DxlMotorInfo_t motorInfo, uint8_t torque) {
@@ -99,15 +119,11 @@ namespace dynamixel_driver {
         return setTorque;
     }
 
-    bool DynamixelDriver::setMotorTorqueProtocol2(uint8_t id, uint8_t torque) {
-        return false;
-    }
-
     bool DynamixelDriver::setMotorPositionProtocol1(uint8_t id, uint16_t ticks) {
         int dxl_comm_result = COMM_TX_FAIL;
         uint8_t dxl_error;
 
-        dxl_comm_result = _packetHandlerVer1->write2ByteTxRx(_portHandler, id, ADDR_MX_GOAL_POSITION, ticks, &dxl_error);
+        dxl_comm_result = _packetHandlerVer1->write2ByteTxRx(_portHandler, id, ADDR_MX_GOAL_POSITION, (uint16_t) ticks, &dxl_error);
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
         else return true;
@@ -115,16 +131,189 @@ namespace dynamixel_driver {
         return false;
     }
 
-    bool DynamixelDriver::setMotorPositionProtocol2(uint8_t id, int ticks) {
+    bool DynamixelDriver::setMotorPositionProtocol2(uint8_t id, uint32_t ticks) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer2->write4ByteTxRx(_portHandler, id, ADDR_PRO_GOAL_POSITION, ticks, &dxl_error);
+        if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
+        else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
+        else return true;
+
         return false;
     }
 
-    bool DynamixelDriver::setMotorPosition(DxlMotorInfo_t motorInfo, uint16_t ticks) {
+    bool DynamixelDriver::setMotorPosition(DxlMotorInfo_t motorInfo, uint32_t ticks) {
         bool sendPositionCmd = false;
 
         if(motorInfo.protocol == PROTOCOL1_VERSION) sendPositionCmd = setMotorPositionProtocol1(motorInfo.id, ticks);
-        else if(motorInfo.protocol == PROTOCOL2_VERSION) sendPositionCmd = setMotorPositionProtocol1(motorInfo.id, ticks);
+        else if(motorInfo.protocol == PROTOCOL2_VERSION) sendPositionCmd = setMotorPositionProtocol2(motorInfo.id, ticks);
 
         return sendPositionCmd;
+    }
+
+    bool DynamixelDriver::setMotorSpeedProtocol1(uint8_t id, uint32_t speed) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer1->write2ByteTxRx(_portHandler, id, ADDR_MX_GOAL_SPEED, (uint16_t) speed, &dxl_error);
+        if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
+        else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
+        else return true;
+
+        return false;
+    }
+
+    bool DynamixelDriver::setMotorSpeedProtocol2(uint8_t id, uint32_t speed) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer2->write4ByteTxRx(_portHandler, id, ADDR_PRO_GOAL_SPEED, speed, &dxl_error);
+        if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
+        else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
+        else return true;
+
+        return false;
+    }
+
+    bool DynamixelDriver::setMotorSpeed(DxlMotorInfo_t motorInfo, uint32_t speed) {
+        bool sendSpeedCmd = false;
+
+        if(motorInfo.protocol == PROTOCOL1_VERSION) sendSpeedCmd = setMotorSpeedProtocol1(motorInfo.id, speed);
+        else if(motorInfo.protocol == PROTOCOL2_VERSION) sendSpeedCmd = setMotorSpeedProtocol2(motorInfo.id, speed);
+
+        return sendSpeedCmd;
+    }
+
+    bool DynamixelDriver::setMotorAccelerationProtocol1(uint8_t id, uint32_t acceleration) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer1->write1ByteTxRx(_portHandler, id, ADDR_MX_GOAL_ACCELERATION, (uint8_t) acceleration, &dxl_error);
+        if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
+        else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
+        else return true;
+
+        return false;
+    }
+
+    bool DynamixelDriver::setMotorAccelerationProtocol2(uint8_t id, uint32_t acceleration) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer2->write4ByteTxRx(_portHandler, id, ADDR_PRO_GOAL_ACCELERATION, acceleration, &dxl_error);
+        if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
+        else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
+        else return true;
+
+        return false;
+    }
+
+    bool DynamixelDriver::setMotorAcceletarion(DxlMotorInfo_t motorInfo, uint32_t acceleration) {
+        bool sendSpeedCmd = false;
+
+        if(motorInfo.protocol == PROTOCOL1_VERSION) sendSpeedCmd = setMotorAccelerationProtocol1(motorInfo.id, acceleration);
+        else if(motorInfo.protocol == PROTOCOL2_VERSION) sendSpeedCmd = setMotorAccelerationProtocol2(motorInfo.id, acceleration);
+
+        return sendSpeedCmd;
+    }
+
+    bool DynamixelDriver::getMotorPositionProtocol1(uint8_t id, uint32_t &position) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer1->read2ByteTxRx(_portHandler, id, ADDR_MX_PRESENT_POSITION, (uint16_t *) &position, &dxl_error);
+        if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
+        else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
+        else return true;
+
+        return false;
+    }
+
+    bool DynamixelDriver::getMotorPositionProtocol2(uint8_t id, uint32_t &position) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer2->read4ByteTxRx(_portHandler, id, ADDR_PRO_PRESENT_POSITION,  &position, &dxl_error);
+        if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
+        else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
+        else return true;
+
+        return false;
+    }
+
+    bool DynamixelDriver::getMotorPosition(DxlMotorInfo_t motorInfo, uint32_t &position) {
+        bool gotCurrentPos = false;
+
+        if(motorInfo.protocol == PROTOCOL1_VERSION) gotCurrentPos = getMotorPositionProtocol1(motorInfo.id, position);
+        else if(motorInfo.protocol == PROTOCOL2_VERSION) gotCurrentPos = getMotorPositionProtocol2(motorInfo.id, position);
+
+        return gotCurrentPos;
+    }
+
+    bool DynamixelDriver::getMotorSpeedProtocol1(uint8_t id, uint32_t &speed) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer1->read2ByteTxRx(_portHandler, id, ADDR_MX_PRESENT_SPEED, (uint16_t *) &speed, &dxl_error);
+        if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
+        else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
+        else return true;
+
+        return false;
+    }
+
+    bool DynamixelDriver::getMotorSpeedProtocol2(uint8_t id, uint32_t &speed) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer2->read4ByteTxRx(_portHandler, id, ADDR_PRO_PRESENT_SPEED, &speed, &dxl_error);
+        if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
+        else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
+        else return true;
+
+        return false;
+    }
+
+    bool DynamixelDriver::getMotorSpeed(DxlMotorInfo_t motorInfo, uint32_t &speed) {
+        bool gotCurrentSpeed = false;
+
+        if(motorInfo.protocol == PROTOCOL1_VERSION) gotCurrentSpeed = getMotorSpeedProtocol1(motorInfo.id, speed);
+        else if(motorInfo.protocol == PROTOCOL2_VERSION) gotCurrentSpeed = getMotorSpeedProtocol2(motorInfo.id, speed);
+
+        return gotCurrentSpeed;
+    }
+
+    bool DynamixelDriver::getMotorLoadProtocol1(uint8_t id, uint16_t &load) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer1->read2ByteTxRx(_portHandler, id, ADDR_MX_PRESENT_LOAD, &load, &dxl_error);
+        if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
+        else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
+        else return true;
+
+        return false;
+    }
+
+    bool DynamixelDriver::getMotorLoadProtocol2(uint8_t id, uint16_t &load) {
+        int dxl_comm_result = COMM_TX_FAIL;
+        uint8_t dxl_error;
+
+        dxl_comm_result = _packetHandlerVer2->read2ByteTxRx(_portHandler, id, ADDR_PRO_PRESENT_CURRENT, &load, &dxl_error);
+        if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
+        else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
+        else return true;
+
+        return false;
+    }
+
+    bool DynamixelDriver::getMotorLoad(DxlMotorInfo_t motorInfo, uint16_t &load) {
+        bool gotCurrentSpeed = false;
+
+        if(motorInfo.protocol == PROTOCOL1_VERSION) gotCurrentSpeed = getMotorLoadProtocol1(motorInfo.id, load);
+        else if(motorInfo.protocol == PROTOCOL2_VERSION) gotCurrentSpeed = getMotorLoadProtocol2(motorInfo.id, load);
+
+        return gotCurrentSpeed;
     }
 }
