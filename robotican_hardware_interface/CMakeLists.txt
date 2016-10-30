@@ -202,6 +202,8 @@ add_library(robotican_hardware_interface
         include/${PROJECT_NAME}/jointInfo.h
         include/${PROJECT_NAME}/dynamixel_driver.h
         src/${PROJECT_NAME}/dynamixel_driver.cpp
+        include/${PROJECT_NAME}/dynamixel_controller.h
+        src/${PROJECT_NAME}/dynamixel_controller.cpp
         )
 
 add_library(robotican_hardware_interface_sim
