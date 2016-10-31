@@ -185,8 +185,8 @@ namespace dynamixel_controller {
 
     double DynamixelController::posToRads(int32_t ticks, const dynamixel_info &info) {
         const double FromTicks = 1.0 / (info.cpr / 2.0);
-        if(info.id == 8) {
-            ROS_INFO("%d", ticks);
+        if(info.id == 8 || info.id == 7) {
+            ROS_INFO("[%d]: %d", info.id, ticks);
         }
         return static_cast<double>(ticks) * FromTicks * M_PI;
     }
