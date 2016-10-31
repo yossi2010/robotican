@@ -3,6 +3,6 @@ servos: [{id: 1,joint_name: rotation1_joint, protocol_version: 2.0},{id: 2,joint
 
 device: "/dev/ttyUSB0"
 serial_timeout_ms: 1000000000
-baudrate_t: 57142
+baudrates_t: 57142
 
 
