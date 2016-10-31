@@ -171,16 +171,15 @@ namespace dynamixel_controller {
         return true;
     }
 
-    uint32_t DynamixelController::posToTicks(double rads, const dynamixel_info &info) {
+    int32_t DynamixelController::posToTicks(double rads, const dynamixel_info &info) {
         double cprDev2 = info.cpr / 2.0f;
 
-        return static_cast<uint32_t>(round((rads * cprDev2 / M_PI) + cprDev2));
+        return static_cast<int32_t>(round((rads / M_PI) * cprDev2));
     }
 
-    double DynamixelController::posToRads(uint32_t ticks, const dynamixel_info &info) {
-        double cprDev2 = info.cpr / 2.0f;
-        ROS_INFO("%u %f %d %f", ticks, cprDev2, info.id, ((double)ticks - cprDev2) * M_PI / cprDev2);
-        return ((double)ticks - cprDev2) * M_PI / cprDev2;
+    double DynamixelController::posToRads(int32_t ticks, const dynamixel_info &info) {
+        const double FromTicks = 1.0 / (info.cpr / 2.0);
+        return static_cast<double>(ticks) * FromTicks * M_PI;
     }
 
     bool DynamixelController::torqueMotors() {
@@ -197,8 +196,8 @@ namespace dynamixel_controller {
         for (std::map<std::string, dynamixel_info>::iterator iter = _joint2Dxl.begin(); iter != _joint2Dxl.end(); iter++) {
             std::string jointName = iter->first;
             dynamixel_info info = iter->second;
-            uint32_t position = 0, velocity = 0 ;
-            uint16_t load = 0 ;
+            int32_t position = 0, velocity = 0 ;
+            int16_t load = 0 ;
             dynamixel_driver::DxlMotorInfo_t dxlMotorInfo;
             dxlMotorInfo.id = info.id;
             dxlMotorInfo.protocol = info.protocolVer;
@@ -224,7 +223,7 @@ namespace dynamixel_controller {
 
     }
 
-    double DynamixelController::getVelocity(const dynamixel_info &info, uint32_t velocity) const {
+    double DynamixelController::getVelocity(const dynamixel_info &info, int32_t velocity) const {
         return ((double) velocity) * 2.0 * M_PI / 60.0 / info.gear_reduction;
     }
 
@@ -252,7 +251,7 @@ namespace dynamixel_controller {
 //        }
     }
 
-    uint32_t DynamixelController::getDriverVelocity(const dynamixel_info &info, const double velocity) const { return static_cast<uint32_t >(velocity / 2.0 / M_PI * 60.0 * info.gear_reduction); }
+    int32_t DynamixelController::getDriverVelocity(const dynamixel_info &info, const double velocity) const { return static_cast<uint32_t >(velocity / 2.0 / M_PI * 60.0 * info.gear_reduction); }
 
 
 }

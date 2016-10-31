@@ -103,13 +103,13 @@ namespace dynamixel_controller {
 
         bool torqueMotors();
 
-        uint32_t posToTicks(double rads, const dynamixel_info &info);
+        int32_t posToTicks(double rads, const dynamixel_info &info);
 
-        double posToRads(uint32_t ticks, const dynamixel_info &info);
+        double posToRads(int32_t ticks, const dynamixel_info &info);
 
-        uint32_t getDriverVelocity(const dynamixel_info &info, const double velocity) const;
+        int32_t getDriverVelocity(const dynamixel_info &info, const double velocity) const;
 
-        double getVelocity(const dynamixel_info &info, uint32_t velocity) const;
+        double getVelocity(const dynamixel_info &info, int32_t velocity) const;
 
     public:
 
