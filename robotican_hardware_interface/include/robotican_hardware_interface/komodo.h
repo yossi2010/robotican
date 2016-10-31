@@ -12,27 +12,14 @@
 #include <robotican_hardware_interface/robot_base.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/posvel_command_interface.h>
-#include <robotican_hardware_interface/dynamixel_pro_controller.h>
+#include <robotican_hardware_interface/dynamixel_controller.h>
 
 namespace robotican_hardware {
     class KomodoRobot : public RobotBase {
     private:
-        bool _first[2];
-
         hardware_interface::PositionJointInterface _positionJointInterface;
         hardware_interface::PosVelJointInterface _posVelJointInterface;
-        dynamixel_pro_controller::DynamixelProController* _dynamixelProController;
-        std::pair<std::string, JointInfo_t> _leftFingerInfo;
-        std::pair<std::string, JointInfo_t> _rightFingerInfo;
-
-        ros::Publisher _leftFingerCmd;
-        ros::Publisher _rightFingerCmd;
-
-        ros::Subscriber _leftFingerState;
-        ros::Subscriber _rightFingerState;
-
-        void leftFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg);
-        void rightFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg);
+        dynamixel_controller::DynamixelController* _dynamixelController;
 
     public:
         KomodoRobot();
