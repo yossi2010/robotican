@@ -14,7 +14,7 @@ namespace robotican_hardware {
         bool haveArm = true;
         ros::param::param<bool>("have_arm", haveArm, true);
         if(haveArm) {
-            //_dynamixelController = new dynamixel_controller::DynamixelController(&_jointStateInterface, &_posVelJointInterface, &_positionJointInterface);
+            _dynamixelController = new dynamixel_controller::DynamixelController(&_jointStateInterface, &_posVelJointInterface, &_positionJointInterface);
         }
 
     }

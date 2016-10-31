@@ -152,7 +152,7 @@
 </group>
 		<rosparam file="$(find robotican_komodo)/config/hardware_interface_config.yaml" command="load"/>
 		
-	 <rosparam file="$(find robotican_komodo)/config/arm_config.yaml" command="load"/> 
+		 <rosparam file="$(find robotican_komodo)/config/arm_config.yaml" command="load"/> 
 				
 		<node name="robotican_hardware_interface" pkg="robotican_hardware_interface" type="robotican_hardware_interface_node" respawn="false" output="screen" >
 		
