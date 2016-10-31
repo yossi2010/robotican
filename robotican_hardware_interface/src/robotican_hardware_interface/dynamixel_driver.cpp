@@ -234,15 +234,15 @@ namespace dynamixel_driver {
     bool DynamixelDriver::getMotorPositionProtocol2(uint8_t id, uint32_t &position) {
         int dxl_comm_result = COMM_TX_FAIL;
         uint8_t dxl_error;
-        uint32_t read;
-        dxl_comm_result = _packetHandlerVer2->read4ByteTxRx(_portHandler, id, ADDR_PRO_PRESENT_POSITION,  &read, &dxl_error);
-        position = read;
+        int32_t read;
+        dxl_comm_result = _packetHandlerVer2->read4ByteTxRx(_portHandler, id, ADDR_PRO_PRESENT_POSITION, (uint32_t *) &read, &dxl_error);
+        dxl_comm_result = _packetHandlerVer2->read4ByteTxRx(_portHandler, id, ADDR_PRO_PRESENT_POSITION, &position, &dxl_error);
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
         else{
-            if(read > 4000000000) {
-                printf("%u\n", id);
-            }
+
+                printf("%u %d\n", id, read);
+
             return true;
         }
 
