@@ -147,34 +147,16 @@
 <group if="$(arg arm)">
 
 
-<node name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen">          
-		  <rosparam>
-                namespace: dxl_manager
-                serial_ports:
-                 gripper_port:
-                  port_name: "/dev/ttyUSB1"
-                  baud_rate: 57142
-                  min_motor_id: 1
-                  max_motor_id: 2
-                  update_rate: 20
-                </rosparam>
-		</node>
-		
-		<node name="arm_controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
-		  args="--manager=dxl_manager
-				--port=gripper_port
-		left_finger_controller
-		right_finger_controller"
-				output="screen"/>
+
 
 </group>
 		<rosparam file="$(find robotican_komodo)/config/hardware_interface_config.yaml" command="load"/>
 		
-	
+	 <rosparam file="$(find robotican_komodo)/config/arm_config.yaml" command="load"/> 
 				
 		<node name="robotican_hardware_interface" pkg="robotican_hardware_interface" type="robotican_hardware_interface_node" respawn="false" output="screen" >
 		
-		  <rosparam file="$(find robotican_komodo)/config/arm_config.yaml" command="load"/> 
+		 
 		</node> 
 </group>
 
