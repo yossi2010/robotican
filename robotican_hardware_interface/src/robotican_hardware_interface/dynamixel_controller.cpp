@@ -115,32 +115,38 @@ namespace dynamixel_controller {
                             dxlMotorInfo.id = (uint8_t) info.id;
                             dxlMotorInfo.protocol = (float) static_cast<double>(servos[i]["protocol_version"]);
                             info.protocolVer = dxlMotorInfo.protocol;
-                            if(_driver->pingMotor(dxlMotorInfo)) {
-                                bool success = true;
-                                success &= _driver->getMotorModel(dxlMotorInfo, (uint16_t &) info.model_number);
-                                success &= _modelSpec.find(info.model_number) != _modelSpec.end();
-                                if(success) {
-                                    info.cpr = _modelSpec[info.model_number].cpr;
-                                    info.gear_reduction = _modelSpec[info.model_number].gear_reduction;
-                                    _joint2Dxl[info.joint_name] = info;
+                            bool gotPing = false;
+                            do {
+                                if (_driver->pingMotor(dxlMotorInfo)) {
+                                    gotPing = true;
+                                    bool success = true;
+                                    success &= _driver->getMotorModel(dxlMotorInfo, (uint16_t &) info.model_number);
+                                    success &= _modelSpec.find(info.model_number) != _modelSpec.end();
+                                    if (success) {
+                                        info.cpr = _modelSpec[info.model_number].cpr;
+                                        info.gear_reduction = _modelSpec[info.model_number].gear_reduction;
+                                        _joint2Dxl[info.joint_name] = info;
 
-                                    dynamixel_status status;
-                                    status.id = info.id;
-                                    status.mode = UNKOWN;
-                                    status.torque_enabled = false;
-                                    _id2status[info.id] = status;
+                                        dynamixel_status status;
+                                        status.id = info.id;
+                                        status.mode = UNKOWN;
+                                        status.torque_enabled = false;
+                                        _id2status[info.id] = status;
 
 
-
-                                }
-                                else {
-                                    ROS_ERROR("[%s]: Failed to load model information for dynamixel id %d", ros::this_node::getName().c_str(),info.id);
+                                    } else {
+                                        ROS_ERROR("[%s]: Failed to load model information for dynamixel id %d",
+                                                  ros::this_node::getName().c_str(), info.id);
+                                        return false;
+                                    }
+                                } else {
+                                    gotPing = false;
+                                    ros::Duration(1.0).sleep();
+                                    ROS_ERROR("[%s]: Cannot ping dyanmixel id: %d", ros::this_node::getName().c_str(),
+                                              info.id);
                                     return false;
                                 }
-                            } else {
-                                ROS_ERROR("[%s]: Cannot ping dyanmixel id: %d", ros::this_node::getName().c_str(),info.id);
-                                return false;
-                            }
+                            } while (!gotPing);
                         }
                     }
                 }
