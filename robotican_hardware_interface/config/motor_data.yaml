@@ -15,5 +15,5 @@
   
 - name: H42
   model_number: 29
-  cpr: 1024
+  cpr: 4096
   gear_reduction: 1.0
