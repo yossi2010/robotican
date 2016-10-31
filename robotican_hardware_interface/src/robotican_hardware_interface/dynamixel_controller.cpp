@@ -130,25 +130,7 @@ namespace dynamixel_controller {
                                     status.torque_enabled = false;
                                     _id2status[info.id] = status;
 
-                                    for(std::map<std::string, dynamixel_info>::iterator it=_joint2Dxl.begin(); it != _joint2Dxl.end(); ++it) {
-                                        std::string jointName = it->first;
-                                        _jointsInfo.insert(std::pair<std::string, JointInfo_t>(jointName, JointInfo_t()));
 
-
-                                        hardware_interface::JointStateHandle jointStateHandle(jointName, &_jointsInfo[jointName].position, &_jointsInfo[jointName].velocity,&_jointsInfo[jointName].effort);
-                                        _jointStateInterface->registerHandle(jointStateHandle);
-                                        if(_joint2Dxl[jointName].protocolVer == PROTOCOL2_VERSION) {
-                                            hardware_interface::PosVelJointHandle jointHandle(
-                                                    _jointStateInterface->getHandle(jointName),
-                                                    &_jointsInfo[jointName].cmd_pos, &_jointsInfo[jointName].cmd_vel);
-                                            _posVelJointInterface->registerHandle(jointHandle);
-                                        } else {
-                                            hardware_interface::JointHandle jointHandle(_jointStateInterface->getHandle(jointName)
-                                                    , &_jointsInfo[jointName].cmd_pos);
-                                            _positionJointInterface->registerHandle(jointHandle);
-                                        }
-
-                                    }
 
                                 }
                                 else {
@@ -161,6 +143,24 @@ namespace dynamixel_controller {
                             }
                         }
                     }
+                }
+                for(std::map<std::string, dynamixel_info>::iterator it=_joint2Dxl.begin(); it != _joint2Dxl.end(); ++it) {
+                    std::string jointName = it->first;
+                    _jointsInfo.insert(std::pair<std::string, JointInfo_t>(jointName, JointInfo_t()));
+
+
+                    hardware_interface::JointStateHandle jointStateHandle(jointName, &_jointsInfo[jointName].position, &_jointsInfo[jointName].velocity,&_jointsInfo[jointName].effort);
+                    _jointStateInterface->registerHandle(jointStateHandle);
+                    if(_joint2Dxl[jointName].protocolVer == PROTOCOL2_VERSION) {
+                        hardware_interface::PosVelJointHandle jointHandle(_jointStateInterface->getHandle(jointName)
+                                , &_jointsInfo[jointName].cmd_pos, &_jointsInfo[jointName].cmd_vel);
+                        _posVelJointInterface->registerHandle(jointHandle);
+                    } else {
+                        hardware_interface::JointHandle jointHandle(_jointStateInterface->getHandle(jointName) ,
+                                                                    &_jointsInfo[jointName].cmd_pos);
+                        _positionJointInterface->registerHandle(jointHandle);
+                    }
+
                 }
             }
         } else {
