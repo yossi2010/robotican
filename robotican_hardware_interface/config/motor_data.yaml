@@ -15,5 +15,5 @@
   
 - name: MX28
   model_number: 29
-  cpr: 5096
+  cpr: 4096
   gear_reduction: 1.0
