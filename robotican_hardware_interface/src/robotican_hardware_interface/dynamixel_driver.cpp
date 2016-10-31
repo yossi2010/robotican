@@ -238,7 +238,12 @@ namespace dynamixel_driver {
         dxl_comm_result = _packetHandlerVer2->read4ByteTxRx(_portHandler, id, ADDR_PRO_PRESENT_POSITION,  &position, &dxl_error);
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
-        else return true;
+        else{
+            if(position > 4000000000) {
+                std::cout << id << std::endl;
+            }
+            return true;
+        }
 
         return false;
     }
