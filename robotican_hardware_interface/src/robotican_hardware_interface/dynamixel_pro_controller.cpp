@@ -574,6 +574,7 @@ int32_t DynamixelProController::posToTicks(double rads, const dynamixel_info& in
 double DynamixelProController::posToRads(int32_t ticks, const dynamixel_info& info) const
 {
     const double FromTicks = 1.0 / (info.cpr / 2.0);
+    ROS_INFO("%u", ticks);
     return static_cast<double>(ticks) * FromTicks * M_PI;
 }
 

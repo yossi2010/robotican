@@ -13,7 +13,7 @@
   cpr: 303800
   gear_reduction: 304.0
   
-- name: H42
+- name: MX28
   model_number: 29
-  cpr: 4096
+  cpr: 4095
   gear_reduction: 1.0
