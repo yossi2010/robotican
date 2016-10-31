@@ -47,6 +47,10 @@ robot_state_controller:
     type: joint_state_controller/JointStateController
     publish_rate: 50  
 
+rotation1_position_controller:
+  type: position_controllers/JointPositionController
+  joint: rotation1_joint
+  
 torso_position_controller:
   type: position_controllers/JointPositionController
   joint: torso_joint

@@ -91,6 +91,10 @@ namespace dynamixel_driver {
 
         bool getMotorLoadProtocol2(uint8_t id, uint16_t &load);
 
+        bool getMotorModelProtocol1(uint8_t id, uint16_t &model);
+
+        bool getMotorModelProtocol2(uint8_t id, uint16_t &model);
+
     public:
         DynamixelDriver(const char *port, unsigned int baudrate, DriverMode mode);
 
@@ -113,6 +117,8 @@ namespace dynamixel_driver {
         bool getMotorSpeed(DxlMotorInfo_t motorInfo, uint32_t &speed);
 
         bool getMotorLoad(DxlMotorInfo_t motorInfo, uint16_t &load);
+
+        bool getMotorModel(DxlMotorInfo_t motorInfo, uint16_t &model);
     };
 }
 

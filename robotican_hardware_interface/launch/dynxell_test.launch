@@ -1,24 +1,6 @@
 <launch>
 <rosparam file="$(find robotican_hardware_interface)/config/controllers.yaml" command="load"/>
-<node name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen">          
-		  <rosparam>
-                namespace: dxl_manager
-                serial_ports:
-                 gripper_port:
-                  port_name: "/dev/ttyUSB0"
-                  baud_rate: 57142
-                  min_motor_id: 1
-                  max_motor_id: 4
-                  update_rate: 20
-                </rosparam>
-		</node>
-		
-		<node name="arm_controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
-		  args="--manager=dxl_manager
-				--port=gripper_port
-		pan_controller
-		tilt_controller"
-				output="screen"/>
-		
+
+<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="robot_state_controller rotation1_position_controller" />
 		
 </launch>
