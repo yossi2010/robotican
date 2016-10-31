@@ -178,17 +178,25 @@ namespace dynamixel_controller {
     }
 
     int32_t DynamixelController::posToTicks(double rads, const dynamixel_info &info) {
-        double cprDev2 = info.cpr / 2.0f;
-
-        return static_cast<int32_t>(round((rads / M_PI) * cprDev2));
+        if(info.protocolVer == PROTOCOL2_VERSION) {
+            double cprDev2 = info.cpr / 2.0f;
+            return static_cast<int32_t>(round((rads / M_PI) * cprDev2));
+        }
+        else {
+            double cprDev2 = info.cpr / 2.0f;
+            return static_cast<int32_t>(round(cprDev2 + (rads * cprDev2 / M_PI)));
+        }
     }
 
     double DynamixelController::posToRads(int32_t ticks, const dynamixel_info &info) {
-        const double FromTicks = 1.0 / (info.cpr / 2.0);
-        if(info.id == 8 || info.id == 7) {
-            ROS_INFO("[%d]: %d", info.id, ticks);
+        if(info.protocolVer == PROTOCOL2_VERSION) {
+            const double FromTicks = 1.0 / (info.cpr / 2.0);
+            return static_cast<double>(ticks) * FromTicks * M_PI;
         }
-        return static_cast<double>(ticks) * FromTicks * M_PI;
+        else {
+            double cprDev2 = info.cpr / 2.0f;
+            return (static_cast<double>(ticks) - cprDev2) * M_PI / cprDev2;
+        }
     }
 
     bool DynamixelController::torqueMotors() {
