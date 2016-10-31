@@ -197,8 +197,8 @@ namespace dynamixel_controller {
         for (std::map<std::string, dynamixel_info>::iterator iter = _joint2Dxl.begin(); iter != _joint2Dxl.end(); iter++) {
             std::string jointName = iter->first;
             dynamixel_info info = iter->second;
-            uint32_t position, velocity;
-            uint16_t load;
+            uint32_t position = 0, velocity = 0 ;
+            uint16_t load = 0 ;
             dynamixel_driver::DxlMotorInfo_t dxlMotorInfo;
             dxlMotorInfo.id = info.id;
             dxlMotorInfo.protocol = info.protocolVer;
