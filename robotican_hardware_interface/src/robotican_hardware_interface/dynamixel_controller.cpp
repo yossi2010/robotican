@@ -219,6 +219,7 @@ namespace dynamixel_controller {
                 double effort = load;
                 _jointsInfo[jointName].effort = effort;
             }
+            ros::Duration(3.0).sleep();
         }
         if(_first) _first = false;
 
