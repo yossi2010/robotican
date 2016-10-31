@@ -144,7 +144,7 @@ namespace dynamixel_controller {
                                     ros::Duration(1.0).sleep();
                                     ROS_ERROR("[%s]: Cannot ping dyanmixel id: %d", ros::this_node::getName().c_str(),
                                               info.id);
-                                    return false;
+                                    
                                 }
                             } while (!gotPing);
                         }
