@@ -240,7 +240,7 @@ namespace dynamixel_driver {
         else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
         else{
             if(position > 4000000000) {
-                std::cout << id << std::endl;
+                printf("%u\n", id);
             }
             return true;
         }
