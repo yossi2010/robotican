@@ -178,8 +178,8 @@ namespace dynamixel_controller {
     }
 
     double DynamixelController::posToRads(uint32_t ticks, const dynamixel_info &info) {
-        ROS_INFO("%u %d %d", ticks, info.cpr, info.id);
         double cprDev2 = info.cpr / 2.0f;
+        ROS_INFO("%u %f %d", ticks, cprDev2, info.id);
         return ((double)ticks - cprDev2) * M_PI / cprDev2;
     }
 
