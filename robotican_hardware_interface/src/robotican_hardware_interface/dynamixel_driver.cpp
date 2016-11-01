@@ -9,6 +9,7 @@ namespace dynamixel_driver {
 
         if(isPortOpen()) {
             _portHandler->setBaudRate(baudrate);
+            _portHandler->setPacketTimeout(10000.0);
             switch (mode) {
                 case COMBINE:
                     _packetHandlerVer1 = dynamixel::PacketHandler::getPacketHandler(PROTOCOL1);
