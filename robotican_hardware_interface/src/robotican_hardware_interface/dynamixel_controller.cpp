@@ -150,9 +150,12 @@ namespace dynamixel_controller {
                         }
                     }
                 }
-                double initSpeed;
-                _nodeHandle.param<double>("init_speed", initSpeed, 1.0);
-                _initSpeed = initSpeed;
+                double initSpeedProtocol1, initSpeedProtocol2;
+                _nodeHandle.param<double>("init_speed_protocol1", initSpeedProtocol1, 1.0);
+                _nodeHandle.param<double>("init_speed_protocol2", initSpeedProtocol2, 0.1);
+
+                _initSpeedProtocol1 = initSpeedProtocol1;
+                _initSpeedProtocol2 = initSpeedProtocol2;
                 for(std::map<std::string, dynamixel_info>::iterator it=_joint2Dxl.begin(); it != _joint2Dxl.end(); ++it) {
                     std::string jointName = it->first;
                     _jointsInfo.insert(std::pair<std::string, JointInfo_t>(jointName, JointInfo_t()));
@@ -167,7 +170,7 @@ namespace dynamixel_controller {
                     } else {
                         hardware_interface::JointHandle jointHandle(_jointStateInterface->getHandle(jointName) ,
                                                                     &_jointsInfo[jointName].cmd_pos);
-                        _jointsInfo[jointName].cmd_vel = initSpeed;
+                        _jointsInfo[jointName].cmd_vel = _initSpeedProtocol1;
                         _positionJointInterface->registerHandle(jointHandle);
                     }
 
@@ -263,7 +266,12 @@ namespace dynamixel_controller {
             dxlMotorInfo.protocol = info.protocolVer;
 
             if(jointInfo.cmd_vel == 0.0) {
-                jointInfo.cmd_vel = _initSpeed;
+                if(info.protocolVer == PROTOCOL2_VERSION) {
+                    jointInfo.cmd_vel = _initSpeedProtocol2;
+                }
+                else {
+                    jointInfo.cmd_vel = _initSpeedProtocol1;
+                }
             }
 
             int32_t ticks = posToTicks(jointInfo.cmd_pos, info);

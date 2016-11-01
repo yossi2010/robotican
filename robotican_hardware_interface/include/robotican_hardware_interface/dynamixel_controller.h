@@ -94,7 +94,8 @@ namespace dynamixel_controller {
         std::map<std::string, JointInfo_t> _jointsInfo;
         dynamixel_driver::DynamixelDriver* _driver;
         bool _first;
-        double _initSpeed;
+        double _initSpeedProtocol1;
+        double _initSpeedProtocol2;
 
         void initSpecFile();
 
