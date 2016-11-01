@@ -67,7 +67,7 @@ namespace dynamixel_controller {
         initPort();
         if(ros::ok()) {
             if(initMotors()) {
-                torqueMotors();
+                //torqueMotors();
             } else {
                 ROS_ERROR("[%s]: failed to construct motor, please restart the robot and try again.", ros::this_node::getName().c_str());
                 ros::shutdown();
@@ -257,36 +257,36 @@ namespace dynamixel_controller {
     }
 
     void DynamixelController::write() {
-        for (std::map<std::string, dynamixel_info>::iterator iter = _joint2Dxl.begin(); iter != _joint2Dxl.end(); iter++) {
-            std::string jointName = iter->first;
-            dynamixel_info info = iter->second;
-            JointInfo_t jointInfo = _jointsInfo[jointName];
-            dynamixel_driver::DxlMotorInfo_t dxlMotorInfo;
-            dxlMotorInfo.id = info.id;
-            dxlMotorInfo.protocol = info.protocolVer;
-
-            if(jointInfo.cmd_vel == 0.0) {
-                if(info.protocolVer == PROTOCOL2_VERSION) {
-                    jointInfo.cmd_vel = _initSpeedProtocol2;
-                }
-                else {
-                    jointInfo.cmd_vel = _initSpeedProtocol1;
-                }
-            }
-
-            int32_t ticks = posToTicks(jointInfo.cmd_pos, info);
-            int32_t speed = getDriverVelocity(info, jointInfo.cmd_vel);
-
-            if(!_driver->setMotorSpeed(dxlMotorInfo, speed)) {
-                ROS_WARN("[%s]: Unable to set speed", ros::this_node::getName().c_str());
-            }
-
-            if(!_driver->setMotorPosition(dxlMotorInfo, ticks)) {
-                ROS_WARN("[%s]: Unable to set position", ros::this_node::getName().c_str());
-            }
-
-
-        }
+//        for (std::map<std::string, dynamixel_info>::iterator iter = _joint2Dxl.begin(); iter != _joint2Dxl.end(); iter++) {
+//            std::string jointName = iter->first;
+//            dynamixel_info info = iter->second;
+//            JointInfo_t jointInfo = _jointsInfo[jointName];
+//            dynamixel_driver::DxlMotorInfo_t dxlMotorInfo;
+//            dxlMotorInfo.id = info.id;
+//            dxlMotorInfo.protocol = info.protocolVer;
+//
+//            if(jointInfo.cmd_vel == 0.0) {
+//                if(info.protocolVer == PROTOCOL2_VERSION) {
+//                    jointInfo.cmd_vel = _initSpeedProtocol2;
+//                }
+//                else {
+//                    jointInfo.cmd_vel = _initSpeedProtocol1;
+//                }
+//            }
+//
+//            int32_t ticks = posToTicks(jointInfo.cmd_pos, info);
+//            int32_t speed = getDriverVelocity(info, jointInfo.cmd_vel);
+//
+//            if(!_driver->setMotorSpeed(dxlMotorInfo, speed)) {
+//                ROS_WARN("[%s]: Unable to set speed", ros::this_node::getName().c_str());
+//            }
+//
+//            if(!_driver->setMotorPosition(dxlMotorInfo, ticks)) {
+//                ROS_WARN("[%s]: Unable to set position", ros::this_node::getName().c_str());
+//            }
+//
+//
+//        }
     }
 
     int32_t DynamixelController::getDriverVelocity(const dynamixel_info &info, const double velocity) const {
