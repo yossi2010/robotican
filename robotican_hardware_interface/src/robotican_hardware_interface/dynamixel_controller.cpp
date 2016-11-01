@@ -150,6 +150,8 @@ namespace dynamixel_controller {
                         }
                     }
                 }
+                double initSpeed;
+                _nodeHandle.param<double>("init_speed", initSpeed, 1.0);
                 for(std::map<std::string, dynamixel_info>::iterator it=_joint2Dxl.begin(); it != _joint2Dxl.end(); ++it) {
                     std::string jointName = it->first;
                     _jointsInfo.insert(std::pair<std::string, JointInfo_t>(jointName, JointInfo_t()));
@@ -164,6 +166,7 @@ namespace dynamixel_controller {
                     } else {
                         hardware_interface::JointHandle jointHandle(_jointStateInterface->getHandle(jointName) ,
                                                                     &_jointsInfo[jointName].cmd_pos);
+                        _jointsInfo[jointName].cmd_vel = initSpeed;
                         _positionJointInterface->registerHandle(jointHandle);
                     }
 
@@ -241,7 +244,12 @@ namespace dynamixel_controller {
     }
 
     double DynamixelController::getVelocity(const dynamixel_info &info, int32_t velocity) const {
-        return ((double) velocity) * 2.0 * M_PI / 60.0 / info.gear_reduction;
+        if(info.protocolVer == PROTOCOL2_VERSION) {
+            return ((double) velocity) * 2.0 * M_PI / 60.0 / info.gear_reduction;
+        }
+        else {
+            return (100.0f / 8349.0f) * ((double) velocity) + (94.0f / 13915.0f);
+        }
     }
 
     void DynamixelController::write() {
@@ -253,8 +261,8 @@ namespace dynamixel_controller {
             dxlMotorInfo.id = info.id;
             dxlMotorInfo.protocol = info.protocolVer;
 
-            uint32_t ticks = posToTicks(jointInfo.cmd_pos, info);
-            uint32_t speed = getDriverVelocity(info, jointInfo.cmd_vel);
+            int32_t ticks = posToTicks(jointInfo.cmd_pos, info);
+            int32_t speed = getDriverVelocity(info, jointInfo.cmd_vel);
 
             if(!_driver->setMotorSpeed(dxlMotorInfo, speed)) {
                 ROS_WARN("[%s]: Unable to set speed", ros::this_node::getName().c_str());
@@ -268,7 +276,14 @@ namespace dynamixel_controller {
         }
     }
 
-    int32_t DynamixelController::getDriverVelocity(const dynamixel_info &info, const double velocity) const { return static_cast<uint32_t >(velocity / 2.0 / M_PI * 60.0 * info.gear_reduction); }
+    int32_t DynamixelController::getDriverVelocity(const dynamixel_info &info, const double velocity) const {
+        if(info.protocolVer == PROTOCOL2_VERSION)
+            return static_cast<int32_t >(velocity / 2.0 / M_PI * 60.0 * info.gear_reduction);
+        else {
+            return static_cast<int32_t >(83.49f * (velocity) - 0.564f);
+        }
+
+    }
 
 
 }
