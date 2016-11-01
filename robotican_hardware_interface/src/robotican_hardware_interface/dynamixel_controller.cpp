@@ -152,6 +152,7 @@ namespace dynamixel_controller {
                 }
                 double initSpeed;
                 _nodeHandle.param<double>("init_speed", initSpeed, 1.0);
+                _initSpeed = initSpeed;
                 for(std::map<std::string, dynamixel_info>::iterator it=_joint2Dxl.begin(); it != _joint2Dxl.end(); ++it) {
                     std::string jointName = it->first;
                     _jointsInfo.insert(std::pair<std::string, JointInfo_t>(jointName, JointInfo_t()));
@@ -260,6 +261,10 @@ namespace dynamixel_controller {
             dynamixel_driver::DxlMotorInfo_t dxlMotorInfo;
             dxlMotorInfo.id = info.id;
             dxlMotorInfo.protocol = info.protocolVer;
+
+            if(jointInfo.cmd_vel == 0.0) {
+                jointInfo.cmd_vel = _initSpeed;
+            }
 
             int32_t ticks = posToTicks(jointInfo.cmd_pos, info);
             int32_t speed = getDriverVelocity(info, jointInfo.cmd_vel);
