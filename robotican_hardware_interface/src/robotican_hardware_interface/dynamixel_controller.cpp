@@ -67,7 +67,7 @@ namespace dynamixel_controller {
         initPort();
         if(ros::ok()) {
             if(initMotors()) {
-                //torqueMotors();
+                torqueMotors();
             } else {
                 ROS_ERROR("[%s]: failed to construct motor, please restart the robot and try again.", ros::this_node::getName().c_str());
                 ros::shutdown();
@@ -115,6 +115,7 @@ namespace dynamixel_controller {
                             dxlMotorInfo.id = (uint8_t) info.id;
                             dxlMotorInfo.protocol = (float) static_cast<double>(servos[i]["protocol_version"]);
                             info.protocolVer = dxlMotorInfo.protocol;
+                            info.torque = static_cast<int>(servos[i]["torque"]);
                             bool gotPing = false;
                             do {
                                 if (_driver->pingMotor(dxlMotorInfo)) {
@@ -211,7 +212,12 @@ namespace dynamixel_controller {
             dynamixel_driver::DxlMotorInfo_t info;
             info.id = (uint8_t) it->second.id;
             info.protocol = it->second.protocolVer;
-            if(!_driver->setMotorTorque(info, TORQUE_ENABLE)) return false;
+            if(it->second.torque == 1) {
+                if (!_driver->setMotorTorque(info, TORQUE_ENABLE)) return false;
+            }
+            else if(it->second.torque == 0){
+                if (!_driver->setMotorTorque(info, TORQUE_DISABLE)) return false;
+            }
         }
         return true;
     }
@@ -297,6 +303,7 @@ namespace dynamixel_controller {
         }
 
     }
+
 
 
 }

@@ -64,6 +64,7 @@ namespace dynamixel_controller {
         int cpr;
         double gear_reduction;
         float protocolVer;
+        int torque;
     };
 
     enum control_mode
@@ -93,6 +94,9 @@ namespace dynamixel_controller {
         std::map<int, dynamixel_status> _id2status;
         std::map<std::string, JointInfo_t> _jointsInfo;
         dynamixel_driver::DynamixelDriver* _driver;
+
+        ros::Subscriber _torqueListener;
+
         bool _first;
         double _initSpeedProtocol1;
         double _initSpeedProtocol2;
@@ -112,6 +116,7 @@ namespace dynamixel_controller {
         int32_t getDriverVelocity(const dynamixel_info &info, const double velocity) const;
 
         double getVelocity(const dynamixel_info &info, int32_t velocity) const;
+
 
     public:
 
