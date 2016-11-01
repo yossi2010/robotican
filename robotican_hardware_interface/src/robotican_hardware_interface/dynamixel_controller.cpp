@@ -38,7 +38,7 @@ namespace dynamixel_controller {
         int timeout_ms;
 
         _nodeHandle.param<std::string>("device", device, "/dev/ttyUSB0");
-         baudrate = 57142;
+        _nodeHandle.param<int>("device_baudrate", baudrate, 57142);
 
         _driver = new dynamixel_driver::DynamixelDriver(device.c_str(), (unsigned int) baudrate, dynamixel_driver::COMBINE);
         if(_driver == NULL) ROS_BREAK();
