@@ -288,9 +288,9 @@ namespace dynamixel_controller {
                 else {
                     jointInfo.cmd_vel = _initSpeedProtocol1;
                 }
-            }
-            else {
+            } else {
                 jointInfo.pre_vel = jointInfo.cmd_vel;
+                ROS_INFO("PRE VEL: %f", jointInfo.pre_vel);
             }
 
             int32_t ticks = posToTicks(jointInfo.cmd_pos, info);
