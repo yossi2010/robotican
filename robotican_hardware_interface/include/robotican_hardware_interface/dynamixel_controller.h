@@ -119,6 +119,8 @@ namespace dynamixel_controller {
 
         double getVelocity(const dynamixel_info &info, int32_t velocity) const;
 
+        int16_t testBit(int16_t number, int16_t offset);
+
 
     public:
 

@@ -223,12 +223,14 @@ namespace dynamixel_controller {
         return true;
     }
 
+
+
     void DynamixelController::read() {
         for (std::map<std::string, dynamixel_info>::iterator iter = _joint2Dxl.begin(); iter != _joint2Dxl.end(); iter++) {
             std::string jointName = iter->first;
             dynamixel_info info = iter->second;
             int32_t position = 0, velocity = 0 ;
-            int16_t load = 0 ;
+            int16_t rawLoad = 0 ;
             dynamixel_driver::DxlMotorInfo_t dxlMotorInfo;
             dxlMotorInfo.id = info.id;
             dxlMotorInfo.protocol = info.protocolVer;
@@ -249,9 +251,18 @@ namespace dynamixel_controller {
                 ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
             }
 
-            if(_driver->getMotorLoad(dxlMotorInfo, load)) {
-                double effort = load;
-                _jointsInfo[jointName].effort = effort;
+            if(_driver->getMotorLoad(dxlMotorInfo, rawLoad)) {
+                if (info.protocolVer == PROTOCOL2_VERSION) {
+                    int16_t dir = testBit(rawLoad, 10);
+                    int16_t load = rawLoad & 1023 / 1024;
+                    load = (dir == 1) ? -load : load;
+                    double effort = load;
+                    _jointsInfo[jointName].effort = effort;
+                }
+                else {
+                    double effort = rawLoad;
+                    _jointsInfo[jointName].effort = effort;
+                }
             } else {
                 ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
             }
@@ -312,6 +323,10 @@ namespace dynamixel_controller {
 
     }
 
+    int16_t DynamixelController::testBit(int16_t number, int16_t offset) {
+        int mask = 1 << offset;
+        return (number & mask);
+    }
 
 
 }
