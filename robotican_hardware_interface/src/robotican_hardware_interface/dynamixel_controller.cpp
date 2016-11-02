@@ -254,11 +254,10 @@ namespace dynamixel_controller {
             if(_driver->getMotorLoad(dxlMotorInfo, rawLoad)) {
                 if (info.protocolVer == PROTOCOL1_VERSION) {
                     bool revers = testBit(rawLoad, 10);
-                    int16_t load = rawLoad & 1023 / 1024;
-                    load = (revers) ? -load : load;
-                    double effort = load;
+                    double effort = rawLoad & 1023 / 1024;
+                    effort = (revers) ? -effort : effort;
                     _jointsInfo[jointName].effort = effort;
-                    ROS_INFO("eff: %f, rawLoad: %d, load: %d",effort, rawLoad, load);
+                    ROS_INFO("eff: %f", effort);
                 }
                 else {
                     double effort = rawLoad;
