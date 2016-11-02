@@ -257,7 +257,7 @@ namespace dynamixel_controller {
                     double effort = (double)(rawLoad & 1023) / 1024.0f;
                     effort = (revers) ? -effort : effort;
                     _jointsInfo[jointName].effort = effort;
-                    ROS_INFO("eff: %f", effort);
+
                 }
                 else {
                     double effort = rawLoad;
