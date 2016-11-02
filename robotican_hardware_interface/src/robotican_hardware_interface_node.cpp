@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
             controller_manager::ControllerManager controllerManager(&robot);
             ros::AsyncSpinner asyncSpinner(1);
             asyncSpinner.start();
-            ros::Rate rate(10);
+            ros::Rate rate(50);
             while (ros::ok()) {
                 robot.read();
                 controllerManager.update(robot.getTime(), robot.getPeriod());
