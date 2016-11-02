@@ -324,7 +324,7 @@ namespace dynamixel_controller {
     }
 
     bool DynamixelController::testBit(int16_t number, int16_t offset) {
-        int mask = 1 << offset;
+        int16_t mask = 1 << offset;
         return (bool) (number & mask);
     }
 
