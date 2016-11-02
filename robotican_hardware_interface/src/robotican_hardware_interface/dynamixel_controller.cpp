@@ -282,7 +282,7 @@ namespace dynamixel_controller {
 
             if(jointInfo.cmd_vel == 0.0) {
                 if(info.protocolVer == PROTOCOL2_VERSION) {
-                    jointInfo.cmd_vel = jointInfo.pre_vel;
+                    jointInfo.cmd_vel = 0.02;
                     ROS_INFO("CURRENT VEL: %f", jointInfo.cmd_vel);
                 }
                 else {
