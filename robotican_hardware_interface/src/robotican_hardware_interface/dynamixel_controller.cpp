@@ -283,6 +283,7 @@ namespace dynamixel_controller {
             if(jointInfo.cmd_vel == 0.0) {
                 if(info.protocolVer == PROTOCOL2_VERSION) {
                     jointInfo.cmd_vel = jointInfo.pre_vel;
+                    ROS_INFO("CURRENT VEL: %f", jointInfo.cmd_vel);
                 }
                 else {
                     jointInfo.cmd_vel = _initSpeedProtocol1;
