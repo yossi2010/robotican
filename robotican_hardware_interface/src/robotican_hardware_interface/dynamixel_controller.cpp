@@ -254,7 +254,7 @@ namespace dynamixel_controller {
             if(_driver->getMotorLoad(dxlMotorInfo, rawLoad)) {
                 if (info.protocolVer == PROTOCOL1_VERSION) {
                     bool revers = testBit(rawLoad, 10);
-                    double effort = rawLoad & 1023 / 1024;
+                    double effort = (double)(rawLoad & 1023) / 1024.0;
                     effort = (revers) ? -effort : effort;
                     _jointsInfo[jointName].effort = effort;
                     ROS_INFO("eff: %f", effort);
