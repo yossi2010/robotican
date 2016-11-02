@@ -256,7 +256,7 @@ namespace dynamixel_controller {
                     bool revers = testBit(rawLoad, 10);
                     int16_t load = rawLoad & 1023 / 1024;
                     load = (revers) ? -load : load;
-                    double effort = load;
+                    double effort = rawLoad;
                     _jointsInfo[jointName].effort = effort;
                 }
                 else {
