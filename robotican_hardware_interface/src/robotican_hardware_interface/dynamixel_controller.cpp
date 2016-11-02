@@ -238,15 +238,21 @@ namespace dynamixel_controller {
                 _jointsInfo[jointName].position = rad;
                 if (_first) _jointsInfo[jointName].cmd_pos = rad;
 
+            } else {
+                ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
             }
             if(_driver->getMotorSpeed(dxlMotorInfo, velocity)) {
                 double radVel = getVelocity(info, velocity);
                 _jointsInfo[jointName].velocity = radVel;
+            } else {
+                ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
             }
 
             if(_driver->getMotorLoad(dxlMotorInfo, load)) {
                 double effort = load;
                 _jointsInfo[jointName].effort = effort;
+            } else {
+                ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
             }
         }
         if(_first) _first = false;
