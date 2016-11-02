@@ -283,14 +283,12 @@ namespace dynamixel_controller {
             if(jointInfo.cmd_vel == 0.0) {
                 if(info.protocolVer == PROTOCOL2_VERSION) {
                     jointInfo.cmd_vel = 0.02;
-                    ROS_INFO("CURRENT VEL: %f", jointInfo.cmd_vel);
                 }
                 else {
                     jointInfo.cmd_vel = _initSpeedProtocol1;
                 }
             } else {
                 jointInfo.pre_vel = jointInfo.cmd_vel;
-                ROS_INFO("PRE VEL: %f", jointInfo.pre_vel);
             }
 
             int32_t ticks = posToTicks(jointInfo.cmd_pos, info);
