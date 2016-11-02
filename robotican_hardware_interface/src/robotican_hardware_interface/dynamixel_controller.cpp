@@ -258,6 +258,7 @@ namespace dynamixel_controller {
                     load = (revers) ? -load : load;
                     double effort = load;
                     _jointsInfo[jointName].effort = effort;
+                    ROS_INFO("eff: %f, rawLoad: %d, load: %d",effort, rawLoad, load);
                 }
                 else {
                     double effort = rawLoad;
