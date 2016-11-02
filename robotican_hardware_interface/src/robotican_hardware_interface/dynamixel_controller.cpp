@@ -168,6 +168,7 @@ namespace dynamixel_controller {
                         hardware_interface::PosVelJointHandle jointHandle(_jointStateInterface->getHandle(jointName)
                                 , &_jointsInfo[jointName].cmd_pos, &_jointsInfo[jointName].cmd_vel);
                         _posVelJointInterface->registerHandle(jointHandle);
+                        _jointsInfo[jointName].pre_vel = _initSpeedProtocol2;
                     } else {
                         hardware_interface::JointHandle jointHandle(_jointStateInterface->getHandle(jointName) ,
                                                                     &_jointsInfo[jointName].cmd_pos);
@@ -277,13 +278,18 @@ namespace dynamixel_controller {
             dxlMotorInfo.id = info.id;
             dxlMotorInfo.protocol = info.protocolVer;
 
+
+
             if(jointInfo.cmd_vel == 0.0) {
                 if(info.protocolVer == PROTOCOL2_VERSION) {
-                    jointInfo.cmd_vel = _initSpeedProtocol2;
+                    jointInfo.cmd_vel = jointInfo.pre_vel;
                 }
                 else {
                     jointInfo.cmd_vel = _initSpeedProtocol1;
                 }
+            }
+            else {
+                jointInfo.pre_vel = jointInfo.cmd_vel;
             }
 
             int32_t ticks = posToTicks(jointInfo.cmd_pos, info);

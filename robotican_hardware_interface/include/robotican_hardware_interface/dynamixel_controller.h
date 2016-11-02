@@ -40,9 +40,10 @@ namespace dynamixel_controller {
         double velocity;
         double cmd_pos;
         double cmd_vel;
+        double pre_vel;
         JointInfo_t() {
             position = effort = velocity = cmd_pos = 0;
-            cmd_vel = 0;
+            cmd_vel = pre_vel = 0;
         }
     };
 
@@ -100,6 +101,7 @@ namespace dynamixel_controller {
         bool _first;
         double _initSpeedProtocol1;
         double _initSpeedProtocol2;
+
 
         void initSpecFile();
 
