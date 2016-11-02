@@ -253,9 +253,9 @@ namespace dynamixel_controller {
 
             if(_driver->getMotorLoad(dxlMotorInfo, rawLoad)) {
                 if (info.protocolVer == PROTOCOL2_VERSION) {
-                    int16_t dir = testBit(rawLoad, 10);
+                    bool revers = testBit(rawLoad, 10);
                     int16_t load = rawLoad & 1023 / 1024;
-                    load = (dir == 1) ? -load : load;
+                    load = (revers) ? -load : load;
                     double effort = load;
                     _jointsInfo[jointName].effort = effort;
                 }
@@ -323,9 +323,9 @@ namespace dynamixel_controller {
 
     }
 
-    int16_t DynamixelController::testBit(int16_t number, int16_t offset) {
+    bool DynamixelController::testBit(int16_t number, int16_t offset) {
         int mask = 1 << offset;
-        return (number & mask);
+        return (bool) (number & mask);
     }
 
 
