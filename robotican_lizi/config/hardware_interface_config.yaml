@@ -78,8 +78,8 @@ motor0_min_set_point_speed: -14.0
 motor0_max_set_point_position: 0.0
 motor0_min_set_point_position: 0.0
 motor0_limit: 0.2
-motor0_stop_limit_max: 15.0
-motor0_stop_limit_min: -15.0
+motor0_stop_limit_max: 30.0
+motor0_stop_limit_min: -30.0
 motor0_motor_address: 0
 motor0_motor_emergency_pin: 12
 motor0_motor_emergency_pin_type: 0
@@ -111,8 +111,8 @@ motor1_min_set_point_speed: -14.0
 motor1_max_set_point_position: 0.0
 motor1_min_set_point_position: 0.0
 motor1_limit: 0.2
-motor1_stop_limit_max: 15.0
-motor1_stop_limit_min: -15.0
+motor1_stop_limit_max: 30.0
+motor1_stop_limit_min: -30.0
 motor1_motor_address: 1
 motor1_motor_emergency_pin: 12
 motor1_motor_emergency_pin_type: 0
@@ -143,8 +143,8 @@ motor2_min_set_point_speed: -14.0
 motor2_max_set_point_position: 0.0
 motor2_min_set_point_position: 0.0
 motor2_limit: 0.2
-motor2_stop_limit_max: 15.0
-motor2_stop_limit_min: -15.0
+motor2_stop_limit_max: 30.0
+motor2_stop_limit_min: -30.0
 motor2_motor_address: 4
 motor2_motor_emergency_pin: 12
 motor2_motor_emergency_pin_type: 0
@@ -174,8 +174,8 @@ motor3_min_set_point_speed: -14.0
 motor3_max_set_point_position: 0.0
 motor3_min_set_point_position: 0.0
 motor3_limit: 0.2
-motor3_stop_limit_max: 15.0
-motor3_stop_limit_min: -15.0
+motor3_stop_limit_max: 30.0
+motor3_stop_limit_min: -30.0
 motor3_motor_address: 3
 motor3_motor_emergency_pin: 12
 motor3_motor_emergency_pin_type: 0
