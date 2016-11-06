@@ -127,6 +127,21 @@
     <axis
       xyz="0 0 0" />
   </joint>
+<link
+    name="left_urf_link" />
+  <joint
+    name="left_urf_joint"
+    type="fixed">
+    <origin
+      xyz="0.014542 0.1055 0.0902"
+      rpy="0 0 1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_urf_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
   <link
     name="FL_wheel_link">
     <inertial>
