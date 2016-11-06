@@ -3,8 +3,6 @@
 <xacro:property name="M_PI" value="3.1415926535897931"/>
 <xacro:include filename="$(find robotican_common)/models/softkinetic_camera_ds325/model.xacro" />
   
-<robot
-  name="robotican_lizi">
   <link
     name="base_link">
     <inertial>
@@ -444,3 +442,4 @@
   </sensor_senz3d>
 
 </robot>
+
