@@ -26,7 +26,7 @@
   
     <!-- softkinetic -->
   <xacro:if value="$(arg softkinetic)">
-    <!-- <xacro:include filename="$(find robotican_common)/gazebo/softkinetic.xacro" /> -->
+     <xacro:include filename="$(find robotican_common)/gazebo/softkinetic_camera_ds325.xacro" /> 
   </xacro:if>
 
   <!-- TODO: Asus -->
