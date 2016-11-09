@@ -12,7 +12,7 @@
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 echo -e "\e[34mInstalling additional resources...\e[0m"
 apt-get -y install chrony openssh-server expect espeak ros-indigo-joy ros-indigo-hector-slam ros-indigo-usb-cam ros-indigo-openni2* ros-indigo-hokuyo-node  python-pygame ros-indigo-yocs-velocity-smoother ros-indigo-qt-build ros-indigo-pr2-controllers espeak espeak-data libespeak-dev
-apt-get -y install ros-indigo-moveit-full ros-indigo-ueye-cam ros-indigo-gazebo-ros-pkgs ros-indigo-gazebo-ros-control ros-indigo-hector-gazebo ros-indigo-ros-controllers ros-indigo-gmapping ros-indigo-navigation ros-indigo-robot-localization ros-indigo-twist-mux ros-indigo-serial ros-indigo-ar-track-alvar
+apt-get -y install ros-indigo-moveit-full ros-indigo-ueye-cam ros-indigo-gazebo-ros-pkgs ros-indigo-gazebo-ros-control ros-indigo-hector-gazebo ros-indigo-ros-controllers ros-indigo-gmapping ros-indigo-navigation ros-indigo-robot-localization ros-indigo-twist-mux ros-indigo-serial ros-indigo-ar-track-alvar mosh
 echo -e "\e[34mSyncing clock...\e[0m"
 ntpdate ntp.ubuntu.com
 
