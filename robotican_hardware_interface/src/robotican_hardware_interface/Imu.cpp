@@ -78,8 +78,10 @@ namespace robotican_hardware {
                 _imuM.publish(magneticField);
                 _broadcaster.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "base_link", "imu_link"));
 
+#ifdef DEBUG_VER
                 tf::Matrix3x3(quaternion).getRPY(newRoll, newPitch, newYaw);
                 ROS_INFO("[%s]: roll: %.2f , pitch: %.2f, yaw: %.2f", ros::this_node::getName().c_str(), newRoll * 180 / M_PI, newPitch * 180 / M_PI, newYaw * 180 / M_PI);
+#endif
 
             }
             else if(deviceMessage->deviceMessageType == DeviceMessageType::ImuClibFeedback) {
