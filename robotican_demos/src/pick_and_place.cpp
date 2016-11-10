@@ -164,7 +164,7 @@ moveit_msgs::PickupGoal BuildPickGoal(const std::string &objectName) {
     goal.planning_options.replan_attempts=5;
     goal.planner_id = "RRTConnectkConfigDefault";
 
-    goal.minimize_object_distance = false;
+    goal.minimize_object_distance = true;
     moveit_msgs::Grasp g;
     g.max_contact_force = 0.01;
     g.grasp_pose.header.frame_id = goal.target_name;
