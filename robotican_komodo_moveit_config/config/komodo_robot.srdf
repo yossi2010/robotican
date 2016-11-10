@@ -88,25 +88,25 @@
     <disable_collisions link1="left_finger_link" link2="rotation2_link" reason="Never" />
     <disable_collisions link1="left_finger_link" link2="shoulder2_link" reason="Never" />
     <disable_collisions link1="left_finger_link" link2="shoulder3_link" reason="Never" />
-    <disable_collisions link1="left_finger_link" link2="sr300_link" reason="Never" />
+    <disable_collisions link1="left_finger_link" link2="softkinetic_camera_link" reason="Never" />
     <disable_collisions link1="left_finger_link" link2="wrist_link" reason="Adjacent" />
     <disable_collisions link1="right_finger_link" link2="rotation2_link" reason="Never" />
     <disable_collisions link1="right_finger_link" link2="shoulder2_link" reason="Never" />
     <disable_collisions link1="right_finger_link" link2="shoulder3_link" reason="Never" />
-    <disable_collisions link1="right_finger_link" link2="sr300_link" reason="Never" />
+    <disable_collisions link1="right_finger_link" link2="softkinetic_camera_link" reason="Never" />
     <disable_collisions link1="right_finger_link" link2="wrist_link" reason="Adjacent" />
     <disable_collisions link1="rotation1_link" link2="shoulder1_link" reason="Adjacent" />
     <disable_collisions link1="rotation1_link" link2="shoulder2_link" reason="Never" />
     <disable_collisions link1="rotation2_link" link2="shoulder1_link" reason="Never" />
     <disable_collisions link1="rotation2_link" link2="shoulder2_link" reason="Adjacent" />
     <disable_collisions link1="rotation2_link" link2="shoulder3_link" reason="Adjacent" />
-    <disable_collisions link1="rotation2_link" link2="sr300_link" reason="Never" />
+    <disable_collisions link1="rotation2_link" link2="softkinetic_camera_link" reason="Never" />
     <disable_collisions link1="rotation2_link" link2="wrist_link" reason="Never" />
     <disable_collisions link1="shoulder1_link" link2="shoulder2_link" reason="Adjacent" />
     <disable_collisions link1="shoulder2_link" link2="shoulder3_link" reason="Never" />
-    <disable_collisions link1="shoulder2_link" link2="sr300_link" reason="Never" />
+    <disable_collisions link1="shoulder2_link" link2="softkinetic_camera_link" reason="Never" />
     <disable_collisions link1="shoulder2_link" link2="wrist_link" reason="Never" />
-    <disable_collisions link1="shoulder3_link" link2="sr300_link" reason="Never" />
+    <disable_collisions link1="shoulder3_link" link2="softkinetic_camera_link" reason="Never" />
     <disable_collisions link1="shoulder3_link" link2="wrist_link" reason="Adjacent" />
-    <disable_collisions link1="sr300_link" link2="wrist_link" reason="Adjacent" />
+    <disable_collisions link1="softkinetic_camera_link" link2="wrist_link" reason="Adjacent" />
 </robot>
