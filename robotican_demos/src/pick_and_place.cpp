@@ -168,7 +168,7 @@ moveit_msgs::PickupGoal BuildPickGoal(const std::string &objectName) {
     moveit_msgs::Grasp g;
     g.max_contact_force = 0.01;
     g.grasp_pose.header.frame_id = goal.target_name;
-    g.grasp_pose.pose.position.x = -0.01;
+    g.grasp_pose.pose.position.x = -0.06;
     g.grasp_pose.pose.position.y = 0.0;
     g.grasp_pose.pose.position.z = 0.0;
     g.grasp_pose.pose.orientation.x = 0.0;
