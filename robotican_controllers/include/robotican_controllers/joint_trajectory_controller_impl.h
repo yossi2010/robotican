@@ -475,8 +475,21 @@ namespace joint_trajectory_controller
         try
         {
 //            trajectory_msgs::JointTrajectory tjToSend = (*msg);
-            TrajectoryPtr traj_ptr(new Trajectory);
 
+            TrajectoryPtr traj_ptr(new Trajectory);
+            trajectory_msgs::JointTrajectory tjToSend = (*msg);
+            size_t tjSize = tjToSend.points.size();
+            if(tjSize > 1) {
+                trajectory_msgs::JointTrajectoryPoint &lastJta = tjToSend.points[tjSize - 1];
+                trajectory_msgs::JointTrajectoryPoint &beforeLastJta = tjToSend.points[tjSize - 2];
+                size_t size = lastJta.positions.size();
+                double deltaTime = (lastJta.time_from_start - beforeLastJta.time_from_start).toSec();
+                for(int i = 0; i < size; ++i) {
+                    double deltaPos = lastJta.positions[i] - beforeLastJta.positions[i];
+                    lastJta.velocities[i] = deltaPos / deltaTime;
+
+                }
+            }
 //            size_t  tjSize = msg->points.size();
 //
 //            if (tjToSend.points[0].time_from_start.toSec() <= 0.0) {
@@ -489,7 +502,7 @@ namespace joint_trajectory_controller
 //                ROS_WARN("Adding 0.5 sed to all points");
 //            }
 
-            *traj_ptr = initJointTrajectory<Trajectory>(*msg, next_update_time, options);
+            *traj_ptr = initJointTrajectory<Trajectory>(tjToSend, next_update_time, options);
             if (!traj_ptr->empty())
             {
                 curr_trajectory_box_.set(traj_ptr);
