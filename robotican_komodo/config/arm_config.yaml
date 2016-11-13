@@ -4,5 +4,5 @@ device: "/dev/ttyUSB0"
 serial_timeout_ms: 1000000000
 device_baudrate: 57600
 init_speed_protocol1: 1.0
-init_speed_protocol2: 0.5
+init_speed_protocol2: 0.3
 
