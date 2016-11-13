@@ -1,6 +1,6 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="lizi_robot" description="lizi Robot">
 
-  <xacro:macro name="sensor_senz3d" params="parent name *origin">
+  <xacro:macro name="sensor_senz3d" params="parent name *origin v_offset_x v_offset_y v_offset_z">
       <joint name="${name}_joint" type="fixed">
         <insert_block name="origin"/>
         <parent link="${parent}"/>
@@ -8,7 +8,7 @@
       </joint>
       <link name="${name}_link">
         <visual>
-          <origin xyz="-0.01 0.0 0.0" rpy="${-M_PI/2} -${M_PI} ${-M_PI/2}"/>
+          <origin xyz="${-0.01-v_offset_x} ${0.0-v_offset_y} ${0.0-v_offset_z}" rpy="${-M_PI/2} -${M_PI} ${-M_PI/2}"/>
           <geometry>
             <!-- As we don't have a Senz3D mesh, use a deformed Asus Xtion Pro instead -->
             <mesh filename="package://robotican_common/models/softkinetic_camera_ds325/softkinetic_camera_ds325.STL" />
@@ -16,7 +16,7 @@
           <material name="black"/>
         </visual>
         <collision>
-          <origin xyz="-0.01 0.0 0.0" rpy="0 0 0"/>
+          <origin xyz="${-0.01-v_offset_x} ${0.0-v_offset_y} ${0.0-v_offset_z}" rpy="0 0 0"/>
           <geometry>
           <box size="0.04 0.11 0.04"/>
         </geometry>
