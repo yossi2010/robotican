@@ -291,14 +291,14 @@ namespace dynamixel_controller {
 
 
 
-//            if(jointInfo.cmd_vel == 0.0) {
-//                if(info.protocolVer == PROTOCOL2_VERSION) {
-//                    jointInfo.cmd_vel = _initSpeedProtocol2;
-//                }
-//                else {
-//                    jointInfo.cmd_vel = _initSpeedProtocol1;
-//                }
-//            }
+            if(jointInfo.cmd_vel == 0.0) {
+                if(info.protocolVer == PROTOCOL2_VERSION) {
+                    jointInfo.cmd_vel = _initSpeedProtocol2;
+                }
+                else {
+                    jointInfo.cmd_vel = _initSpeedProtocol1;
+                }
+            }
             int32_t ticks = posToTicks(jointInfo.cmd_pos, info);
             int32_t speed = getDriverVelocity(info, jointInfo.cmd_vel);
 
