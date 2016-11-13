@@ -301,6 +301,9 @@ namespace dynamixel_controller {
 //            }
             int32_t ticks = posToTicks(jointInfo.cmd_pos, info);
             int32_t speed = getDriverVelocity(info, jointInfo.cmd_vel);
+            if(speed == 0) {
+                speed = 1;
+            }
 
             if(!_driver->setMotorSpeed(dxlMotorInfo, speed)) {
                 ROS_WARN("[%s]: Unable to set speed", ros::this_node::getName().c_str());
