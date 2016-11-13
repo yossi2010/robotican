@@ -302,7 +302,7 @@ namespace dynamixel_controller {
             int32_t ticks = posToTicks(jointInfo.cmd_pos, info);
             int32_t speed = getDriverVelocity(info, jointInfo.cmd_vel);
             if(speed == 0) {
-                speed = 1;
+                speed = 10;
             }
 
             if(!_driver->setMotorSpeed(dxlMotorInfo, speed)) {
