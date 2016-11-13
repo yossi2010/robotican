@@ -576,7 +576,7 @@
   </joint>
 -->
   		
-  <sensor_senz3d parent="wrist_link" name="softkinetic_camera" v_offset_x="0.075" v_offset_y="0.0" v_offset_z="0.0">
-    <origin xyz="-0.05905 0 0.1053" rpy="0.0 -${M_PI/2} 0.0"/>
+  <sensor_senz3d parent="wrist_link" name="softkinetic_camera" v_offset_x="0.055" v_offset_y="0.0" v_offset_z="0.0">
+    <origin xyz="-0.05905 0 0.0853" rpy="0.0 -${M_PI/2} 0.0"/>
   </sensor_senz3d>
 </robot>
