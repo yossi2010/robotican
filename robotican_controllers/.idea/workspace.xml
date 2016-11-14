@@ -2,53 +2,53 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" assignedExecutableTargets="true" buildAllGenerated="true">
     <generated>
-      <config projectName="robotican_controllers" targetName="tests" />
-      <config projectName="robotican_controllers" targetName="robotican_controllers" />
-      <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="robotican_controllers_node" />
-      <config projectName="robotican_controllers" targetName="dynamic_reconfigure_gencfg" />
-      <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="geometry_msgs_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="dynamic_reconfigure_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="doxygen" />
-      <config projectName="robotican_controllers" targetName="clean_test_results_robotican_controllers" />
-      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="gtest_main" />
-      <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="gtest" />
-      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="dynamic_reconfigure_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="clean_test_results" />
-      <config projectName="robotican_controllers" targetName="geometry_msgs_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="actionlib_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="run_tests" />
-      <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="actionlib_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="std_msgs_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="geometry_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="download_extra_data" />
-      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="_catkin_empty_exported_target" />
-      <config projectName="robotican_controllers" targetName="std_msgs_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="std_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="control_toolbox_gencfg" />
       <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="actionlib_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="robotican_controllers" />
+      <config projectName="robotican_controllers" targetName="geometry_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="dynamic_reconfigure_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="clean_test_results_robotican_controllers" />
+      <config projectName="robotican_controllers" targetName="actionlib_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="control_toolbox_gencfg" />
+      <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="dynamic_reconfigure_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="actionlib_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="dynamic_reconfigure_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="std_msgs_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="geometry_msgs_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="std_msgs_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="clean_test_results" />
+      <config projectName="robotican_controllers" targetName="geometry_msgs_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_py" />
       <config projectName="robotican_controllers" targetName="robotican_controllers_jta" />
+      <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="doxygen" />
+      <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="_catkin_empty_exported_target" />
+      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="gtest" />
+      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="run_tests" />
+      <config projectName="robotican_controllers" targetName="gtest_main" />
+      <config projectName="robotican_controllers" targetName="tests" />
+      <config projectName="robotican_controllers" targetName="robotican_controllers_node" />
+      <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="std_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="actionlib_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="download_extra_data" />
+      <config projectName="robotican_controllers" targetName="dynamic_reconfigure_gencfg" />
+      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_lisp" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="false" GENERATION_PASS_SYSTEM_ENVIRONMENT="true">
@@ -79,8 +79,8 @@
       <file leaf-file-name="joint_trajectory_controller_impl.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_trajectory_controller_impl.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1008">
-              <caret line="491" column="13" selection-start-line="491" selection-start-column="13" selection-end-line="491" selection-end-column="13" />
+            <state relative-caret-position="36">
+              <caret line="504" column="13" selection-start-line="504" selection-start-column="13" selection-end-line="504" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -89,7 +89,7 @@
       <file leaf-file-name="joint_with_effort_trajectory_controller_impl.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
+            <state relative-caret-position="2988">
               <caret line="166" column="36" selection-start-line="166" selection-start-column="36" selection-end-line="166" selection-end-column="36" />
               <folding />
             </state>
@@ -109,7 +109,7 @@
       <file leaf-file-name="two_finger_controller.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/robotican_controllers/two_finger_controller.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
+            <state relative-caret-position="576">
               <caret line="32" column="32" selection-start-line="32" selection-start-column="32" selection-end-line="32" selection-end-column="32" />
               <folding />
             </state>
@@ -816,11 +816,12 @@
       <workItem from="1474266952171" duration="29000" />
       <workItem from="1474267350204" duration="2265000" />
       <workItem from="1479026692515" duration="1404000" />
+      <workItem from="1479132915182" duration="13000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24453000" />
+    <option name="totallyTimeSpent" value="24466000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1985" y="-4" width="1855" height="1084" extended-state="6" />
@@ -1224,13 +1225,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="504">
           <caret line="332" column="47" selection-start-line="332" selection-start-column="47" selection-end-line="332" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_with_effort_trajectory_controller_impl.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
+        <state relative-caret-position="2988">
           <caret line="166" column="36" selection-start-line="166" selection-start-column="36" selection-end-line="166" selection-end-column="36" />
           <folding />
         </state>
@@ -1238,7 +1238,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/include/robotican_controllers/two_finger_controller.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
+        <state relative-caret-position="576">
           <caret line="32" column="32" selection-start-line="32" selection-start-column="32" selection-end-line="32" selection-end-column="32" />
           <folding />
         </state>
@@ -1246,8 +1246,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_trajectory_controller_impl.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1008">
-          <caret line="491" column="13" selection-start-line="491" selection-start-column="13" selection-end-line="491" selection-end-column="13" />
+        <state relative-caret-position="36">
+          <caret line="504" column="13" selection-start-line="504" selection-start-column="13" selection-end-line="504" selection-end-column="13" />
           <folding />
         </state>
       </provider>

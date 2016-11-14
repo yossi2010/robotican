@@ -58,10 +58,14 @@ namespace dynamixel_driver {
         uint8_t dxl_error;
 
         dxl_comm_result = _packetHandlerVer1->ping(_portHandler, id, &dxl_error);
+#ifdef DEBUG_VER
         if(dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
         else if(dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
         else return true;
-
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
         return false;
     }
 
@@ -70,9 +74,14 @@ namespace dynamixel_driver {
         uint8_t dxl_error;
 
         dxl_comm_result = _packetHandlerVer2->ping(_portHandler, id, &dxl_error);
+#ifdef DEBUG_VER
         if(dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
         else if(dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
     }
@@ -91,9 +100,14 @@ namespace dynamixel_driver {
         uint8_t dxl_error;
 
         dxl_comm_result = _packetHandlerVer1->write1ByteTxRx(_portHandler, id, ADDR_MX_TORQUE_ENABLE, torque, &dxl_error);
+#ifdef DEBUG_VER
         if(dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
         else if(dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
     }
@@ -103,10 +117,14 @@ namespace dynamixel_driver {
         uint8_t dxl_error;
 
         dxl_comm_result = _packetHandlerVer2->write1ByteTxRx(_portHandler, id, ADDR_PRO_TORQUE_ENABLE, torque, &dxl_error);
+#ifdef DEBUG_VER
         if(dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
         else if(dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
         else return true;
-
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
         return false;
     }
 
@@ -125,10 +143,14 @@ namespace dynamixel_driver {
         uint8_t dxl_error;
 
         dxl_comm_result = _packetHandlerVer1->write2ByteTxRx(_portHandler, id, ADDR_MX_GOAL_POSITION, (uint16_t) ticks, &dxl_error);
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
         else return true;
-
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
         return false;
     }
 
@@ -137,10 +159,14 @@ namespace dynamixel_driver {
         uint8_t dxl_error;
 
         dxl_comm_result = _packetHandlerVer2->write4ByteTxRx(_portHandler, id, ADDR_PRO_GOAL_POSITION, (uint32_t) ticks, &dxl_error);
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
         else return true;
-
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
         return false;
     }
 
@@ -156,11 +182,15 @@ namespace dynamixel_driver {
     bool DynamixelDriver::setMotorSpeedProtocol1(uint8_t id, int32_t speed) {
         int dxl_comm_result = COMM_TX_FAIL;
         uint8_t dxl_error;
-
         dxl_comm_result = _packetHandlerVer1->write2ByteTxRx(_portHandler, id, ADDR_MX_GOAL_SPEED, (uint16_t) speed, &dxl_error);
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
     }
@@ -168,11 +198,15 @@ namespace dynamixel_driver {
     bool DynamixelDriver::setMotorSpeedProtocol2(uint8_t id, int32_t speed) {
         int dxl_comm_result = COMM_TX_FAIL;
         uint8_t dxl_error;
-
         dxl_comm_result = _packetHandlerVer2->write4ByteTxRx(_portHandler, id, ADDR_PRO_GOAL_SPEED, (uint32_t) speed, &dxl_error);
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
     }
@@ -189,11 +223,15 @@ namespace dynamixel_driver {
     bool DynamixelDriver::setMotorAccelerationProtocol1(uint8_t id, int32_t acceleration) {
         int dxl_comm_result = COMM_TX_FAIL;
         uint8_t dxl_error;
-
         dxl_comm_result = _packetHandlerVer1->write1ByteTxRx(_portHandler, id, ADDR_MX_GOAL_ACCELERATION, (uint8_t) acceleration, &dxl_error);
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
     }
@@ -203,9 +241,14 @@ namespace dynamixel_driver {
         uint8_t dxl_error;
 
         dxl_comm_result = _packetHandlerVer2->write4ByteTxRx(_portHandler, id, ADDR_PRO_GOAL_ACCELERATION, (uint32_t) acceleration, &dxl_error);
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
     }
@@ -225,9 +268,15 @@ namespace dynamixel_driver {
         int16_t read;
         dxl_comm_result = _packetHandlerVer1->read2ByteTxRx(_portHandler, id, ADDR_MX_PRESENT_POSITION, (uint16_t *) &read, &dxl_error);
         position = read;
+
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
     }
@@ -238,9 +287,14 @@ namespace dynamixel_driver {
         int32_t read;
         dxl_comm_result = _packetHandlerVer2->read4ByteTxRx(_portHandler, id, ADDR_PRO_PRESENT_POSITION, (uint32_t *) &read, &dxl_error);
         position = read;
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
     }
@@ -260,9 +314,14 @@ namespace dynamixel_driver {
         int16_t read;
         dxl_comm_result = _packetHandlerVer1->read2ByteTxRx(_portHandler, id, ADDR_MX_PRESENT_SPEED, (uint16_t *) &read, &dxl_error);
         speed = read;
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
     }
@@ -275,9 +334,15 @@ namespace dynamixel_driver {
         int32_t read;
         dxl_comm_result = _packetHandlerVer2->read4ByteTxRx(_portHandler, id, ADDR_PRO_PRESENT_SPEED, (uint32_t *) &read, &dxl_error);
         speed = read;
+
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
 #else
@@ -302,9 +367,14 @@ namespace dynamixel_driver {
         int16_t read;
         dxl_comm_result = _packetHandlerVer1->read2ByteTxRx(_portHandler, id, ADDR_MX_PRESENT_LOAD, (uint16_t *) &read, &dxl_error);
         load = read;
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
     }
@@ -316,9 +386,14 @@ namespace dynamixel_driver {
         int16_t read;
         dxl_comm_result = _packetHandlerVer2->read2ByteTxRx(_portHandler, id, ADDR_PRO_PRESENT_CURRENT, (uint16_t *) &read, &dxl_error);
         load = read;
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
 #else
@@ -341,9 +416,14 @@ namespace dynamixel_driver {
         uint8_t dxl_error;
 
         dxl_comm_result = _packetHandlerVer1->read2ByteTxRx(_portHandler, id, ADDR_MX_MODEL_NUM, &model, &dxl_error);
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer1->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer1->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
     }
@@ -353,9 +433,14 @@ namespace dynamixel_driver {
         uint8_t dxl_error;
 
         dxl_comm_result = _packetHandlerVer2->read2ByteTxRx(_portHandler, id, ADDR_PRO_MODEL_NUM, &model, &dxl_error);
+#ifdef DEBUG_VER
         if (dxl_comm_result != COMM_SUCCESS) _packetHandlerVer2->printTxRxResult(dxl_comm_result);
         else if (dxl_error != 0) _packetHandlerVer2->printRxPacketError(dxl_error);
         else return true;
+#else
+        if(dxl_comm_result == COMM_SUCCESS && dxl_error == 0)
+            return true;
+#endif
 
         return false;
     }
