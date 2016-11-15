@@ -1,0 +1,3 @@
+
+SUBSYSTEMS=="usb", ATTRS{manufacturer}=="Microsoft", ATTRS{idVendor}=="045e",SYMLINK+="LifeCam_HD_3000", MODE="0666"
+
