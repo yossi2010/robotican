@@ -370,7 +370,7 @@
       xyz="0 0 0" />
   </joint>
 
-  <sensor_senz3d parent="base_link" name="softkinetic_camera">
+  <sensor_senz3d parent="base_link" name="softkinetic_camera" v_offset_x="0.0" v_offset_y="0.0" v_offset_z="0.0">
     <origin xyz="0.16122 0.0 0.13223" rpy="0.0 0.0 0.0"/>
   </sensor_senz3d>
 
