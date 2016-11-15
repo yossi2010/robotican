@@ -5,6 +5,7 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 echo -e "\e[34mSetting usb rules..\e[0m"
 cp $DIR/ric_usb.rules /etc/udev/rules.d
 cp $DIR/hokuyo.rules /etc/udev/rules.d
+cp $DIR/Microsoft_LifeCam_VX-800.rules /etc/udev/rules.d
 sudo adduser $(logname) dialout
 adduser 
 echo -e "\e[34mRestarting rules..\e[0m"
