@@ -12,24 +12,10 @@
   <xacro:arg name="imu" default="false"/>
   <xacro:arg name="gps" default="false"/>
   <xacro:arg name="lidar" default="false"/>
-  <xacro:arg name="sr300" default="false"/>
-    <xacro:arg name="softkinetic" default="false"/>
   <xacro:arg name="depth_camera" default="false"/>
 
-  <xacro:include filename="$(find robotican_manipulator_h)/models/manipulator_h_gazebo_plugins.xacro" />
-
-
-  <!-- SR300 -->
-  <xacro:if value="$(arg sr300)">
-    <xacro:include filename="$(find robotican_common)/gazebo/sr300.xacro" />
-  </xacro:if>
   
-    <!-- softkinetic -->
-  <xacro:if value="$(arg softkinetic)">
-     <xacro:softkinetic_gazebo name="softkinetic_camera_rgb" ros_topic="softkinetic_camera"/> 
-  </xacro:if>
-
-  <!-- TODO: Asus -->
+  <!-- Asus -->
 
   <xacro:if value="$(arg depth_camera)">
     <xacro:include filename="$(find robotican_common)/gazebo/asus_xtion_pro_live.xacro" />
@@ -70,8 +56,7 @@
     <!-- cameras  -->
     <xacro:include filename="$(find robotican_common)/gazebo/camera.xacro" />
     <xacro:if value="$(arg front_camera)">
-      <xacro:Camera name="front_camera" link="front_cam_link" image_width="640" image_height="480"
-        image_format="R8G8B8" clip_near="0.02" clip_far="300" />
+      <xacro:Camera name="front_camera" link="front_cam_link" image_width="640" image_height="480"  image_format="R8G8B8" clip_near="0.02" clip_far="300" />
       </xacro:if>
 
 
@@ -177,6 +162,10 @@
         <material>Gazebo/Black</material>
       </gazebo>
 
+      <gazebo reference="arm_base_link">
+        <gravity>false</gravity>
+      </gazebo>
+
       <gazebo reference="base_link">
         <material>Gazebo/Grey</material>
       </gazebo>
@@ -195,7 +184,5 @@
       <gazebo reference="rear_urf_link">
         <material>Gazebo/Black</material>
       </gazebo>
-      <gazebo reference="sr300_link">
-        <material>Gazebo/Black</material>
-      </gazebo>
+
 </robot>
