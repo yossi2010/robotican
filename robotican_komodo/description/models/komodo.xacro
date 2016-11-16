@@ -9,74 +9,10 @@
 	<!--    ARM     -->
 	<!-- <xacro:include filename="$(find robotican_manipulator_h)/models/manipulator_h.xacro" /> -->
 	<!--      END          -->
-  
+
   <!--    TORSO     -->
   <xacro:include filename="$(find robotican_komodo)/description/models/komodo_torso.xacro" />
   <!--     END      -->
-	
-<!--  <link
-    name="arm_link">
-    <inertial>  <gazebo reference="base_arm_link">
-    <material>Gazebo/Grey</material>
-  </gazebo>
-      <origin
-        xyz="-0.022197 -1.9122E-07 0.044251"
-        rpy="0 0 0" />
-      <mass
-        value="0.16757" />
-      <inertia
-        ixx="0.00062908"
-        ixy="-8.3342E-10"
-        ixz="-0.00014877"
-        iyy="0.0010719"
-        iyz="1.6859E-09"
-        izz="0.0013427" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/arm_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_komodo/description/meshes/arm_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="arm_joint"
-    type="fixed">
-    <origin
-      xyz="-0.11925 0 0.16716"
-      rpy="0 0 ${M_PI}" />
-    <parent
-      link="base_link" />
-    <child
-      link="arm_link" />
-    <axis
-      xyz="0 0 0" />
-  </joint> -->
-  
-	
-<!-- 	<joint name="base_arm_joint" type="fixed">
-		<origin xyz="-0.091 0 0.093" rpy="0 0 ${M_PI}" />
-		<parent link="arm_link" />
-		<child link="base_arm_link" />
-		<axis xyz="0 0 0" />
-	</joint> -->
 	
 
 	
