@@ -1,0 +1,8 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: robotican_arm
+    relative_path: models/arm.xacro
+  SRDF:
+    relative_path: config/robotican_arm.srdf
+  CONFIG:
+    generated_timestamp: 1479373456
