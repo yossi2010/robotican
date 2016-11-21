@@ -73,8 +73,8 @@ motor0_kp: 70.0
 motor0_ki: 160.0
 motor0_kd: 0.0
 motor0_kff: 40.0
-motor0_max_set_point_speed: 14.0
-motor0_min_set_point_speed: -14.0
+motor0_max_set_point_speed: 18.0
+motor0_min_set_point_speed: -18.0
 motor0_max_set_point_position: 0.0
 motor0_min_set_point_position: 0.0
 motor0_limit: 0.2
@@ -106,8 +106,8 @@ motor1_kp: 70.0
 motor1_ki: 160.0
 motor1_kd: 0.0
 motor1_kff: 40.0
-motor1_max_set_point_speed: 14.0
-motor1_min_set_point_speed: -14.0
+motor1_max_set_point_speed: 18.0
+motor1_min_set_point_speed: -18.0
 motor1_max_set_point_position: 0.0
 motor1_min_set_point_position: 0.0
 motor1_limit: 0.2
@@ -138,8 +138,8 @@ motor2_kp: 70.0
 motor2_ki: 160.0
 motor2_kd: 0.0
 motor2_kff: 40.0
-motor2_max_set_point_speed: 14.0
-motor2_min_set_point_speed: -14.0
+motor2_max_set_point_speed: 18.0
+motor2_min_set_point_speed: -18.0
 motor2_max_set_point_position: 0.0
 motor2_min_set_point_position: 0.0
 motor2_limit: 0.2
@@ -169,8 +169,8 @@ motor3_kp: 70.0
 motor3_ki: 160.0
 motor3_kd: 0.0
 motor3_kff: 40.0
-motor3_max_set_point_speed: 14.0
-motor3_min_set_point_speed: -14.0
+motor3_max_set_point_speed: 18.0
+motor3_min_set_point_speed: -18.0
 motor3_max_set_point_position: 0.0
 motor3_min_set_point_position: 0.0
 motor3_limit: 0.2
