@@ -160,7 +160,7 @@ void buildGoal(control_msgs::FollowJointTrajectoryGoal &goal) {
     goal.trajectory.joint_names.push_back("shoulder3_joint");
     goal.trajectory.joint_names.push_back("wrist_joint");
 
-    final.time_from_start = ros::Duration(2.0);
+    final.time_from_start = ros::Duration(10.0);
     final.positions.resize(goal.trajectory.joint_names.size());
     final.positions[1] = 1.57;
     goal.trajectory.points.push_back(final);
