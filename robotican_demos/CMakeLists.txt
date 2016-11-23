@@ -5,29 +5,29 @@ project(robotican_demos)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-robotican_common  
-roscpp
-  rospy
-  std_msgs
-  move_base_msgs
-  actionlib
-  moveit_core
-  moveit_ros_planning
-  moveit_ros_planning_interface
-  
-cv_bridge
- pcl_conversions
-   pcl_ros
-tf
-moveit_core
-moveit_ros_planning
-moveit_ros_planning_interface
+        robotican_common
+        roscpp
+        rospy
+        std_msgs
+        move_base_msgs
+        actionlib
+        moveit_core
+        moveit_ros_planning
+        moveit_ros_planning_interface
 
-pr2_controllers_msgs
-)
+        cv_bridge
+        pcl_conversions
+        pcl_ros
+        tf
+        moveit_core
+        moveit_ros_planning
+        moveit_ros_planning_interface
+
+        pr2_controllers_msgs
+        )
 
 ## System dependencies are found with CMake's conventions
- find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system)
 find_package(cmake_modules REQUIRED)
 
 
@@ -117,10 +117,10 @@ find_package(cmake_modules REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES robotican_demos
-  CATKIN_DEPENDS roscpp rospy robotican_common std_msgs moveit_core moveit_ros_planning moveit_ros_planning_interface
-#  DEPENDS system_lib
+        #  INCLUDE_DIRS include
+        #  LIBRARIES robotican_demos
+        CATKIN_DEPENDS roscpp rospy robotican_common std_msgs moveit_core moveit_ros_planning moveit_ros_planning_interface
+        #  DEPENDS system_lib
 )
 
 ###########
@@ -134,7 +134,7 @@ catkin_package(
 #add_definitions(-DDEBUG_REACH_EVENT)
 
 include_directories(
-  ${catkin_INCLUDE_DIRS}
+        ${catkin_INCLUDE_DIRS}
 )
 add_executable(simple_navigation_goals src/simple_navigation_goals.cpp)
 target_link_libraries(simple_navigation_goals ${catkin_LIBRARIES})
@@ -160,6 +160,9 @@ target_link_libraries(point_head ${catkin_LIBRARIES})
 
 add_executable(arm_jta_client src/arm_jta_client.cpp)
 target_link_libraries(arm_jta_client ${catkin_LIBRARIES})
+
+add_executable(arm_trajectory_demo src/arm_trajectory_demo.cpp)
+target_link_libraries(arm_trajectory_demo ${catkin_LIBRARIES})
 
 
 
