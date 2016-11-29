@@ -8,6 +8,7 @@
 #include <ros/ros.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float64.h>
+#include <sensor_msgs/JointState.h>
 #include <dynamixel_msgs/JointState.h>
 #include <robotican_hardware_interface/robot_base.h>
 #include <hardware_interface/joint_command_interface.h>
@@ -20,6 +21,12 @@ namespace robotican_hardware {
         hardware_interface::PositionJointInterface _positionJointInterface;
         hardware_interface::PosVelJointInterface _posVelJointInterface;
         dynamixel_controller::DynamixelController* _dynamixelController;
+        std::map<std::string, dynamixel_controller::JointInfo_t> _jointInfo;
+
+        ros::Subscriber _armStateListener;
+        ros::Publisher _armCmd;
+
+        void armStateCallback(const sensor_msgs::JointStateConstPtr &msg);
 
     public:
         KomodoRobot();
