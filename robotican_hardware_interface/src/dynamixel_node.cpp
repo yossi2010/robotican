@@ -7,9 +7,9 @@
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "dynamixel_node");
+    ros::NodeHandle handle;
     ros::Rate loopRate(50);
     ros::AsyncSpinner spinner(2);
-    ros::NodeHandle handle;
     dynamixel_controller::DynamixelController controller;
 
     spinner.start();
