@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
     dynamixel_controller::DynamixelController controller;
 
     spinner.start();
+    ROS_INFO("ARM active");
     while (ros::ok()) {
         controller.read();
         controller.publishState();
