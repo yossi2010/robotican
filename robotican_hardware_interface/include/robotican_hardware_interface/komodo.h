@@ -26,6 +26,8 @@ namespace robotican_hardware {
         ros::Subscriber _armStateListener;
         ros::Publisher _armCmd;
 
+        bool _first;
+
         void armStateCallback(const sensor_msgs::JointStateConstPtr &msg);
 
     public:

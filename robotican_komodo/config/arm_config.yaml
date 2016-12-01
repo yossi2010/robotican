@@ -6,3 +6,6 @@ device_baudrate: 57600
 init_speed_protocol1: 1.0
 init_speed_protocol2: 0.3
 
+arm_joint: [rotation1_joint, shoulder1_joint, shoulder2_joint, rotation2_joint,  shoulder3_joint, wrist_joint]
+gripper_joints: [left_finger_joint, right_finger_joint]
+

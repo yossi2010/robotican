@@ -9,7 +9,7 @@ namespace robotican_hardware {
     KomodoRobot::KomodoRobot() {
 
         _dynamixelController = NULL;
-
+        _first = false;
 
         bool haveArm = true;
         ros::param::param<bool>("have_arm", haveArm, true);
@@ -66,16 +66,19 @@ namespace robotican_hardware {
 
     void KomodoRobot::write() {
         RobotBase::write();
-        sensor_msgs::JointState jointCmd;
-        for(std::map<std::string, dynamixel_controller::JointInfo_t>::iterator it = _jointInfo.begin(); it != _jointInfo.end(); ++it) {
-            std::string jointName = it->first;
-            dynamixel_controller::JointInfo_t info = it->second;
+        if(_first) {
+            sensor_msgs::JointState jointCmd;
+            for (std::map<std::string, dynamixel_controller::JointInfo_t>::iterator it = _jointInfo.begin();
+                 it != _jointInfo.end(); ++it) {
+                std::string jointName = it->first;
+                dynamixel_controller::JointInfo_t info = it->second;
 
-            jointCmd.name.push_back(jointName);
-            jointCmd.position.push_back(info.cmd_pos);
-            jointCmd.velocity.push_back(info.cmd_vel);
+                jointCmd.name.push_back(jointName);
+                jointCmd.position.push_back(info.cmd_pos);
+                jointCmd.velocity.push_back(info.cmd_vel);
+            }
+            _armCmd.publish(jointCmd);
         }
-        _armCmd.publish(jointCmd);
 //        if(_dynamixelController != NULL)
 //            _dynamixelController->write();
 
@@ -90,7 +93,13 @@ namespace robotican_hardware {
             jointInfo.position = msg->position[i];
             jointInfo.effort = msg->effort[i];
             jointInfo.velocity = msg->velocity[i];
+            if(!_first) {
+                jointInfo.cmd_vel = msg->velocity[i];
+                jointInfo.cmd_pos = msg->position[i];
+            }
         }
+
+        _first = true;
     }
 
 
