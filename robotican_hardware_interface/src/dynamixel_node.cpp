@@ -9,14 +9,14 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "dynamixel_node");
     ros::Rate loopRate(50);
     ros::AsyncSpinner spinner(2);
-    dynamixel_controller::DynamixelController controller;
+//    dynamixel_controller::DynamixelController controller;
 
     spinner.start();
     ROS_INFO("ARM active");
     while (ros::ok()) {
-        controller.read();
-        controller.publishState();
-        controller.write();
+//        controller.read();
+//        controller.publishState();
+//        controller.write();
         loopRate.sleep();
     }
 
