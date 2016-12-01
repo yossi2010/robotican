@@ -268,6 +268,8 @@ namespace dynamixel_driver {
     }
 
     bool DynamixelDriver::getMotorSpeedProtocol2(uint8_t id, int32_t &speed) {
+
+#ifdef FULL_ARM_PARAMS
         int dxl_comm_result = COMM_TX_FAIL;
         uint8_t dxl_error;
         int32_t read;
@@ -278,12 +280,17 @@ namespace dynamixel_driver {
         else return true;
 
         return false;
+#else
+        speed = 0;
+        return true;
+#endif
     }
 
     bool DynamixelDriver::getMotorSpeed(DxlMotorInfo_t motorInfo, int32_t &speed) {
         bool gotCurrentSpeed = false;
 
         if(motorInfo.protocol == PROTOCOL1_VERSION) gotCurrentSpeed = getMotorSpeedProtocol1(motorInfo.id, speed);
+
         else if(motorInfo.protocol == PROTOCOL2_VERSION) gotCurrentSpeed = getMotorSpeedProtocol2(motorInfo.id, speed);
 
         return gotCurrentSpeed;
@@ -303,6 +310,7 @@ namespace dynamixel_driver {
     }
 
     bool DynamixelDriver::getMotorLoadProtocol2(uint8_t id, int16_t &load) {
+#ifdef FULL_ARM_PARAMS
         int dxl_comm_result = COMM_TX_FAIL;
         uint8_t dxl_error;
         int16_t read;
@@ -313,6 +321,10 @@ namespace dynamixel_driver {
         else return true;
 
         return false;
+#else
+        load = 0;
+        return true;
+#endif
     }
 
     bool DynamixelDriver::getMotorLoad(DxlMotorInfo_t motorInfo, int16_t &load) {

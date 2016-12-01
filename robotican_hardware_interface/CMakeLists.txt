@@ -220,6 +220,7 @@ add_library(robotican_hardware_interface_sim
 ## Uncomment if you want to test the ricboard itself
 #add_definitions(-DRIC_BOARD_TEST)
 #add_definitions(-DDEBUG_VER)
+#add_definitions(-DFULL_ARM_PARAMS)
 
 add_executable(robotican_hardware_interface_node src/robotican_hardware_interface_node.cpp)
 add_executable(dynamixel_test_node src/dynamixel_test.cpp)
