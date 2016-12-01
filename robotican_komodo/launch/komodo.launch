@@ -146,7 +146,7 @@
 		</group>
 			
 <group if="$(arg arm)">
-	<node name="arm_manager" pkg="robotican_hardware_interface" type="dynamixel_node" respawn="false" output="screen" >
+	<node name="arm_manager" pkg="robotican_hardware_interface" type="dynamixel_node" respawn="false" output="screen" />
 </group>
 		<rosparam file="$(find robotican_komodo)/config/hardware_interface_config.yaml" command="load"/>
 		
