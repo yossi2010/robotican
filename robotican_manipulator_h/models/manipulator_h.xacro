@@ -3,7 +3,6 @@
 <robot
   name="robotican_manipulator_h" description="Manipulator H Arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:property name="M_PI" value="3.1415926535897931" />
-  <xacro:include filename="$(find robotican_common)/models/softkinetic_camera_ds325/model.xacro" />
 
   <link
     name="base_arm_link">
@@ -520,7 +519,6 @@
       velocity="2.0" /> <!--7.016223585-->
       <dynamics friction ="1000" damping="100"/>
   </joint>
-<!--
   <link
     name="sr300_link">
     <inertial>
@@ -574,9 +572,5 @@
     <axis
       xyz="0 0 0" />
   </joint>
--->
   		
-  <sensor_senz3d parent="wrist_link" name="softkinetic_camera" v_offset_x="0.045" v_offset_y="0.0" v_offset_z="0.0">
-    <origin xyz="-0.05905 0 0.0753" rpy="0.0 -${M_PI/2} 0.0"/>
-  </sensor_senz3d>
 </robot>

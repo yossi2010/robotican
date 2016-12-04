@@ -12,7 +12,7 @@
 #include <robotican_hardware_interface/robot_base.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/posvel_command_interface.h>
-#include <robotican_hardware_interface/dynamixel_pro_controller.h>
+#include <robotican_hardware_interface/dynamixel_controller.h>
 
 namespace robotican_hardware {
     class ArmadilloRobot : public RobotBase {
@@ -21,27 +21,24 @@ namespace robotican_hardware {
         hardware_interface::PosVelJointInterface _posVelJointInterface;
 
     private:
-        bool _first[2];
-        dynamixel_pro_controller::DynamixelProController* _dynamixelProController;
+        bool _first;
+        std::map<std::string, dynamixel_controller::JointInfo_t> _jointInfo;
         std::pair<std::string, JointInfo_t> _panInfo;
         std::pair<std::string, JointInfo_t> _tiltInfo;
-        std::pair<std::string, JointInfo_t> _leftFingerInfo;
-        std::pair<std::string, JointInfo_t> _rightFingerInfo;
+
+        ros::Subscriber _armStateListener;
+        ros::Publisher _armCmd;
 
         ros::Publisher _panCmd;
         ros::Publisher _tiltCmd;
-        ros::Publisher _leftFingerCmd;
-        ros::Publisher _rightFingerCmd;
 
         ros::Subscriber _panState;
         ros::Subscriber _tiltState;
-        ros::Subscriber _leftFingerState;
-        ros::Subscriber _rightFingerState;
 
         void panCallback(const dynamixel_msgs::JointState::ConstPtr &msg);
         void tiltCallback(const dynamixel_msgs::JointState::ConstPtr &msg);
-        void leftFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg);
-        void rightFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg);
+        void armStateCallback(const sensor_msgs::JointStateConstPtr &msg);
+
 
 
     public:

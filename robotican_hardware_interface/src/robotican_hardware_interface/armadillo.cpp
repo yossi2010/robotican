@@ -10,19 +10,10 @@ namespace robotican_hardware {
     ArmadilloRobot::ArmadilloRobot() : RobotBase(),
                                        _positionJointInterface(),_posVelJointInterface() {
 
-
-        std::string  leftFingerPubTopic, leftFingerSubTopic,
-                leftFingerJointName,
-                rightFingerPubTopic, rightFingerSubTopic, rightFingerJointName, panPubTopic, panSubTopic, panJoint,tiltPubTopic, tiltSubTopic, tiltJoint;
-        _dynamixelProController = NULL;
+        _first = false;
+        std::string panPubTopic, panSubTopic, panJoint,tiltPubTopic, tiltSubTopic, tiltJoint;
         _boardManager.buildDevices(&_jointStateInterface, &_positionJointInterface);
-        if(!_nodeHandle.getParam("left_finger_topic_pub", leftFingerPubTopic) ||
-           !_nodeHandle.getParam("left_finger_topic_sub", leftFingerSubTopic) ||
-           !_nodeHandle.getParam("left_finger_joint", leftFingerJointName) ||
-           !_nodeHandle.getParam("right_finger_topic_pub", rightFingerPubTopic) ||
-           !_nodeHandle.getParam("right_finger_topic_sub", rightFingerSubTopic) ||
-           !_nodeHandle.getParam("right_finger_joint", rightFingerJointName) ||
-           !_nodeHandle.getParam("pan_topic_pub", panPubTopic) ||
+        if(!_nodeHandle.getParam("pan_topic_pub", panPubTopic) ||
            !_nodeHandle.getParam("pan_topic_sub", panSubTopic) ||
            !_nodeHandle.getParam("pan_joint", panJoint) ||
            !_nodeHandle.getParam("tilt_topic_pub", tiltPubTopic) ||
@@ -34,22 +25,36 @@ namespace robotican_hardware {
             bool haveArm = true;
             ros::param::param<bool>("have_arm", haveArm, true);
             if(haveArm) {
-                _dynamixelProController = new dynamixel_pro_controller::DynamixelProController(&_jointStateInterface, &_posVelJointInterface);
-                _dynamixelProController->startBroadcastingJointStates();
+                std::vector<std::string> armJoints, gripperJoints;
+                ros::param::param("arm_joints", armJoints, std::vector<std::string>());
+                ros::param::param("gripper_joints", gripperJoints, std::vector<std::string>());
+
+                for(std::vector<std::string>::iterator jointName = armJoints.begin(); jointName != armJoints.end(); ++jointName) {
+                    _jointInfo.insert(std::pair<std::string, dynamixel_controller::JointInfo_t>((*jointName), dynamixel_controller::JointInfo_t()));
+                    dynamixel_controller::JointInfo_t &info = _jointInfo[(*jointName)];
+                    hardware_interface::JointStateHandle jointStateHandle((*jointName), &info.position, &info.velocity ,&info.effort);
+                    _jointStateInterface.registerHandle(jointStateHandle);
+                    hardware_interface::PosVelJointHandle posVelJointHandle(_jointStateInterface.getHandle((*jointName)),  &info.cmd_pos, &info.cmd_vel);
+                    _posVelJointInterface.registerHandle(posVelJointHandle);
+
+                }
+
+                for(std::vector<std::string>::iterator jointName = gripperJoints.begin(); jointName != gripperJoints.end(); ++jointName) {
+                    _jointInfo.insert(std::pair<std::string, dynamixel_controller::JointInfo_t>((*jointName), dynamixel_controller::JointInfo_t()));
+                    dynamixel_controller::JointInfo_t &info = _jointInfo[(*jointName)];
+                    hardware_interface::JointStateHandle jointStateHandle((*jointName), &info.position, &info.velocity ,&info.effort);
+                    _jointStateInterface.registerHandle(jointStateHandle);
+                    hardware_interface::JointHandle jointHandle(_jointStateInterface.getHandle((*jointName)),  &info.cmd_pos);
+                    _positionJointInterface.registerHandle(jointHandle);
+
+                }
+                _armStateListener = _nodeHandle.subscribe("dxl_joint_states", 10, &ArmadilloRobot::armStateCallback, this);
+                _armCmd = _nodeHandle.advertise<sensor_msgs::JointState>("joint_command", 10);
             }
-            _first[0] = _first[1] = false;
-            _leftFingerCmd = _nodeHandle.advertise<std_msgs::Float64>(leftFingerPubTopic, 10);
-            _rightFingerCmd = _nodeHandle.advertise<std_msgs::Float64>(rightFingerPubTopic, 10);
 
             _panCmd = _nodeHandle.advertise<std_msgs::Float64>(panPubTopic, 10);
             _tiltCmd = _nodeHandle.advertise<std_msgs::Float64>(tiltPubTopic, 10);
 
-            _leftFingerState = _nodeHandle.subscribe<dynamixel_msgs::JointState>(leftFingerSubTopic, 10,
-                                                                                 &ArmadilloRobot::leftFingerCallback,
-                                                                                 this);
-            _rightFingerState = _nodeHandle.subscribe<dynamixel_msgs::JointState>(rightFingerSubTopic, 10,
-                                                                                  &ArmadilloRobot::rightFingerCallback,
-                                                                                  this);
 
             _panState = _nodeHandle.subscribe<dynamixel_msgs::JointState>(panSubTopic, 10, &ArmadilloRobot::panCallback,
                                                                           this);
@@ -57,21 +62,10 @@ namespace robotican_hardware {
                                                                            &ArmadilloRobot::tiltCallback, this);
 
 
-            _leftFingerInfo = std::pair<std::string, JointInfo_t>(leftFingerJointName, JointInfo_t());
-            _rightFingerInfo = std::pair<std::string, JointInfo_t>(rightFingerJointName, JointInfo_t());
 
             _panInfo = std::pair<std::string, JointInfo_t>(panJoint, JointInfo_t());
             _tiltInfo = std::pair<std::string, JointInfo_t>(tiltJoint, JointInfo_t());
 
-            hardware_interface::JointStateHandle leftJointStateHandle(_leftFingerInfo.first,
-                                                                      &_leftFingerInfo.second.position,
-                                                                      &_leftFingerInfo.second.velocity,
-                                                                      &_leftFingerInfo.second.effort);
-
-            hardware_interface::JointStateHandle rightJointStateHandle(_rightFingerInfo.first,
-                                                                       &_rightFingerInfo.second.position,
-                                                                       &_rightFingerInfo.second.velocity,
-                                                                       &_rightFingerInfo.second.effort);
 
             hardware_interface::JointStateHandle panJointStateHandle(_panInfo.first,
                                                                      &_panInfo.second.position,
@@ -83,24 +77,16 @@ namespace robotican_hardware {
                                                                       &_tiltInfo.second.velocity,
                                                                       &_tiltInfo.second.effort);
 
-            _jointStateInterface.registerHandle(leftJointStateHandle);
-            _jointStateInterface.registerHandle(rightJointStateHandle);
 
             _jointStateInterface.registerHandle(panJointStateHandle);
             _jointStateInterface.registerHandle(tiltJointStateHandle);
 
-            hardware_interface::JointHandle leftJointHandle(_jointStateInterface.getHandle(_leftFingerInfo.first),
-                                                            &_leftFingerInfo.second.cmd);
-            hardware_interface::JointHandle rightJointHandle(_jointStateInterface.getHandle(_rightFingerInfo.first),
-                                                             &_rightFingerInfo.second.cmd);
+
 
             hardware_interface::JointHandle panJointHandle(_jointStateInterface.getHandle(_panInfo.first),
                                                            &_panInfo.second.cmd);
             hardware_interface::JointHandle tiltJointHandle(_jointStateInterface.getHandle(_tiltInfo.first),
                                                             &_tiltInfo.second.cmd);
-
-            _positionJointInterface.registerHandle(leftJointHandle);
-            _positionJointInterface.registerHandle(rightJointHandle);
 
             _positionJointInterface.registerHandle(panJointHandle);
             _positionJointInterface.registerHandle(tiltJointHandle);
@@ -123,30 +109,9 @@ namespace robotican_hardware {
 
     }
 
-    void ArmadilloRobot::leftFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg) {
 
-        _leftFingerInfo.second.position = msg->current_pos;
-        _leftFingerInfo.second.velocity = msg->velocity;
-        _leftFingerInfo.second.effort = msg->load;
-        if (!_first[0]) {
 
-            _leftFingerInfo.second.cmd = _leftFingerInfo.second.position;
-            _first[0]=true;
-        }
 
-    }
-
-    void ArmadilloRobot::rightFingerCallback(const dynamixel_msgs::JointState::ConstPtr &msg) {
-        _rightFingerInfo.second.position = msg->current_pos;
-        _rightFingerInfo.second.velocity = msg->velocity;
-        _rightFingerInfo.second.effort = msg->load;
-        if (!_first[1]) {
-
-            _rightFingerInfo.second.cmd = _rightFingerInfo.second.position;
-            _first[1]=true;
-        }
-
-    }
 
     void ArmadilloRobot::registerInterfaces() {
         RobotBase::registerInterfaces();
@@ -156,39 +121,56 @@ namespace robotican_hardware {
 
     void ArmadilloRobot::read() {
         RobotBase::read();
-        if(_dynamixelProController != NULL)
-            _dynamixelProController->read();
+
     }
 
     void ArmadilloRobot::write() {
         RobotBase::write();
-        if(_dynamixelProController != NULL)
-            _dynamixelProController->write();
-        std_msgs::Float64 leftMsg, rightMsg, panMsg, tiltMsg;
+
+        std_msgs::Float64  panMsg, tiltMsg;
 
         panMsg.data = _panInfo.second.cmd;
         tiltMsg.data = _tiltInfo.second.cmd;
         _panCmd.publish(panMsg);
         _tiltCmd.publish(tiltMsg);
 
-        if (_first[0] && _first[1]) {
-            leftMsg.data = _leftFingerInfo.second.cmd;
-            rightMsg.data = _rightFingerInfo.second.cmd;
+        if(_first) {
+            sensor_msgs::JointState jointCmd;
+            for (std::map<std::string, dynamixel_controller::JointInfo_t>::iterator it = _jointInfo.begin();
+                 it != _jointInfo.end(); ++it) {
+                std::string jointName = it->first;
+                dynamixel_controller::JointInfo_t info = it->second;
 
-
-            _leftFingerCmd.publish(leftMsg);
-            _rightFingerCmd.publish(rightMsg);
-
+                jointCmd.name.push_back(jointName);
+                jointCmd.position.push_back(info.cmd_pos);
+                jointCmd.velocity.push_back(info.cmd_vel);
+            }
+            _armCmd.publish(jointCmd);
         }
+
 
     }
 
     ArmadilloRobot::~ArmadilloRobot() {
-        if(_dynamixelProController != NULL) {
-            delete _dynamixelProController;
-            _dynamixelProController = NULL;
+
+
+    }
+
+    void ArmadilloRobot::armStateCallback(const sensor_msgs::JointStateConstPtr &msg) {
+        size_t size = msg->name.size();
+        for(int i = 0; i < size; ++i) {
+            std::string jointName = msg->name[i];
+            dynamixel_controller::JointInfo_t &jointInfo = _jointInfo[jointName];
+            jointInfo.position = msg->position[i];
+            jointInfo.effort = msg->effort[i];
+            jointInfo.velocity = msg->velocity[i];
+            if(!_first) {
+                jointInfo.cmd_vel = msg->velocity[i];
+                jointInfo.cmd_pos = msg->position[i];
+            }
         }
 
+        _first = true;
     }
 }
 
