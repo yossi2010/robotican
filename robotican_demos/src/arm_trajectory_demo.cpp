@@ -61,10 +61,11 @@ private:
         goal.trajectory.joint_names.push_back("rotation1_joint");
         goal.trajectory.joint_names.push_back("shoulder1_joint");
         goal.trajectory.joint_names.push_back("shoulder2_joint");
+        goal.trajectory.joint_names.push_back("rotation2_joint");
         goal.trajectory.joint_names.push_back("shoulder3_joint");
         goal.trajectory.joint_names.push_back("wrist_joint");
 
-        point.time_from_start = ros::Duration(1.0);
+        point.time_from_start = ros::Duration(10.0);
         point.positions.resize(goal.trajectory.joint_names.size());
         point.positions[1] = pos;
         goal.trajectory.points.push_back(point);
@@ -157,6 +158,7 @@ void buildGoal(control_msgs::FollowJointTrajectoryGoal &goal) {
     goal.trajectory.joint_names.push_back("rotation1_joint");
     goal.trajectory.joint_names.push_back("shoulder1_joint");
     goal.trajectory.joint_names.push_back("shoulder2_joint");
+    goal.trajectory.joint_names.push_back("rotation2_joint");
     goal.trajectory.joint_names.push_back("shoulder3_joint");
     goal.trajectory.joint_names.push_back("wrist_joint");
 
