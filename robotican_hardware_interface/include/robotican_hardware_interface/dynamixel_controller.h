@@ -42,9 +42,11 @@ namespace dynamixel_controller {
         double cmd_pos;
         double cmd_vel;
         double pre_vel;
+
         JointInfo_t() {
             position = effort = velocity = cmd_pos = 0;
             cmd_vel = pre_vel = 0;
+
         }
     };
 
@@ -67,6 +69,14 @@ namespace dynamixel_controller {
         double gear_reduction;
         float protocolVer;
         int torque;
+        bool readPos;
+        bool readVel;
+        bool readEff;
+        bool writePos;
+        bool writeVel;
+        dynamixel_info() {
+            writePos = writeVel  = readPos = readVel = readEff = true;
+        }
     };
 
     enum control_mode
