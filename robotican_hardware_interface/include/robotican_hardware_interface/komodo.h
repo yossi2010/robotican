@@ -28,8 +28,9 @@ namespace robotican_hardware {
 
         bool _first;
 
+        bool buildDxlMotors();
         void armStateCallback(const sensor_msgs::JointStateConstPtr &msg);
-
+        bool dxlPut2MapAndRegisterInterface(const std::string &jointName, const std::string &jointInterface);
     public:
         KomodoRobot();
         virtual ~KomodoRobot();
