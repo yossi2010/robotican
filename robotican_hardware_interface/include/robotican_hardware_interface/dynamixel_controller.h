@@ -74,8 +74,9 @@ namespace dynamixel_controller {
         bool readEff;
         bool writePos;
         bool writeVel;
+        bool useMinVel;
         dynamixel_info() {
-            writePos = writeVel  = readPos = readVel = readEff = true;
+            writePos = writeVel  = readPos = readVel = readEff = useMinVel = true;
         }
     };
 

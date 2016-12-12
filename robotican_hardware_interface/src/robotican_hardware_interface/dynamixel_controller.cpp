@@ -165,6 +165,12 @@ namespace dynamixel_controller {
                         } else {
                             info.writeVel = static_cast<bool>(servos[i]["write_vel"]);
                         }
+                        if(!servos[i]["use_init_vel"].getType() == XmlRpc::XmlRpcValue::TypeBoolean) {
+                            ROS_ERROR("[%s]: Invalid/Missing use_init_vel, servo index %d, id: %d", ros::this_node::getName().c_str(), i, info.id);
+                            return false;
+                        } else {
+                            info.useMinVel = static_cast<bool>(servos[i]["use_init_vel"]);
+                        }
 
                         if(!servos[i]["protocol_version"].getType() == XmlRpc::XmlRpcValue::TypeDouble) {
                             ROS_ERROR("[%s]: Invalid/Missing protocol version for servo index %d, id: %d", ros::this_node::getName().c_str() ,i, info.id);
@@ -353,7 +359,7 @@ namespace dynamixel_controller {
 
 
 
-            if(jointInfo.cmd_vel == 0.0) {
+            if(info.useMinVel && jointInfo.cmd_vel == 0.0) {
                 if(info.protocolVer == PROTOCOL2_VERSION) {
                     jointInfo.cmd_vel = _initSpeedProtocol2;
                 }
