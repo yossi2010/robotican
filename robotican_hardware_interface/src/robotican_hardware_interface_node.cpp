@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
             robotican_hardware::KomodoRobot robot;
             robot.registerInterfaces();
             controller_manager::ControllerManager controllerManager(&robot);
-            ros::AsyncSpinner asyncSpinner(1);
+            ros::AsyncSpinner asyncSpinner(2);
             asyncSpinner.start();
             ros::Rate rate(50);
             while (ros::ok()) {

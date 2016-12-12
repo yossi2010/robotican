@@ -7,13 +7,18 @@
 
 #include <ros/ros.h>
 #include <std_msgs/Float32.h>
+#include <std_msgs/Bool.h>
 #include <std_msgs/Float64.h>
 #include <sensor_msgs/JointState.h>
 #include <dynamixel_msgs/JointState.h>
 #include <robotican_hardware_interface/robot_base.h>
+#include <robotican_hardware_interface/TorsoHomming.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/posvel_command_interface.h>
 #include <robotican_hardware_interface/dynamixel_controller.h>
+
+#define UP 1
+#define DOWN -1
 
 namespace robotican_hardware {
     class KomodoRobot : public RobotBase {
@@ -22,14 +27,26 @@ namespace robotican_hardware {
         hardware_interface::PosVelJointInterface _posVelJointInterface;
         dynamixel_controller::DynamixelController* _dynamixelController;
         std::map<std::string, dynamixel_controller::JointInfo_t> _jointInfo;
+        dynamixel_controller::JointInfo_t* _torsoJoint;
 
         ros::Subscriber _armStateListener;
+        ros::Subscriber _upperSwitchListener;
+        ros::Subscriber _lowerSwitchListener;
+        ros::ServiceServer _homingService;
         ros::Publisher _armCmd;
 
+        int _torsoDir;
+        double _lastTorsoRead;
         bool _first;
+        bool _doneHomingUpper;
+        bool _doneHomingLower;
 
         bool buildDxlMotors();
         void armStateCallback(const sensor_msgs::JointStateConstPtr &msg);
+        void onUpperSwitchClick(const std_msgs::BoolConstPtr &value);
+        void onLowerSwitchClick(const std_msgs::BoolConstPtr &value);
+        bool onHomingRequest(robotican_hardware_interface::TorsoHommingRequest &req,
+                             robotican_hardware_interface::TorsoHommingResponse &res);
         bool dxlPut2MapAndRegisterInterface(const std::string &jointName, const std::string &jointInterface);
     public:
         KomodoRobot();
@@ -37,6 +54,8 @@ namespace robotican_hardware {
         virtual void registerInterfaces();
         virtual void read();
         virtual void write();
+
+        bool loadHomeSwitch();
     };
 }
 
