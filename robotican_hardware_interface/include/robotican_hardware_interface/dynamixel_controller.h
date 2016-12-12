@@ -13,6 +13,7 @@
 #include <ros/ros.h>
 #include <ros/package.h>
 #include <XmlRpcValue.h>
+#include <sensor_msgs/JointState.h>
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/posvel_command_interface.h>
@@ -41,9 +42,11 @@ namespace dynamixel_controller {
         double cmd_pos;
         double cmd_vel;
         double pre_vel;
+
         JointInfo_t() {
             position = effort = velocity = cmd_pos = 0;
             cmd_vel = pre_vel = 0;
+
         }
     };
 
@@ -66,6 +69,15 @@ namespace dynamixel_controller {
         double gear_reduction;
         float protocolVer;
         int torque;
+        bool readPos;
+        bool readVel;
+        bool readEff;
+        bool writePos;
+        bool writeVel;
+        bool useMinVel;
+        dynamixel_info() {
+            writePos = writeVel  = readPos = readVel = readEff = useMinVel = true;
+        }
     };
 
     enum control_mode
@@ -96,7 +108,10 @@ namespace dynamixel_controller {
         std::map<std::string, JointInfo_t> _jointsInfo;
         dynamixel_driver::DynamixelDriver* _driver;
 
+        ros::Publisher _jointStatePub;
+
         ros::Subscriber _torqueListener;
+        ros::Subscriber _cmdListener;
 
         bool _first;
         double _initSpeedProtocol1;
@@ -121,8 +136,15 @@ namespace dynamixel_controller {
 
         bool testBit(int16_t number, int16_t offset);
 
+        void registerJointHandlers();
+
+        void buildJoints();
+
+        void CmdCallback(const sensor_msgs::JointStateConstPtr &msg);
 
     public:
+
+        DynamixelController();
 
         DynamixelController(hardware_interface::JointStateInterface* jointStateInterface,
                             hardware_interface::PosVelJointInterface* posVelJointInterface,
@@ -131,6 +153,8 @@ namespace dynamixel_controller {
         ~DynamixelController();
 
         void read();
+
+        void publishState();
 
         void write();
     };
