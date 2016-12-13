@@ -1,4 +1,4 @@
-servos: [{id: 9,joint_name: rotation1_joint, use_init_vel: false,interface: velocityInterface ,protocol_version: 1.0, torque: 1, read_pos: false, read_vel: false, read_eff: false, write_pos: false, write_vel: false}] 
+servos: [{id: 9,joint_name: torso_joint, velocity_mode: true,use_init_vel: false,interface: velocityInterface ,protocol_version: 1.0, torque: 1, read_pos: true, read_vel: true, read_eff: false, write_pos: false, write_vel: true}]
 
 
 

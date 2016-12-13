@@ -171,6 +171,12 @@ namespace dynamixel_controller {
                         } else {
                             info.useMinVel = static_cast<bool>(servos[i]["use_init_vel"]);
                         }
+                        if(!servos[i]["velocity_mode"].getType() == XmlRpc::XmlRpcValue::TypeBoolean) {
+                            ROS_ERROR("[%s]: Invalid/Missing velocity_mode, servo index %d, id: %d", ros::this_node::getName().c_str(), i, info.id);
+                            return false;
+                        } else {
+                            info.velocityMode = static_cast<bool>(servos[i]["velocity_mode"]);
+                        }
 
                         if(!servos[i]["protocol_version"].getType() == XmlRpc::XmlRpcValue::TypeDouble) {
                             ROS_ERROR("[%s]: Invalid/Missing protocol version for servo index %d, id: %d", ros::this_node::getName().c_str() ,i, info.id);
@@ -352,6 +358,8 @@ namespace dynamixel_controller {
             return ((double) velocity) * 2.0 * M_PI / 60.0 / info.gear_reduction;
         }
         else {
+            if(info.velocityMode)
+                return (velocity >= 1024) ? 0.01193841642 * (velocity) - 12.22493842 : -0.01193841642 * (velocity);
             return (100.0f / 8349.0f) * ((double) velocity) + (94.0f / 13915.0f);
         }
     }
@@ -399,6 +407,8 @@ namespace dynamixel_controller {
         if(info.protocolVer == PROTOCOL2_VERSION)
             return static_cast<int32_t >(velocity / 2.0 / M_PI * 60.0 * info.gear_reduction);
         else {
+            if(info.velocityMode)
+                return static_cast<int32_t >((velocity <= 0) ? -83.76320314 * velocity : 83.76320314 * velocity + 1024.0);
             return static_cast<int32_t >(83.49f * (velocity) - 0.564f);
         }
 
