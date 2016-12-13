@@ -96,8 +96,8 @@ namespace robotican_hardware {
                 double currentPosition = msg->position[i];
                 if (_doneHomingLower || _doneHomingUpper) {
                     double lastPosition = _lastTorsoRead,  positionDelta = (currentPosition - lastPosition);
-                    if (fabs(positionDelta) > 5.24) {
-                        positionDelta = -sgn(positionDelta) * 2 * M_PI + positionDelta;
+                    if (fabs(positionDelta) > 2.24) {
+                        positionDelta = -sgn(positionDelta) *  M_PI + positionDelta;
                     }
 
                     jointInfo.position += positionDelta;
