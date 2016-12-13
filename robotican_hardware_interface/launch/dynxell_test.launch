@@ -1,5 +1,6 @@
 <launch>
-	<rosparam file="$(find robotican_hardware_interface)/config/arm_config.yaml" command="load"/>
-	<node name="arm_manager" pkg="robotican_hardware_interface" type="dynamixel_node" respawn="false" output="screen" />
+<rosparam file="$(find robotican_hardware_interface)/config/controllers.yaml" command="load"/>
+
+<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="5" output="screen" args="robot_state_controller rotation1_position_controller" />
 		
 </launch>
