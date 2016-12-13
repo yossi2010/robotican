@@ -34,7 +34,7 @@ namespace robotican_hardware {
         if(!loadHomeSwitch()){
             ros::shutdown();
         } else {
-//            _homingService = _nodeHandle.
+            _homingService = _nodeHandle.advertiseService("homing", &KomodoRobot::onHomingRequest, this);
         }
     }
 
