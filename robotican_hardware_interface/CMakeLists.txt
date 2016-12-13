@@ -88,7 +88,6 @@ add_message_files(
 add_service_files(
         FILES
         setImuClib.srv
-	TorsoHomming.srv
         #   Service2.srv
 )
 

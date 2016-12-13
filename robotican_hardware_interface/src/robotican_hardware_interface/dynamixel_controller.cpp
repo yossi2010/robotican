@@ -246,11 +246,13 @@ namespace dynamixel_controller {
                 hardware_interface::PosVelJointHandle jointHandle(_jointStateInterface->getHandle(jointName)
                         , &_jointsInfo[jointName].cmd_pos, &_jointsInfo[jointName].cmd_vel);
                 _posVelJointInterface->registerHandle(jointHandle);
-                _jointsInfo[jointName].pre_vel = _initSpeedProtocol2;
+                if(it->second.useMinVel)
+                    _jointsInfo[jointName].pre_vel = _initSpeedProtocol2;
             } else {
                 hardware_interface::JointHandle jointHandle(_jointStateInterface->getHandle(jointName) ,
                                                             &_jointsInfo[jointName].cmd_pos);
-                _jointsInfo[jointName].cmd_vel = _initSpeedProtocol1;
+                if(it->second.useMinVel)
+                    _jointsInfo[jointName].cmd_vel = _initSpeedProtocol1;
                 _positionJointInterface->registerHandle(jointHandle);
             }
 
@@ -305,34 +307,40 @@ namespace dynamixel_controller {
             dxlMotorInfo.protocol = info.protocolVer;
 
 
-            if(info.readPos && _driver->getMotorPosition(dxlMotorInfo, position)) {
-                double rad = posToRads(position, info);
-                _jointsInfo[jointName].position = rad;
-                if (_first) _jointsInfo[jointName].cmd_pos = rad;
-
-            } else {
-                ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
-            }
-            if(info.readVel && _driver->getMotorSpeed(dxlMotorInfo, velocity)) {
-                double radVel = getVelocity(info, velocity);
-                _jointsInfo[jointName].velocity = radVel;
-            } else {
-                ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
-            }
-
-            if(info.readEff && _driver->getMotorLoad(dxlMotorInfo, rawLoad)) {
-                if (info.protocolVer == PROTOCOL1_VERSION) {
-                    bool revers = testBit(rawLoad, 10);
-                    double effort = (double)(rawLoad & 1023) / 1024.0f;
-                    effort = (revers) ? -effort : effort;
-                    _jointsInfo[jointName].effort = effort;
+            if (info.readPos) {
+                if(_driver->getMotorPosition(dxlMotorInfo, position)) {
+                    double rad = posToRads(position, info);
+                    _jointsInfo[jointName].position = rad;
+                    if (_first) _jointsInfo[jointName].cmd_pos = rad;
 
                 } else {
-                    double effort = rawLoad;
-                    _jointsInfo[jointName].effort = effort;
+                    ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
                 }
-            } else {
-                ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
+            }
+            if (info.readVel) {
+                if(_driver->getMotorSpeed(dxlMotorInfo, velocity)) {
+                    double radVel = getVelocity(info, velocity);
+                    _jointsInfo[jointName].velocity = radVel;
+                } else {
+                    ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
+                }
+            }
+
+            if (info.readEff) {
+                if(_driver->getMotorLoad(dxlMotorInfo, rawLoad)) {
+                    if (info.protocolVer == PROTOCOL1_VERSION) {
+                        bool revers = testBit(rawLoad, 10);
+                        double effort = (double)(rawLoad & 1023) / 1024.0f;
+                        effort = (revers) ? -effort : effort;
+                        _jointsInfo[jointName].effort = effort;
+
+                    } else {
+                        double effort = rawLoad;
+                        _jointsInfo[jointName].effort = effort;
+                    }
+                } else {
+                    ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
+                }
             }
         }
         if(_first) _first = false;
@@ -358,13 +366,14 @@ namespace dynamixel_controller {
             dxlMotorInfo.protocol = info.protocolVer;
 
 
-
-            if(info.useMinVel && jointInfo.cmd_vel == 0.0) {
-                if(info.protocolVer == PROTOCOL2_VERSION) {
-                    jointInfo.cmd_vel = _initSpeedProtocol2;
-                }
-                else {
-                    jointInfo.cmd_vel = _initSpeedProtocol1;
+            if (info.useMinVel) {
+                if(jointInfo.cmd_vel == 0.0) {
+                    if(info.protocolVer == PROTOCOL2_VERSION) {
+                        jointInfo.cmd_vel = _initSpeedProtocol2;
+                    }
+                    else {
+                        jointInfo.cmd_vel = _initSpeedProtocol1;
+                    }
                 }
             }
 
@@ -372,15 +381,17 @@ namespace dynamixel_controller {
             int32_t speed = getDriverVelocity(info, jointInfo.cmd_vel);
 
 
-            if(info.writeVel &&  !_driver->setMotorSpeed(dxlMotorInfo, speed)) {
-                ROS_WARN("[%s]: Unable to set speed", ros::this_node::getName().c_str());
+            if (info.writeVel) {
+                if(!_driver->setMotorSpeed(dxlMotorInfo, speed)) {
+                    ROS_WARN("[%s]: Unable to set speed", ros::this_node::getName().c_str());
+                }
             }
 
-            if(info.writePos && !_driver->setMotorPosition(dxlMotorInfo, ticks)) {
-                ROS_WARN("[%s]: Unable to set position", ros::this_node::getName().c_str());
+            if (info.writePos) {
+                if(!_driver->setMotorPosition(dxlMotorInfo, ticks)) {
+                    ROS_WARN("[%s]: Unable to set position", ros::this_node::getName().c_str());
+                }
             }
-
-
         }
     }
 
@@ -404,9 +415,11 @@ namespace dynamixel_controller {
             _jointsInfo.insert(std::pair<std::string, JointInfo_t>(jointName, JointInfo_t()));
 
             if(_joint2Dxl[jointName].protocolVer == PROTOCOL2_VERSION) {
-                _jointsInfo[jointName].cmd_vel = _initSpeedProtocol2;
+                if(it->second.useMinVel)
+                    _jointsInfo[jointName].cmd_vel = _initSpeedProtocol2;
             } else {
-                _jointsInfo[jointName].cmd_vel = _initSpeedProtocol1;
+                if(it->second.useMinVel)
+                    _jointsInfo[jointName].cmd_vel = _initSpeedProtocol1;
             }
 
         }
