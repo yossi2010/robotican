@@ -75,8 +75,10 @@ namespace dynamixel_controller {
         bool writePos;
         bool writeVel;
         bool useMinVel;
+        bool velocityMode;
         dynamixel_info() {
             writePos = writeVel  = readPos = readVel = readEff = useMinVel = true;
+            velocityMode = false;
         }
     };
 
