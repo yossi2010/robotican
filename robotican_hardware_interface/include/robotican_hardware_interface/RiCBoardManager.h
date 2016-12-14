@@ -72,7 +72,7 @@ namespace robotican_hardware {
          */
         void setConnectState(ConnectEnum::ConnectEnum connectState);
         /*!
-         * @brief 
+         * @brief
          * @param debugMsg
          */
         void debugMsgHandler(DebugMsg *debugMsg);
