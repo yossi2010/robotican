@@ -30,38 +30,51 @@
 
 
 
-#define MAX_BUFF_SIZE 255
-#define PC_VERSION 100
-#define RIC_BOARD_DEBUG
+#define MAX_BUFF_SIZE 255                                                   //!< The max buffer size
+#define PC_VERSION 100                                                      //!< The current pc version, the RiCBoard also have is define, If they don't mach the program won't run.
+#define RIC_BOARD_DEBUG                                                     //!< Use to enable debug mode.
 
 namespace robotican_hardware {
-    class CloseLoopMotor;
-    class CloseLoopMotorWithPotentiometer;
+    class CloseLoopMotor;                                                   // To avoid circular dependency
+    class CloseLoopMotorWithPotentiometer;                                  // To avoid circular dependency
 
 
 
 
-
+    //!@brief This is the call that manage the communication beteen the PC and the RiCBoard
     class RiCBoardManager {
     private:
-        byte _rcvBuff[MAX_BUFF_SIZE];
-        TransportLayer _transportLayer;
-        ConnectEnum::ConnectEnum  _connectState;
-        ros::NodeHandle _nodeHandle;
-        ros::Timer _sendKeepAliveTimer;
-        ros::Timer _timeoutKeepAliveTimer;
+        byte _rcvBuff[MAX_BUFF_SIZE];                                       //!< Receive buffer: To receive the package for the RiCBoard
+        TransportLayer _transportLayer;                                     //!< Transport layer manage the sending and receiving packages To and from the RiCBoard
+        ConnectEnum::ConnectEnum  _connectState;                            //!< The current connection state
+        ros::NodeHandle _nodeHandle;                                        //!< If you don't know what this is please refer to http://wiki.ros.org
+        ros::Timer _sendKeepAliveTimer;                                     //!< Trigger that fire every 3/sec and send a keep alive pkg to the RiCBoard
+        ros::Timer _timeoutKeepAliveTimer;                                  //!< Trigger that fire if the RiCBoard didn't send keep alive
         ros::AsyncSpinner _spinner;
-        std::vector<Device*> _devices;
-        byte _idGen;
+        std::vector<Device*> _devices;                                      //!< Array that contain all the device that the RiCboard had build
+        byte _idGen;                                                        //!< Generator for the device ids
 
+        /*!
+         * @return Get the current communication baud rate
+         */
         unsigned int getBaudrate();
-
+        /*!
+         * @return Get the current port name
+         */
         std::string getPort();
-
+        /*!
+         * @brief Reset the '_rcvBuff' buffer
+         */
         void resetBuff();
-
+        /*!
+         * @brief Change the current connection state.
+         * @param connectState: The new connection state.
+         */
         void setConnectState(ConnectEnum::ConnectEnum connectState);
-
+        /*!
+         * @brief 
+         * @param debugMsg
+         */
         void debugMsgHandler(DebugMsg *debugMsg);
 
         void clear();
