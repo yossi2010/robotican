@@ -226,6 +226,7 @@ add_definitions(-DFULL_ARM_PARAMS)
 add_executable(robotican_hardware_interface_node src/robotican_hardware_interface_node.cpp)
 add_executable(dynamixel_test_node src/dynamixel_test.cpp)
 add_executable(dynamixel_node src/dynamixel_node.cpp)
+add_executable(dynamixel_motor_test_node src/test_dxl_motors_node.cpp)
 add_dependencies(robotican_hardware_interface_node ${PROJECT_NAME}_gencfg)
 
 ## Add cmake target dependencies of the executable
@@ -236,6 +237,7 @@ add_dependencies(robotican_hardware_interface ${PROJECT_NAME} ${${PROJECT_NAME}_
 target_link_libraries(robotican_hardware_interface ${catkin_LIBRARIES} ${yaml-cpp_LIBRARIES})
 target_link_libraries(dynamixel_test_node ${catkin_LIBRARIES} robotican_hardware_interface)
 target_link_libraries(dynamixel_node ${catkin_LIBRARIES} robotican_hardware_interface)
+target_link_libraries(dynamixel_motor_test_node ${catkin_LIBRARIES} robotican_hardware_interface)
 target_link_libraries(robotican_hardware_interface_sim ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 target_link_libraries(robotican_hardware_interface_node

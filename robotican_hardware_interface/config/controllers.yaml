@@ -52,9 +52,15 @@ rotation1_position_controller:
   joint: rotation1_joint
   
 torso_position_controller:
-  type: position_controllers/JointPositionController
+  type: velocity_controllers/JointPositionController
   joint: torso_joint
-  
+  pid:
+    p: 210.0
+    i: 20.0
+    d: 0.0
+    i_clamp_max: 1.5
+    i_clamp_min: -0.1
+
 left_motor_controller:
   type: velocity_controllers/JointVelocityController
   joint: left_wheel_joint
@@ -62,6 +68,8 @@ left_motor_controller:
 right_motor_controller:
   type: velocity_controllers/JointVelocityController
   joint: right_wheel_joint
+
+
   
 torso_trajectory_controller:
   type: position_controllers/JointTrajectoryController
