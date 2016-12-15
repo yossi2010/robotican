@@ -72,29 +72,47 @@ namespace robotican_hardware {
          */
         void setConnectState(ConnectEnum::ConnectEnum connectState);
         /*!
-         * @brief
-         * @param debugMsg
+         * @brief Get a debug message from the RiCBoard and print it.
+         * @param debugMsg: The incoming debug message from the RiCBoard
          */
         void debugMsgHandler(DebugMsg *debugMsg);
-
+        /*!
+         * @brief Erase all device that the manager had build
+         */
         void clear();
 
     public:
+
         RiCBoardManager();
-
+        /*!
+         * @brief Build devices that don't need hardware interface
+         */
         void buildDevices();
-
+        /*!
+         * @brief Build device that need JointStateInterface and VelocityJointInterface
+         */
         void buildDevices(hardware_interface::JointStateInterface*, hardware_interface::VelocityJointInterface*);
-
+        /*!
+         * @brief Build device that need JointStateInterface and PositionJointInterface
+         */
         void buildDevices(hardware_interface::JointStateInterface*, hardware_interface::PositionJointInterface*);
 //        void buildDevices(hardware_interface::JointStateInterface*, hardware_interface::PositionJointInterface*);
-
+        /*!
+         * @brief Connect to the RiCBoard
+         */
         void connect();
-
+        /*!
+         * @brief Disconnect to the RiCBoard
+         */
         void disconnect();
-
+        /*!
+         * @brief Handle the incoming msgs from the RiCboard
+         */
         void handleMessage();
-
+        /*!
+         * @brief Handle the connection msgs
+         * @param connectState: Incoming connection msg from the RiCBoard
+         */
         void connectionHandle(ConnectState *connectState);
 
         void sendKeepAliveEvent(const ros::TimerEvent &timerEvent);
