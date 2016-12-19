@@ -20,6 +20,8 @@
 #define UP 1
 #define DOWN -1
 
+#define TORSO_DONT_MOVE 999
+
 namespace robotican_hardware {
     class KomodoRobot : public RobotBase {
     private:
@@ -32,12 +34,10 @@ namespace robotican_hardware {
         ros::Subscriber _armStateListener;
         ros::Subscriber _upperSwitchListener;
         ros::Subscriber _lowerSwitchListener;
-        ros::ServiceServer _homingService;
         ros::Publisher _armCmd;
 
-        int _torsoDir;
-        double _lastTorsoRead;
         bool _first;
+        double _lastTorsoRead;
         bool _doneHomingUpper;
         bool _doneHomingLower;
 
@@ -45,8 +45,6 @@ namespace robotican_hardware {
         void armStateCallback(const sensor_msgs::JointStateConstPtr &msg);
         void onUpperSwitchClick(const std_msgs::BoolConstPtr &value);
         void onLowerSwitchClick(const std_msgs::BoolConstPtr &value);
-        bool onHomingRequest(robotican_hardware_interface::TorsoHommingRequest &req,
-                             robotican_hardware_interface::TorsoHommingResponse &res);
         bool dxlPut2MapAndRegisterInterface(const std::string &jointName, const std::string &jointInterface);
     public:
         KomodoRobot();

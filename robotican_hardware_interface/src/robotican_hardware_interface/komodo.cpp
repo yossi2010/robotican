@@ -14,7 +14,6 @@ namespace robotican_hardware {
         _dynamixelController = NULL;
         _torsoJoint = NULL;
         _first = _doneHomingUpper = _doneHomingLower = false;
-        _torsoDir = UP;
         _lastTorsoRead = 0.0;
         bool haveArm = true;
 
@@ -31,10 +30,8 @@ namespace robotican_hardware {
                 ros::shutdown();
             }
         }
-        if(!loadHomeSwitch()){
+        if(!loadHomeSwitch()) {
             ros::shutdown();
-        } else {
-            _homingService = _nodeHandle.advertiseService("homing", &KomodoRobot::onHomingRequest, this);
         }
     }
 
@@ -51,8 +48,6 @@ namespace robotican_hardware {
 
     void KomodoRobot::read() {
         RobotBase::read();
-//        if(_dynamixelController != NULL)
-//            _dynamixelController->read();
     }
 
     void KomodoRobot::write() {
@@ -63,18 +58,24 @@ namespace robotican_hardware {
                  it != _jointInfo.end(); ++it) {
                 std::string jointName = it->first;
                 dynamixel_controller::JointInfo_t info = it->second;
-                if(jointName != "torso_joint" || jointName == "torso_joint" && (_doneHomingLower || _doneHomingUpper)) {
+                if(jointName != "torso_joint") {
                     jointCmd.name.push_back(jointName);
                     jointCmd.position.push_back(info.cmd_pos);
                     jointCmd.velocity.push_back(info.cmd_vel);
+                } else {
+                    jointCmd.name.push_back(jointName);
+                    jointCmd.position.push_back(info.cmd_pos);
+                    if(_doneHomingLower || _doneHomingUpper) {
+                        if (fabs(info.cmd_vel) > 12.2)
+                            info.cmd_vel = sgn(info.cmd_vel) * 12.2;
+                        jointCmd.velocity.push_back(info.cmd_vel);
+                    } else if(fabs(info.cmd_vel - TORSO_DONT_MOVE) > 0.01) {
+                        jointCmd.velocity.push_back(info.cmd_vel);
+                    }
                 }
             }
             _armCmd.publish(jointCmd);
         }
-//        if(_dynamixelController != NULL)
-//            _dynamixelController->write();
-
-
     }
 
     void KomodoRobot::armStateCallback(const sensor_msgs::JointStateConstPtr &msg) {
@@ -212,23 +213,12 @@ namespace robotican_hardware {
 
     void KomodoRobot::onLowerSwitchClick(const std_msgs::BoolConstPtr &value) {
         if(value->data) {
-            if(!_doneHomingUpper) {
+            if(!_doneHomingLower) {
                 _doneHomingLower = true;
                 _torsoJoint->cmd_pos = 0.0;
                 _torsoJoint->cmd_vel = 0.0;
                 ROS_INFO("[%s]: Torso reach lower switch homing, calculated to lower position", ros::this_node::getName().c_str());
             }
         }
-    }
-
-    bool KomodoRobot::onHomingRequest(robotican_hardware_interface::TorsoHommingRequest &req,
-                                      robotican_hardware_interface::TorsoHommingResponse &res) {
-        if(req.homeDir == robotican_hardware_interface::TorsoHommingRequest::HOME_UP) {
-            _torsoJoint->cmd_vel = 0.2;
-        }
-        else if(req.homeDir == robotican_hardware_interface::TorsoHommingRequest::HOME_DOWN) {
-            _torsoJoint->cmd_vel = -0.2;
-        }
-        return true;
     }
 }

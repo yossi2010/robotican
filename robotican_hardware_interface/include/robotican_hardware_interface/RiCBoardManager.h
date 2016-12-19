@@ -38,10 +38,6 @@ namespace robotican_hardware {
     class CloseLoopMotor;
     class CloseLoopMotorWithPotentiometer;
 
-
-
-
-
     class RiCBoardManager {
     private:
         byte _rcvBuff[MAX_BUFF_SIZE];
