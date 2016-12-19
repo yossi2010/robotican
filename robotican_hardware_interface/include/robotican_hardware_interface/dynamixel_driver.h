@@ -55,51 +55,143 @@ namespace dynamixel_driver {
 
     class DynamixelDriver {
     private:
-        dynamixel::PortHandler *_portHandler;
-        dynamixel::PacketHandler *_packetHandlerVer1;
-        dynamixel::PacketHandler *_packetHandlerVer2;
-
+        dynamixel::PortHandler *_portHandler;                                                               //!< As the name implies, object that handle the transport layer.
+        dynamixel::PacketHandler *_packetHandlerVer1;                                                       //!< Helper that warp the package build business logic. (protocol 1.0)
+        dynamixel::PacketHandler *_packetHandlerVer2;                                                       //!< Helper that warp the package build business logic. (protocol 2.0)
+        /*!
+         * @brief Protocol 1.0
+         * @param id: Motor to be ping
+         * @return If the motor is present or not
+         */
         bool pingMotorProtocol1(uint8_t id);
-
+        /*!
+         * @brief Protocol 2.0
+         * @param id: Motor to be ping
+         * @return If the motor is present or not
+         */
         bool pingMotorProtocol2(uint8_t id);
-
+        /*!
+         * @brief Protocol 1.0
+         * @param id: Motor to be torque enable or disable
+         * @param torque: To enable or disable motor torque
+         * @return If succeed to enable torque or disable torque
+         */
         bool setMotorTorqueProtocol1(uint8_t id, uint8_t torque = TORQUE_ENABLE);
+        /*!
+         * @brief Protocol 2.0
+         * @param id: Motor to be torque enable or disable
+         * @param torque: To enable or disable motor torqueue
+         * @return If succeed to enable torque or disable torque
+         */
 
         bool setMotorTorqueProtocol2(uint8_t id, uint8_t torque = TORQUE_ENABLE);
-
+        /*!
+         * @brief Protocol 1.0
+         * @param id: The motor id
+         * @param ticks: The position in ticks
+         * @return If succeed to send the position command or not
+         */
         bool setMotorPositionProtocol1(uint8_t id, int32_t ticks);
-
+        /*!
+         * @brief Protocol 2.0
+         * @param id: The motor id
+         * @param ticks: The position in ticks
+         * @return If succeed to send the position command or not
+         */
         bool setMotorPositionProtocol2(uint8_t id, int32_t ticks);
+        /*!
+         * @brief Protocol 1.0
+         * @param id: The motor id
+         * @param speed: The motor goal speed
+         * @return If succeed to send the speed command or not
+         */
 
         bool setMotorSpeedProtocol1(uint8_t id, int32_t speed);
-
+        /*!
+         * @brief Protocol 2.0
+         * @param id: The motor id
+         * @param speed: The motor goal speed
+         * @return If succeed to send the speed command or not
+         */
         bool setMotorSpeedProtocol2(uint8_t id, int32_t speed);
-
+        /*!
+         * @brief Protocol 1.0
+         * @param id: The motor id
+         * @param acceleration: Goal acceleration
+         * @return If succeed to send the acceleration command or not
+         */
         bool setMotorAccelerationProtocol1(uint8_t id, int32_t acceleration);
-
+        /*!
+         * @brief Protocol 2.0
+         * @param id: The motor id
+         * @param acceleration: Goal acceleration
+         * @return If succeed to send the acceleration command or not
+         */
         bool setMotorAccelerationProtocol2(uint8_t id, int32_t acceleration);
-
+        /*!
+         * @brief Protocol 1.0
+         * @param id: The motor id
+         * @param position: Position in ticks that return from the motor
+         * @return If succeed to send the present position command or not
+         */
         bool getMotorPositionProtocol1(uint8_t id, int32_t &position);
-
+        /*!
+         * @brief Protocol 2.0
+         * @param id: The motor id
+         * @param position: Position in ticks that return from the motor
+         * @return If succeed to send the present position command or not
+         */
         bool getMotorPositionProtocol2(uint8_t id, int32_t &position);
-
+        /*!
+         * @brief Protocol 1.0
+         * @param id: The motor id
+         * @param speed: Speed that return from the motor
+         * @return If succeed to send the present speed command or not
+         */
         bool getMotorSpeedProtocol1(uint8_t id, int32_t &speed);
-
+        /*!
+         * @brief Protocol 2.0
+         * @param id: The motor id
+         * @param speed: Speed that return from the motor
+         * @return If succeed to send the present speed command or not
+         */
         bool getMotorSpeedProtocol2(uint8_t id, int32_t &speed);
-
+        /*!
+         * @brief Protocol 1.0
+         * @param id: The motor id
+         * @param load: Load that return from the motor
+         * @return If succeed to send the present load command or not
+         */
         bool getMotorLoadProtocol1(uint8_t id, int16_t &load);
-
+        /*!
+         * @brief Protocol 2.0
+         * @param id: The motor id
+         * @param load: Load that return from the motor
+         * @return If succeed to send the present load command or not
+         */
         bool getMotorLoadProtocol2(uint8_t id, int16_t &load);
-
+        /*!
+         * @brief Protocol 1.0
+         * @param id: The motor id
+         * @param model: The motor model
+         * @return If succeed to send the read model command or not
+         */
         bool getMotorModelProtocol1(uint8_t id, uint16_t &model);
-
+        /*!
+         * @brief Protocol 2.0
+         * @param id: The motor id
+         * @param model: The motor model
+         * @return If succeed to send the read model command or not
+         */
         bool getMotorModelProtocol2(uint8_t id, uint16_t &model);
 
     public:
         DynamixelDriver(const char *port, unsigned int baudrate, DriverMode mode);
 
         ~DynamixelDriver();
-
+        /*!
+         * @return If the communication port is open or not.
+         */
         bool isPortOpen();
 
         bool pingMotor(DxlMotorInfo_t motorInfo);

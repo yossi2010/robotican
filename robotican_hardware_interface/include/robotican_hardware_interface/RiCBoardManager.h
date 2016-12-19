@@ -114,15 +114,29 @@ namespace robotican_hardware {
          * @param connectState: Incoming connection msg from the RiCBoard
          */
         void connectionHandle(ConnectState *connectState);
-
+        /*!
+         * @brief This timer is here to send keep alive msgs to the RiCBord
+         * @param timerEvent: time event object.
+         */
         void sendKeepAliveEvent(const ros::TimerEvent &timerEvent);
-
+        /*!
+         * @brief This timer is here to see if the RiCBoard didn't send keep alive for 3 sec, if so the program will close
+         * @param timerEvent: time event object.
+         */
         void timeoutKeepAliveEvent(const ros::TimerEvent &timerEvent);
-
+        /*!
+         * @brief This method will reset the timer when the RiCboard send keep alive msgs
+         * @param keepAliveMsg: Incoming keep alive msg
+         */
         void keepAliveHandle(KeepAliveMsg *keepAliveMsg);
-
+        /*!
+         * @brief The method will handle all the msgs that are related to devices
+         * @param deviceMsg: Single device msg
+         */
         void deviceMessageHandler(DeviceMessage *deviceMsg);
-
+        /*!
+         * @brief Write msgs to the RiCBoard
+         */
         void write();
 
         ConnectEnum::ConnectEnum getConnectState();
