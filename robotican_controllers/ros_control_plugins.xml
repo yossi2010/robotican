@@ -17,6 +17,12 @@
         <description>
         </description>
     </class>
+    <class name="robotican_velocity_controllers/PositionController"
+           type="velocity_controllers::JointPositionController"
+           base_class_type="controller_interface::ControllerBase">
+        <description>
+        </description>
+    </class>
 
     <class name="diff_drive_with_split_controller/DiffDriveController" type="diff_drive_controller::DiffDriveController" base_class_type="controller_interface::ControllerBase">
         <description>

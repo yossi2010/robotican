@@ -146,6 +146,8 @@ add_library(robotican_controllers
         src/${PROJECT_NAME}/odometry.cpp
         include/${PROJECT_NAME}/speed_limiter.h
         src/${PROJECT_NAME}/speed_limiter.cpp
+        include/${PROJECT_NAME}/joint_position_controller.h
+        src/${PROJECT_NAME}/joint_position_controller.cpp
         )
 
 ## Add cmake target dependencies of the library
