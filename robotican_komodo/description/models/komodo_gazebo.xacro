@@ -8,17 +8,87 @@
 
   <xacro:arg name="controllers" default="true"/>
   <xacro:arg name="front_camera" default="false"/>
+  <xacro:arg name="rear_camera" default="false"/>
+  <xacro:arg name="top_camera" default="false"/>
   <xacro:arg name="urf" default="false"/>
   <xacro:arg name="imu" default="false"/>
   <xacro:arg name="gps" default="false"/>
   <xacro:arg name="lidar" default="false"/>
   <xacro:arg name="depth_camera" default="false"/>
+  <xacro:arg name="torso_camera" default="false"/>
+  <xacro:arg name="arm_camera" default="false"/>
 
   
-  <!-- Asus -->
+  <!-- torso_camera -->
 
-  <xacro:if value="$(arg depth_camera)">
-    <xacro:include filename="$(find robotican_common)/gazebo/asus_xtion_pro_live.xacro" />
+  <xacro:if value="$(arg torso_camera)">
+    <gazebo reference="torso_camera_link">
+        <sensor type="depth" name="torso_camera">
+          <update_rate>20</update_rate>
+          <camera>
+            <horizontal_fov>${62.8 * M_PI/180.0}</horizontal_fov>
+            <image>
+              <format>B8G8R8</format>
+              <width>640</width>
+              <height>480</height>
+            </image>
+            <clip>
+              <near>0.5</near>
+              <far>9</far>
+            </clip>
+          </camera>
+          <plugin name="depth_camera_controller" filename="libgazebo_ros_openni_kinect.so">
+            <alwaysOn>true</alwaysOn>
+            <updateRate>20</updateRate>
+            <imageTopicName>torso_camera/rgb/image_raw</imageTopicName>
+            <cameraInfoTopicName>torso_camera/rgb/camera_info</cameraInfoTopicName>
+            <depthImageTopicName>torso_camera/depth_registered/image_raw</depthImageTopicName>
+            <depthImageCameraInfoTopicName>torso_camera/depth_registered/camera_info</depthImageCameraInfoTopicName>
+            <pointCloudTopicName>torso_camera/depth_registered/points</pointCloudTopicName>
+            <frameName>torso_camera_depth_optical_frame</frameName>
+            <distortion_k1>0.0</distortion_k1>
+            <distortion_k2>0.0</distortion_k2>
+            <distortion_k3>0.0</distortion_k3>
+            <distortion_t1>0.0</distortion_t1>
+            <distortion_t2>0.0</distortion_t2>
+          </plugin>
+        </sensor>
+		</gazebo>
+  </xacro:if>
+
+    <xacro:if value="$(arg arm_camera)">
+    <gazebo reference="creative_camera_link">
+        <sensor type="depth" name="creative_camera">
+          <update_rate>20</update_rate>
+          <camera>
+            <horizontal_fov>${62.8 * M_PI/180.0}</horizontal_fov>
+            <image>
+              <format>B8G8R8</format>
+              <width>640</width>
+              <height>480</height>
+            </image>
+            <clip>
+              <near>0.5</near>
+              <far>9</far>
+            </clip>
+          </camera>
+          <plugin name="depth_camera_controller" filename="libgazebo_ros_openni_kinect.so">
+            <alwaysOn>true</alwaysOn>
+            <updateRate>20</updateRate>
+            <imageTopicName>arm_camera/rgb/image_raw</imageTopicName>
+            <cameraInfoTopicName>arm_camera/rgb/camera_info</cameraInfoTopicName>
+            <depthImageTopicName>arm_camera/depth_registered/image_raw</depthImageTopicName>
+            <depthImageCameraInfoTopicName>arm_camera/depth_registered/camera_info</depthImageCameraInfoTopicName>
+            <pointCloudTopicName>arm_camera/depth_registered/points</pointCloudTopicName>
+            <frameName>creative_camera_depth_optical_frame</frameName>
+            <distortion_k1>0.0</distortion_k1>
+            <distortion_k2>0.0</distortion_k2>
+            <distortion_k3>0.0</distortion_k3>
+            <distortion_t1>0.0</distortion_t1>
+            <distortion_t2>0.0</distortion_t2>
+          </plugin>
+        </sensor>
+    </gazebo>
   </xacro:if>
 
 
@@ -55,9 +125,17 @@
 
     <!-- cameras  -->
     <xacro:include filename="$(find robotican_common)/gazebo/camera.xacro" />
+    
     <xacro:if value="$(arg front_camera)">
-      <xacro:Camera name="front_camera" link="front_cam_link" image_width="640" image_height="480"  image_format="R8G8B8" clip_near="0.02" clip_far="300" />
-      </xacro:if>
+		<xacro:Camera name="front_camera" link="front_cam_link" image_width="640" image_height="480"  image_format="R8G8B8" clip_near="0.02" clip_far="300" />
+    </xacro:if>
+    <xacro:if value="$(arg rear_camera)">
+		<xacro:Camera name="rear_camera" link="rear_camera_link" image_width="640" image_height="480"  image_format="R8G8B8" clip_near="0.02" clip_far="300" />
+    </xacro:if>
+    
+    <xacro:if value="$(arg top_camera)">
+		<xacro:Camera name="top_camera" link="top_camera_link" image_width="640" image_height="480"  image_format="R8G8B8" clip_near="0.02" clip_far="300" />
+    </xacro:if>
 
 
       <!-- controller manager and hardware interfaces -->

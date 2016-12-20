@@ -2,6 +2,10 @@
 <launch>
   
   <arg name="front_camera" default='false'/>
+  <arg name="top_camera" default='false'/>
+  <arg name="rear_camera" default='false'/> 
+  <arg name="torso_camera" default='false'/>
+  <arg name="arm_camera" default='false'/>
 
   <arg name="lidar" default='false'/>
   <arg name="gps" default='false'/>
@@ -71,6 +75,10 @@
     <param name="robot_description" command="$(find xacro)/xacro.py '$(find robotican_komodo)/description/models/komodo_gazebo.xacro' 
 	   controllers:=$(arg controllers)
 	   front_camera:=$(arg front_camera)
+	   rear_camera:=$(arg rear_camera)
+	   top_camera:=$(arg top_camera)
+	   torso_camera:=$(arg torso_camera)
+	   arm_camera:=$(arg arm_camera)
 	   lidar:=$(arg lidar)
 	   urf:=$(arg urf)
 	   imu:=$(arg imu)
