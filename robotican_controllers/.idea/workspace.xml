@@ -57,11 +57,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa292360-ec6f-4dad-9f1d-dd6fdca041d3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_hardware_interface/include/robotican_hardware_interface/RiCBoardManager.h" afterPath="$PROJECT_DIR$/../robotican_hardware_interface/include/robotican_hardware_interface/RiCBoardManager.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_hardware_interface/include/robotican_hardware_interface/komodo.h" afterPath="$PROJECT_DIR$/../robotican_hardware_interface/include/robotican_hardware_interface/komodo.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_hardware_interface/src/robotican_hardware_interface/komodo.cpp" afterPath="$PROJECT_DIR$/../robotican_hardware_interface/src/robotican_hardware_interface/komodo.cpp" />
-    </list>
+    <list default="true" id="aa292360-ec6f-4dad-9f1d-dd6fdca041d3" name="Default" comment="" />
     <ignored path="robotican_controllers.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
