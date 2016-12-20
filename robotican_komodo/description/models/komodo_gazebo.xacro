@@ -180,6 +180,16 @@
             <mechanicalReduction>1</mechanicalReduction>
           </actuator>
         </transmission>
+        
+        <transmission name="torso_joint_joint_trans">
+          <type>transmission_interface/SimpleTransmission</type>
+          <joint name="torso_joint">
+            <hardwareInterface>VelocityJointInterface</hardwareInterface>
+          </joint>
+          <actuator name="torso_joint_joint_motor">
+            <mechanicalReduction>1</mechanicalReduction>
+          </actuator>
+        </transmission>
 
       </xacro:if>
 

@@ -85,7 +85,7 @@
 #include <realtime_tools/realtime_buffer.h>
 #include <robotican_hardware_interface/TorsoHomming.h>
 
-namespace velocity_controllers
+namespace robotican_velocity_controllers
 {
 
     class JointPositionController: public controller_interface::Controller<hardware_interface::VelocityJointInterface>

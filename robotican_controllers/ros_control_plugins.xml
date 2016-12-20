@@ -18,7 +18,7 @@
         </description>
     </class>
     <class name="robotican_velocity_controllers/PositionController"
-           type="velocity_controllers::JointPositionController"
+           type="robotican_velocity_controllers::JointPositionController"
            base_class_type="controller_interface::ControllerBase">
         <description>
         </description>

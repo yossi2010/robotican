@@ -52,7 +52,7 @@ rotation1_position_controller:
   joint: rotation1_joint
   
 torso_position_controller:
-  type: velocity_controllers/JointPositionController
+  type: robotican_velocity_controllers/PositionController
   joint: torso_joint
   pid:
     p: 210.0

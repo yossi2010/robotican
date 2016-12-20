@@ -78,7 +78,7 @@
   </link>
   <joint
     name="torso_joint"
-    type="fixed"> <!--prismatic-->
+    type="prismatic"> <!--prismatic-->
     <origin
       xyz="0.101457996026178 0 0.0740000000000002"
       rpy="0 0 0" />
@@ -91,8 +91,8 @@
    <limit
 	lower="0"
 	upper="0.45"
-	effort="0"
-	velocity="0" />
+	effort="70"
+	velocity="0.0012" />
   </joint>
 
   <joint

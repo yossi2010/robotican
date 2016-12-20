@@ -39,7 +39,7 @@ imu_rotation_offset: [0, -3.141592, 0]
 
 ultrasonic_size: 3
 
-ultrasonic0_pin: 14
+ultrasonic0_pin: 16
 ultrasonic0_frame_id: 'left_urf_link'
 ultrasonic0_topic_name: 'URF/left'
 ultrasonic0_sonar_name:  'Max_Sonar_HRLV'
@@ -49,7 +49,7 @@ ultrasonic1_frame_id: 'right_urf_link'
 ultrasonic1_topic_name: 'URF/right'
 ultrasonic1_sonar_name:  'Max_Sonar_HRLV'
 
-ultrasonic2_pin: 16
+ultrasonic2_pin: 14
 ultrasonic2_frame_id: 'rear_urf_link'
 ultrasonic2_topic_name: 'URF/rear'
 ultrasonic2_sonar_name:  'Max_Sonar_HRLV'
@@ -80,7 +80,7 @@ motor0_limit: 0.1
 motor0_stop_limit_max: 25.0
 motor0_stop_limit_min: -25.0
 motor0_motor_address: 0
-motor0_motor_emergency_pin: 12
+motor0_motor_emergency_pin: 20
 motor0_motor_emergency_pin_type: 1
 motor0_joint: ['FL_wheel_joint', 'RL_wheel_joint']
 motor0_mode: 0
@@ -112,7 +112,7 @@ motor1_limit: 0.1
 motor1_stop_limit_max: 25.0
 motor1_stop_limit_min: -25.0
 motor1_motor_address: 1
-motor1_motor_emergency_pin: 12
+motor1_motor_emergency_pin: 20
 motor1_motor_emergency_pin_type: 1
 motor1_joint: ['FR_wheel_joint', 'RR_wheel_joint']
 motor1_mode: 0

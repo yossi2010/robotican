@@ -44,7 +44,7 @@
 #include <angles/angles.h>
 #include <pluginlib/class_list_macros.h>
 
-namespace velocity_controllers {
+namespace robotican_velocity_controllers {
 
     JointPositionController::JointPositionController()
             : loop_count_(0),isLowerTriggered_(false), isUpperTriggered_(false), gotHoming_(false)
@@ -298,4 +298,4 @@ namespace velocity_controllers {
 
 } // namespace
 
-PLUGINLIB_EXPORT_CLASS( velocity_controllers::JointPositionController, controller_interface::ControllerBase)
+PLUGINLIB_EXPORT_CLASS( robotican_velocity_controllers::JointPositionController, controller_interface::ControllerBase)
