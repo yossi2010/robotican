@@ -71,6 +71,7 @@
   
  
   <group if="$(arg gazebo)">
+  	<rosparam file="$(find robotican_komodo)/config/torso_controller_sim.yaml" command="load" />
     <env name="GAZEBO_MODEL_PATH" value="$(find robotican_common)/models:$(optenv GAZEBO_MODEL_PATH)"/>
     <param name="robot_description" command="$(find xacro)/xacro.py '$(find robotican_komodo)/description/models/komodo_gazebo.xacro' 
 	   controllers:=$(arg controllers)
@@ -108,7 +109,7 @@
     </group>
  
     <group unless="$(arg gazebo)">
-		
+		<param file="$(find robotican_komodo)/config/torso_controller.yaml" command="load" />
          <param name="robot_description" command="$(find xacro)/xacro.py '$(find robotican_komodo)/description/models/komodo.xacro'" />		
 		
 		<param name="have_close_loop_motor" value="true" />
