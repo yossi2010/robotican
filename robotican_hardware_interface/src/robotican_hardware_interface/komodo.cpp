@@ -108,7 +108,7 @@ namespace robotican_hardware {
                         positionDelta = -sgn(positionDelta) *  M_PI + positionDelta;
                     }
 
-                    jointInfo.position += positionDelta;
+                    jointInfo.position += positionDelta * RAD_2_M;
                 }
                 _lastTorsoRead = currentPosition;
             }
