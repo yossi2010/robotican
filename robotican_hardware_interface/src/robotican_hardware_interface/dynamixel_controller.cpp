@@ -391,13 +391,13 @@ namespace dynamixel_controller {
 
             if (info.writeVel) {
                 if(!_driver->setMotorSpeed(dxlMotorInfo, speed)) {
-                    ROS_WARN("[%s]: Unable to set speed", ros::this_node::getName().c_str());
+                    //ROS_WARN("[%s]: Unable to set speed", ros::this_node::getName().c_str());
                 }
             }
 
             if (info.writePos) {
                 if(!_driver->setMotorPosition(dxlMotorInfo, ticks)) {
-                    ROS_WARN("[%s]: Unable to set position", ros::this_node::getName().c_str());
+                    //ROS_WARN("[%s]: Unable to set position", ros::this_node::getName().c_str());
                 }
             }
         }
