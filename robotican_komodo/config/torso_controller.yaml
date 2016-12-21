@@ -7,5 +7,5 @@ torso_position_controller:
     d: 0.0
     i_clamp_max: 1.5
     i_clamp_min: -0.1
-  upper_topic: 'upper_limit_switch'
-  lower_topic: 'lower_limit_switch'
+  upper_topic: '/upper_limit_switch'
+  lower_topic: '/lower_limit_switch'
