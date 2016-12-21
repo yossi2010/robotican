@@ -286,6 +286,9 @@ namespace dynamixel_controller {
         }
         else {
             double cprDev2 = info.cpr / 2.0f;
+            if(info.id == 9) {
+                ROS_INFO("%d", ticks);
+            }
             return (static_cast<double>(ticks) - cprDev2) * M_PI / cprDev2;
         }
     }

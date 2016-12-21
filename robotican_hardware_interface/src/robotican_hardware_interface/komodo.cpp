@@ -105,10 +105,10 @@ namespace robotican_hardware {
                 if (_doneHome && _first) {
                     double lastPosition = _lastTorsoRead,  positionDelta = (currentPosition - lastPosition);
                     if (fabs(positionDelta) > 3.24) {
-                        positionDelta = -sgn(positionDelta) *  2 * M_PI + positionDelta;
+                        positionDelta = -sgn(positionDelta) *  2 * M_PI +  positionDelta;
                     }
 
-                    jointInfo.position += positionDelta * RAD_2_M;
+                    jointInfo.position += (positionDelta * RAD_2_M);
                 }
                 _lastTorsoRead = currentPosition;
             }
