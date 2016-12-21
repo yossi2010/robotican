@@ -13,7 +13,7 @@ namespace robotican_hardware {
 
         _dynamixelController = NULL;
         _torsoJoint = NULL;
-        _first = _doneHomingUpper = _doneHomingLower = false;
+        _first = _reachHomingUpper = _reachHomingLower = _doneHome = false;
         _lastTorsoRead = 0.0;
         bool haveArm = true;
 
@@ -65,9 +65,16 @@ namespace robotican_hardware {
                 } else {
                     jointCmd.name.push_back(jointName);
                     jointCmd.position.push_back(info.cmd_pos);
-                    if(_doneHomingLower || _doneHomingUpper) {
-                        if (fabs(info.cmd_vel) > 12.2)
+                    if(_doneHome) {
+                        if(_reachHomingUpper && info.cmd_vel > 0) {
+                            jointCmd.velocity.push_back(0.0);
+                            continue;
+                        } else if(_reachHomingLower && info.cmd_vel < 0) {
+                            jointCmd.velocity.push_back(0.0);
+                            continue;
+                        } else if (fabs(info.cmd_vel) > 12.2) {
                             info.cmd_vel = sgn(info.cmd_vel) * 12.2;
+                        }
                         jointCmd.velocity.push_back(info.cmd_vel);
                     } else if(fabs(info.cmd_vel - TORSO_DONT_MOVE) > 0.01) {
                         jointCmd.velocity.push_back(info.cmd_vel);
@@ -95,7 +102,7 @@ namespace robotican_hardware {
             }
             else {
                 double currentPosition = msg->position[i];
-                if (_doneHomingLower || _doneHomingUpper) {
+                if (_doneHome) {
                     double lastPosition = _lastTorsoRead,  positionDelta = (currentPosition - lastPosition);
                     if (fabs(positionDelta) > 2.24) {
                         positionDelta = -sgn(positionDelta) *  M_PI + positionDelta;
@@ -202,9 +209,10 @@ namespace robotican_hardware {
 
     void KomodoRobot::onUpperSwitchClick(const std_msgs::BoolConstPtr &value) {
         if(value->data) {
-            if(!_doneHomingUpper) {
-                _doneHomingUpper = true;
-                _torsoJoint->cmd_pos = 1.2;
+            if(!_reachHomingUpper) {
+                _reachHomingUpper = true;
+                _doneHome = true;
+                _torsoJoint->cmd_pos = 0.407;
                 _torsoJoint->cmd_vel = 0.0;
                 ROS_INFO("[%s]: Torso reach upper switch homing, calculated to upper position", ros::this_node::getName().c_str());
             }
@@ -213,8 +221,9 @@ namespace robotican_hardware {
 
     void KomodoRobot::onLowerSwitchClick(const std_msgs::BoolConstPtr &value) {
         if(value->data) {
-            if(!_doneHomingLower) {
-                _doneHomingLower = true;
+            if(!_reachHomingLower) {
+                _reachHomingLower = true;
+                _doneHome = true;
                 _torsoJoint->cmd_pos = 0.0;
                 _torsoJoint->cmd_vel = 0.0;
                 ROS_INFO("[%s]: Torso reach lower switch homing, calculated to lower position", ros::this_node::getName().c_str());

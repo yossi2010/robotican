@@ -5,19 +5,19 @@
       <config projectName="robotican_controllers" targetName="robotican_controllers" />
       <config projectName="robotican_controllers" targetName="geometry_msgs_generate_messages_py" />
       <config projectName="robotican_controllers" targetName="dynamic_reconfigure_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="run_tests" />
       <config projectName="robotican_controllers" targetName="clean_test_results_robotican_controllers" />
       <config projectName="robotican_controllers" targetName="actionlib_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="geometry_msgs_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="dynamic_reconfigure_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_py" />
       <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="actionlib_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="dynamic_reconfigure_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_lisp" />
       <config projectName="robotican_controllers" targetName="std_msgs_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_lisp" />
@@ -27,28 +27,28 @@
       <config projectName="robotican_controllers" targetName="_catkin_empty_exported_target" />
       <config projectName="robotican_controllers" targetName="roscpp_generate_messages_py" />
       <config projectName="robotican_controllers" targetName="robotican_controllers_jta" />
-      <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_py" />
       <config projectName="robotican_controllers" targetName="doxygen" />
       <config projectName="robotican_controllers" targetName="control_toolbox_gencfg" />
-      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="gtest" />
-      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_cpp" />
-      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="run_tests" />
-      <config projectName="robotican_controllers" targetName="gtest_main" />
-      <config projectName="robotican_controllers" targetName="std_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="robotican_controllers_node" />
-      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_lisp" />
-      <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="dynamic_reconfigure_gencfg" />
-      <config projectName="robotican_controllers" targetName="actionlib_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="download_extra_data" />
-      <config projectName="robotican_controllers" targetName="tests" />
-      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_py" />
-      <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_cpp" />
       <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="std_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="controller_manager_msgs_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="gtest" />
+      <config projectName="robotican_controllers" targetName="gtest_main" />
+      <config projectName="robotican_controllers" targetName="tests" />
+      <config projectName="robotican_controllers" targetName="robotican_controllers_node" />
+      <config projectName="robotican_controllers" targetName="dynamic_reconfigure_gencfg" />
+      <config projectName="robotican_controllers" targetName="rosgraph_msgs_generate_messages_lisp" />
+      <config projectName="robotican_controllers" targetName="download_extra_data" />
+      <config projectName="robotican_controllers" targetName="actionlib_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="control_toolbox_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="dynamic_reconfigure_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="trajectory_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="control_msgs_generate_messages_py" />
+      <config projectName="robotican_controllers" targetName="actionlib_msgs_generate_messages_cpp" />
+      <config projectName="robotican_controllers" targetName="roscpp_generate_messages_lisp" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -57,7 +57,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa292360-ec6f-4dad-9f1d-dd6fdca041d3" name="Default" comment="" />
+    <list default="true" id="aa292360-ec6f-4dad-9f1d-dd6fdca041d3" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_hardware_interface/include/robotican_hardware_interface/komodo.h" afterPath="$PROJECT_DIR$/../robotican_hardware_interface/include/robotican_hardware_interface/komodo.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_hardware_interface/src/robotican_hardware_interface/komodo.cpp" afterPath="$PROJECT_DIR$/../robotican_hardware_interface/src/robotican_hardware_interface/komodo.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_komodo/config/arm_config.yaml" afterPath="$PROJECT_DIR$/../robotican_komodo/config/arm_config.yaml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_komodo/config/hardware_interface_config.yaml" afterPath="$PROJECT_DIR$/../robotican_komodo/config/hardware_interface_config.yaml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_komodo/launch/komodo.launch" afterPath="$PROJECT_DIR$/../robotican_komodo/launch/komodo.launch" />
+    </list>
     <ignored path="robotican_controllers.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -76,45 +83,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2682">
+            <state relative-caret-position="1044">
               <caret line="149" column="53" lean-forward="false" selection-start-line="149" selection-start-column="53" selection-end-line="149" selection-end-column="53" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="joint_position_controller.h" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_position_controller.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1142">
-              <caret line="102" column="10" lean-forward="true" selection-start-line="102" selection-start-column="10" selection-end-line="102" selection-end-column="10" />
-              <folding>
-                <element signature="e#2843#2871#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="joint_position_controller.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/robotican_controllers/joint_position_controller.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="94" column="9" lean-forward="true" selection-start-line="94" selection-start-column="9" selection-end-line="94" selection-end-column="9" />
-              <folding>
-                <element signature="e#2047#2107#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ros_control_plugins.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ros_control_plugins.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="20" column="47" lean-forward="false" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -174,9 +147,9 @@
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
     <option name="x" value="65" />
-    <option name="y" value="24" />
+    <option name="y" value="-4" />
     <option name="width" value="1855" />
-    <option name="height" value="1056" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -279,10 +252,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="include" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="robotican_controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -796,14 +765,17 @@
       <workItem from="1482223297334" duration="841000" />
       <workItem from="1482233055068" duration="599000" />
       <workItem from="1482244901299" duration="350000" />
+      <workItem from="1482301319116" duration="543000" />
+      <workItem from="1482303605378" duration="155000" />
+      <workItem from="1482306894053" duration="653000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31728000" />
+    <option name="totallyTimeSpent" value="33079000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19050218" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1161,13 +1133,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="332" column="47" lean-forward="false" selection-start-line="332" selection-start-column="47" selection-end-line="332" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/robotican_controllers/two_finger_controller.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
@@ -1196,14 +1161,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2682">
-          <caret line="149" column="53" lean-forward="false" selection-start-line="149" selection-start-column="53" selection-end-line="149" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ros_control_plugins.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
@@ -1212,23 +1169,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1272">
+          <caret line="332" column="47" lean-forward="false" selection-start-line="332" selection-start-column="47" selection-end-line="332" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_position_controller.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="102" column="10" lean-forward="false" selection-start-line="102" selection-start-column="10" selection-end-line="102" selection-end-column="10" />
+          <folding>
+            <element signature="e#2843#2871#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/robotican_controllers/joint_position_controller.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="94" column="9" lean-forward="true" selection-start-line="94" selection-start-column="9" selection-end-line="94" selection-end-column="9" />
+        <state relative-caret-position="-1430">
+          <caret line="100" column="35" lean-forward="false" selection-start-line="100" selection-start-column="24" selection-end-line="100" selection-end-column="35" />
           <folding>
             <element signature="e#2047#2107#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_position_controller.h">
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1142">
-          <caret line="102" column="10" lean-forward="true" selection-start-line="102" selection-start-column="10" selection-end-line="102" selection-end-column="10" />
-          <folding>
-            <element signature="e#2843#2871#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="1044">
+          <caret line="149" column="53" lean-forward="false" selection-start-line="149" selection-start-column="53" selection-end-line="149" selection-end-column="53" />
+          <folding />
         </state>
       </provider>
     </entry>

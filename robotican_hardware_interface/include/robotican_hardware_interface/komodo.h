@@ -38,8 +38,9 @@ namespace robotican_hardware {
 
         bool _first;
         double _lastTorsoRead;
-        bool _doneHomingUpper;
-        bool _doneHomingLower;
+        bool _reachHomingUpper;
+        bool _reachHomingLower;
+        bool _doneHome;
 
         bool buildDxlMotors();
         void armStateCallback(const sensor_msgs::JointStateConstPtr &msg);

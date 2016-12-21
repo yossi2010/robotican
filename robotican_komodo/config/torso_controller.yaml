@@ -1,0 +1,11 @@
+torso_position_controller:
+  type: robotican_velocity_controllers/PositionController
+  joint: torso_joint
+  pid:
+    p: 210.0
+    i: 20.0
+    d: 0.0
+    i_clamp_max: 1.5
+    i_clamp_min: -0.1
+    upper_topic: 'upper_limit_switch'
+    lower_topic: 'lower_limit_switch'
