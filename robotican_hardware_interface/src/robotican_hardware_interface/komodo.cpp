@@ -212,10 +212,14 @@ namespace robotican_hardware {
             if(!_reachHomingUpper) {
                 _reachHomingUpper = true;
                 _doneHome = true;
-                _torsoJoint->cmd_pos = 0.407;
-                _torsoJoint->cmd_vel = 0.0;
+                if(_torsoJoint != NULL) {
+                    _torsoJoint->cmd_pos = 0.407;
+                    _torsoJoint->cmd_vel = 0.0;
+                }
                 ROS_INFO("[%s]: Torso reach upper switch homing, calculated to upper position", ros::this_node::getName().c_str());
             }
+        } else {
+            _reachHomingUpper = false;
         }
     }
 
@@ -224,10 +228,14 @@ namespace robotican_hardware {
             if(!_reachHomingLower) {
                 _reachHomingLower = true;
                 _doneHome = true;
-                _torsoJoint->cmd_pos = 0.0;
-                _torsoJoint->cmd_vel = 0.0;
+                if(_torsoJoint != NULL) {
+                    _torsoJoint->cmd_pos = 0.0;
+                    _torsoJoint->cmd_vel = 0.0;
+                }
                 ROS_INFO("[%s]: Torso reach lower switch homing, calculated to lower position", ros::this_node::getName().c_str());
             }
+        } else {
+            _reachHomingLower = false;
         }
     }
 }

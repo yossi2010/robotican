@@ -19,10 +19,10 @@ have_switch: true
 switch_size: 2
 
 switch0_topic_name: 'lower_limit_switch'
-switch0_pin: 12
+switch0_pin: 11
 
-switch1_topic_name: 'lower_limit_switch'
-switch1_pin: 13
+switch1_topic_name: 'upper_limit_switch'
+switch1_pin: 12
 
 imu_fusion_hz: 50
 imu_enable_gyro: true
