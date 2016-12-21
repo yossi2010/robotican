@@ -102,7 +102,7 @@ namespace robotican_hardware {
             }
             else {
                 double currentPosition = msg->position[i];
-                if (_doneHome) {
+                if (_doneHome && _first) {
                     double lastPosition = _lastTorsoRead,  positionDelta = (currentPosition - lastPosition);
                     if (fabs(positionDelta) > 2.24) {
                         positionDelta = -sgn(positionDelta) *  M_PI + positionDelta;
@@ -215,7 +215,6 @@ namespace robotican_hardware {
                 if(_torsoJoint != NULL) {
                     _torsoJoint->position = 0.407;
                     _torsoJoint->cmd_vel = 0.0;
-                    ROS_INFO("SET");
                 }
                 ROS_INFO("[%s]: Torso reach upper switch homing, calculated to upper position", ros::this_node::getName().c_str());
             }
@@ -230,7 +229,6 @@ namespace robotican_hardware {
                 _reachHomingLower = true;
                 _doneHome = true;
                 if(_torsoJoint != NULL) {
-                    ROS_INFO("SET");
                     _torsoJoint->position = 0.0;
                     _torsoJoint->cmd_vel = 0.0;
                 }
