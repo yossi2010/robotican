@@ -34,7 +34,9 @@ void operator >> (const YAML::Node& node, T& i)
 
 
 namespace dynamixel_controller {
-
+    /*!
+     * @brief Struct that use to represent the current joint info info
+     */
     struct JointInfo_t {
         double position;
         double effort;
@@ -49,7 +51,9 @@ namespace dynamixel_controller {
 
         }
     };
-
+    /*!
+     * @brief Struct to represent the dxl motor specification
+     */
     struct dynamixel_spec
     {
         std::string name;
@@ -57,7 +61,9 @@ namespace dynamixel_controller {
         int cpr;
         double gear_reduction;
     };
-
+    /*!
+     * @brief Struct to represent the dxl motor info
+     */
     struct dynamixel_info
     {
         int id;
@@ -89,7 +95,9 @@ namespace dynamixel_controller {
         TORQUE_CONTROL = 0,
         UNKOWN  = -1
     };
-
+    /*!
+     * @brief Struct to represent the current dxl motor status
+     */
     struct dynamixel_status
     {
         int id;
@@ -97,10 +105,12 @@ namespace dynamixel_controller {
         bool torque_enabled;
     };
 
-
+    /*!
+     * @brief Class to control a set to dxl motors, this class will manage the communication to dxl driver.
+     */
     class DynamixelController {
     private:
-        ros::NodeHandle _nodeHandle;
+        ros::NodeHandle _nodeHandle;                                                                                    //!< 
         hardware_interface::JointStateInterface* _jointStateInterface;
         hardware_interface::PosVelJointInterface* _posVelJointInterface;
         hardware_interface::PositionJointInterface* _positionJointInterface;

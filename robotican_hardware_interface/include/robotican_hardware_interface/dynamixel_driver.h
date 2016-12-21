@@ -80,7 +80,7 @@ namespace dynamixel_driver {
         /*!
          * @brief Protocol 2.0
          * @param id: Motor to be torque enable or disable
-         * @param torque: To enable or disable motor torqueue
+         * @param torque: To enable or disable motor torque
          * @return If succeed to enable torque or disable torque
          */
 
@@ -193,23 +193,55 @@ namespace dynamixel_driver {
          * @return If the communication port is open or not.
          */
         bool isPortOpen();
-
+        /*!
+         * @brief Method that ping the motors.
+         * @param motorInfo: The current motor info
+         * @return If the motor return ping or not.
+         */
         bool pingMotor(DxlMotorInfo_t motorInfo);
-
+        /*!
+         * @param motorInfo: The current motor info
+         * @param torque: Disable/Enable motor tourqe
+         * @return If succeed to enable torque or disable torque
+         */
         bool setMotorTorque(DxlMotorInfo_t motorInfo, uint8_t torque);
-
+        /*!
+         * @param motorInfo: The current motor info
+         * @param ticks: Position in ticks
+         * @return If succeed to send the speed command or not
+         */
         bool setMotorPosition(DxlMotorInfo_t motorInfo, int32_t ticks);
-
+        /*!
+         * @param motorInfo: The current motor info
+         * @param speed: The motor goal speed
+         * @return If succeed to send the speed command or not
+         */
         bool setMotorSpeed(DxlMotorInfo_t motorInfo, int32_t speed);
 
         bool setMotorAcceletarion(DxlMotorInfo_t motorInfo, int32_t acceleration);
-
+        /*!
+         * @param motorInfo: The current motor info
+         * @param position: Position in ticks that return from the motor
+         * @return If succeed to send the present speed command or not
+         */
         bool getMotorPosition(DxlMotorInfo_t motorInfo, int32_t &position);
-
+        /*!
+         * @param motorInfo: The current motor info
+         * @param speed: Speed that return from the motor
+         * @return If succeed to send the present speed command or not
+         */
         bool getMotorSpeed(DxlMotorInfo_t motorInfo, int32_t &speed);
-
+        /*!
+         * @param motorInfo: The current motor info
+         * @param load: Load that return from the motor
+         * @return If succeed to send the present load command or not
+         */
         bool getMotorLoad(DxlMotorInfo_t motorInfo, int16_t &load);
-
+        /*!
+         * @param motorInfo: The current motor info
+         * @param model: The motor model
+         * @return If succeed to send the read model command or not
+         */
         bool getMotorModel(DxlMotorInfo_t motorInfo, uint16_t &model);
     };
 }
