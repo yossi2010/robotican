@@ -75,9 +75,9 @@ namespace robotican_hardware {
                         } else if (fabs(info.cmd_vel) > 12.2) {
                             info.cmd_vel = sgn(info.cmd_vel) * 12.2;
                         }
-                        jointCmd.velocity.push_back(info.cmd_vel);
+                        jointCmd.velocity.push_back(-info.cmd_vel);
                     } else if(fabs(info.cmd_vel - TORSO_DONT_MOVE) > 0.01) {
-                        jointCmd.velocity.push_back(info.cmd_vel);
+                        jointCmd.velocity.push_back(-info.cmd_vel);
                     }
                 }
             }
