@@ -213,7 +213,7 @@ namespace robotican_hardware {
                 _reachHomingUpper = true;
                 _doneHome = true;
                 if(_torsoJoint != NULL) {
-                    _torsoJoint->cmd_pos = 0.407;
+                    _torsoJoint->position = 0.407;
                     _torsoJoint->cmd_vel = 0.0;
                 }
                 ROS_INFO("[%s]: Torso reach upper switch homing, calculated to upper position", ros::this_node::getName().c_str());
@@ -229,7 +229,7 @@ namespace robotican_hardware {
                 _reachHomingLower = true;
                 _doneHome = true;
                 if(_torsoJoint != NULL) {
-                    _torsoJoint->cmd_pos = 0.0;
+                    _torsoJoint->position = 0.0;
                     _torsoJoint->cmd_vel = 0.0;
                 }
                 ROS_INFO("[%s]: Torso reach lower switch homing, calculated to lower position", ros::this_node::getName().c_str());
