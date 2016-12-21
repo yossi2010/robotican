@@ -285,11 +285,11 @@ namespace robotican_velocity_controllers {
                                            robotican_hardware_interface::TorsoHommingResponse &res) {
         double vel = 0;
         if(req.homeDir == robotican_hardware_interface::TorsoHommingRequest::HOME_UP) {
-            vel = 1.0;
+            vel = 12.0;
             gotHoming_ = true;
         }
         else if(req.homeDir == robotican_hardware_interface::TorsoHommingRequest::HOME_DOWN) {
-            vel = -1.0;
+            vel = -12.0;
             gotHoming_ = true;
         }
         setCommand(0.0, vel);

@@ -49,6 +49,9 @@ namespace dynamixel_controller {
     }
 
     DynamixelController::~DynamixelController() {
+        JointInfo_t* jointInfoPtr = &_jointsInfo["torso_joint"];
+        jointInfoPtr->cmd_vel = 0.0;
+        write();
         if(_driver != NULL) {
             delete _driver;
         }
