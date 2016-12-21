@@ -29,8 +29,8 @@ if [ $? == 0 ]; then
 	sudo ./setup.sh
 	
 	#USB rules setup
-	cd ~/catkin_ws/src/robotican/robotican/installations/usb_rules_setup
-	sudo ./setup.sh
+	#cd ~/catkin_ws/src/robotican/robotican/installations/usb_rules_setup
+	#sudo ./setup.sh
 	
 	#Changing to user.
 	sudo chown -R $(logname):$(logname) ~/catkin_ws
