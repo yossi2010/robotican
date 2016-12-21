@@ -157,7 +157,7 @@
 			
 <group if="$(arg arm)">
 
-
+<node name="arm_manager" pkg="robotican_hardware_interface" type="dynamixel_node" respawn="false" output="screen" />
 
 
 </group>
