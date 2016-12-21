@@ -17,3 +17,8 @@
   model_number: 29
   cpr: 4096
   gear_reduction: 1.0
+  
+- name: MX106
+  model_number: 320
+  cpr: 4096
+  gear_reduction: 1.0
