@@ -103,8 +103,8 @@ namespace robotican_velocity_controllers {
             return  false;
         }
         
-        upperLimitSwitchListener_ = n.subscribe(upperTopic, 10, &JointPositionController::upperLimitSwitchTrigger, this);
-        lowerLimitSwitchListener_ = n.subscribe(lowerTopic, 10, &JointPositionController::lowerLimitSwitchTrigger, this);
+        upperLimitSwitchListener_ = n.subscribe("upper_limit_switch", 10, &JointPositionController::upperLimitSwitchTrigger, this);
+        lowerLimitSwitchListener_ = n.subscribe("lower_limit_switch", 10, &JointPositionController::lowerLimitSwitchTrigger, this);
         homeServise_ = n.advertiseService("torso_homing", &JointPositionController::onHoming, this);
 
         return true;
