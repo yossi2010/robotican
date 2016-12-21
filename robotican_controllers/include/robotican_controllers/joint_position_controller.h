@@ -66,9 +66,9 @@
 
 */
 
-#define UPPER_POSITION 0.35
+#define UPPER_POSITION 0.407
 
-#define LOWER_POSITION 0.01
+#define LOWER_POSITION 0.00
 
 #include <ros/node_handle.h>
 #include <urdf/model.h>

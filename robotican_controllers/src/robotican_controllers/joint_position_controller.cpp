@@ -269,6 +269,7 @@ namespace robotican_velocity_controllers {
 
     void JointPositionController::upperLimitSwitchTrigger(const std_msgs::BoolConstPtr &msg) {
         if(msg->data) {
+            ROS_INFO("UPPER");
             setCommand(UPPER_POSITION);
             isUpperTriggered_ = true;
         }
@@ -276,6 +277,7 @@ namespace robotican_velocity_controllers {
 
     void JointPositionController::lowerLimitSwitchTrigger(const std_msgs::BoolConstPtr &msg) {
         if(msg->data) {
+            ROS_INFO("LOWER");
             setCommand(LOWER_POSITION);
             isLowerTriggered_ = true;
         }

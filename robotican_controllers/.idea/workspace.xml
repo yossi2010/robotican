@@ -58,8 +58,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa292360-ec6f-4dad-9f1d-dd6fdca041d3" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/robotican_controllers/joint_position_controller.h" afterPath="$PROJECT_DIR$/include/robotican_controllers/joint_position_controller.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/robotican_controllers/joint_position_controller.cpp" afterPath="$PROJECT_DIR$/src/robotican_controllers/joint_position_controller.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../robotican_hardware_interface/src/robotican_hardware_interface/dynamixel_controller.cpp" afterPath="$PROJECT_DIR$/../robotican_hardware_interface/src/robotican_hardware_interface/dynamixel_controller.cpp" />
     </list>
     <ignored path="robotican_controllers.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -89,11 +89,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="joint_position_controller.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="joint_position_controller.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/robotican_controllers/joint_position_controller.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1072">
-              <caret line="291" column="21" lean-forward="false" selection-start-line="291" selection-start-column="21" selection-end-line="291" selection-end-column="21" />
+            <state relative-caret-position="425">
+              <caret line="279" column="27" lean-forward="false" selection-start-line="279" selection-start-column="27" selection-end-line="279" selection-end-column="27" />
               <folding>
                 <element signature="e#2047#2107#0" expanded="true" />
               </folding>
@@ -101,7 +101,22 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="joint_position_controller.h" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_position_controller.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="345">
+              <caret line="70" column="27" lean-forward="false" selection-start-line="70" selection-start-column="27" selection-end-line="70" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>isUpperTriggered_</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -140,9 +155,9 @@
         <option value="$PROJECT_DIR$/include/robotican_controllers/gripper_action_controller_impl.h" />
         <option value="$PROJECT_DIR$/include/robotican_controllers/joint_trajectory_controller_impl.h" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/include/robotican_controllers/joint_position_controller.h" />
         <option value="$PROJECT_DIR$/ros_control_plugins.xml" />
         <option value="$PROJECT_DIR$/src/robotican_controllers/joint_position_controller.cpp" />
+        <option value="$PROJECT_DIR$/include/robotican_controllers/joint_position_controller.h" />
       </list>
     </option>
   </component>
@@ -776,12 +791,12 @@
       <workItem from="1482301319116" duration="543000" />
       <workItem from="1482303605378" duration="155000" />
       <workItem from="1482306894053" duration="653000" />
-      <workItem from="1482331316281" duration="371000" />
+      <workItem from="1482331316281" duration="925000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33450000" />
+    <option name="totallyTimeSpent" value="34004000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -1186,16 +1201,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_position_controller.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="102" column="10" lean-forward="false" selection-start-line="102" selection-start-column="10" selection-end-line="102" selection-end-column="10" />
-          <folding>
-            <element signature="e#2843#2871#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="894">
@@ -1206,11 +1211,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/robotican_controllers/joint_position_controller.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1072">
-          <caret line="291" column="21" lean-forward="false" selection-start-line="291" selection-start-column="21" selection-end-line="291" selection-end-column="21" />
+        <state relative-caret-position="425">
+          <caret line="279" column="27" lean-forward="false" selection-start-line="279" selection-start-column="27" selection-end-line="279" selection-end-column="27" />
           <folding>
             <element signature="e#2047#2107#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/robotican_controllers/joint_position_controller.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="70" column="27" lean-forward="false" selection-start-line="70" selection-start-column="27" selection-end-line="70" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
