@@ -104,7 +104,7 @@ namespace robotican_hardware {
                 double currentPosition = msg->position[i];
                 if (_doneHome && _first) {
                     double lastPosition = _lastTorsoRead,  positionDelta = (currentPosition - lastPosition);
-                    ROS_INFO("lastPosition = %f, currentPosition = %f, positionDelta = %f", lastPosition, currentPosition, positionDelta);
+//                    ROS_INFO("lastPosition = %f, currentPosition = %f, positionDelta = %f", lastPosition, currentPosition, positionDelta);
                     if (fabs(positionDelta) > 3.24) {
                         positionDelta = -sgn(positionDelta) *  2 * M_PI +  positionDelta;
                     }

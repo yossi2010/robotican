@@ -21,7 +21,7 @@
 #define DOWN -1
 
 #define TORSO_DONT_MOVE 999
-#define RAD_2_M 0.00175 / 2 * M_PI
+#define RAD_2_M 0.00175 / (2 * M_PI)
 
 namespace robotican_hardware {
     class KomodoRobot : public RobotBase {
