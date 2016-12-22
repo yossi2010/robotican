@@ -171,10 +171,10 @@ target_link_libraries(arm_joy_node ${catkin_LIBRARIES})
 add_executable(point_head_action src/point_head_action.cpp)
 target_link_libraries(point_head_action ${catkin_LIBRARIES})
 
-add_executable(find_objects_node src/find_objects.cpp)
-add_dependencies(find_objects_node ${PROJECT_NAME}_gencfg)
-add_dependencies(find_objects_node ${PROJECT_NAME}_gencpp)
-target_link_libraries(find_objects_node ${catkin_LIBRARIES})
+#add_executable(find_objects_node src/find_objects.cpp)
+#add_dependencies(find_objects_node ${PROJECT_NAME}_gencfg)
+#add_dependencies(find_objects_node ${PROJECT_NAME}_gencpp)
+#target_link_libraries(find_objects_node ${catkin_LIBRARIES})
 
 
 add_executable(reach_event src/reach_event_node.cpp)

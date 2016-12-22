@@ -20,7 +20,10 @@
 #include <ar_track_alvar_msgs/AlvarMarkers.h>
 #include <robotican_common/switch_topic.h>
 
+
+
 using namespace cv;
+using namespace std;
 
 bool debug_vision=false;
 

@@ -55,7 +55,7 @@ arm_position_controller:
     publish_rate: 20
 
 arm_trajectory_controller:
-  type: position_velocity_controllers/JointTrajectoryController
+  type: position_controllers/JointTrajectoryController
   joints:
      - base_rotation_joint 
      - shoulder_joint 
