@@ -154,7 +154,7 @@
 		</group>
 		<group if="$(arg torso_camera)">
 			<include file="$(find robotican_common)/launch/openni_cam.launch">
-				<arg name="camera_name" value="torso_camera_link" />
+				<arg name="camera_name" value="torso_camera" />
 			</include>
 		</group>
 		<group if="$(arg lidar)">
