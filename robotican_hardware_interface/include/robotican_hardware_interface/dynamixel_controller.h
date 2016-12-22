@@ -110,48 +110,85 @@ namespace dynamixel_controller {
      */
     class DynamixelController {
     private:
-        ros::NodeHandle _nodeHandle;                                                                                    //!< 
+        ros::NodeHandle _nodeHandle;
         hardware_interface::JointStateInterface* _jointStateInterface;
         hardware_interface::PosVelJointInterface* _posVelJointInterface;
         hardware_interface::PositionJointInterface* _positionJointInterface;
-        std::map<uint16_t, dynamixel_spec> _modelSpec;
-        std::map<std::string, dynamixel_info> _joint2Dxl;
+        std::map<uint16_t, dynamixel_spec> _modelSpec;                                                                  //!< Map That contain the motors specification
+        std::map<std::string, dynamixel_info> _joint2Dxl;                                                               //!< Map that contain the current dxl info.
         std::map<int, dynamixel_status> _id2status;
-        std::map<std::string, JointInfo_t> _jointsInfo;
-        dynamixel_driver::DynamixelDriver* _driver;
+        std::map<std::string, JointInfo_t> _jointsInfo;                                                                 //!< Map that contain the current joint info
+        dynamixel_driver::DynamixelDriver* _driver;                                                                     //!< Communication channel.
 
-        ros::Publisher _jointStatePub;
+        ros::Publisher _jointStatePub;                                                                                  //!< Publisher for the current joint state.
 
         ros::Subscriber _torqueListener;
-        ros::Subscriber _cmdListener;
+        ros::Subscriber _cmdListener;                                                                                   //!< Trigger which fire when sending a msg to topic 'joint_command'
 
-        bool _first;
-        double _initSpeedProtocol1;
-        double _initSpeedProtocol2;
+        bool _first;                                                                                                    //!< Indicate if got the first read
+        double _initSpeedProtocol1;                                                                                     //!< The stating up speed when the motor (protocol 1.0)
+        double _initSpeedProtocol2;                                                                                     //!< The stating up speed when the motor (protocol 2.0)
 
-
+        /*!
+         * @brief Read from dxl motor specification file and init the '_modelSpec' field
+         */
         void initSpecFile();
-
+        /*!
+         * @brief Get parameters and Build the '_driver' field, (the transport layer).
+         */
         void initPort();
-
+        /*!
+         * @brief Build all the dxl motors.
+         * @return If succeed or not.
+         */
         bool initMotors();
-
+        /*!
+         * @brief Method that enable/disable torque for all the dxl motors.
+         * @return If succeed or not.
+         */
         bool torqueMotors();
-
+        /*!
+         * @brief Method that convert rad in the current joint to ticks.
+         * @param rads: the current joint rad.
+         * @param info: the current dxl info.
+         * @return The ticks
+         */
         int32_t posToTicks(double rads, const dynamixel_info &info);
-
+        /*!
+         * @brief Method that convert ticks to rads.
+         * @param ticks: The current motor ticks
+         * @param info: The current dxl info
+         * @return The rads
+         */
         double posToRads(int32_t ticks, const dynamixel_info &info);
-
+        /*!
+         * @brief Method that get the current velocity to send to the driver.
+         * @param info: The current dxl motor info.
+         * @param velocity: The current velocity to be converted.
+         * @return Driver velocity.
+         */
         int32_t getDriverVelocity(const dynamixel_info &info, const double velocity) const;
-
+        /*!
+         * @brief Method that get the driver velocity the convert it to joint velocity.
+         * @param info: The current dxl motor info
+         * @param velocity: The current driver velocity to be converted
+         * @return Joint velocity
+         */
         double getVelocity(const dynamixel_info &info, int32_t velocity) const;
 
         bool testBit(int16_t number, int16_t offset);
-
+        /*!
+         * @brief Register all the dxl joints in a hardware interfaces
+         */
         void registerJointHandlers();
-
+        /*!
+         * @brief Build all the dxl motor joints
+         */
         void buildJoints();
-
+        /*!
+         * @brief Trigger which fire when a node send msgs to 'joint_command' topic
+         * @param msg: The current cmd of all the joints
+         */
         void CmdCallback(const sensor_msgs::JointStateConstPtr &msg);
 
     public:
@@ -163,11 +200,17 @@ namespace dynamixel_controller {
                             hardware_interface::PositionJointInterface* positionJointInterface);
 
         ~DynamixelController();
-
+        /*!
+         * Do the reading for all the dxl motor.
+         */
         void read();
-
+        /*!
+         * Publish the current state of the dxl motors.
+         */
         void publishState();
-
+        /*!
+         * Write the current command.
+         */
         void write();
     };
 }
