@@ -305,7 +305,7 @@
     <origin rpy="2.85979682697881E-15 1.01870746742143E-16 3.19235832636806E-21" xyz="-0.000250000000000111 0.021 0.0422500000000001"/>
     <parent link="wrist_link"/>
     <child link="left_finger_link"/>
-    <axis xyz="1.5 0 0"/>
+    <axis xyz="3 0 0"/>
     <limit effort="3.1" lower="-1.57" upper="1.57" velocity="2.0"/>
   </joint>
   <link name="right_finger_link">
@@ -336,7 +336,7 @@
     <origin rpy="0 3.19686557214722E-37 0" xyz="-0.00024999999999889 -0.021 0.0422499999999999"/>
     <parent link="wrist_link"/>
     <child link="right_finger_link"/>
-    <axis xyz="1.5 0 0"/>
+    <axis xyz="3 0 0"/>
     <limit effort="3.1" lower="-1.57" upper="1.57" velocity="2.0"/>
   </joint>
 
