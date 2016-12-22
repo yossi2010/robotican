@@ -92,7 +92,7 @@
 	lower="0"
 	upper="0.45"
 	effort="70"
-	velocity="0.0012" />
+	velocity="0.062" />
   </joint>
 
   <joint
