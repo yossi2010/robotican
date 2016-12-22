@@ -19,7 +19,9 @@ namespace robotican_hardware {
     class Device;
 
 
-
+    /*!
+     * @brief Abstract class that all the robot will inherit from. This class will do the basic logic that apply to all the robots (for example init the RiCBoad cause alll the robots have one)
+     */
     class RobotBase : public hardware_interface::RobotHW {
     private:
         ros::Time _time;
@@ -31,13 +33,22 @@ namespace robotican_hardware {
 #ifdef RIC_BOARD_TEST
         hardware_interface::PositionJointInterface _positionJointInterface;
 #endif
-        RiCBoardManager _boardManager;
+        RiCBoardManager _boardManager;                                                                                  //!< The RiCBoard logic layer.
 
     public:
         RobotBase();
         virtual ~RobotBase();
+        /*!
+         * @brief Method that register all the hardware interfaces to the ros system.
+         */
         virtual void registerInterfaces();
+        /*!
+         * @brief Do the read logic that needed to update the current joints state
+         */
         virtual void read();
+        /*!
+         * @brief Do the write logic that needed to send the current joint command to all hardware
+         */
         virtual void write();
         ros::Time getTime();
         ros::Duration getPeriod();

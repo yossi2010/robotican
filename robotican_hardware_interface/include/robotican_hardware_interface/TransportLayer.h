@@ -22,19 +22,41 @@ class TransportLayer {
 private:
     crc _crcTable[MAX_TABLE];
     boost::asio::io_service _ioService;
-    boost::asio::serial_port _serial;
+    boost::asio::serial_port _serial;                                                                                   //!< The serial channel
+    /*!
+     * @brief Method will read packet from the RiCBoard and store it in a buffer
+     * @param buff: The store buffer
+     * @param buffLength: The max buffer length
+     * @return If succeed to read pkg or not
+     */
     bool read(byte buff[], byte buffLength);
-
+    /*!
+     * @brief This method will call ones at init, all this method does is init the '_crcTable' field.
+     */
     void crcInit();
 
 public:
     TransportLayer(std::string port, unsigned int baudrate);
     ~TransportLayer();
-
+    /*!
+     * @brief Method that try to read a valid RiCBoard pkg.
+     * @param buff: The buffer that store the valid pkg
+     * @param buffLength: The max buffer length
+     * @return If succeed to read pkg or not
+     */
     bool tryToRead(byte *buff, byte buffLength);
-
+    /*!
+     * @brief Method that write pkg to the RiCBoard.
+     * @param buff: Buffer that store the pkg to be send
+     * @param buffLength: How many byte needed to send to the RiCBoard
+     */
     void write(byte buff[], byte buffLength);
-
+    /*!
+     * @brief Calculate the crc checksum
+     * @param message: msg to be calculated
+     * @param nBytes: the bytes length
+     * @return The checksum result
+     */
     crc calcChecksum(uint8_t const message[], int nBytes);
 };
 
