@@ -28,6 +28,7 @@ find_package(catkin REQUIRED COMPONENTS
         message_generation
         )
 find_package(gazebo REQUIRED)
+find_package(OpenCV 2 REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -141,6 +142,7 @@ include_directories(
         include
         ${catkin_INCLUDE_DIRS}
         ${GAZEBO_INCLUDE_DIRS}
+        ${OpenCV_LIBRARIES}
 )
 
 link_directories(
@@ -171,10 +173,10 @@ target_link_libraries(arm_joy_node ${catkin_LIBRARIES})
 add_executable(point_head_action src/point_head_action.cpp)
 target_link_libraries(point_head_action ${catkin_LIBRARIES})
 
-#add_executable(find_objects_node src/find_objects.cpp)
-#add_dependencies(find_objects_node ${PROJECT_NAME}_gencfg)
-#add_dependencies(find_objects_node ${PROJECT_NAME}_gencpp)
-#target_link_libraries(find_objects_node ${catkin_LIBRARIES})
+add_executable(find_objects_node src/find_objects.cpp)
+add_dependencies(find_objects_node ${PROJECT_NAME}_gencfg)
+add_dependencies(find_objects_node ${PROJECT_NAME}_gencpp)
+target_link_libraries(find_objects_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 
 add_executable(reach_event src/reach_event_node.cpp)
