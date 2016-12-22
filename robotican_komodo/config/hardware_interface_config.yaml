@@ -53,7 +53,7 @@ ultrasonic0_frame_id: 'left_urf_link'
 ultrasonic0_topic_name: 'URF/left'
 ultrasonic0_sonar_name:  'Max_Sonar_HRLV'
 
-ultrasonic1_pin: 16
+ultrasonic1_pin: 14
 ultrasonic1_frame_id: 'right_urf_link'
 ultrasonic1_topic_name: 'URF/right'
 ultrasonic1_sonar_name:  'Max_Sonar_HRLV'
