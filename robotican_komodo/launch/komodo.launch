@@ -124,12 +124,32 @@
 
 		<group if="$(arg front_camera)">
 			<include file="$(find robotican_common)/launch/usb_cam.launch">
-				<arg name="input_dev" value="$(arg front_camera_dev)" />
+				<arg name="input_dev" value="/dev/video0" />
 				<arg name="camera_frame_id" value="front_cam_link" />
 				<arg name="pixel_format" value="yuyv" /> <!-- mjpeg, yuyv, uyvy  -->
 				<arg name="image_width" value="320" />
 				<arg name="image_height" value="240" />
 				<arg name="node_name" value="front_cam" />
+			</include>
+		</group>
+		<group if="$(arg rear_camera)">
+			<include file="$(find robotican_common)/launch/usb_cam.launch">
+				<arg name="input_dev" value="/dev/video1" />
+				<arg name="camera_frame_id" value="rear_camera_link" />
+				<arg name="pixel_format" value="yuyv" /> <!-- mjpeg, yuyv, uyvy  -->
+				<arg name="image_width" value="320" />
+				<arg name="image_height" value="240" />
+				<arg name="node_name" value="rear_camera" />
+			</include>
+		</group>
+		<group if="$(arg top_camera)">
+			<include file="$(find robotican_common)/launch/usb_cam.launch">
+				<arg name="input_dev" value="/dev/video4" />
+				<arg name="camera_frame_id" value="top_camera_link" />
+				<arg name="pixel_format" value="yuyv" /> <!-- mjpeg, yuyv, uyvy  -->
+				<arg name="image_width" value="320" />
+				<arg name="image_height" value="240" />
+				<arg name="node_name" value="top_camera" />
 			</include>
 		</group>
 		<group if="$(arg depth_camera)">
