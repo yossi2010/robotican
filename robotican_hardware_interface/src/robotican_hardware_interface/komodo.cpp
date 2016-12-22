@@ -68,8 +68,10 @@ namespace robotican_hardware {
                     if(_doneHome) {
                         if(_reachHomingUpper && info.cmd_vel > 0) {
                             jointCmd.velocity.push_back(0.0);
+                            ROS_WARN("[%s]: can't go upper", ros::this_node::getName().c_str());
                             continue;
                         } else if(_reachHomingLower && info.cmd_vel < 0) {
+                            ROS_WARN("[%s]: can't go lower", ros::this_node::getName().c_str());
                             jointCmd.velocity.push_back(0.0);
                             continue;
                         } else if (fabs(info.cmd_vel) > 12.2) {
