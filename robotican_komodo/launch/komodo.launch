@@ -171,7 +171,7 @@
 		  <include file="$(find robotican_common)/launch/sr300.launch"/>
 		</group>
 
-		<group if="$(arg softkinetic)">
+		<group if="$(arg arm_camera)">
 		  <include file="$(find robotican_common)/launch/softkinetic_camera_ds325.launch"/>
 		</group>
 			
