@@ -286,11 +286,7 @@ namespace dynamixel_controller {
         }
         else {
             double cprDev2 = info.cpr / 2.0f;
-            if(!info.velocityMode) {
-                return (static_cast<double>(ticks) - cprDev2) * M_PI / cprDev2;
-            } else {
-                return (static_cast<double>(ticks) - cprDev2) * 0.0015358897;
-            }
+            return (static_cast<double>(ticks) - cprDev2) * M_PI / cprDev2;
         }
     }
 
