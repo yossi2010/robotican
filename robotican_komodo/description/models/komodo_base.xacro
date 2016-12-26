@@ -86,7 +86,6 @@
         xyz="0 0 0"
         rpy="${M_PI/2} 0 0" />
       <geometry>
-	<!--  <mesh filename="package://robotican_komodo/description/meshes/wheel_link.STL" /> -->
 	  <cylinder  length="0.05" radius="0.127"/> 
       </geometry>
     </collision>
@@ -139,7 +138,6 @@
         xyz="0 0 0"
         rpy="${M_PI/2} 0 0" />
       <geometry>
-	<!--  <mesh filename="package://robotican_komodo/description/meshes/wheel_link.STL" /> -->
 	  <cylinder  length="0.05" radius="0.127"/> 
       </geometry>
     </collision>
@@ -192,7 +190,6 @@
         xyz="0 0 0"
         rpy="${M_PI/2} 0 0" />
       <geometry>
-	<!--  <mesh filename="package://robotican_komodo/description/meshes/wheel_link.STL" /> -->
 	  <cylinder  length="0.05" radius="0.127"/> 
       </geometry>
     </collision>
@@ -245,10 +242,9 @@
         xyz="0 0 0"
         rpy="${M_PI/2} 0 0" />
       <geometry>
-	<!--  <mesh filename="package://robotican_komodo/description/meshes/wheel_link.STL" /> -->
 	  <cylinder  length="0.05" radius="0.127"/> 
       </geometry>
-    </collision>
+    </collision> 
   </link>
   <joint
     name="FR_wheel_joint"

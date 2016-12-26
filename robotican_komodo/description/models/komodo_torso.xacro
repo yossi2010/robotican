@@ -21,12 +21,12 @@
         <color rgba="0.4 0.4 0.4 1" />
       </material>
     </visual>
-    <collision>
+  <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
         <mesh filename="package://robotican_komodo/description/meshes/arm_base_link.STL" />
       </geometry>
-    </collision>
+    </collision> 
   </link>
 
   <joint name="arm_base_joint" type="fixed">
@@ -74,7 +74,7 @@
         <mesh
           filename="package://robotican_komodo/description/meshes/torso_link.STL" />
       </geometry>
-    </collision>
+    </collision> 
   </link>
   <joint
     name="torso_joint"
@@ -92,7 +92,7 @@
 	lower="0"
 	upper="0.45"
 	effort="70"
-	velocity="0.062" />
+	velocity="0.012" />
   </joint>
 
   <joint
@@ -111,7 +111,7 @@
       lower="-3.14"
       upper="3.14"
       effort="10"
-      velocity="0" />
+      velocity="1.0" />
   </joint>
   <link name="base_rotation_link">
     <inertial>
@@ -142,7 +142,7 @@
       <geometry>
         <mesh filename="package://robotican_arm/meshes/base_rotation_link.STL"/>
       </geometry>
-    </collision>
+    </collision> 
   </link>
 
   <link name="shoulder_link">
@@ -164,16 +164,15 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://robotican_arm/meshes/shoulder_link.STL"/>
-        <!-- Simplified -->
       </geometry>
-    </collision>
+    </collision> 
   </link>
   <joint name="shoulder_joint" type="revolute">
     <origin rpy="-4.20159904047482E-15 -5.97509793174248E-16 9.93431320775303E-15" xyz="0 0 0.0835"/>
     <parent link="base_rotation_link"/>
     <child link="shoulder_link"/>
     <axis xyz="0 1 0"/>
-    <limit effort="2000" lower="0.0" upper="1.57" velocity="0"/>
+    <limit effort="2000" lower="0.0" upper="1.57" velocity="1.0"/>
   </joint>
   <link name="elbow1_link">
     <inertial>
@@ -195,16 +194,15 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://robotican_arm/meshes/elbow1_link.STL"/>
-        <!-- Simplified -->
       </geometry>
-    </collision>
+    </collision> 
   </link>
   <joint name="elbow1_joint" type="revolute">
     <origin rpy="1.44504380352115E-15 1.11628850952447E-06 -9.93431159466724E-15" xyz="0 -0.000251155668931501 0.266305434894181"/>
     <parent link="shoulder_link"/>
     <child link="elbow1_link"/>
     <axis xyz="-0.999999999998754 0 0"/>
-    <limit effort="100" lower="-3.14" upper="3.14" velocity="0"/>
+    <limit effort="100" lower="-3.14" upper="3.14" velocity="1.0"/>
   </joint>
   <link name="elbow2_link">
     <inertial>
@@ -226,16 +224,15 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://robotican_arm/meshes/elbow2_link.STL"/>
-        <!-- Simplified -->
       </geometry>
-    </collision>
+    </collision> 
   </link>
   <joint name="elbow2_joint" type="revolute">
     <origin rpy="-4.51048856041191E-16 3.35869632765754E-16 0" xyz="0 0 0.22399999999847"/>
     <parent link="elbow1_link"/>
     <child link="elbow2_link"/>
     <axis xyz="0 1 0"/>
-    <limit effort="10" lower="-3.14" upper="3.14" velocity="0"/>
+    <limit effort="10" lower="-3.14" upper="3.14" velocity="1.0"/>
   </joint>
   <link name="wrist_link">
     <inertial>
@@ -257,16 +254,15 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://robotican_arm/meshes/wrist_link.STL"/>
-        <!-- Simplified -->
       </geometry>
-    </collision>
+    </collision> 
   </link>
   <joint name="wrist_joint" type="revolute">
     <origin rpy="0 0 0" xyz="0.0131002732116043 0 0.244749985376465"/>
     <parent link="elbow2_link"/>
     <child link="wrist_link"/>
     <axis xyz="0 0 0.999999999998754"/>
-    <limit effort="10" lower="-3.14" upper="3.14" velocity="0"/>
+    <limit effort="10" lower="-3.14" upper="3.14" velocity="1.0"/>
   </joint>
   
   <link name="gripper_link"/>
@@ -297,9 +293,8 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://robotican_arm/meshes/left_finger_link.STL"/>
-        <!-- Simplified -->
       </geometry>
-    </collision>
+    </collision> 
   </link>
   <joint name="left_finger_joint" type="revolute">
     <origin rpy="0.205 0 0.0" xyz="-0.000250000000000111 0.021 0.0422500000000001"/>
@@ -328,9 +323,8 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://robotican_arm/meshes/right_finger_link.STL"/>
-        <!-- Simplified -->
       </geometry>
-    </collision>
+    </collision> 
   </link>
   <joint name="right_finger_joint" type="revolute">
     <origin rpy="-0.205 0 0" xyz="-0.00024999999999889 -0.021 0.0422499999999999"/>
@@ -379,7 +373,7 @@
         <mesh
           filename="package://robotican_komodo/description/meshes/creative_camera_link.STL" />
       </geometry>
-    </collision>
+    </collision> 
   </link>
   <joint
     name="creative_camera_joint"
@@ -401,6 +395,7 @@
       <parent link="creative_camera_link"/>
       <child link="creative_camera_rgb_frame" />
     </joint>
+    
     
     <link name="creative_camera_rgb_frame">
       <inertial>
@@ -457,7 +452,7 @@
         <origin xyz="0 0 0" />
         <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001" />
         </inertial>
-      </link>
+      </link> 
 
 
   <link
@@ -498,7 +493,7 @@
           <mesh
             filename="package://robotican_komodo/description/meshes/torso_camera_link.STL" />
         </geometry>
-      </collision>
+      </collision> 
     </link>
     <joint
       name="torso_camera_joint"
@@ -552,7 +547,7 @@
         <mesh
           filename="package://robotican_komodo/description/meshes/rear_camera_link.STL" />
       </geometry>
-    </collision>
+    </collision> 
   </link>
   <joint
     name="rear_camera_joint"
@@ -606,7 +601,7 @@
         <mesh
           filename="package://robotican_komodo/description/meshes/top_camera_link.STL" />
       </geometry>
-    </collision>
+    </collision> 
   </link>
   <joint
     name="top_camera_joint"
@@ -622,7 +617,7 @@
       xyz="0 0 0" />
   </joint>
 
-<joint name="torso_camera_rgb_joint" type="fixed">
+  <joint name="torso_camera_rgb_joint" type="fixed">
       <origin xyz="0 0.0185 0" rpy="0 0 0"/>
       <parent link="torso_camera_link"/>
       <child link="torso_camera_rgb_frame" />
@@ -651,7 +646,7 @@
       iyy="0.0001" iyz="0.0"
       izz="0.0001" />
     </inertial>
-  </link>
+  </link> 
 
 
   

@@ -192,7 +192,7 @@
         <transmission name="base_rotation_joint_trans">
           <type>transmission_interface/SimpleTransmission</type>
           <joint name="base_rotation_joint">
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PosVelJointInterface</hardwareInterface>
           </joint>
           <actuator name="base_rotation_joint_motor">
             <mechanicalReduction>1</mechanicalReduction>
@@ -202,7 +202,7 @@
         <transmission name="shoulder_joint_trans">
           <type>transmission_interface/SimpleTransmission</type>
           <joint name="shoulder_joint">
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PosVelJointInterface</hardwareInterface>
           </joint>
           <actuator name="shoulder_joint_motor">
             <mechanicalReduction>1</mechanicalReduction>
@@ -212,7 +212,7 @@
         <transmission name="elbow1_joint_trans">
           <type>transmission_interface/SimpleTransmission</type>
           <joint name="elbow1_joint">
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PosVelJointInterface</hardwareInterface>
           </joint>
           <actuator name="elbow1_joint_motor">
             <mechanicalReduction>1</mechanicalReduction>
@@ -222,7 +222,7 @@
         <transmission name="elbow2_joint_trans">
           <type>transmission_interface/SimpleTransmission</type>
           <joint name="elbow2_joint">
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PosVelJointInterface</hardwareInterface>
           </joint>
           <actuator name="elbow2_joint_motor">
             <mechanicalReduction>1</mechanicalReduction>
@@ -232,7 +232,7 @@
         <transmission name="wrist_joint_trans">
           <type>transmission_interface/SimpleTransmission</type>
           <joint name="wrist_joint">
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+            <hardwareInterface>PosVelJointInterface</hardwareInterface>
           </joint>
           <actuator name="wrist_joint_motor">
             <mechanicalReduction>1</mechanicalReduction>

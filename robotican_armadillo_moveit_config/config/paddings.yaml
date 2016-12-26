@@ -1,0 +1,6 @@
+default_robot_padding: 100.0
+default_robot_scale: 1.0
+default_object_padding: 100.0
+default_attached_padding: 100.0
+
+default_robot_link_scale: {torso_link: 11.1, arm_link: 11.1}
