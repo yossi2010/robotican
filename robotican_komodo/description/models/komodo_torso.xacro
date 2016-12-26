@@ -172,7 +172,7 @@
     <parent link="base_rotation_link"/>
     <child link="shoulder_link"/>
     <axis xyz="0 1 0"/>
-    <limit effort="2000" lower="0.0" upper="1.57" velocity="1.0"/>
+    <limit effort="2000" lower="-9.9E-07" upper="1.57" velocity="1.0"/>
   </joint>
   <link name="elbow1_link">
     <inertial>
