@@ -183,7 +183,7 @@ positionMotor0_k: -30.0 # Exp!!
 positionMotor0_max_set_point_speed: 0.06
 positionMotor0_min_set_point_speed: -0.06
 positionMotor0_max_set_point_position: 0.37
-positionMotor0_min_set_point_position: 0.05
+positionMotor0_min_set_point_position: 0.08
 positionMotor0_limit: 0.3
 positionMotor0_motor_address: 20
 positionMotor0_motor_emergency_pin: 12

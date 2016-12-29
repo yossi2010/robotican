@@ -10,6 +10,7 @@
     <node name="pick_and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true">
       <param name="~start_position_name" value="$(arg start_position)"/>
       <param name="~object_name" value="can"/>
+	<param name="~gripper_effort" value="0.1"/>
     </node>
 
 
