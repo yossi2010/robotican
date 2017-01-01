@@ -1,12 +1,13 @@
-<!-- This file shows the most important parameters in their default settings,
-     to make them easily available for beginners.
+<!--launching example:
+	1. roslaunch robotican_common rgbdslam_kinnect2.launch 
+	2. roslaunch robotican_common rgbdslam_octomap_server.launch 
+	3. rosservice call /rgbdslam/ros_ui "command: 'send_all'" -->
 
-     The openni driver is started automatically -->
 <launch>
   <include file="$(find robotican_common)/launch/kinect2_with_tf.launch"/>
   <node pkg="rgbdslam" type="rgbdslam" name="rgbdslam" cwd="node" required="true" output="screen"> 
     <!-- Input data settings-->
-    
+
     <param name="config/topic_image_mono"              value="/kinect2/sd/image_color_rect"/> 
     <param name="config/topic_image_depth"             value="/kinect2/sd/image_depth_rect"/>
 	<param name="config/camera_info_topic"			   value="/kinect2/sd/camera_info"/>
