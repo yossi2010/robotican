@@ -3,6 +3,7 @@
 
   <arg name="front_camera" default='false'/>
   <arg name="rear_camera" default='false'/>
+  <arg name="softkinetic" default='false'/>
   <arg name="lidar" default='false'/>
   <arg name="gps" default='false'/>
   <arg name="urf" default='false'/>
@@ -30,7 +31,7 @@
   <arg name="Y" default="0.0" />
   <arg name="arm" default="true"/>
 
-     <arg name="paused" default="false"/>
+    <arg name="paused" default="false"/>
     <arg name="use_sim_time" default="true"/>
     <arg name="gui" default="true"/>
     <arg name="headless" default="false"/>
@@ -154,10 +155,10 @@
 
 		<group if="$(arg sr300)">
 <include file="$(find robotican_common)/launch/sr300.launch"/>
+		</group>
 
-
-
-
+		<group if="$(arg softkinetic)">
+		  <include file="$(find robotican_common)/launch/softkinetic_camera_ds325.launch"/>
 		</group>
 
 
