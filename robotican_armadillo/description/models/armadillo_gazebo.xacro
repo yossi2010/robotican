@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="Armadillo" description="Armadillo robot">
   <xacro:include filename="$(find robotican_armadillo)/description/models/armadillo.xacro" />
-
+  <xacro:include filename="$(find robotican_common)/gazebo/softkinetic_camera_ds325.xacro" />
 
 
   <xacro:property name="URF_FOV" value="${10.0*M_PI/180}" />
@@ -18,19 +18,26 @@
   <xacro:arg name="imu" default="false"/>
   <xacro:arg name="gps" default="false"/>
   <xacro:arg name="lidar" default="false"/>
-  <xacro:arg name="sr300" default="false"/>
+  <xacro:arg name="softkinetic" default="false"/>
+  <!--<xacro:arg name="sr300" default="false"/>-->
 
   <xacro:include filename="$(find robotican_manipulator_h)/models/manipulator_h_gazebo_plugins.xacro" />
 
 
   <!-- SR300 -->
-  <xacro:if value="$(arg sr300)">
+  <!--<xacro:if value="$(arg sr300)">
     <xacro:include filename="$(find robotican_common)/gazebo/sr300.xacro" />
+  </xacro:if> -->
+
+  <!-- Softkinetic -->
+    <!-- softkinetic -->
+  <xacro:if value="$(arg softkinetic)">
+     <xacro:softkinetic_gazebo name="softkinetic_camera_rgb" ros_topic="softkinetic_camera"/> 
   </xacro:if>
 
 
-  <!-- kinect 2 -->
 
+  <!-- kinect 2 -->
   <xacro:if value="$(arg kinect2)">
     <xacro:property name="kinect2_hz" value="$(arg kinect2_hz)"/>
     <xacro:property name="kinect2_hd" value="$(arg kinect2_hd)"/>
@@ -192,7 +199,10 @@
         <gazebo reference="laser_link">
           <material>Gazebo/Black</material>
         </gazebo>
-        <gazebo reference="sr300_link">
+        <!--<gazebo reference="sr300_link">
+          <material>Gazebo/Black</material>
+        </gazebo> -->
+        <gazebo reference="softkinetic_camera_link">
           <material>Gazebo/Black</material>
         </gazebo>
         <gazebo reference="front_cam_link">
