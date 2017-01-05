@@ -182,8 +182,7 @@
 		<node name="arm_controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
 		  args="--manager=dxl_manager
 				--port=gripper_port
-		left_finger_controller
-		right_finger_controller
+		
 		pan_controller
 		tilt_controller"
 				output="screen"/>
