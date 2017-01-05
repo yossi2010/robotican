@@ -201,7 +201,3 @@ gps_topic_name: 'gps'
 gps_frame_id: 'base_link'
 
 #RiCBoard
-
-
-
-

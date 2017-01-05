@@ -3,5 +3,3 @@ device: "/dev/ttyS0"
 serial_timeout_ms: 1000000000
 baudrate: 57600
 
-
-
