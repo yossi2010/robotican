@@ -2,6 +2,11 @@
 <!--
 Demo launch file to run single softkinetic camera in stand alone (no other /tf) setup with Rviz
 The arguments given are the device indices of the cameras determined by the DepthSense deamon.
+
+To run softkinetics camera as a stand alone camera, run the following commands:
+$ roslaunch robotican_common softkinetic_camera_ds325.launch 
+$ rosrun tf static_transform_publisher 0 0 0 .5707963267948966 0 -1.5707963267948966 camera_link softkinetic_camera_link 100
+$ rqt
 -->
 <launch>
   <arg name="depth" default="true" />
