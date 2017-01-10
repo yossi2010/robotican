@@ -48,7 +48,6 @@ bool exec = false;
 ros::ServiceClient *uc_client_ptr;
 ros::Publisher pub_controller_command;
 Point_t point;
-int gripper_effort;
 
 int main(int argc, char **argv) {
 
@@ -65,7 +64,6 @@ int main(int argc, char **argv) {
     pn.param<std::string>("start_position_name", startPositionName, "pre_grasp2");
     pn.param<std::string>("object_name", object_name, "can");
     pn.param<std::string>("table_name", table_name, "table");
-    pn.param<int>("gripper_effort", gripper_effort, 0.1);
     ros::ServiceServer pickAndPlace = n.advertiseService("pick_go", &pickAndPlaceCallBack);
     ROS_INFO("Hello");
     moveit::planning_interface::MoveGroup group("arm");
