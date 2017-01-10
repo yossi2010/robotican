@@ -1,3 +1,4 @@
+<!-- for example: roslaunch robotican_commn rgbd_mapping.launch depth_cam_name:=softkinetic -->
 
 <launch>
    
@@ -8,7 +9,8 @@
            $ roslaunch kinect2_bridge kinect2_bridge.launch publish_tf:=true
            $ roslaunch rtabmap_ros rgbd_mapping_kinect2.launch
    -->
-
+   <!-- the name of the depth camera that will be used for mapping -->
+   <arg name="depth_cam_name" default="kinect2" />
    <!-- Which image resolution to process in rtabmap: sd, qhd, hd -->
    <arg name="resolution" default="qhd" />
    
@@ -66,9 +68,9 @@
     <!-- Odometry -->
     <node pkg="rtabmap_ros" type="rgbd_odometry" name="visual_odometry" output="screen">
       
-      <remap from="rgb/image" to="/kinect2/$(arg resolution)/image_color_rect"/>
-      <remap from="depth/image" to="/kinect2/$(arg resolution)/image_depth_rect"/>
-      <remap from="rgb/camera_info" to="/kinect2/$(arg resolution)/camera_info"/>
+      <remap from="rgb/image" to="/$(arg depth_cam_name)/$(arg resolution)/image_color_rect"/>
+      <remap from="depth/image" to="/$(arg depth_cam_name)/$(arg resolution)/image_depth_rect"/>
+      <remap from="rgb/camera_info" to="/$(arg depth_cam_name)/$(arg resolution)/camera_info"/>
 
       <param name="frame_id" type="string" value="$(arg frame_id)"/>
       <param name="approx_sync" type="bool" value="true"/>
@@ -91,9 +93,9 @@
       <param name="subscribe_depth" type="bool" value="true"/>
 	  <param name="frame_id" type="string" value="$(arg frame_id)"/>
 	
-      <remap from="rgb/image" to="/kinect2/$(arg resolution)/image_color_rect"/>
-      <remap from="depth/image" to="/kinect2/$(arg resolution)/image_depth_rect"/>
-      <remap from="rgb/camera_info" to="/kinect2/$(arg resolution)/camera_info"/>
+      <remap from="rgb/image" to="/$(arg depth_cam_name)/$(arg resolution)/image_color_rect"/>
+      <remap from="depth/image" to="/$(arg depth_cam_name)/$(arg resolution)/image_depth_rect"/>
+      <remap from="rgb/camera_info" to="/$(arg depth_cam_name)/$(arg resolution)/camera_info"/>
 
       <param name="approx_sync" type="bool" value="true"/>
 
@@ -108,9 +110,9 @@
       <param name="approx_sync" type="bool" value="true"/>
       <param name="frame_id" type="string" value="$(arg frame_id)"/>
     
-      <remap from="rgb/image" to="/kinect2/$(arg resolution)/image_color_rect"/>
-      <remap from="depth/image" to="/kinect2/$(arg resolution)/image_depth_rect"/>
-      <remap from="rgb/camera_info" to="/kinect2/$(arg resolution)/camera_info"/>
+      <remap from="rgb/image" to="/$(arg depth_cam_name)/$(arg resolution)/image_color_rect"/>
+      <remap from="depth/image" to="/$(arg depth_cam_name)/$(arg resolution)/image_depth_rect"/>
+      <remap from="rgb/camera_info" to="/$(arg depth_cam_name)/$(arg resolution)/camera_info"/>
     </node>
   
   </group>
@@ -120,9 +122,9 @@
   <!-- sync cloud with odometry and voxelize the point cloud (for fast visualization in rviz) -->
   <node if="$(arg rviz)" pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager" output="screen"/>
   <node if="$(arg rviz)" pkg="nodelet" type="nodelet" name="data_odom_sync" args="load rtabmap_ros/data_odom_sync standalone_nodelet">
-    <remap from="rgb/image_in"       to="/kinect2/$(arg resolution)/image_color_rect"/>
-    <remap from="depth/image_in"     to="/kinect2/$(arg resolution)/image_depth_rect"/>
-    <remap from="rgb/camera_info_in" to="/kinect2/$(arg resolution)/camera_info"/>
+    <remap from="rgb/image_in"       to="/$(arg depth_cam_name)/$(arg resolution)/image_color_rect"/>
+    <remap from="depth/image_in"     to="/$(arg depth_cam_name)/$(arg resolution)/image_depth_rect"/>
+    <remap from="rgb/camera_info_in" to="/$(arg depth_cam_name)/$(arg resolution)/camera_info"/>
 
     <remap from="odom_in"             to="rtabmap/odom"/>
 
