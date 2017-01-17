@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <robot name="komodo_torso" description="Komodo Torso" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	
+  <xacro:include filename="$(find robotican_common)/models/softkinetic_camera_ds325/model.xacro" />
+
   <link name="arm_base_link">
     <inertial>
       <origin xyz="0.0787832367713514 1.63894955207658E-05 0.30372182598738" rpy="0 0 0" />
@@ -357,7 +360,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotican_komodo/description/meshes/creative_camera_link.STL" />
+          filename="package://robotican_common/description/meshes/creative_camera_link.STL" />
       </geometry>
       <material
         name="">
