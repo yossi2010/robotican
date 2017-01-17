@@ -5,7 +5,6 @@
   <arg name="top_camera" default='false'/>
   <arg name="rear_camera" default='false'/> 
   <arg name="torso_camera" default='false'/>
-  <arg name="arm_camera" default='false'/>
 
   <arg name="lidar" default='false'/>
   <arg name="gps" default='false'/>
@@ -80,12 +79,10 @@
 	   rear_camera:=$(arg rear_camera)
 	   top_camera:=$(arg top_camera)
 	   torso_camera:=$(arg torso_camera)
-	   arm_camera:=$(arg arm_camera)
 	   lidar:=$(arg lidar)
 	   urf:=$(arg urf)
 	   imu:=$(arg imu)
 	   gps:=$(arg gps)
-	   sr300:=$(arg sr300)
 	   softkinetic:=$(arg softkinetic)
 	   depth_camera:=$(arg depth_camera)
 	   " /> 
@@ -174,19 +171,13 @@
 			</include>
 		</group>
 
-
-		<group if="$(arg sr300)">
-		  <include file="$(find robotican_common)/launch/sr300.launch"/>
-		</group>
-
-		<group if="$(arg arm_camera)">
+		<group if="$(arg softkinetic)">
 		  <include file="$(find robotican_common)/launch/softkinetic_camera_ds325.launch"/>
 		</group>
 			
 <group if="$(arg arm)">
 
 <node name="arm_manager" pkg="robotican_hardware_interface" type="dynamixel_node" respawn="false" output="screen" />
-
 
 </group>
 		<rosparam file="$(find robotican_komodo)/config/hardware_interface_config.yaml" command="load"/>
