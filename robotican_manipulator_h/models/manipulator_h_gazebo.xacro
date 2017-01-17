@@ -5,10 +5,9 @@
 
 	
 	
-	  <xacro:arg name="sr300" default="false"/>
-	    <!-- SR300 -->
-  <xacro:if value="$(arg sr300)">
-    <xacro:include filename="$(find robotican_common)/gazebo/sr300.xacro" />
+	  <xacro:arg name="softkinetic" default="false"/>
+  <xacro:if value="$(arg softkinetic)">
+    <xacro:include filename="$(find robotican_common)/gazebo/softkinetic_camera_ds325.xacro" />
   </xacro:if>
 
 

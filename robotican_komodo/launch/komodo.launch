@@ -76,13 +76,12 @@
 	   front_camera:=$(arg front_camera)
 	   rear_camera:=$(arg rear_camera)
 	   top_camera:=$(arg top_camera)
-	   torso_camera:=$(arg torso_camera)
+	   asus_camera:=$(arg asus_camera)
 	   lidar:=$(arg lidar)
 	   urf:=$(arg urf)
 	   imu:=$(arg imu)
 	   gps:=$(arg gps)
 	   softkinetic:=$(arg softkinetic)
-	   depth_camera:=$(arg depth_camera)
 	   " /> 
 	  
 

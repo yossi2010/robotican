@@ -14,14 +14,13 @@
   <xacro:arg name="imu" default="false"/>
   <xacro:arg name="gps" default="false"/>
   <xacro:arg name="lidar" default="false"/>
-  <xacro:arg name="depth_camera" default="false"/>
-  <xacro:arg name="torso_camera" default="false"/>
+  <xacro:arg name="asus_camera" default="false"/>
   <xacro:arg name="arm_camera" default="false"/>
 
   
   <!-- torso_camera -->
 
-  <xacro:if value="$(arg torso_camera)">
+  <xacro:if value="$(arg asus_camera)">
     <gazebo reference="torso_camera_link">
         <sensor type="depth" name="torso_camera">
           <update_rate>20</update_rate>
