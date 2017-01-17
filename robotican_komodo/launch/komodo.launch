@@ -4,22 +4,21 @@
   <arg name="front_camera" default='false'/>
   <arg name="top_camera" default='false'/>
   <arg name="rear_camera" default='false'/> 
-  <arg name="torso_camera" default='false'/>
+  <arg name="asus_camera" default='false'/>
+  <arg name="softkinetic" default='false'/>
+  <arg name="front_camera_dev" default='/dev/video2'/>
 
   <arg name="lidar" default='false'/>
   <arg name="gps" default='false'/>
   <arg name="urf" default='false'/>
   <arg name="imu" default='false'/>
-  <!-- add asus -->
-  <arg name="sr300" default='false'/>
-  <arg name="softkinetic" default='false'/>
+  
   <arg name="joystick" default='false'/>
   <arg name="joystick_dev" default='/dev/input/js0'/>
-  <arg name="front_camera_dev" default='/dev/video2'/>
+  
   <arg name="twist_mux" default='true'/>
   <arg name="gmapping" default='false'/>
   
-
   <arg name="gazebo" default='false'/>
   <arg name="world_name" default="worlds/empty.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
   <arg name="x" default="0.0"/>
@@ -37,7 +36,6 @@
     <arg name="debug" default="false"/> 
     
   <arg name="controllers" default='true'/>
-  <arg name="depth_camera" default='false'/>
   <arg name="moveit" default='true'/>
   <arg name="use_depth" default='false'/>
   <arg name="robot_localization" default='false'/>
@@ -121,12 +119,6 @@
 		<param name="have_arm" value="$(arg arm)" />
 		<param name="have_imu" value="$(arg imu)" />
 		
-		<group if="$(arg depth_camera)">
-			<include file="$(find robotican_common)/launch/openni_cam.launch">
-				<arg name="camera_name" value="depth_camera" />
-			</include>
-		</group>
-		
 		<group if="$(arg front_camera)">
 			<include file="$(find robotican_common)/launch/usb_cam.launch">
 				<arg name="input_dev" value="/dev/video0" />
@@ -157,7 +149,7 @@
 				<arg name="node_name" value="top_camera" />
 			</include>
 		</group>
-		<group if="$(arg torso_camera)">
+		<group if="$(arg asus_camera)">
 			<include file="$(find robotican_common)/launch/openni_cam.launch">
 				<arg name="camera_name" value="torso_camera" />
 			</include>

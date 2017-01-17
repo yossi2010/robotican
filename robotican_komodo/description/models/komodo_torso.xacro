@@ -336,7 +336,7 @@
 
 
   <link
-    name="creative_camera_link">
+    name="softkinetic_camera_link">
     <inertial>
       <origin
         xyz="0.000246466472824558 6.40214461760665E-06 -3.77569804070194E-05"
@@ -376,7 +376,7 @@
     </collision> 
   </link>
   <joint
-    name="creative_camera_joint"
+    name="softkinetic_camera_joint"
     type="fixed">
     <origin
       xyz="-0.05 0 0.0255"
@@ -384,20 +384,20 @@
     <parent
       link="wrist_link" />
     <child
-      link="creative_camera_link" />
+      link="softkinetic_camera_link" />
     <axis
       xyz="0 0 0" />
   </joint>
 
 
-<joint name="creative_camera_rgb_joint" type="fixed">
+<joint name="softkinetic_camera_rgb_joint" type="fixed">
       <origin xyz="0 0.0185 0" rpy="0 0 0"/>
-      <parent link="creative_camera_link"/>
-      <child link="creative_camera_rgb_frame" />
+      <parent link="softkinetic_camera_link"/>
+      <child link="softkinetic_camera_rgb_frame" />
     </joint>
     
     
-    <link name="creative_camera_rgb_frame">
+    <link name="softkinetic_camera_rgb_frame">
       <inertial>
   <mass value="0.001" />
   <origin xyz="0 0 0" />
@@ -406,13 +406,13 @@
     izz="0.0001" />
   </inertial>
       </link>   
-      <joint name="creative_camera_rgb_optical_joint" type="fixed">
+      <joint name="softkinetic_camera_rgb_optical_joint" type="fixed">
   <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
-  <parent link="creative_camera_rgb_frame" />
-  <child link="creative_camera_rgb_optical_frame" />
+  <parent link="softkinetic_camera_rgb_frame" />
+  <child link="softkinetic_camera_rgb_optical_frame" />
       </joint>
       
-      <link name="creative_camera_rgb_optical_frame">
+      <link name="softkinetic_camera_rgb_optical_frame">
   <inertial>
     <mass value="0.001" />
     <origin xyz="0 0 0" />
@@ -425,13 +425,13 @@
 
   
   
-  <joint name="creative_camera_depth_joint" type="fixed">
+  <joint name="softkinetic_camera_depth_joint" type="fixed">
     <origin xyz="0 0.0445 0" rpy="0 0 0" />
-    <parent link="creative_camera_link" />
-    <child link="creative_camera_depth_frame" />
+    <parent link="softkinetic_camera_link" />
+    <child link="softkinetic_camera_depth_frame" />
   </joint>
   
-  <link name="creative_camera_depth_frame">
+  <link name="softkinetic_camera_depth_frame">
     <inertial>
       <mass value="0.001" />
       <origin xyz="0 0 0" />
@@ -441,12 +441,12 @@
       </inertial>
     </link>
     
-    <joint name="creative_camera_depth_optical_joint" type="fixed">
+    <joint name="softkinetic_camera_depth_optical_joint" type="fixed">
       <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
-      <parent link="creative_camera_depth_frame" />
-      <child link="creative_camera_depth_optical_frame" />
+      <parent link="softkinetic_camera_depth_frame" />
+      <child link="softkinetic_camera_depth_optical_frame" />
     </joint>
-    <link name="creative_camera_depth_optical_frame">
+    <link name="softkinetic_camera_depth_optical_frame">
       <inertial>
         <mass value="0.001" />
         <origin xyz="0 0 0" />
