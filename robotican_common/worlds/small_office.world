@@ -85,17 +85,6 @@
       <pose>0.0 -13.0 1.0 0.0 0.0 0.0</pose>
       <static>1</static>
       <link name="wall_1_body">
-        <inertial>
-          <mass>1.000000</mass>
-          <inertia>
-            <ixx>1.000000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>1.000000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>1.000000</izz>
-          </inertia>
-        </inertial>
         <collision name="collision">
           <geometry>
             <box>
@@ -133,17 +122,7 @@
       <pose>0.0 2.0 1.0 0.0 0.0 0.0</pose>
       <static>1</static>
       <link name="wall_2_body">
-        <inertial>
-          <mass>1.000000</mass>
-          <inertia>
-            <ixx>1.000000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>1.000000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>1.000000</izz>
-          </inertia>
-        </inertial>
+
         <collision name="collision">
           <geometry>
             <box>
@@ -181,16 +160,7 @@
       <pose>-5.0 -5.5 1.0 0.0 0.0 0.0</pose>
       <static>1</static>
       <link name="wall_3_body">
-        <inertial>
-          <mass>1.000000</mass>
-          <inertia>
-            <ixx>1.000000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>1.000000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>1.000000</izz>
-          </inertia>
+        
         </inertial>
         <collision name="collision">
           <geometry>
@@ -229,16 +199,7 @@
       <pose>5.0 -5.5 1.0 0.0 0.0 0.0</pose>
       <static>1</static>
       <link name="wall_4_body">
-        <inertial>
-          <mass>1.000000</mass>
-          <inertia>
-            <ixx>1.000000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>1.000000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>1.000000</izz>
-          </inertia>
+      
         </inertial>
         <collision name="collision">
           <geometry>
@@ -277,16 +238,7 @@
       <pose>-2.25 -3.0 1.0 0.0 0.0 0.0</pose>
       <static>1</static>
       <link name="wall_5_body">
-        <inertial>
-          <mass>1.000000</mass>
-          <inertia>
-            <ixx>1.000000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>1.000000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>1.000000</izz>
-          </inertia>
+     
         </inertial>
         <collision name="collision">
           <geometry>
@@ -325,16 +277,7 @@
       <pose>3.75 -3.0 1.0 0.0 0.0 0.0</pose>
       <static>1</static>
       <link name="wall_6_body">
-        <inertial>
-          <mass>1.000000</mass>
-          <inertia>
-            <ixx>1.000000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>1.000000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>1.000000</izz>
-          </inertia>
+    
         </inertial>
         <collision name="collision">
           <geometry>
@@ -377,16 +320,7 @@
     <model name="cabinet">
       <static>0</static>
       <link name="cabinet_bottom_plate">
-        <inertial>
-          <pose>0.000000 0.000000 -1.000000 0.000000 0.000000 0.000000</pose>
-          <inertia>
-            <ixx>2.050000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>2.050000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>2.050000</izz>
-          </inertia>
+     
           <mass>25.000000</mass>
         </inertial>
         <collision name="cabinet_bottom_plate_geom">
@@ -594,16 +528,7 @@
     <model name="cabinet_0">
       <static>0</static>
       <link name="cabinet_bottom_plate">
-        <inertial>
-          <pose>0.000000 0.000000 -1.000000 0.000000 0.000000 0.000000</pose>
-          <inertia>
-            <ixx>2.050000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>2.050000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>2.050000</izz>
-          </inertia>
+   
           <mass>25.000000</mass>
         </inertial>
         <collision name="cabinet_bottom_plate_geom">
@@ -811,9 +736,7 @@
     <model name="bookshelf">
       <static>0</static>
       <link name="link">
-        <inertial>
-          <mass>1.000000</mass>
-        </inertial>
+      
         <collision name="back">
           <pose>0.000000 0.005000 0.600000 0.000000 0.000000 0.000000</pose>
           <geometry>
@@ -1051,9 +974,7 @@
     <model name="bookshelf_0">
       <static>0</static>
       <link name="link">
-        <inertial>
-          <mass>1.000000</mass>
-        </inertial>
+      
         <collision name="back">
           <pose>0.000000 0.005000 0.600000 0.000000 0.000000 0.000000</pose>
           <geometry>
@@ -1291,9 +1212,7 @@
     <model name="bookshelf_1">
       <static>0</static>
       <link name="link">
-        <inertial>
-          <mass>1.000000</mass>
-        </inertial>
+      
         <collision name="back">
           <pose>0.000000 0.005000 0.600000 0.000000 0.000000 0.000000</pose>
           <geometry>
@@ -1712,16 +1631,7 @@
     <model name="cabinet_1">
       <static>0</static>
       <link name="cabinet_bottom_plate">
-        <inertial>
-          <pose>0.000000 0.000000 -1.000000 0.000000 0.000000 0.000000</pose>
-          <inertia>
-            <ixx>2.050000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>2.050000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>2.050000</izz>
-          </inertia>
+      
           <mass>25.000000</mass>
         </inertial>
         <collision name="cabinet_bottom_plate_geom">
@@ -1929,16 +1839,7 @@
     <model name="cabinet_2">
       <static>0</static>
       <link name="cabinet_bottom_plate">
-        <inertial>
-          <pose>0.000000 0.000000 -1.000000 0.000000 0.000000 0.000000</pose>
-          <inertia>
-            <ixx>2.050000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>2.050000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>2.050000</izz>
-          </inertia>
+     
           <mass>25.000000</mass>
         </inertial>
         <collision name="cabinet_bottom_plate_geom">
@@ -2146,9 +2047,7 @@
     <model name="bookshelf_2">
       <static>0</static>
       <link name="link">
-        <inertial>
-          <mass>1.000000</mass>
-        </inertial>
+      
         <collision name="back">
           <pose>0.000000 0.005000 0.600000 0.000000 0.000000 0.000000</pose>
           <geometry>
@@ -2748,16 +2647,7 @@
     <model name="cabinet_3">
       <static>0</static>
       <link name="cabinet_bottom_plate">
-        <inertial>
-          <pose>0.000000 0.000000 -1.000000 0.000000 0.000000 0.000000</pose>
-          <inertia>
-            <ixx>2.050000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>2.050000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>2.050000</izz>
-          </inertia>
+   
           <mass>25.000000</mass>
         </inertial>
         <collision name="cabinet_bottom_plate_geom">
@@ -2965,9 +2855,7 @@
     <model name="bookshelf_3">
       <static>0</static>
       <link name="link">
-        <inertial>
-          <mass>1.000000</mass>
-        </inertial>
+      
         <collision name="back">
           <pose>0.000000 0.005000 0.600000 0.000000 0.000000 0.000000</pose>
           <geometry>
@@ -3205,9 +3093,7 @@
     <model name="bookshelf_4">
       <static>0</static>
       <link name="link">
-        <inertial>
-          <mass>1.000000</mass>
-        </inertial>
+
         <collision name="back">
           <pose>0.000000 0.005000 0.600000 0.000000 0.000000 0.000000</pose>
           <geometry>
@@ -3445,9 +3331,7 @@
     <model name="bookshelf_5">
       <static>0</static>
       <link name="link">
-        <inertial>
-          <mass>1.000000</mass>
-        </inertial>
+      
         <collision name="back">
           <pose>0.000000 0.005000 0.600000 0.000000 0.000000 0.000000</pose>
           <geometry>
@@ -3685,9 +3569,7 @@
     <model name="bookshelf_6">
       <static>0</static>
       <link name="link">
-        <inertial>
-          <mass>1.000000</mass>
-        </inertial>
+      
         <collision name="back">
           <pose>0.000000 0.005000 0.600000 0.000000 0.000000 0.000000</pose>
           <geometry>
@@ -3925,16 +3807,7 @@
     <model name="cabinet_4">
       <static>0</static>
       <link name="cabinet_bottom_plate">
-        <inertial>
-          <pose>0.000000 0.000000 -1.000000 0.000000 0.000000 0.000000</pose>
-          <inertia>
-            <ixx>2.050000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>2.050000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>2.050000</izz>
-          </inertia>
+      
           <mass>25.000000</mass>
         </inertial>
         <collision name="cabinet_bottom_plate_geom">

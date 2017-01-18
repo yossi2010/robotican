@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="Komodo" description="Komodo robot">
   <xacro:include filename="$(find robotican_komodo)/description/models/komodo.xacro" />
-  <xacro:include filename="$(find robotican_common)/gazebo/softkinetic_camera_ds325.xacro" />
-
+ <xacro:include filename="$(find robotican_common)/gazebo/softkinetic_camera_ds325.xacro" />
 
   <xacro:property name="URF_FOV" value="${10.0*M_PI/180}" />
 
@@ -16,7 +15,12 @@
   <xacro:arg name="lidar" default="false"/>
   <xacro:arg name="asus_camera" default="false"/>
   <xacro:arg name="arm_camera" default="false"/>
-
+  <arg name="softkinetic" default='false'/>
+  
+   <!-- softkinetic -->
+  <xacro:if value="$(arg softkinetic)">
+     <xacro:softkinetic_gazebo name="softkinetic_camera_rgb" ros_topic="softkinetic_camera"/> 
+  </xacro:if>
   
   <!-- torso_camera -->
 
