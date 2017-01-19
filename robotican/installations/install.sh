@@ -48,13 +48,6 @@ if [ $? == 0 ]; then
 		cd ~/catkin_ws/src/robotican/robotican/installations/third_pkg_setup
 		sudo ./softkinetic.sh
 	fi
-
-	echo "Do you want to install f200\r200\sr300 camera package [y/n]: "
-	read asf
-	if [ $asf == "y" ]; then
-		cd ~/catkin_ws/src/robotican/robotican/installations/third_pkg_setup
-		./realsense.sh
-	fi
 	
 	sudo chown -R $(logname):$(logname) ~/catkin_ws
 	
@@ -63,7 +56,7 @@ if [ $? == 0 ]; then
 
 	#Do this in the end of the installation.
 	if [ $asf == "y" ]; then
-		echo -e "\e[31mWarning: To complete f200\r200\sr300\softkinetic installation the PC need to reboot."
+		echo -e "\e[31mTo complete softkinetic installation the PC need to reboot."
 		echo -en "\e[39mReboot the PC [y/n]:"
 		read as
 
