@@ -42,12 +42,9 @@ if [ $? == 0 ]; then
 		./kinect2.sh
 	fi
 	
-	echo "Do you want to install softkinetic (DS325) package [y/n]: "
-	read asfS
-	if [ $asfS == "y" ]; then
-		cd ~/catkin_ws/src/robotican/robotican/installations/third_pkg_setup
-		sudo ./softkinetic.sh
-	fi
+	echo "installing softkinetic (DS325) package"
+	cd ~/catkin_ws/src/robotican/robotican/installations/third_pkg_setup
+	sudo ./softkinetic.sh
 	
 	sudo chown -R $(logname):$(logname) ~/catkin_ws
 	
