@@ -13,7 +13,6 @@
   <arg name="kinect2_hd" default="false"/>
   <arg name="kinect2_qhd" default="true"/>
   <arg name="kinect2_sd" default="false"/>
-  <arg name="sr300" default='false'/>
   <arg name="joystick" default='false'/>
   <arg name="joystick_dev" default='/dev/input/js0'/>
   <arg name="twist_mux" default='true'/>
@@ -86,7 +85,6 @@
 	   kinect2_hd:=$(arg kinect2_hd)
 	   kinect2_qhd:=$(arg kinect2_qhd)
 	   kinect2_sd:=$(arg kinect2_sd)
-	   sr300:=$(arg sr300)
 	   softkinetic:=$(arg softkinetic)
 	   " />
 
@@ -154,10 +152,6 @@
 
 		</group>
 
-		<group if="$(arg sr300)">
-<include file="$(find robotican_common)/launch/sr300.launch"/>
-		</group>
-
 <group if="$(arg softkinetic)">
 		  <include file="$(find robotican_common)/launch/softkinetic_camera_ds325.launch"/>
 		</group>
@@ -182,7 +176,7 @@
 		  <rosparam>
                 namespace: dxl_manager
                 serial_ports:
-                 gripper_port:
+                 pan_tilt_port:
                   port_name: "/dev/ttyUSB0"
                   baud_rate: 57142
                   min_motor_id: 3
@@ -193,7 +187,7 @@
 
 		<node name="arm_controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
 		  args="--manager=dxl_manager
-				--port=gripper_port
+				--port=pan_tilt_port
 		pan_controller
 		tilt_controller"
 				output="screen"/>
