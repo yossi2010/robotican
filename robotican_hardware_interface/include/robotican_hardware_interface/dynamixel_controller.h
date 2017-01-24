@@ -119,6 +119,9 @@ namespace dynamixel_controller {
         double _initSpeedProtocol1;
         double _initSpeedProtocol2;
 
+        //temp addition to measure herz
+        double curr_time_ = 0;
+        double prev_time_ = 0;
 
         void initSpecFile();
 

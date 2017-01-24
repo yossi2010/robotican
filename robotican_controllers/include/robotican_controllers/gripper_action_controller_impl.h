@@ -351,8 +351,8 @@ namespace gripper_action_controller
                 pre_alloc_result_->stalled = true;
 
 
-		ROS_WARN("pre_alloc_result_->effort: %f", pre_alloc_result_->effort);
-		ROS_WARN("pre_alloc_result_->position: %f", pre_alloc_result_->position);
+		        ROS_WARN("pre_alloc_result_->effort: %f", pre_alloc_result_->effort);
+		        ROS_WARN("pre_alloc_result_->position: %f", pre_alloc_result_->position);
 
                 rt_active_goal_->setSucceeded(pre_alloc_result_);
                 setHoldPosition(ros::Time(0.0));
