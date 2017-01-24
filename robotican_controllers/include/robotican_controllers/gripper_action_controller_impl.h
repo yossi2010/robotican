@@ -307,7 +307,13 @@ namespace gripper_action_controller
     void GripperActionControllerTwo<HardwareInterface>::
     setHoldPosition(const ros::Time& time)
     {
+	ROS_WARN("INSIDE setHoldPosition");
+	ROS_WARN("rightjoint_.getPosition(): %f", rightjoint_.getPosition());
+	
         command_struct_.position_ = pos2Gap(rightjoint_.getPosition());
+	
+	ROS_WARN("command_struct_.position_ = pos2Gap(rightjoint_.getPosition()): %f", pos2Gap(rightjoint_.getPosition()));
+
         command_.writeFromNonRT(command_struct_);
 
     }
@@ -337,10 +343,16 @@ namespace gripper_action_controller
             if (current_effort >= fabs(max_effort)) {
                 ROS_WARN("GRIPPER: MAX EFFORT");
 
+		
+		
                 pre_alloc_result_->effort = computed_command_;
                 pre_alloc_result_->position = current_position;
                 pre_alloc_result_->reached_goal = false;
                 pre_alloc_result_->stalled = true;
+
+
+		ROS_WARN("pre_alloc_result_->effort: %f", pre_alloc_result_->effort);
+		ROS_WARN("pre_alloc_result_->position: %f", pre_alloc_result_->position);
 
                 rt_active_goal_->setSucceeded(pre_alloc_result_);
                 setHoldPosition(ros::Time(0.0));

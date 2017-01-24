@@ -49,6 +49,9 @@ namespace dynamixel_controller {
     }
 
     DynamixelController::~DynamixelController() {
+        JointInfo_t* jointInfoPtr = &_jointsInfo["torso_joint"];
+        jointInfoPtr->cmd_vel = 0.0;
+        write();
         if(_driver != NULL) {
             delete _driver;
         }
@@ -135,6 +138,48 @@ namespace dynamixel_controller {
                         } else {
                             info.joint_name = static_cast<std::string>(servos[i]["joint_name"]);
                         }
+                        if(!servos[i]["read_pos"].getType() == XmlRpc::XmlRpcValue::TypeBoolean) {
+                            ROS_ERROR("[%s]: Invalid/Missing read_pos, servo index %d, id: %d", ros::this_node::getName().c_str(), i, info.id);
+                            return false;
+                        } else {
+                            info.readPos = static_cast<bool>(servos[i]["read_pos"]);
+                        }
+                        if(!servos[i]["read_vel"].getType() == XmlRpc::XmlRpcValue::TypeBoolean) {
+                            ROS_ERROR("[%s]: Invalid/Missing read_vel, servo index %d, id: %d", ros::this_node::getName().c_str(), i, info.id);
+                            return false;
+                        } else {
+                            info.readVel = static_cast<bool>(servos[i]["read_vel"]);
+                        }
+                        if(!servos[i]["read_eff"].getType() == XmlRpc::XmlRpcValue::TypeBoolean) {
+                            ROS_ERROR("[%s]: Invalid/Missing read_eff, servo index %d, id: %d", ros::this_node::getName().c_str(), i, info.id);
+                            return false;
+                        } else {
+                            info.readEff = static_cast<bool>(servos[i]["read_eff"]);
+                        }
+                        if(!servos[i]["write_pos"].getType() == XmlRpc::XmlRpcValue::TypeBoolean) {
+                            ROS_ERROR("[%s]: Invalid/Missing write_pos, servo index %d, id: %d", ros::this_node::getName().c_str(), i, info.id);
+                            return false;
+                        } else {
+                            info.writePos = static_cast<bool>(servos[i]["write_pos"]);
+                        }
+                        if(!servos[i]["write_vel"].getType() == XmlRpc::XmlRpcValue::TypeBoolean) {
+                            ROS_ERROR("[%s]: Invalid/Missing write_vel, servo index %d, id: %d", ros::this_node::getName().c_str(), i, info.id);
+                            return false;
+                        } else {
+                            info.writeVel = static_cast<bool>(servos[i]["write_vel"]);
+                        }
+                        if(!servos[i]["use_init_vel"].getType() == XmlRpc::XmlRpcValue::TypeBoolean) {
+                            ROS_ERROR("[%s]: Invalid/Missing use_init_vel, servo index %d, id: %d", ros::this_node::getName().c_str(), i, info.id);
+                            return false;
+                        } else {
+                            info.useMinVel = static_cast<bool>(servos[i]["use_init_vel"]);
+                        }
+                        if(!servos[i]["velocity_mode"].getType() == XmlRpc::XmlRpcValue::TypeBoolean) {
+                            ROS_ERROR("[%s]: Invalid/Missing velocity_mode, servo index %d, id: %d", ros::this_node::getName().c_str(), i, info.id);
+                            return false;
+                        } else {
+                            info.velocityMode = static_cast<bool>(servos[i]["velocity_mode"]);
+                        }
 
                         if(!servos[i]["protocol_version"].getType() == XmlRpc::XmlRpcValue::TypeDouble) {
                             ROS_ERROR("[%s]: Invalid/Missing protocol version for servo index %d, id: %d", ros::this_node::getName().c_str() ,i, info.id);
@@ -210,11 +255,13 @@ namespace dynamixel_controller {
                 hardware_interface::PosVelJointHandle jointHandle(_jointStateInterface->getHandle(jointName)
                         , &_jointsInfo[jointName].cmd_pos, &_jointsInfo[jointName].cmd_vel);
                 _posVelJointInterface->registerHandle(jointHandle);
-                _jointsInfo[jointName].pre_vel = _initSpeedProtocol2;
+                if(it->second.useMinVel)
+                    _jointsInfo[jointName].pre_vel = _initSpeedProtocol2;
             } else {
                 hardware_interface::JointHandle jointHandle(_jointStateInterface->getHandle(jointName) ,
                                                             &_jointsInfo[jointName].cmd_pos);
-                _jointsInfo[jointName].cmd_vel = _initSpeedProtocol1;
+                if(it->second.useMinVel)
+                    _jointsInfo[jointName].cmd_vel = _initSpeedProtocol1;
                 _positionJointInterface->registerHandle(jointHandle);
             }
 
@@ -269,35 +316,47 @@ namespace dynamixel_controller {
             dxlMotorInfo.protocol = info.protocolVer;
 
 
-            if(_driver->getMotorPosition(dxlMotorInfo, position)) {
-                double rad = posToRads(position, info);
-                _jointsInfo[jointName].position = rad;
-                if (_first) _jointsInfo[jointName].cmd_pos = rad;
+            if (info.readPos) {
+                if(_driver->getMotorPosition(dxlMotorInfo, position)) {
+                    double rad = posToRads(position, info);
+                    _jointsInfo[jointName].position = rad;
+                    /////
+                    if (info.id == 7 || info.id == 8)
+                    {
+						ROS_WARN("dynamixel position: %f", position);
+						ROS_WARN("posToRads(position, info): %f", rad);
+					}
+                    /////
+                    if (_first) _jointsInfo[jointName].cmd_pos = rad;
 
-            } else {
-                ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
-            }
-            if(_driver->getMotorSpeed(dxlMotorInfo, velocity)) {
-                double radVel = getVelocity(info, velocity);
-                _jointsInfo[jointName].velocity = radVel;
-            } else {
-                ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
-            }
-
-            if(_driver->getMotorLoad(dxlMotorInfo, rawLoad)) {
-                if (info.protocolVer == PROTOCOL1_VERSION) {
-                    bool revers = testBit(rawLoad, 10);
-                    double effort = (double)(rawLoad & 1023) / 1024.0f;
-                    effort = (revers) ? -effort : effort;
-                    _jointsInfo[jointName].effort = effort;
-
+                } else {
+                    ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
                 }
-                else {
-                    double effort = rawLoad;
-                    _jointsInfo[jointName].effort = effort;
+            }
+            if (info.readVel) {
+                if(_driver->getMotorSpeed(dxlMotorInfo, velocity)) {
+                    double radVel = getVelocity(info, velocity);
+                    _jointsInfo[jointName].velocity = radVel;
+                } else {
+                    ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
                 }
-            } else {
-                ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
+            }
+
+            if (info.readEff) {
+                if(_driver->getMotorLoad(dxlMotorInfo, rawLoad)) {
+                    if (info.protocolVer == PROTOCOL1_VERSION) {
+                        bool revers = testBit(rawLoad, 10);
+                        double effort = (double)(rawLoad & 1023) / 1024.0f;
+                        effort = (revers) ? -effort : effort;
+                        _jointsInfo[jointName].effort = effort;
+
+                    } else {
+                        double effort = rawLoad;
+                        _jointsInfo[jointName].effort = effort;
+                    }
+                } else {
+                    ROS_WARN("[%s]: Motor id: %u got error", ros::this_node::getName().c_str(), dxlMotorInfo.id);
+                }
             }
         }
         if(_first) _first = false;
@@ -309,6 +368,8 @@ namespace dynamixel_controller {
             return ((double) velocity) * 2.0 * M_PI / 60.0 / info.gear_reduction;
         }
         else {
+            if(info.velocityMode)
+                return (velocity >= 1024) ? 0.01193841642 * (velocity) - 12.22493842 : -0.01193841642 * (velocity);
             return (100.0f / 8349.0f) * ((double) velocity) + (94.0f / 13915.0f);
         }
     }
@@ -323,28 +384,32 @@ namespace dynamixel_controller {
             dxlMotorInfo.protocol = info.protocolVer;
 
 
-
-            if(jointInfo.cmd_vel == 0.0) {
-                if(info.protocolVer == PROTOCOL2_VERSION) {
-                    jointInfo.cmd_vel = _initSpeedProtocol2;
-                }
-                else {
-                    jointInfo.cmd_vel = _initSpeedProtocol1;
+            if (info.useMinVel) {
+                if(jointInfo.cmd_vel == 0.0) {
+                    if(info.protocolVer == PROTOCOL2_VERSION) {
+                        jointInfo.cmd_vel = _initSpeedProtocol2;
+                    }
+                    else {
+                        jointInfo.cmd_vel = _initSpeedProtocol1;
+                    }
                 }
             }
+
             int32_t ticks = posToTicks(jointInfo.cmd_pos, info);
             int32_t speed = getDriverVelocity(info, jointInfo.cmd_vel);
 
 
-            if(!_driver->setMotorSpeed(dxlMotorInfo, speed)) {
-                ROS_WARN("[%s]: Unable to set speed", ros::this_node::getName().c_str());
+            if (info.writeVel) {
+                if(!_driver->setMotorSpeed(dxlMotorInfo, speed)) {
+                    //ROS_WARN("[%s]: Unable to set speed", ros::this_node::getName().c_str());
+                }
             }
 
-            if(!_driver->setMotorPosition(dxlMotorInfo, ticks)) {
-                ROS_WARN("[%s]: Unable to set position", ros::this_node::getName().c_str());
+            if (info.writePos) {
+                if(!_driver->setMotorPosition(dxlMotorInfo, ticks)) {
+                    //ROS_WARN("[%s]: Unable to set position", ros::this_node::getName().c_str());
+                }
             }
-
-
         }
     }
 
@@ -352,6 +417,8 @@ namespace dynamixel_controller {
         if(info.protocolVer == PROTOCOL2_VERSION)
             return static_cast<int32_t >(velocity / 2.0 / M_PI * 60.0 * info.gear_reduction);
         else {
+            if(info.velocityMode)
+                return static_cast<int32_t >((velocity <= 0) ? -83.76320314 * velocity : 83.76320314 * velocity + 1024.0);
             return static_cast<int32_t >(83.49f * (velocity) - 0.564f);
         }
 
@@ -368,9 +435,11 @@ namespace dynamixel_controller {
             _jointsInfo.insert(std::pair<std::string, JointInfo_t>(jointName, JointInfo_t()));
 
             if(_joint2Dxl[jointName].protocolVer == PROTOCOL2_VERSION) {
-                _jointsInfo[jointName].pre_vel = _initSpeedProtocol2;
+                if(it->second.useMinVel)
+                    _jointsInfo[jointName].cmd_vel = _initSpeedProtocol2;
             } else {
-                _jointsInfo[jointName].cmd_vel = _initSpeedProtocol1;
+                if(it->second.useMinVel)
+                    _jointsInfo[jointName].cmd_vel = _initSpeedProtocol1;
             }
 
         }
