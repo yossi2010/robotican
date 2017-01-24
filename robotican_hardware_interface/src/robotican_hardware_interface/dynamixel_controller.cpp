@@ -315,6 +315,11 @@ namespace dynamixel_controller {
             dxlMotorInfo.id = info.id;
             dxlMotorInfo.protocol = info.protocolVer;
 
+            curr_time_ = ros::Time::now().toSec();
+            ROS_WARN("Frequency: %f", (1 / (curr_time_ - prev_time_)));
+            prev_time_ = curr_time_;
+
+
 
             if (info.readPos) {
                 if(_driver->getMotorPosition(dxlMotorInfo, position)) {
@@ -323,8 +328,8 @@ namespace dynamixel_controller {
                     /////
                     if (info.id == 7 || info.id == 8)
                     {
-						ROS_WARN("dynamixel position: %f", position);
-						ROS_WARN("posToRads(position, info): %f", rad);
+						//ROS_WARN("dynamixel position: %f", position);
+						//ROS_WARN("posToRads(position, info): %f", rad);
 					}
                     /////
                     if (_first) _jointsInfo[jointName].cmd_pos = rad;
