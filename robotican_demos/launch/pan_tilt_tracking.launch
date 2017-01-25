@@ -1,15 +1,12 @@
 <?xml version="1.0"?>
 <launch>
-  
-   <!-- roslaunch robotican_armadillo armadillo.launch kinect2:=true world_name:="`rospack find robotican_common`/worlds/objects_on_table.world" gazebo:=true -->
-   <!-- roslaunch robotican_armadillo armadillo.launch kinect2:=true  -->
-  
+ 
   
   
   <node name="find_object_for_track_node" pkg="robotican_common" type="find_objects_node" output="screen">
     <param name="~object_id" value="1"/>
-    <param name="~depth_topic1" value="/kinect2/qhd/points"/>
-     <param name="~depth_topic2" value="/sr300/depth/points"/>    
+   <param name="~depth_topic1" value="/torso_camera/depth_registered/points"/>
+	<param name="~depth_topic2" value="/softkinetic_camera/depth/points"/> 
     <rosparam file="$(find robotican_demos)/config/red_object.yaml" command="load"/>
    </node> 
    

@@ -19,6 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
         controller_manager
         gripper_action_controller
         joint_trajectory_controller
+	robotican_hardware_interface
         xacro
         )
 
@@ -113,7 +114,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
         INCLUDE_DIRS include
-        LIBRARIES robotican_controllers
+        LIBRARIES robotican_controllers robotican_hardware_interface
         CATKIN_DEPENDS actionlib cmake_modules gripper_action_controller joint_trajectory_controller control_msgs controller_interface hardware_interface realtime_tools
         DEPENDS system_lib
 )
