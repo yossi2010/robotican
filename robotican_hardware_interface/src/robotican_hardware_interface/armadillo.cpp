@@ -157,6 +157,7 @@ namespace robotican_hardware {
     }
 
     void ArmadilloRobot::armStateCallback(const sensor_msgs::JointStateConstPtr &msg) {
+
         size_t size = msg->name.size();
         for(int i = 0; i < size; ++i) {
             std::string jointName = msg->name[i];
@@ -164,8 +165,10 @@ namespace robotican_hardware {
             jointInfo.position = msg->position[i];
             jointInfo.effort = msg->effort[i];
             jointInfo.velocity = msg->velocity[i];
+//ROS_INFO("joint: %s,  jointInfo.cmd_vel=%f\n",jointName.c_str(),jointInfo.velocity);
             if(!_first) {
-                jointInfo.cmd_vel = msg->velocity[i];
+
+               // jointInfo.cmd_vel = msg->velocity[i];
                 jointInfo.cmd_pos = msg->position[i];
             }
         }

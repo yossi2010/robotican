@@ -3,7 +3,7 @@ servos: [{id: 1, velocity_mode: false, joint_name: rotation1_joint, use_init_vel
 device: "/dev/ttyS0"
 serial_timeout_ms: 1000000000
 device_baudrate: 57600
-init_speed_protocol1: 0.2
+init_speed_protocol1: 0.4
 init_speed_protocol2: 0.3
 
 arm_joints: [rotation1_joint, shoulder1_joint, shoulder2_joint, rotation2_joint,  shoulder3_joint, wrist_joint]

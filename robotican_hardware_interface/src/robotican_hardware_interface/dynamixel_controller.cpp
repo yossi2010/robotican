@@ -316,7 +316,7 @@ namespace dynamixel_controller {
             dxlMotorInfo.protocol = info.protocolVer;
 
             curr_time_ = ros::Time::now().toSec();
-            ROS_WARN("Frequency: %f", (1 / (curr_time_ - prev_time_)));
+            //ROS_WARN("Frequency: %f", (1 / (curr_time_ - prev_time_)));
             prev_time_ = curr_time_;
 
 
@@ -388,18 +388,30 @@ namespace dynamixel_controller {
             dxlMotorInfo.id = info.id;
             dxlMotorInfo.protocol = info.protocolVer;
 
-
+			//	if (info.id == 8)
+			//{
             if (info.useMinVel) {
+				///////////////////////////////////////////////////
+				//ROS_ERROR("info.useMinVel: TRUE");
+				
+				//ROS_ERROR("jointInfo.cmd_vel: %f", jointInfo.cmd_vel);
+				//jointInfo.cmd_vel = 0.0;
                 if(jointInfo.cmd_vel == 0.0) {
+					
+					//ROS_ERROR("info.protocolVer: %f", info.protocolVer);
                     if(info.protocolVer == PROTOCOL2_VERSION) {
                         jointInfo.cmd_vel = _initSpeedProtocol2;
                     }
                     else {
                         jointInfo.cmd_vel = _initSpeedProtocol1;
+                      
                     }
+		
                 }
             }
-
+		
+			//	ROS_ERROR("JOINT VEL: %f", jointInfo.cmd_vel);
+			//}
             int32_t ticks = posToTicks(jointInfo.cmd_pos, info);
             int32_t speed = getDriverVelocity(info, jointInfo.cmd_vel);
 

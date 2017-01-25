@@ -310,7 +310,7 @@ namespace gripper_action_controller
 	ROS_WARN("INSIDE setHoldPosition");
 	ROS_WARN("rightjoint_.getPosition(): %f", rightjoint_.getPosition());
 	
-        command_struct_.position_ = pos2Gap(rightjoint_.getPosition());
+        command_struct_.position_ = pos2Gap(rightjoint_.getPosition()) - 0.03;
 	
 	ROS_WARN("command_struct_.position_ = pos2Gap(rightjoint_.getPosition()): %f", pos2Gap(rightjoint_.getPosition()));
 
