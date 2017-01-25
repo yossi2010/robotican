@@ -1,29 +1,26 @@
 #!/bin/bash
 
-#Terminator
-#sudo apt-get -y install terminator
-#END 
-
-#ROS install
-#sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-#sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv-key 0xB01FA116
-#sudo apt-get update
-#sudo apt-get -y install ros-indigo-desktop-full
-#sudo rosdep init
-#rosdep update
-#sudo apt-get -y install python-rosinstall
-#source /opt/ros/indigo/setup.bash
-#mkdir -p ~/catkin_ws/src
-#cd ~/catkin_ws/src
-#catkin_init_workspace
-#cd ~/catkin_ws/
-#catkin_make
-#source devel/setup.bash
-#echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
-
 cd ~/catkin_ws/src
 if [ $? == 0 ]; then
 	
+	#installing robotican pkg depends
+	rosdep update
+	sudo apt-get update
+	sudo apt-get dist-upgrade
+	sudo apt-get -f dist-upgrade
+	sudo apt-get install python-wstool python-catkin-tools clang-format-3.8
+	sudo apt-get -f install ros-indigo-moveit
+
+	sudo apt-get install ros-indigo-ar-track-alvar
+	sudo apt-get install ros-indigo-move-base 
+	sudo apt-get install ros-indigo-controller-manager
+	sudo apt-get install ros-indigo-gripper-action-controller 
+	sudo apt-get install ros-indigo-joint-trajectory-controller
+	sudo apt-get install ros-indigo-transmission-interface 
+	sudo apt-get install ros-indigo-joint-limits-interface 
+	sudo apt-get install ros-indigo-gazebo-ros-control
+	sudo apt-get install ros-indigo-serial
+
 	#Third party apt-get pkgs
 	cd ~/catkin_ws/src/robotican/robotican/installations/third_pkg_setup
 	sudo ./setup.sh
@@ -48,15 +45,6 @@ if [ $? == 0 ]; then
 		cd ~/catkin_ws/src/robotican/robotican/installations/third_pkg_setup
 		sudo ./softkinetic.sh
 	fi
-
-	echo "Do you want to install f200\r200\sr300 camera package [y/n]: "
-	read asf
-	if [ $asf == "y" ]; then
-		cd ~/catkin_ws/src/robotican/robotican/installations/third_pkg_setup
-		./realsense.sh
-	fi
-	
-	sudo chown -R $(logname):$(logname) ~/catkin_ws
 	
 	cd ~/catkin_ws
 	catkin_make
