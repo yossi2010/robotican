@@ -2,6 +2,7 @@
 
 GREEN_TXT='\e[0;32m'
 WHITE_TXT='\e[1;37m'
+RED_TXT='\e[31m'
 
 printf "${GREEN_TXT}\n***Installing Robotican Package***\n${WHITE_TXT}"
 
@@ -111,8 +112,7 @@ if [ $? == 0 ]; then
 	printf "${GREEN_TXT}***Installatoin Completed. Please reboot***\n${WHITE_TXT}"
 	
 else
-	echo -e "\e[31m[Error]: ROS catkin_ws not found"
-	echo -en "\e[39m"
+	printf "${RED_TXT}[Error]: ROS catkin_ws not found\n${WHITE_TXT}"
 	exit 1
 fi
 
