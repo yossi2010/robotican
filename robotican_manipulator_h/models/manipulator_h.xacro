@@ -520,61 +520,6 @@
       velocity="2.0" /> <!--7.016223585-->
       <dynamics friction ="1000" damping="100"/>
   </joint>
-<!--
-  <link
-    name="sr300_link">
-    <inertial>
-      <origin
-        xyz="-0.015404 -1.7297E-09 -0.007331"
-        rpy="0 0 0" />
-      <mass
-        value="0.092188" />
-      <inertia
-        ixx="0.00012728"
-        ixy="-5.5477E-12"
-        ixz="5.4874E-06"
-        iyy="2.6617E-05"
-        iyz="-4.8961E-11"
-        izz="0.00013363" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robotican_manipulator_h/meshes/sr300_optical_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.1 0.1 0.1 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="package://robotican_manipulator_h/meshes/sr300_optical_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="sr300_joint"
-    type="fixed">
-    <origin
-      xyz="-0.06355 0 0.041852"
-
-      rpy="0 -1.5708 0" />
-    <parent
-      link="wrist_link" />
-    <child
-      link="sr300_link" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
--->
   		
   <sensor_senz3d parent="wrist_link" name="softkinetic_camera" v_offset_x="0.045" v_offset_y="0.0" v_offset_z="0.0">
     <origin xyz="-0.05905 0 0.0753" rpy="0.0 -${M_PI/2} 0.0"/>

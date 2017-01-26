@@ -19,15 +19,8 @@
   <xacro:arg name="gps" default="false"/>
   <xacro:arg name="lidar" default="false"/>
   <xacro:arg name="softkinetic" default="false"/>
-  <!--<xacro:arg name="sr300" default="false"/>-->
 
   <xacro:include filename="$(find robotican_manipulator_h)/models/manipulator_h_gazebo_plugins.xacro" />
-
-
-  <!-- SR300 -->
-  <!--<xacro:if value="$(arg sr300)">
-    <xacro:include filename="$(find robotican_common)/gazebo/sr300.xacro" />
-  </xacro:if> -->
 
   <!-- Softkinetic -->
     <!-- softkinetic -->
@@ -199,9 +192,6 @@
         <gazebo reference="laser_link">
           <material>Gazebo/Black</material>
         </gazebo>
-        <!--<gazebo reference="sr300_link">
-          <material>Gazebo/Black</material>
-        </gazebo> -->
         <gazebo reference="softkinetic_camera_link">
           <material>Gazebo/Black</material>
         </gazebo>

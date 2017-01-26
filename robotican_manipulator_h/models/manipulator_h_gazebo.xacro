@@ -3,16 +3,6 @@
 	<xacro:include filename="$(find robotican_manipulator_h)/models/manipulator_h.xacro" />
 	<xacro:include filename="$(find robotican_manipulator_h)/models/manipulator_h_gazebo_plugins.xacro" />
 
-	
-	
-	  <xacro:arg name="sr300" default="false"/>
-	    <!-- SR300 -->
-  <xacro:if value="$(arg sr300)">
-    <xacro:include filename="$(find robotican_common)/gazebo/sr300.xacro" />
-  </xacro:if>
-
-
-
    <link name="world" />
 
 	
