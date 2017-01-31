@@ -6,10 +6,6 @@
 	<xacro:include filename="$(find robotican_komodo)/description/models/komodo_base.xacro" />
 	<!--      END          -->
 
-	<!--    ARM     -->
-	<!-- <xacro:include filename="$(find robotican_manipulator_h)/models/manipulator_h.xacro" /> -->
-	<!--      END          -->
-
   <!--    TORSO     -->
   <xacro:include filename="$(find robotican_komodo)/description/models/komodo_torso.xacro" />
   <!--     END      -->
