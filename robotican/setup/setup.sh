@@ -63,39 +63,11 @@ if [ $? == 0 ]; then
 	sudo /etc/init.d/udev reload
 	printf "${GREEN_TXT}Done.\n\n${WHITE_TXT}"
 	#--------------------------------
-	
-	#Installing kinect2 camera
-	printf "${GREEN_TXT}Installing kinect2 camera...\n${WHITE_TXT}"
-	cd ~
-	git clone https://github.com/OpenKinect/libfreenect2.git
-	cd libfreenect2
-	cd depends; ./download_debs_trusty.sh
-	sudo apt-get -y install build-essential cmake pkg-config
-	sudo dpkg -i debs/libusb*deb
-	sudo apt-get -y install libturbojpeg libjpeg-turbo8-dev
-	sudo dpkg -i debs/libglfw3*deb; sudo apt-get -y install -f
-	sudo apt-add-repository ppa:floe/beignet; sudo apt-get update; sudo apt-get -y  install beignet-dev; sudo dpkg -i debs/ocl-icd*deb
-	sudo dpkg -i debs/{libva,i965}*deb; sudo -y apt-get install -f
-	sudo apt-get -y  install libopenni2-dev
-	cd ..
-	mkdir build && cd build
-	cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/freenect2 -DENABLE_CXX11=ON
-	make
-	make install
-	sudo cp ../platform/linux/udev/90-kinect2.rules /etc/udev/rules.d/
-	cd ~/catkin_ws/src/
-	git clone https://github.com/code-iai/iai_kinect2.git
-	sudo chown -R $(logname):$(logname) ~/catkin_ws
-	cd iai_kinect2
-	rosdep install -r --from-paths .
-	#echo "Add following command to /etc/rc.local and reboot your PC"
-	#echo "sudo sh -c \"echo 0 > /sys/module/i915/parameters/enable_cmd_parser\""
-	printf "${GREEN_TXT}Done.\n\n${WHITE_TXT}"
-	#--------------------------------
 		
 	#Installing softkinetic camera
 	printf "${GREEN_TXT}Installing Softkinetic camera...\n${WHITE_TXT}"
 	cd ~/catkin_ws/src/robotican/robotican/setup/third_pkg
+	sudo chmod +x ./DepthSenseSDK-1.9.0-5-amd64-deb.run
 	./DepthSenseSDK-1.9.0-5-amd64-deb.run
 	sudo echo "blacklist snd_usb_audio" >> /etc/modprobe.d/blacklist.conf
 	cd ~/catkin_ws/src/
