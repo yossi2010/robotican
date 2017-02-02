@@ -216,7 +216,6 @@ namespace gripper_action_controller
         double current_position = pos2Gap(rightjoint_.getPosition());
         double current_velocity =  current_position - _lastPosition / period.toSec();
         double current_effort = (fabs(leftjoint_.getEffort())>fabs(rightjoint_.getEffort())) ? fabs(leftjoint_.getEffort()):fabs(rightjoint_.getEffort());
-//ROS_INFO("current_position: %f     rightjoint: %f",current_position,rightjoint_.getPosition());
         double error_position = command_struct_rt_.position_ - current_position;
         double error_velocity = - current_velocity;
         _lastPosition = current_position;
@@ -225,19 +224,11 @@ namespace gripper_action_controller
 
         // Hardware interface adapter: Generate and send commands
         double jointsPos = gap2Pos(command_struct_rt_.position_);
-//ROS_INFO("gap: %f",command_struct_rt_.position_);
         computed_command_ = left_hw_iface_adapter_.updateCommand(time, period,
                                                                  -jointsPos, 0.0,
                                                                  error_position, error_velocity, command_struct_rt_.max_effort_);
         computed_command_ = right_hw_iface_adapter_.updateCommand(time, period,
                                                                   jointsPos, 0.0, error_position, error_velocity, command_struct_rt_.max_effort_);
-
-
-//        control_msgs::GripperCommandResult pubMsg;
-//        pubMsg.position = current_position;
-//        pubMsg.effort = current_effort;
-//        _gapPub.publish(pubMsg);
-
     }
 
     template <class HardwareInterface>
