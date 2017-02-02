@@ -96,6 +96,7 @@ if [ $? == 0 ]; then
 	#Installing softkinetic camera
 	printf "${GREEN_TXT}Installing Softkinetic camera...\n${WHITE_TXT}"
 	cd ~/catkin_ws/src/robotican/robotican/setup/third_pkg
+	sudo chmod +x ./DepthSenseSDK-1.9.0-5-amd64-deb.run
 	./DepthSenseSDK-1.9.0-5-amd64-deb.run
 	sudo echo "blacklist snd_usb_audio" >> /etc/modprobe.d/blacklist.conf
 	cd ~/catkin_ws/src/
