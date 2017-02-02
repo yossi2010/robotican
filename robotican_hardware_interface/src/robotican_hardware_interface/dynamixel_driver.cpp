@@ -250,13 +250,6 @@ namespace dynamixel_driver {
 		
         if(motorInfo.protocol == PROTOCOL1_VERSION) gotCurrentPos = getMotorPositionProtocol1(motorInfo.id, position);
         else if(motorInfo.protocol == PROTOCOL2_VERSION) gotCurrentPos = getMotorPositionProtocol2(motorInfo.id, position);
-		
-		if (gotCurrentPos && motorInfo.id == 8)
-		{
-			curr_time_ = ros::Time::now().toSec();
-            prev_time_ = curr_time_;
-		}
-        
         return gotCurrentPos;
     }
 
