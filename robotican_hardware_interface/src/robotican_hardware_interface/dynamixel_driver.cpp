@@ -254,7 +254,6 @@ namespace dynamixel_driver {
 		if (gotCurrentPos && motorInfo.id == 8)
 		{
 			curr_time_ = ros::Time::now().toSec();
-            //ROS_WARN("Frequency SCC Read: %f", (1 / (curr_time_ - prev_time_)));
             prev_time_ = curr_time_;
 		}
         

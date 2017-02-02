@@ -59,9 +59,6 @@ namespace dynamixel_driver {
         dynamixel::PacketHandler *_packetHandlerVer1;
         dynamixel::PacketHandler *_packetHandlerVer2;
 
-	double curr_time_ = 0;
-	double prev_time_ = 0;
-
         bool pingMotorProtocol1(uint8_t id);
 
         bool pingMotorProtocol2(uint8_t id);
