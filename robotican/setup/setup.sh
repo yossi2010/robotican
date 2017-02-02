@@ -58,12 +58,9 @@ if [ $? == 0 ]; then
 	#Installing USB rules 
 	printf "${GREEN_TXT}Installing USB rules...\n${WHITE_TXT}"
 	cd ~/catkin_ws/src/robotican/robotican/setup/usb_rules/
-	cp ./ric_usb.rules /etc/udev/rules.d
-	cp ./hokuyo.rules /etc/udev/rules.d
-	sudo adduser $(logname) dialout
-	adduser 
+	sudo cp ./ric_usb.rules /etc/udev/rules.d
+	sudo cp ./hokuyo.rules /etc/udev/rules.d
 	/etc/init.d/udev reload
-	sudo chown -R $(logname):$(logname) ~/catkin_ws
 	printf "${GREEN_TXT}Done.\n\n${WHITE_TXT}"
 	#--------------------------------
 	
@@ -89,7 +86,6 @@ if [ $? == 0 ]; then
 	sudo cp ../platform/linux/udev/90-kinect2.rules /etc/udev/rules.d/
 	cd ~/catkin_ws/src/
 	git clone https://github.com/code-iai/iai_kinect2.git
-	sudo chown -R $(logname):$(logname) ~/catkin_ws
 	cd iai_kinect2
 	rosdep install -r --from-paths .
 	#echo "Add following command to /etc/rc.local and reboot your PC"
