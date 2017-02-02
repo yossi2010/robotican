@@ -58,12 +58,9 @@ if [ $? == 0 ]; then
 	#Installing USB rules 
 	printf "${GREEN_TXT}Installing USB rules...\n${WHITE_TXT}"
 	cd ~/catkin_ws/src/robotican/robotican/setup/usb_rules/
-	cp ./ric_usb.rules /etc/udev/rules.d
-	cp ./hokuyo.rules /etc/udev/rules.d
-	sudo adduser $(logname) dialout
-	adduser 
-	/etc/init.d/udev reload
-	sudo chown -R $(logname):$(logname) ~/catkin_ws
+	sudo cp ./ric_usb.rules /etc/udev/rules.d
+	sudo cp ./hokuyo.rules /etc/udev/rules.d
+	sudo /etc/init.d/udev reload
 	printf "${GREEN_TXT}Done.\n\n${WHITE_TXT}"
 	#--------------------------------
 	
@@ -71,7 +68,6 @@ if [ $? == 0 ]; then
 	printf "${GREEN_TXT}Installing kinect2 camera...\n${WHITE_TXT}"
 	cd ~
 	git clone https://github.com/OpenKinect/libfreenect2.git
-	sudo chown -R $(logname):$(logname) ~/libfreenect2
 	cd libfreenect2
 	cd depends; ./download_debs_trusty.sh
 	sudo apt-get -y install build-essential cmake pkg-config
