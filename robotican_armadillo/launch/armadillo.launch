@@ -1,4 +1,8 @@
 <?xml version="1.0"?>
+
+<!-- EXAMPLE: roslaunch robotican_armadillo armadillo.launch lidar:=true front_camera:=true kinect2:=true softkinetic:=true moveit:=true gmapping:=true urf:=true rear_camera:=true move_base:=true
+ -->
+
 <launch>
 
   <arg name="front_camera" default='false'/>
