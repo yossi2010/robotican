@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 	
-    <arg name="start_position" default="pre_grasp" /> <!-- argument that the user can determinant the start position (this pre position is constructed is the moveit congi)-->
+    <arg name="start_position" default="pre_grasp" /> 
     
     <node name="pick_and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true">
       <param name="~start_position_name" value="$(arg start_position)"/>

@@ -23,8 +23,5 @@
     <remap from="image" to="find_object_node/result" />
   </node>
   
-  
-  
-  
 </launch>
 
