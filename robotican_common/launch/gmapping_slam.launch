@@ -32,6 +32,8 @@
     <param name="temporalUpdate" value="-1.0"/>
     <param name="resampleThreshold" value="0.5"/>
     <param name="particles" value="100"/>
+    <!--  [double] minimum score for considering the outcome of the scanmatching good. Can avoid 'jumping' pose estimates in large 	open spaces when using laser scanners with limited range (e.g. 5m). (0 = default. Scores go up to 600+, try 50 for example when 		experiencing 'jumping' estimate issues)
+    -->
     <param name="minimumScore" value="480"/> 
   
     <param name="xmin" value="-10.0"/>

@@ -1,4 +1,4 @@
-<!-- for example: roslaunch robotican_commn rgbd_mapping.launch depth_cam_name:=softkinetic -->
+<!-- for example: roslaunch robotican_common rgbd_mapping.launch -->
 
 <launch>
    
@@ -29,7 +29,7 @@
 
    <!-- Assuming 2D scan if set, rtabmap will do 3DoF mapping instead of 6DoF -->
 
-   <arg name="subscribe_scan"          default="false"/>         
+   <arg name="subscribe_scan"          default="true"/>         
   <arg name="scan_topic"              default="/scan"/>
 
    <!-- Corresponding config files -->
