@@ -24,7 +24,7 @@ bool update=false;
 
 moveit::planning_interface::PlanningSceneInterface *planning_scene_interface_ptr;
 
-
+//listening to alvar msgs, that are sent througth find object node
 
 
 int main(int argc, char **argv) {
@@ -94,6 +94,7 @@ geometry_msgs::Pose get_obj_position(int id,geometry_msgs::Pose  pose){ //TODO: 
 
 void handle_objects(const ar_track_alvar_msgs::AlvarMarkers::ConstPtr& markers)
 {
+	//build collisions for moveit
     std::vector<moveit_msgs::CollisionObject> col_objects;
 
     for (int i=0;i<markers->markers.size();i++) {
