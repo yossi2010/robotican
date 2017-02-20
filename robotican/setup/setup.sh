@@ -61,7 +61,7 @@ if [ $? == 0 ]; then
 	sudo cp ./robotican_comps.rules /etc/udev/rules.d
 	/etc/init.d/udev reload
 	#adding user to dialout group (give root access to some ports)
-	usermod -a -G dialout $SUDO_USER
+	sudo usermod -a -G dialout `whoami`
 	printf "${GREEN_TXT}Done.\n\n${WHITE_TXT}"
 	#--------------------------------
 	
