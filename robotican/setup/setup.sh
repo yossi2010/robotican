@@ -60,6 +60,8 @@ if [ $? == 0 ]; then
 	cd ~/catkin_ws/src/robotican/robotican/setup/usb_rules/
 	sudo cp ./robotican_comps.rules /etc/udev/rules.d
 	/etc/init.d/udev reload
+	#adding user to dialout group (give root access to some ports)
+	usermod -a -G dialout $SUDO_USER
 	printf "${GREEN_TXT}Done.\n\n${WHITE_TXT}"
 	#--------------------------------
 	
