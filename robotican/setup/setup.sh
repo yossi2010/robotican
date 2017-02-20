@@ -58,8 +58,7 @@ if [ $? == 0 ]; then
 	#Installing USB rules 
 	printf "${GREEN_TXT}Installing USB rules...\n${WHITE_TXT}"
 	cd ~/catkin_ws/src/robotican/robotican/setup/usb_rules/
-	sudo cp ./ric_usb.rules /etc/udev/rules.d
-	sudo cp ./hokuyo.rules /etc/udev/rules.d
+	sudo cp ./robotican_comps.rules /etc/udev/rules.d
 	/etc/init.d/udev reload
 	printf "${GREEN_TXT}Done.\n\n${WHITE_TXT}"
 	#--------------------------------
