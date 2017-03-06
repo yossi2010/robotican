@@ -136,6 +136,10 @@ catkin_package(
 include_directories(
   ${catkin_INCLUDE_DIRS}
 )
+
+add_executable(moveit_custom_goal src/moveit_custom_goal.cpp)
+target_link_libraries(moveit_custom_goal ${catkin_LIBRARIES})
+
 add_executable(simple_navigation_goals src/simple_navigation_goals.cpp)
 target_link_libraries(simple_navigation_goals ${catkin_LIBRARIES})
 

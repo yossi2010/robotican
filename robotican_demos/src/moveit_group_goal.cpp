@@ -8,8 +8,34 @@
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <moveit_msgs/DisplayRobotState.h>
 #include <moveit_msgs/DisplayTrajectory.h>
+#include <moveit/planning_scene/planning_scene.h>
 
 using namespace std;
+
+robot_state::GroupStateValidityCallbackFn state_validity_callback_fn_;
+robot_state::RobotStatePtr *robot_state_ptr;
+planning_scene::PlanningScenePtr *planning_scene_ptr;
+
+const robot_model::JointModelGroup* joint_model_group;
+
+bool isIKSolutionCollisionFree(robot_state::RobotState *joint_state,
+                               const robot_model::JointModelGroup *joint_model_group_,
+                               const double *ik_solution)
+{
+    joint_state->setJointGroupPositions(joint_model_group_, ik_solution);
+    bool result = !(*planning_scene_ptr)->isStateColliding(*joint_state, joint_model_group_->getName(),false);
+
+    return result;
+}
+
+bool checkIK(geometry_msgs::PoseStamped pose) {
+
+    // bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 10,1);
+    bool found_ik = (*robot_state_ptr)->setFromIK(joint_model_group, pose.pose, 100,30.0, state_validity_callback_fn_);
+    std::printf("IK %d: [%f , %f , %f] [%f , %f , %f , %f]\n",found_ik,pose.pose.position.x,pose.pose.position.y,pose.pose.position.z,pose.pose.orientation.x,pose.pose.orientation.y,pose.pose.orientation.z,pose.pose.orientation.w);
+    return found_ik;
+}
+
 
 int main(int argc, char **argv) {
     ros::init(argc, argv,"moveit_group_goal");
@@ -18,6 +44,23 @@ int main(int argc, char **argv) {
     ros::NodeHandle nodeHandle;
 
     moveit::planning_interface::MoveGroup group("arm");
+
+    /* Get a shared pointer to the model */
+    robot_model::RobotModelConstPtr robot_model = group.getRobotModel();// robot_model_loader.getModel();
+
+    /* Create a robot state*/
+    robot_state::RobotStatePtr robot_state(new robot_state::RobotState(robot_model));
+
+    robot_state_ptr=&robot_state;
+
+    std::string group_name="arm";
+    if(!robot_model->hasJointModelGroup(group_name))
+        ROS_FATAL("Invalid group name: %s", group_name.c_str());
+
+    joint_model_group = robot_model->getJointModelGroup(group_name);
+    planning_scene::PlanningScenePtr planning_scene(new planning_scene::PlanningScene(robot_model));
+    planning_scene_ptr=&planning_scene;
+
 
     group.setMaxVelocityScalingFactor(0.1);
     group.setMaxAccelerationScalingFactor(0.5);
@@ -29,6 +72,9 @@ int main(int argc, char **argv) {
     
     group.setStartStateToCurrentState();
 
+
+state_validity_callback_fn_ = boost::bind(&isIKSolutionCollisionFree, _1, _2, _3);
+
    // ROS_INFO("End effector reference frame: %s", group.getEndEffectorLink().c_str());
 
     geometry_msgs::PoseStamped target_pose;
@@ -37,7 +83,10 @@ int main(int argc, char **argv) {
     target_pose.pose.position.x = 0.54;
     target_pose.pose.position.y = 0.0;
     target_pose.pose.position.z = 0.84;
-    target_pose.pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(M_PI,0.0,0.0); //horizontal
+    target_pose.pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(0,0.0,0.0); //horizontal
+    
+     if (checkIK(target_pose)) {
+    	ROS_ERROR("Valid IK");
     group.setPoseTarget(target_pose);
     moveit::planning_interface::MoveGroup::Plan my_plan;
     bool success = group.plan(my_plan);
@@ -46,6 +95,10 @@ int main(int argc, char **argv) {
         ROS_INFO("Moving...");
         group.move();
     }
+}
+else {
+	ROS_ERROR("Invalid IK");
+}
     sleep(5);
 
 

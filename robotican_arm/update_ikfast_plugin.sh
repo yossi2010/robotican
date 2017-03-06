@@ -1,0 +1,1 @@
+rosrun moveit_ikfast create_ikfast_moveit_plugin.py robotican_komodo arm robotican_arm /home/vostro/catkin_ws/src/robotican/robotican_arm/src/robotican_komodo_arm_ikfast_solver.cpp
