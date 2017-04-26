@@ -370,8 +370,4 @@
       xyz="0 0 0" />
   </joint>
 
-  <sensor_senz3d parent="base_link" name="softkinetic_camera">
-    <origin xyz="0.16122 0.0 0.13223" rpy="0.0 0.0 0.0"/>
-  </sensor_senz3d>
-
 </robot>

@@ -22,7 +22,6 @@
   <arg name="gps" default='false'/>
   <arg name="urf" default='false'/>
   <arg name="imu" default='false'/>
-  <arg name="sr300" default='false'/>
   <arg name="joystick" default='false'/>
   <arg name="joystick_dev" default='/dev/input/js0'/>
   <arg name="twist_mux" default='true'/>
@@ -98,10 +97,6 @@
 				<arg name="image_height" value="480" />
 				<arg name="node_name" value="front_cam" />
 			</include>
-		</group>
-		
-		<group if="$(arg sr300)">
-			<include file="$(find robotican_common)/launch/sr300.launch"/> 
 		</group>
 		
 		<group if="$(arg depth_camera)">
