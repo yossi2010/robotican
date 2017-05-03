@@ -11,7 +11,7 @@
 
 <launch>
 
-    <arg name="start_position" default="pre_grasp3" />
+    <arg name="start_position" default="driving" />
     
     <node name="pick_and_place_node" pkg="robotican_demos" type="pick_and_place" output="screen" required="true">
       <param name="~start_position_name" value="$(arg start_position)"/>
