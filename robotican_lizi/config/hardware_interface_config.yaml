@@ -21,20 +21,20 @@ imu_fusion_hz: 50
 imu_enable_gyro: true
 imu_enable_fuse_compass: true
 imu_frame_id: 'base_link'
-imu_linear_acc_fix: [1, 0, 0,
-                     0, 1, 0,
+imu_linear_acc_fix: [0, -1, 0,
+                     1, 0, 0,
                      0, 0, 1]
 
-imu_angular_velocity_fix: [-1, 0, 0,
-                           0, 1, 0,
+imu_angular_velocity_fix: [0, -1, 0,
+                           -1, 0, 0,
                            0, 0, -1]
 
 imu_magnetometer_fix: [1, 0, 0,
                        0, 1, 0,
                        0, 0, 1]
 
-imu_rotation_fix: [-1, 0, 0,
-                   0, 1, 0,
+imu_rotation_fix: [0, 1, 0,
+                   1, 0, 0,
                    0, 0, 1]
 imu_rotation_offset: [0, 0.0, -3.141592]
 ultrasonic_size: 3
@@ -44,12 +44,12 @@ ultrasonic0_frame_id: 'left_urf_link'
 ultrasonic0_topic_name: 'URF/left'
 ultrasonic0_sonar_name:  'Max_Sonar_HRLV'
 
-ultrasonic1_pin: 15
+ultrasonic1_pin: 16
 ultrasonic1_frame_id: 'right_urf_link'
 ultrasonic1_topic_name: 'URF/right'
 ultrasonic1_sonar_name:  'Max_Sonar_HRLV'
 
-ultrasonic2_pin: 16
+ultrasonic2_pin: 15
 ultrasonic2_frame_id: 'rear_urf_link'
 ultrasonic2_topic_name: 'URF/rear'
 ultrasonic2_sonar_name:  'Max_Sonar_HRLV'
@@ -58,8 +58,8 @@ ultrasonic2_sonar_name:  'Max_Sonar_HRLV'
 close_motor_size: 4
 
 motor0_motor_type: 0
-motor0_encoder_pin_A: 29
-motor0_encoder_pin_B: 30
+motor0_encoder_pin_A: 27
+motor0_encoder_pin_B: 28
 motor0_lpf_hz_speed: 80
 motor0_lpf_hz_input: 1000
 motor0_lpf_alpha_speed: 0.5
@@ -67,7 +67,7 @@ motor0_lpf_alpha_input: 1.0
 motor0_pid_hz: 1000
 motor0_ppr: 4480
 motor0_timeout: 0
-motor0_motor_direction: -1
+motor0_motor_direction: 1
 motor0_encoder_direction: -1
 motor0_kp: 85.0
 motor0_ki: 30.0
@@ -91,8 +91,8 @@ motor0_bais_max: 10
 
 motor1_motor_type: 0
 
-motor1_encoder_pin_A: 22
-motor1_encoder_pin_B: 23
+motor1_encoder_pin_A: 29
+motor1_encoder_pin_B: 30
 motor1_encoder_direction: 1
 motor1_lpf_hz_speed: 80
 motor1_lpf_hz_input: 1000
@@ -101,7 +101,7 @@ motor1_lpf_alpha_input: 1.0
 motor1_pid_hz: 1000
 motor1_ppr: 4480
 motor1_timeout: 0
-motor1_motor_direction: 1
+motor1_motor_direction: -1
 motor1_kp: 85.0
 motor1_ki: 30.0
 motor1_kd: 0.0
@@ -123,8 +123,8 @@ motor1_bais_max: 10
 
 
 motor2_motor_type: 0
-motor2_encoder_pin_A: 27
-motor2_encoder_pin_B: 28
+motor2_encoder_pin_A: 22
+motor2_encoder_pin_B: 23
 motor2_lpf_hz_speed: 80
 motor2_lpf_hz_input: 1000
 motor2_lpf_alpha_speed: 0.5
@@ -132,7 +132,7 @@ motor2_lpf_alpha_input: 1.0
 motor2_pid_hz: 1000
 motor2_ppr: 4480
 motor2_timeout: 0
-motor2_motor_direction: -1
+motor2_motor_direction: 1
 motor2_encoder_direction: -1
 motor2_kp: 85.0
 motor2_ki: 30.0
@@ -163,7 +163,7 @@ motor3_lpf_alpha_input: 1.0
 motor3_pid_hz: 1000
 motor3_ppr: 4480
 motor3_timeout: 0
-motor3_motor_direction: 1
+motor3_motor_direction: -1
 motor3_encoder_direction: 1
 motor3_kp: 85.0
 motor3_ki: 30.0
