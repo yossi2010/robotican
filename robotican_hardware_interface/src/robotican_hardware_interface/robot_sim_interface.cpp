@@ -199,7 +199,9 @@ namespace gazebo_ros_control
                     // joint->SetMaxForce() must be called if joint->SetAngle() or joint->SetVelocity() are
                     // going to be called. joint->SetMaxForce() must *not* be called if joint->SetForce() is
                     // going to be called.
+                    #if (GAZEBO_MAJOR_VERSION<4)
                     joint->SetMaxForce(0, joint_effort_limits_[j]);
+                    #endif
 
                 }
             }
